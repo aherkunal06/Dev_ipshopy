@@ -1,0 +1,671 @@
+{{ header }}
+<div style='display:flex;'>
+    
+{{column_left_account}}
+<div class="referral-main-card-pro" style="max-width: 950px; margin: 40px auto 48px auto; border-radius: 28px; box-shadow: 0 8px 32px rgba(106,17,203,0.13); overflow: hidden; background: #fff;">
+  <!-- Hero + Features -->
+  <div class="referral-hero-pro" style="background: linear-gradient(90deg, #a259c6 0%, #6a11cb 100%); padding: 48px 40px 36px 40px; text-align: center;">
+    <div class="feature-row-pro" style="display: flex; justify-content: center; align-items: flex-start; gap: 36px; flex-wrap: wrap; margin-bottom: 36px;">
+      <div class="feature-item-pro">
+        <div class="feature-icon-pro"><i class="fa fa-users"></i></div>
+        <div class="feature-title-pro">Help Your Friends</div>
+        <div class="feature-desc-pro">Let your friends know about earning real cashback on top of all discounts and promo codes.</div>
+      </div>
+      <div class="feature-item-pro">
+        <div class="feature-icon-pro"><i class="fa fa-gift"></i></div>
+        <div class="feature-title-pro">One-time Bonus</div>
+        <div class="feature-desc-pro">When your friend joins ipshopy, you both earn a bonus on their first order.</div>
+      </div>
+      <div class="feature-item-pro">
+        <div class="feature-icon-pro"><i class="fa fa-percent"></i></div>
+        <div class="feature-title-pro">5% from Every Transaction</div>
+        <div class="feature-desc-pro">Every time your friend earns cashback, you get 5% as referral cashback.</div>
+      </div>
+    </div>
+    <h1 class="referral-hero-title-pro">Join <span>ipshopy</span> Now and <span class="highlight">Get a 5% Bonus</span> Today!</h1>
+    <div class="referral-hero-action-pro" style="margin-top: 32px; display: flex; justify-content: center; gap: 22px; flex-direction: row;">
+      {# <a href="index.php?route=account/register" class="btn btn-signup-pro">Sign Up</a>
+      <a href="index.php?route=account/login" class="btn btn-login-pro">Login</a> #}
+    </div>
+  </div>
+  <!-- Main Content -->
+  <div class="referral-content-pro">
+    <h2>ipshopy Refer & Earn Program</h2>
+    <p class="subtitle">Invite friends to ipshopy and both of you earn rewards every time they shop. Sharing is rewarding!</p>
+    <div class="how-it-works-pro">
+      <h3 class="section-title-pro"><i class="fa fa-info-circle"></i> How It Works</h3>
+      <div class="how-steps-pro">
+        <div class="how-step-pro"><span class="how-step-num">1</span><div><strong>Share Your Link:</strong> Log in and get your unique referral link or code.</div></div>
+        <div class="how-step-pro"><span class="how-step-num">2</span><div><strong>Invite Friends:</strong> Share your link via WhatsApp, Instagram, Facebook, email, or anywhere you like.</div></div>
+        <div class="how-step-pro"><span class="how-step-num">3</span><div><strong>Earn Instantly:</strong> When your friend signs up and places their first order, you BOTH get rewarded. It’s a win-win!</div></div>
+      </div>
+    </div>
+    <div class="rewards-row-pro cards-row-pro">
+      <div class="reward-pro card-pro earn-card-pro">
+        <div class="reward-title-pro"><i class="fa fa-wallet"></i> You Earn</div>
+        <div class="reward-desc-pro">5% discount in your ipshopy wallet for every successful referral.</div>
+      </div>
+      <div class="reward-pro card-pro friend-card-pro">
+        <div class="reward-title-pro"><i class="fa fa-gift"></i> Your Friend Gets</div>
+        <div class="reward-desc-pro">Flat 5% off on their first order above ₹500.</div>
+      </div>
+    </div>
+    <div class="why-refer-pro">
+      <h3 class="section-title-pro"><i class="fa fa-star"></i> Why Refer with Ipshopy?</h3>
+      <div class="why-benefits-row-pro">
+        <div class="why-benefit-pro"><i class="fa fa-infinity"></i><span><strong>Unlimited earning:</strong> No limit on how many friends you invite.</span></div>
+        <div class="why-benefit-pro"><i class="fa fa-bolt"></i><span><strong>Instant cashback:</strong> Rewarded once your friend’s order is delivered.</span></div>
+        <div class="why-benefit-pro"><i class="fa fa-check-circle"></i><span><strong>Easy to use:</strong> Cashback never goes to waste; spend it on your next ipshopy order.</span></div>
+      </div>
+    </div>
+    <div class="bonus-pro card-pro info-card-pro"><i class="fa fa-bullhorn"></i> <strong>Bonus: Refer a Seller & Earn More!</strong> <span>Know someone who wants to sell online? Invite them to join ipshopy as a seller and earn a flat 5% discount when they list their products and complete their first sale.</span></div>
+    <div class="terms-pro card-pro terms-card-pro">
+      <h3 class="section-title-pro"><i class="fa fa-list-ul"></i> A Few Simple Terms</h3>
+      <ul>
+        <li><i class="fa fa-percent"></i> Minimum order value to be eligible for referral rewards: 5% discount</li>
+        <li><i class="fa fa-clock"></i> Cashback credited after your friend’s order is successfully completed.</li>
+        <li><i class="fa fa-times-circle"></i> If the order is cancelled or returned, the referral reward will not be applicable.</li>
+        <li><i class="fa fa-calendar-check"></i> Referral rewards are valid for 90 days from the date you share your link.</li>
+      </ul>
+    </div>
+    <div class="faq-section-pro">
+      <h3>Questions & Answers</h3>
+      <div class="faq-list unified-faq-card" style="width:100%; max-width:1100px; margin:0 auto 32px auto;">
+        {% set faqs = [
+          {q: 'Where do I find my referral link or code?', a: 'Log in to your ipshopy account, go to “My Account” → “Referral”, and you’ll see your unique link or code there.'},
+          {q: 'How long does it take to get my cashback?', a: 'Your cashback will be credited to your ipshopy wallet after your friend’s order is successfully completed.'},
+          {q: 'Is there any limit to how many people I can refer?', a: 'No! There’s no limit—refer as many friends, family or sellers as you like.'},
+          {q: 'What happens if my friend cancels their order?', a: 'If the referred order is cancelled or returned, the referral cashback will not be credited.'},
+          {q: 'How can I use my referral cashback?', a: 'Your cashback stays in your Ipshopy wallet. You can use it to pay for any future orders on ipshopy.com. It cannot be withdrawn as cash.'},
+          {q: 'Can I refer someone who’s already an Ipshopy user?', a: 'No—the referral program is only for new customers who are signing up for the first time.'},
+          {q: 'Where can I track my referrals and rewards?', a: 'You can check the status of your referrals and your wallet balance anytime under “My Account → Referrals”.'}
+        ] %}
+        {% for faq in faqs %}
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            <span>{{ faq.q }}</span>
+            <span class="faq-arrow-svg">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6c7a86" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="faq-answer">{{ faq.a }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <hr style="margin: 32px 0;">
+    <div style="text-align:center; font-size:1.3em; font-weight:700; color:#6a11cb; margin-bottom: 0;">Ready to Start Earning?</div>
+    <div style="text-align:center; font-size:1.08em; font-weight:500; color:#9c0d85; margin-bottom: 0;">Sign in, share your link, and watch your wallet grow. The more you share, the more you earn while your friends and family discover the joy of shopping smart with ipshopy.<br>Happy Referring & Happy Shopping with ipshopy!</div>
+    <div class="referral-action-row" style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 18px; margin-top: 36px; margin-bottom: 8px;">
+      {% if existing_referral_link is defined %}
+        <a href="https://wa.me/?text={{ existing_referral_link|url_encode }}" class="btn btn-success whatsapp-btn" target="_blank" style="min-width: 180px; font-weight: 500; background: #25D366; border: none; color: #fff; font-size: 1.08em; border-radius: 8px; box-shadow: 0 2px 8px rgba(39, 174, 96, 0.08);">
+          <i class="fa fa-whatsapp"></i> Refer via WhatsApp
+        </a>
+        <button class="btn btn-primary" style="min-width: 180px; font-weight: 500; background: #fff; color: #a259c6; border: 2px solid #a259c6; margin-left: 18px;" onclick="showReferralLinkModal('{{ existing_referral_link }}')">Refer via Link</button>
+      {% else %}
+        <button id="generate-referral-link" class="btn btn-primary mr-2">Generate Referral Link</button>
+        <div id="referral-result" style="margin-top:15px;"></div>
+      {% endif %}
+    </div>
+    <!-- Modal for showing/copying the link (inside card, overlay style) -->
+    <div id="referralLinkModalOverlay" class="referral-modal-overlay" style="display:none;"></div>
+    <div id="referralLinkModal" class="referral-modal" style="display:none;">
+      <div class="referral-modal-content">
+        <div class="referral-modal-header">
+          <span class="referral-modal-title">Your Referral Link</span>
+          <button type="button" class="referral-modal-close" onclick="hideReferralLinkModal()">&times;</button>
+        </div>
+        <div class="referral-modal-body text-center">
+          <input type="text" id="referralLinkInput" class="form-control mb-2" value="" readonly style="margin-bottom: 18px;">
+          <button class="btn btn-success" style="background: #9c0d85; border: none;" onclick="copyReferralLink()">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{{ footer }}
+
+<style>
+.referral-main-card-pro {
+  max-width: 1200px;
+  margin: 40px auto 48px auto;
+  border-radius: 28px;
+  box-shadow: 0 8px 32px rgba(106,17,203,0.13);
+  overflow: hidden;
+  background: #fff;
+}
+.referral-hero-pro {
+  background: linear-gradient(90deg, #a259c6 0%, #6a11cb 100%);
+  padding: 48px 40px 36px 40px;
+  text-align: center;
+  position: relative;
+}
+.feature-row-pro {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 36px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.feature-item-pro {
+  flex: 1 1 180px;
+  max-width: 220px;
+  text-align: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(162,89,198,0.08);
+  padding: 18px 10px 14px 10px;
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+  cursor: pointer;
+}
+.feature-item-pro:hover {
+  box-shadow: 0 6px 24px rgba(162,89,198,0.18);
+  background: #f3eaff;
+  transform: translateY(-4px) scale(1.04);
+}
+.feature-icon-pro {
+  font-size: 2.5em;
+  color: #a259c6;
+  margin-bottom: 10px;
+  transition: color 0.2s;
+}
+.feature-item-pro:hover .feature-icon-pro {
+  color: #6a11cb;
+}
+.feature-title-pro {
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-bottom: 6px;
+  color: #6a11cb;
+}
+.feature-desc-pro {
+  color: #7b1fa2;
+  font-size: 0.98em;
+}
+.referral-hero-title-pro {
+  color: #fff;
+  font-size: 2.4em;
+  font-weight: 700;
+  margin-bottom: 22px;
+  letter-spacing: -1px;
+}
+.referral-hero-title-pro .highlight {
+  color: #ffe082;
+  font-weight: 700;
+  background: none !important;
+  padding: 0;
+  display: inline;
+}
+.referral-hero-title-pro span {
+  color: #ffe082;
+}
+.referral-hero-action-pro {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.referral-user-action-pro {
+  width: 260px;
+  padding: 14px 18px;
+  border-radius: 24px;
+  border: none;
+  font-size: 1.12em;
+  font-weight: 500;
+  color: #9c0d85;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(156,13,133,0.08);
+  outline: none;
+  margin-bottom: 8px;
+}
+.referral-action-btns-pro {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+.referral-content-pro {
+  padding: 48px 48px 48px 48px;
+  background: #fff;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.referral-content-pro h2 {
+  color: #a259c6;
+  font-size: 1.7em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  line-height: 1.1;
+}
+.referral-content-pro .subtitle {
+  font-size: 1.08em;
+  margin-bottom: 18px;
+  color: #333;
+}
+.how-it-works-pro h3, .why-refer-pro h3, .terms-pro h3, .faq-section-pro h3 {
+  color: #9c0d85;
+  margin-top: 32px;
+  margin-bottom: 10px;
+  font-size: 1.15em;
+  font-weight: 700;
+}
+.how-it-works-pro ol {
+  margin-bottom: 18px;
+  color: #333;
+  padding-left: 20px;
+}
+.rewards-row-pro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 24px;
+}
+.reward-pro {
+  flex: 1 1 180px;
+  color: #9c0d85;
+  font-weight: 600;
+}
+.reward-pro span {
+  color: #9c0d85;
+}
+.reward-pro + .reward-pro {
+  color: #0d8c9c;
+}
+.reward-pro + .reward-pro span {
+  color: #0d8c9c;
+}
+.why-refer-pro ul, .terms-pro ul {
+  margin-bottom: 18px;
+  padding-left: 20px;
+}
+.bonus-pro {
+  margin: 18px 0 32px 0;
+  padding: 0;
+  border-left: 4px solid #0d8c9c;
+  color: #0d8c9c;
+  font-weight: 600;
+  background: none;
+  border-radius: 0;
+}
+.bonus-pro span {
+  color:#333;
+  font-weight:400;
+}
+.faq-section-pro {
+  margin-top: 32px;
+}
+.faq-list.unified-faq-card {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 32px auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(106,17,203,0.08);
+  padding: 0;
+  border: 2px solid #a259c6;
+}
+.faq-item {
+  border-bottom: 1px solid #ececec;
+}
+.faq-item:last-child {
+  border-bottom: none;
+}
+.faq-question {
+  width: 100%;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  font-weight: 600;
+  font-size: 1.12em;
+  cursor: pointer;
+  padding: 20px 28px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s, color 0.2s;
+  color: #222;
+  outline: none;
+}
+.faq-question:hover, .faq-question:focus {
+  background: #f3eaff;
+  color: #a259c6;
+}
+.faq-arrow-svg {
+  margin-left: 16px;
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(.4,2,.6,1);
+}
+.faq-question.open .faq-arrow-svg {
+  transform: rotate(180deg);
+}
+.faq-answer {
+  display: none;
+  padding: 0 28px 20px 28px;
+  background: #fff;
+  border-radius: 0 0 12px 12px;
+  border: none;
+  font-size: 1.04em;
+  color: #444;
+  animation: fadeIn 0.3s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.cta-row-pro {
+  text-align: center;
+  margin-top: 32px;
+}
+.cta-title {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #6a11cb;
+  margin-bottom: 0;
+}
+.cta-desc {
+  font-size: 1.08em;
+  font-weight: 500;
+  color: #9c0d85;
+  margin-bottom: 0;
+}
+.btn-success.whatsapp-btn {
+  background: #25D366 !important;
+  border: none !important;
+  color: #fff !important;
+  min-width: 180px;
+  font-weight: 500;
+  font-size: 1.08em;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.08);
+}
+.btn-primary, .btn-success, .btn-default {
+  background: linear-gradient(90deg, #a259c6 0%, #6a11cb 100%);
+  color: #fff !important;
+  border: none;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(106,17,203,0.08);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover, .btn-success:hover, .btn-default:hover {
+  background: linear-gradient(90deg, #6a11cb 0%, #a259c6 100%);
+  color: #ffe082 !important;
+  box-shadow: 0 4px 16px rgba(162,89,198,0.13);
+}
+.btn-signup-pro {
+  background: #fff;
+  color: #9c0d85;
+  font-weight: 600;
+  border-radius: 24px;
+  padding: 14px 36px;
+  font-size: 1.15em;
+  border: none;
+  box-shadow: 0 2px 8px rgba(156,13,133,0.08);
+  transition: background 0.2s, color 0.2s;
+  border: 2px solid #9c0d85;
+}
+.btn-signup-pro:hover, .btn-signup-pro:focus {
+  background: #9c0d85;
+  color: #fff;
+}
+.btn-login-pro {
+  background: #9c0d85;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 24px;
+  padding: 14px 36px;
+  font-size: 1.15em;
+  border: none;
+  box-shadow: 0 2px 8px rgba(106,17,203,0.08);
+  transition: background 0.2s, color 0.2s;
+}
+.btn-login-pro:hover, .btn-login-pro:focus {
+  background: #fff;
+  color: #9c0d85;
+  border: 2px solid #9c0d85;
+}
+.section-title-pro {
+  font-size: 1.18em;
+  font-weight: 700;
+  color: #9c0d85;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.how-steps-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.how-step-pro {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #f6f6fa;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 1.08em;
+  box-shadow: 0 2px 8px rgba(156,13,133,0.04);
+}
+.how-step-num {
+  background: #9c0d85;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1em;
+  margin-right: 4px;
+}
+.cards-row-pro {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.card-pro {
+  background: #f6f6fa;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(156,13,133,0.06);
+  padding: 22px 24px;
+  flex: 1 1 260px;
+  min-width: 220px;
+  margin-bottom: 0;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.card-pro:hover {
+  box-shadow: 0 6px 24px rgba(106,17,203,0.18);
+  transform: translateY(-4px) scale(1.03);
+}
+.earn-card-pro {
+  border-left: 5px solid #a259c6;
+}
+.friend-card-pro {
+  border-left: 5px solid #0d8c9c;
+}
+.reward-title-pro {
+  font-size: 1.08em;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #222;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.reward-desc-pro {
+  color: #a259c6;
+  font-weight: 600;
+}
+.friend-card-pro .reward-desc-pro {
+  color: #0d8c9c;
+}
+.why-benefits-row-pro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.why-benefit-pro {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(156,13,133,0.04);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.04em;
+  flex: 1 1 220px;
+  min-width: 180px;
+  color: #333;
+  transition: box-shadow 0.2s, background 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.why-benefit-pro:hover {
+  background: #f3eaff;
+  box-shadow: 0 4px 16px rgba(162,89,198,0.13);
+  transform: translateY(-2px) scale(1.02);
+}
+.why-benefit-pro i {
+  color: #a259c6;
+  font-size: 1.2em;
+  transition: color 0.2s;
+}
+.why-benefit-pro:hover i {
+  color: #6a11cb;
+}
+.info-card-pro {
+  background: #e3f2fd;
+  color: #1565c0;
+  border-left: 5px solid #1565c0;
+  margin: 18px 0 32px 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.info-card-pro strong {
+  color: #1565c0;
+}
+.info-card-pro i {
+  color: #1565c0;
+  font-size: 1.2em;
+}
+.terms-card-pro {
+  background: #f9fbe7;
+  color: #7b7b00;
+  border-left: 5px solid #cddc39;
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+.terms-card-pro h3 {
+  color: #7b7b00;
+}
+.terms-card-pro ul {
+  margin-bottom: 0;
+  padding-left: 20px;
+}
+.terms-card-pro li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1em;
+}
+.terms-card-pro i {
+  color: #cddc39;
+  font-size: 1.1em;
+}
+@media (max-width: 900px) {
+  .referral-main-card-pro {
+    padding: 18px 4vw 24px 4vw;
+  }
+  .referral-hero-pro {
+    flex-direction: column;
+    padding: 18px 8px;
+  }
+  .referral-content-pro {
+    padding: 18px 8px;
+  }
+  .cards-row-pro, .why-benefits-row-pro {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
+</style>
+<script>
+// Professional FAQ dropdown logic
+$(function() {
+  // FAQ SVG arrow dropdown logic
+  $('.faq-question').on('click', function() {
+    var $this = $(this);
+    var $answer = $this.closest('.faq-item').find('.faq-answer');
+    var isOpen = $this.hasClass('open');
+    // Close all
+    $('.faq-question').removeClass('open');
+    $('.faq-answer').slideUp(220);
+    // Open if not already open
+    if (!isOpen) {
+      $this.addClass('open');
+      $answer.slideDown(220);
+    }
+  });
+  // Referral link generation logic
+  $('#generate-referral-link').on('click', function(e) {
+    e.preventDefault();
+    var $btn = $(this);
+    $btn.prop('disabled', true);
+    $.ajax({
+      url: 'index.php?route=account/referral/submit',
+      type: 'POST',
+      dataType: 'json',
+      success: function(json) {
+        if (json.success) {
+          $('#generate-referral-link').hide();
+          $('#referral-result').html(
+            '<a href="https://wa.me/?text=' + encodeURIComponent(json.link) + '" class="btn btn-success whatsapp-btn" target="_blank" style="min-width:170px;font-weight:500;background:#25D366;border:none;color:#fff;"><i class=\'fa fa-whatsapp\'></i> Refer via WhatsApp</a>' +
+            '<button class="btn btn-primary" style="min-width:170px;font-weight:500;background:#fff;color:#a259c6;border:2px solid #a259c6;margin-left:18px;" onclick="showReferralLinkModal(\'' + json.link + '\')">Refer via Link</button>'
+          );
+        } else if (json.error) {
+          $('#referral-result').html('<div class="alert alert-danger">' + json.error + '</div>');
+        }
+      },
+      error: function() {
+        $('#referral-result').html('<div class="alert alert-danger">An error occurred. Please try again.</div>');
+      },
+      complete: function() {
+        $btn.prop('disabled', false);
+      }
+    });
+  });
+  $('#referralLinkModalOverlay').on('click', function(e) {
+    if (e.target === this) hideReferralLinkModal();
+  });
+});
+function showReferralLinkModal(link) {
+  $('#referralLinkInput').val(link);
+  $('#referralLinkModalOverlay').show();
+  $('#referralLinkModal').show();
+}
+function hideReferralLinkModal() {
+  $('#referralLinkModalOverlay').hide();
+  $('#referralLinkModal').hide();
+}
+function copyReferralLink() {
+  var copyText = document.getElementById("referralLinkInput");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+  document.execCommand("copy");
+  alert("Referral link copied!");
+}
+</script>

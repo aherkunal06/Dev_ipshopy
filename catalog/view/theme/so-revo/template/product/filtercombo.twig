@@ -1,0 +1,373 @@
+<link href="catalog/view/theme/default/stylesheet/customer/search/filter.css" rel="stylesheet">
+
+<form id="filter-form" action="{{ action }}" method="get" class='filter_form'>
+	<input type="hidden" name="route" value="{{ route }}"/>
+	<input type="hidden" name="search" value="{{ search }}"/>
+	<input type="hidden" name="category_id" value="{{ category_id }}"/>
+	{% if path %}
+		<input type="hidden" name="path" value="{{ path }}"/>
+	{% endif %}
+
+ <div class="price-slider-container mt-4">
+        <label><strong>Price</strong></label>
+        <div class="price-values">
+            <!-- emoved readonly -->
+            <input type="text" id="input-min">
+            <span>to</span>
+            <input type="text" id="input-max">
+        </div>
+        <div id="price-slider"></div>
+
+        <!-- hese hidden fields will be submitted with the form -->
+        <input type="hidden" name="min" id="minPrice" value="{{ min|default(0) }}">
+        <input type="hidden" name="max" id="maxPrice" value="{{ max|default(20000) }}">
+    </div>
+
+	<div class="brand-filter">
+		<div class="filter-header" onclick="toggleFilterDropdown('brand-dropdown', this)">
+
+
+			<label>
+				<strong>Brand</strong>
+			</label>
+			<button type="button" class="toggle-brand-filter" onclick="toggleFilterDropdown('brand-dropdown', this.parentElement)">
+				&#9662;
+			</button>
+
+
+		</div>
+		{# <div id="brand-dropdown" class="brand-dropdown{% if selected_manufacturers|length > 0 %} open{% endif %}"> #}
+		<div id="brand-dropdown" class="brand-dropdown open">
+
+			<input type="text" class="form-control mb-2" placeholder="Search Brand" onkeyup="filterBrands(this)">
+			<div class="brand-checkboxes" id="brand-checkboxes">
+				{% for brand in brands %}
+					<label class="brand-item ">
+						<input type="checkbox" name="manufacturer[]" value="{{ brand.manufacturer_id }}" {% if brand.manufacturer_id in selected_manufacturers %} checked {% endif %} onchange="document.getElementById('filter-form').submit();">
+						
+						<span>{{ brand.name }}</span>
+					</label>
+				{% endfor %}
+			</div>
+			{#{% if brands|length > 5 %}#}
+			{#	<div class="text-center mt-2">#}
+			{#		<a href="javascript:void(0);" id="toggle-brands" data-expanded="false" onclick="toggleBrandList()">+ Show More</a>#}
+			{#	</div>#}
+			{#{% endif %}#}
+		</div>
+	</div>
+    {% if colors %}
+    	<div class="color-filter mt-4">
+    		<div class="filter-header" onclick="toggleFilterDropdown('color-dropdown', this)">
+    
+    
+    			<label>
+    				<strong>Color</strong>
+    			</label>
+    			<button type="button" class="toggle-color-filter" onclick="toggleFilterDropdown('color-dropdown')">&#9662;</button>
+    		</div>
+    		
+    		<div id="color-dropdown" class="color-dropdown open">
+    
+    			<div class="color-checkboxes">
+    				{% for row in colors %}
+    					{% set color = row.variant_name %}
+    					<label class="brand-item">
+    						<input type="checkbox" name="color[]" value="{{ color|lower }}" {% if color|lower in selected_colors %} checked {% endif %} onchange="document.getElementById('filter-form').submit();">
+    						<span>{{ color }}</span>
+    					</label>
+    				{% endfor %}
+    			</div>
+    		</div>
+    	</div>
+    {% endif %}
+	<div class="discount-filter mt-4">
+		<div class="filter-header" onclick="toggleFilterDropdown('discount-dropdown', this)">
+
+
+			<label>
+				<strong>Discount</strong>
+			</label>
+			<button type="button" class="toggle-discount-filter" onclick="toggleFilterDropdown('discount-dropdown')">&#9662;</button>
+		</div>
+		{# <div id="discount-dropdown" class="discount-dropdown{% if selected_discounts|length > 0 %} open{% endif %}"> #}
+		<div id="discount-dropdown" class="discount-dropdown open">
+
+			<div class="discount-checkboxes">
+				{% for range in discount_ranges %}
+					<label class="discount-item">
+						<input type="checkbox" name="discount[]" value="{{ range }}" {% if range in selected_discounts %} checked {% endif %} onchange="document.getElementById('filter-form').submit();">
+						<span>
+							{{ range }}% or more</span>
+						</label>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		{% if sizes %}
+			<div class="size-filter mt-4">
+				<div class="filter-header" onclick="toggleFilterDropdown('size-dropdown', this)">
+
+
+					<label>
+						<strong>Size</strong>
+					</label>
+					<button type="button" class="toggle-size-filter" onclick="toggleFilterDropdown('size-dropdown')">&#9662;</button>
+				</div>
+				{# <div id="size-dropdown" class="size-dropdown{% if selected_sizes|length > 0 %} open{% endif %}"> #}
+				<div id="size-dropdown" class="size-dropdown open">
+
+					{% if sizes %}
+						<div class="size-checkboxes">
+							{% for size in sizes %}
+								<label class="size-item">
+									<input type="checkbox" class="filter-size" name="size[]" value="{{ size.option_value_id }}" {% if size.option_value_id in selected_sizes %} checked {% endif %} onchange="document.getElementById('filter-form').submit();">
+									<span>{{ size.name }}</span>
+								</label>
+							{% endfor %}
+						</div>
+					{% else %}
+						<div class="text-muted">No sizes available</div>
+					{% endif %}
+				</div>
+			</div>
+		{% endif %}
+
+		<div class="rating-filter mt-4">
+			<div class="filter-header" onclick="toggleFilterDropdown('rating-dropdown', this)">
+
+
+				<label>
+					<strong>Customer Rating</strong>
+				</label>
+				<button type="button" class="filter-header" onclick="toggleFilterDropdown('rating-dropdown')">&#9662;</button>
+			</div>
+			{# <div id="rating-dropdown" class="rating-dropdown{% if selected_ratings|length > 0 %} open{% endif %}"> #}
+			<div id="rating-dropdown" class="rating-dropdown open">
+
+				<div class="rating-checkboxes">
+					{% for value in rating_filters %}
+						<label class="rating-item">
+							<input type="checkbox" name="rating[]" value="{{ value }}" {% if value in selected_ratings %} checked {% endif %} onchange="document.getElementById('filter-form').submit();">
+							<span>{{ value }}
+								★ & above</span>
+						</label>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<!-- Combined CSS -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const slider = document.getElementById('price-slider');
+    const inputMin = document.getElementById('input-min');
+    const inputMax = document.getElementById('input-max');
+    const hiddenMin = document.getElementById('minPrice');
+    const hiddenMax = document.getElementById('maxPrice');
+    const filterForm = document.getElementById('filter-form');
+
+    const min = 0;
+    const max = 30000;
+    const STEP = 500;
+    const totalSteps = Math.floor((max - min) / STEP);
+
+    let currentMin = parseInt(hiddenMin.value) || min;
+    let currentMax = parseInt(hiddenMax.value) || max;
+
+    currentMin = Math.max(min, Math.min(currentMin, max));
+    currentMax = Math.max(min, Math.min(currentMax, max));
+
+    slider.innerHTML = '';
+    slider.style.position = 'relative';
+
+    const range = document.createElement('div');
+    range.className = 'range';
+    slider.appendChild(range);
+
+    const thumbMin = document.createElement('div');
+    const thumbMax = document.createElement('div');
+    thumbMin.className = 'thumb';
+    thumbMax.className = 'thumb';
+    slider.appendChild(thumbMin);
+    slider.appendChild(thumbMax);
+
+    const sliderWidth = () => slider.offsetWidth;
+
+    const valueToPos = (val) => {
+        const stepIndex = Math.round((val - min) / STEP);
+        return (stepIndex / totalSteps) * sliderWidth();
+    };
+
+    const posToValue = (pos) => {
+        const stepIndex = Math.round((pos / sliderWidth()) * totalSteps);
+        return stepIndex * STEP + min;
+    };
+
+    function updateUI() {
+        const posMin = valueToPos(currentMin);
+        const posMax = valueToPos(currentMax);
+
+        thumbMin.style.left = `${posMin - (thumbMin.offsetWidth / 2)}px`;
+        thumbMax.style.left = `${posMax - (thumbMax.offsetWidth / 2)}px`;
+
+        range.style.left = `${posMin}px`;
+        range.style.width = `${posMax - posMin}px`;
+
+        inputMin.value = `₹${currentMin}`;
+        inputMax.value = `₹${currentMax}+`;
+        hiddenMin.value = currentMin;
+        hiddenMax.value = currentMax;
+    }
+
+    updateUI();
+
+    let activeThumb = null;
+
+    function onMouseDown(e, thumb) {
+        e.preventDefault();
+        activeThumb = thumb;
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    }
+
+    function onMouseMove(e) {
+        if (!activeThumb) return;
+
+        const rect = slider.getBoundingClientRect();
+        let x = e.clientX - rect.left;
+        x = Math.max(0, Math.min(x, sliderWidth()));
+
+        let val = posToValue(x);
+        val = Math.max(min, Math.min(val, max));
+
+        const MIN_GAP = STEP;
+
+        if (activeThumb === thumbMin) {
+            currentMin = Math.min(val, currentMax - MIN_GAP);
+        } else {
+            currentMax = Math.max(val, currentMin + MIN_GAP);
+        }
+
+        updateUI();
+    }
+
+    function onMouseUp() {
+        activeThumb = null;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        filterForm.submit();
+    }
+
+    thumbMin.addEventListener('mousedown', e => onMouseDown(e, thumbMin));
+    thumbMax.addEventListener('mousedown', e => onMouseDown(e, thumbMax));
+    window.addEventListener('resize', updateUI);
+
+    // ✅ When user finishes typing and leaves input field
+    inputMin.addEventListener('blur', function () {
+        let value = parseInt(this.value.replace(/\D/g, '')) || min;
+        value = Math.max(min, Math.min(value, currentMax - STEP));
+        currentMin = value;
+        hiddenMin.value = currentMin;
+        updateUI();
+        filterForm.submit();
+    });
+
+    inputMax.addEventListener('blur', function () {
+        let value = parseInt(this.value.replace(/\D/g, '')) || max;
+        value = Math.max(currentMin + STEP, Math.min(value, max));
+        currentMax = value;
+        hiddenMax.value = currentMax;
+        updateUI();
+        filterForm.submit();
+    });
+
+    // --- Dropdown Toggle ---
+    window.toggleFilterDropdown = function(dropdownId, headerEl) {
+        const dropdown = document.getElementById(dropdownId);
+        const isOpen = dropdown.classList.contains('open');
+        dropdown.classList.toggle('open');
+        if (headerEl && headerEl.tagName === 'BUTTON') {
+            headerEl.classList.toggle('open', !isOpen);
+        } else if (headerEl) {
+            const button = headerEl.querySelector('button');
+            if (button) {
+                button.classList.toggle('open', !isOpen);
+            }
+        }
+    };
+
+    // --- Brand Filter: Show more/less ---
+    window.toggleBrandList = function() {
+        const brandCheckboxes = document.getElementById('brand-checkboxes');
+        const toggleBrandsLink = document.getElementById('toggle-brands');
+        const isExpanded = toggleBrandsLink.dataset.expanded === 'true';
+       
+
+        toggleBrandsLink.dataset.expanded = (!isExpanded).toString();
+        toggleBrandsLink.textContent = isExpanded ? '+ Show More' : '- Show Less';
+    };
+
+    
+
+    // --- Filter Brands on Typing ---
+    window.filterBrands = function(input) {
+        const search = input.value.toLowerCase();
+        document.querySelectorAll('#brand-checkboxes .brand-item').forEach(function (el) {
+            const label = el.textContent.toLowerCase();
+            el.style.display = label.includes(search) ? "flex" : "none";
+        });
+    };
+
+    // --- Sidebar Toggle ---
+    const openFilterBtn = document.getElementById('open-filter-sidebar');
+    const closeFilterBtn = document.getElementById('close-filter-sidebar');
+    const filterSidebarWrapper = document.getElementById('filter-sidebar-wrapper');
+
+    if (openFilterBtn && filterSidebarWrapper) {
+        openFilterBtn.addEventListener('click', function () {
+            filterSidebarWrapper.classList.add('active');
+            document.body.classList.add('sidebar-open');
+        });
+    }
+
+    if (closeFilterBtn && filterSidebarWrapper) {
+        closeFilterBtn.addEventListener('click', function () {
+            filterSidebarWrapper.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
+        });
+    }
+});
+</script>
+
+
+
+
+
+    <script>
+
+        // === Show More / Show Less Toggle for Color Filter ===
+    function toggleColorList() {
+        const colorItems = document.querySelectorAll('#color-checkboxes .hidden-color');
+        const toggleBtn = document.getElementById('toggle-colors');
+        const isExpanded = toggleBtn.dataset.expanded === 'true';
+
+        colorItems.forEach(function (item) {
+            item.style.display = isExpanded ? 'none' : 'flex';
+        });
+
+        toggleBtn.dataset.expanded = (!isExpanded).toString();
+        toggleBtn.textContent = isExpanded ? '+ Show More' : '- Show Less';
+    }
+
+    // === Optional: Run this on page load to hide hidden-color items initially ===
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('#color-checkboxes .hidden-color').forEach(function (item) {
+            item.style.display = 'none';
+        });
+    });
+
+    </script>
+

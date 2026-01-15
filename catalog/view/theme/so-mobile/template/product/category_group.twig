@@ -1,0 +1,34 @@
+<link rel="stylesheet" href="catalog/view/theme/so-mobile/css/category_group.css">
+<div class="category-group-wrapper">
+    <!-- Combined outer box -->
+    <div class="category-groups-container">
+        <div style="overflow: hidden; padding-inline: 0;">
+            {% if group_title %}
+                <h3 class="section-title">{{ group_title }}</h3>
+            {% endif %}
+            {% if view_all_href %}
+                <a href="{{ view_all_href }}" class="view-all">View All ></a>
+            {% endif %}
+        </div>
+        <div class="category-groups-row">
+            {% for group in category_groups %}
+                <div class="category-group-section">
+                    {#<h2>{{parent_name}}</h2>#}
+                    <div class="category-card-grid">
+                        {% for category in group.categories %}
+                            <a href="{{ category.href }}" class="category-card">
+                                <div class="card-image">
+                                    <img src="{{ category.product_image }}" alt="{{ category.category_name }}">
+                                </div>
+                                <div class="card-body">
+                                    <div class="name">{{ category.category_name }}</div>
+                                    <div class="price">From {{ category.price }}</div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

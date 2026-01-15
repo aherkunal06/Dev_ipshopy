@@ -1,0 +1,11 @@
+{% for comment in comments %}
+  <div class="panel panel-default" style="margin-bottom: 10px;">
+    <div class="panel-body">
+      <p><strong>{{ comment.comment_by|capitalize }}</strong> {% if comment.firstname %}- {{ comment.firstname }} {{ comment.lastname }}{% endif %}</p>
+      <p>{{ comment.comment }}</p>
+      <small>{{ comment.date_added|date("l, d M Y h:i A") }}</small>
+    </div>
+  </div>
+{% else %}
+  <p>No comments found for this product.</p>
+{% endfor %}

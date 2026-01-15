@@ -1,0 +1,162 @@
+{#
+****************************************************** 
+ * @package	SO Framework for Opencart 3.x
+ * @author	http://www.opencartworks.com
+ * @license	GNU General Public License
+ * @copyright(C) 2008-2017 opencartworks.com. All rights reserved.
+******************************************************
+#}
+
+{% set category_info = soconfig.get_settings('lstimg_cate_status') %}
+
+{% if category_info %}
+	<h3 class="title-category ">{{ heading_title }}</h3> 
+
+	{#===== Show Description Category =======#}
+	{% if thumb or description %}
+	<div class="form-group category-info">
+		{% set class_category_info = category_info == 2 ? 'col-sm-9 col-xs-12' : 'col-sm-12 col-xs-12' %}
+		<div class="row">
+			{% if thumb and category_info == 2 %}
+				<div class="img-cate col-sm-3 col-xs-12">
+					<img class="media-object lazyload" data-sizes="auto" 
+						 src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" 
+						 data-src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}" />
+				</div>
+			{% endif %}
+			{% if description %}
+				<div class="{{ class_category_info }}">{{ description }}</div>
+			{% endif %}
+		</div>
+	</div>
+	{% endif %}
+{% endif %}
+
+{#===== Show Sub Category Carousel =======#}
+{% if categories and soconfig.get_settings('product_catalog_refine') %}
+	<div class="refine-search form-group clearfix">
+    <h3 class="title-category">{{ text_refine }}</h3>
+
+    <div class="carousel-wrapper" style="position: relative;">
+        <button class="carousel-arrow prev" style="position: absolute; left: -20px;">‹</button>
+        <div class="carousel-track" style="display: flex; gap: 10px; flex-wrap: nowrap; overflow: hidden;">
+            {% for category in categories %}
+                <div class="refine-search__subitem" style="flex: 0 0 auto; width: 18%;">
+                    <a href="{{ category.href }}" class="thumbnail">
+                        <img class="lazyload" data-sizes="auto"
+                            src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                            data-src="{{ category.thumb }}" alt="{{ category.name }}" />
+                    </a>
+                    <a href="{{ category.href }}" class="text-center">{{ category.name }}</a>
+                </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-arrow next" style="position: absolute; top: 10px;right: -20px;">›</button>
+    </div>
+</div>
+
+
+	<style>
+		.refine-carousel-wrapper {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: relative;
+		}
+
+		.carousel-track {
+			display: flex;
+			flex-wrap: nowrap;
+			overflow: hidden;
+			width: 100%;
+			justify-content: center;
+			padding: 0;
+			margin: 0;
+			list-style: none;
+		}
+
+		.refine-search__subitem {
+			flex: 0 0 18%; /* 5 items per row */
+			margin: 0 10px;
+			text-align: center;
+		}
+
+		.carousel-arrow {
+			border: none;
+			background: #fff;
+			font-size: 24px;
+			padding: 10px 15px;
+			cursor: pointer;
+			border-radius: 50%;
+			box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+			z-index: 1;
+			transition: 0.3s ease;
+		}
+
+		.carousel-arrow:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+
+		@media (max-width: 768px) {
+			.refine-search__subitem {
+				flex: 0 0 45%; /* 2 per row on mobile */
+			}
+		}
+
+		@media (min-width: 769px) and (max-width: 991px) {
+			.refine-search__subitem {
+				flex: 0 0 30%; /* 3 per row on tablets */
+			}
+		}
+	</style>
+
+	<script>
+document.addEventListener("DOMContentLoaded", function () {
+	const track = document.querySelector(".carousel-track");
+	const items = track.querySelectorAll(".refine-search__subitem");
+	const prevBtn = document.querySelector(".carousel-arrow.prev");
+	const nextBtn = document.querySelector(".carousel-arrow.next");
+	const itemsPerPage = 5;
+
+	let currentIndex = 0;
+	const totalItems = items.length;
+
+	function updateView() {
+		items.forEach((item, i) => {
+			item.style.display = (i >= currentIndex && i < currentIndex + itemsPerPage) ? "inline-block" : "none";
+		});
+
+		// Show/hide buttons instead of disabling
+		if (currentIndex === 0) {
+			prevBtn.style.display = "none";
+		} else {
+			prevBtn.style.display = "inline-block";
+		}
+
+		if (currentIndex + itemsPerPage >= totalItems) {
+			nextBtn.style.display = "none";
+		} else {
+			nextBtn.style.display = "inline-block";
+		}
+	}
+
+	updateView();
+
+	prevBtn.addEventListener("click", () => {
+		if (currentIndex - itemsPerPage >= 0) {
+			currentIndex -= itemsPerPage;
+			updateView();
+		}
+	});
+
+	nextBtn.addEventListener("click", () => {
+		if (currentIndex + itemsPerPage < totalItems) {
+			currentIndex += itemsPerPage;
+			updateView();
+		}
+	});
+});
+</script>
+
+{% endif %}

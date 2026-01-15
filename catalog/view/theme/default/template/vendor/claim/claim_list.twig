@@ -1,0 +1,416 @@
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/vendor/claim/return_claim.css"/>
+
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+
+	<div class="container-fluid">
+		{% block content %}
+
+			<div class="claims-actions">
+				{#<button class="btn-custom">#}
+				{#	<i class="fas fa-search"></i>#}
+				{#	Search Claim#}
+				{#</button>#}
+				<button class="btn-custom btn-primary-custom">
+					<a href="{{new_claims}}">
+						New Claim
+					</a>
+				</button>
+				<div>{{todays_order}}</div>
+				{#<div#}
+				{#	class='select_wrapper'>#}
+					{#    <span>Request Report :</span>  #}
+				{#	<div#}
+				{#		class="wrapper">#}
+				{#	   <select class="dropdown-custom">#}
+				{#			<option>Last 30 Days</option>#}
+				{#			<option>Last 60 Days</option>#}
+				{#			<option>Last 90 Days</option>#}
+				{#		</select> #}
+				{#	</div>#}
+				{#</div>#}
+				{# <button class="btn-custom">Download Report</button> #}
+			</div>
+			<div class="claims-container">
+				<div class="claims-header">
+				    <div class='claim-header-wrapper'>
+        				<a href="{{ filter_url }}" class="stat-item">
+                            <div class="stat-number">{{ claim_counts.all }}</div>
+                            <div>All Claims</div>
+                        </a>
+                        
+                        <a href="{{ filter_url }}&status=claim_request" class="stat-item">
+                          <div class="stat-number">{{ claim_counts.claim_request }}</div>
+                          <div>In Processing</div>
+                        </a>
+                        <a href="{{ filter_url }}&status=approved" class="stat-item">
+                            <div class="stat-number">{{ claim_counts.approved }}</div>
+                            <div>Approved</div>
+                        </a>
+                        
+                        <a href="{{ filter_url }}&status=not_approved" class="stat-item">
+                            <div class="stat-number">{{ claim_counts.not_approved }}</div>
+                            <div>Not Approved</div>
+                        </a>
+                    </div>
+				</div>
+				<table class="claims-table">
+					<thead>
+						<tr>
+							<th>Product Name</th>
+							{# <th>Label Image</th> #}
+							{# <th>Claim ID</th> #}
+							<th>Order ID</th>
+							<th >Status</th>
+							<th class='text-center'>Amount</th>
+							<th class='text-center'>Approved %</th>
+							<th class='text-center'>Approved Amount</th>
+							<th >Applied Date</th>
+							<th>Action</th>
+							<th>Comments</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						{% if claims %}
+
+							{% for claim in claims %}
+								<tr>
+									<td>
+										{{ claim.product_name }}...
+										<br>
+										<span style="color: gray; font-size: 12px;">
+											{{ claim.sku }}</span>
+									</td>
+
+									{# <td>{{ claim.claim_id }}</td> #}
+									<td>{{ claim.order_id }}</td>
+									<td>
+										<span class="status{{claim.status}} status">{{claim.status_name}}</span>
+									</td>
+									<td class='text-center'> ₹{{claim.amount}} </td>
+									<td class='text-center'> {% if claim.percentage %} {{ claim.percentage }}%{% endif %} </td>
+									<td class='text-center'> {% if claim.percentage %} ₹{{ claim.approve_amount }}{% endif %} </td>
+									<td>{{ claim.applied_date }}</td>
+									<td>
+										<button class="see-details view-btn" data-claim-id="{{claim.claim_id}}">VIEW DETAILS</button>
+									</td>
+									  {# ✅ Approval Comment Column #}
+                                    <td>
+                                      <a href="index.php?route=vendor/claim/approval_comment&claim_id={{ claim.claim_id }}" class="btn btn-sm btn-info">
+                                        View Comments
+                                      </a>
+                                    </td>
+								</tr>
+							{% endfor %}
+						{% else %}
+							<tr>
+								<td colspan="7">{{ text_no_results }}</td>
+							</tr>
+						{% endif %}
+					</tbody>
+				</table>
+			</div>
+		{% endblock %}
+	</div>
+</div>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<span class="close">&times;</span>
+			<h2>Claim Details<a href="{{ vendor_claim_list }}"></a></h2>
+		</div>
+
+		<form id="claimForm" method="POST" enctype="multipart/form-data">
+			<input type="hidden" name="claim_id" id="claim_id" value="{{ claim_id ?? '' }}">
+
+			<div class="modal-body">
+				<!-- Product Info -->
+				<div id="product-info"></div>
+
+				<div id="claimFormFields">
+					<!-- Issue Selection -->
+					<div id="selectSection">
+						<div class="select_wrapper">
+							<p>Issue area of affected Item</p>
+							<div class="wrapper">
+								<select class="custom-select" name="claim_issue_area_id" required>
+									<option value="" hidden>Select the Issue Area</option>
+									{% for area in issue_areas %}
+									<option value="{{ area.claim_issue_area_id }}">{{ area.claim_issue_area }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+
+						<div class="select_wrapper">
+							<p>Issue Type</p>
+							<div class="wrapper">
+								<select class="custom-select" name="claim_issue_type_id" required>
+									<option value="" hidden>Select the Issue Type</option>
+									{% for type in issue_types %}
+									<option value="{{ type.claim_issue_type_id }}">{{ type.claim_issue_name }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- Shipping Label -->
+					<div id="shippingProof" class="claim-img-grid">
+						<p style="flex-basis: 100%;">Update Shipping label</p>
+						<div class="label_img claim_img">
+							<img id="existingLabelImg" src="" width="100" height="100" alt="Current Shipping Label"
+								style="display: none;" />
+							<input type="file" name="firstImage"
+								onchange="previewImage(event, 'existingLabelImg', 'fileName1')" required />
+							<span id="fileName1" class="file-name">No file chosen</span>
+						</div>
+					</div>
+
+					<!-- Claim Images -->
+					<div class="claim-img-grid">
+						<p style="flex-basis: 100%;">Update Product Images</p>
+						{% for i in 2..5 %}
+						<div id="claimImageContainer{{ i }}" class="claim_img"
+							style="width: 170px; height: 200px; object-fit: fill;">
+							{% set key = 'image' ~ i ~ '_url' %}
+							<input type="file"
+								name="{{ ['secondImage', 'thirdImage', 'fourthImage', 'fifthImage'][i-2] }}"
+								onchange="previewImage(event, 'existingClaimImg{{ i }}', 'fileName{{ i }}')" required />
+							<img id="existingClaimImg{{ i }}" src="" width="100" height="100"
+								alt="Existing Image {{ i }}" class="preview-existing" style="display:none;" />
+							<span id="fileName{{ i }}" class="file-name">No file chosen</span>
+						</div>
+						{% endfor %}
+					</div>
+
+					<!-- Description -->
+					<div>
+						<p>Detailed Description of issue</p>
+						<textarea name="description" id="description" rows="5" required
+							style="width: 100%; height: 100px; resize: vertical;"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary" id="submitBtn">Update</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const modal = document.getElementById("myModal");
+		const closeBtn = document.querySelector(".modal .close");
+		const claimIdInput = document.getElementById("claim_id");
+
+		// Escape HTML utility
+		function escapeHtml(text) {
+			if (!text) return "";
+			return text.replace(/[&<>"']/g, function (m) {
+				return {
+					"&": "&amp;",
+					"<": "&lt;",
+					">": "&gt;",
+					'"': "&quot;",
+					"'": "&#39;",
+				}[m];
+			});
+		}
+
+		// Image preview function
+		window.previewImage = function (event, imgId, fileNameId) {
+			const img = document.getElementById(imgId);
+			const fileNameSpan = document.getElementById(fileNameId);
+			const file = event.target.files[0];
+
+			if (file) {
+				const reader = new FileReader();
+				reader.onload = function (e) {
+					img.src = e.target.result;
+					img.style.display = "inline-block";
+					fileNameSpan.textContent = file.name;
+				};
+				reader.readAsDataURL(file);
+			} else {
+				img.src = "";
+				img.style.display = "none";
+				fileNameSpan.textContent = "No file chosen";
+			}
+		};
+
+		// Open modal and fetch data
+		document.querySelectorAll(".view-btn").forEach((button) => {
+			button.addEventListener("click", () => {
+				const claim_id = button.getAttribute("data-claim-id");
+				claimIdInput.value = claim_id;
+				modal.style.display = "block";
+
+				const data = new FormData();
+				data.append("claim_id", claim_id);
+
+				fetch("index.php?route=vendor/claim/claim_list/fetch_claim_product", {
+					method: "POST",
+					body: data,
+				})
+					.then((response) => response.json())
+					.then((data) => {
+						if (data.error) {
+							alert(data.error);
+							return;
+						}
+
+						// Product info section
+						const productInfo = `
+              <div id='productDetails'>
+                <div class='title'>
+                  <img src='${data.product.image}' alt='product image' />
+                  <div>
+                    <h4>${escapeHtml(data.product.name)}</h4>
+                    <p>${escapeHtml(data.product.model)}</p>
+                  </div>
+                </div>
+                <div class='contents' id='product-info'>
+                  <div><span>Price</span><span>₹ ${data.product.total}</span></div>
+                  <div><span>Return Type</span><span>Courier return</span></div>
+                  <div><span>Order Id</span><span>${data.product.order_id}</span></div>
+                  <div><span>Return Id</span><span>${data.product.return_id}</span></div>
+                  <div><span>Order Item Id</span><span>${data.product.product_id}</span></div>
+                  <div><span>Return On</span><span>${data.product.return_date}</span></div>
+                </div>
+              </div>
+            `;
+						document.getElementById("product-info").innerHTML = productInfo;
+
+						// Populate Issue Area dropdown
+						const issueAreaSelect = document.querySelector(
+							"select[name='claim_issue_area_id']"
+						);
+						issueAreaSelect.innerHTML =
+							`<option value="" hidden>Select the Issue Area</option>`;
+						data.issue_areas.forEach((area) => {
+							const selected =
+								area.claim_issue_area_id == data.selected_issue_area
+									? "selected"
+									: "";
+							issueAreaSelect.insertAdjacentHTML(
+								"beforeend",
+								`<option value="${area.claim_issue_area_id}" ${selected}>${escapeHtml(
+									area.claim_issue_area
+								)}</option>`
+							);
+						});
+
+						// Populate Issue Type dropdown
+						const issueTypeSelect = document.querySelector(
+							"select[name='claim_issue_type_id']"
+						);
+						issueTypeSelect.innerHTML =
+							`<option value="" hidden>Select the Issue Type</option>`;
+						data.issue_types.forEach((type) => {
+							const selected =
+								type.claim_issue_type_id == data.selected_issue_type
+									? "selected"
+									: "";
+							issueTypeSelect.insertAdjacentHTML(
+								"beforeend",
+								`<option value="${type.claim_issue_type_id}" ${selected}>${escapeHtml(
+									type.claim_issue_name
+								)}</option>`
+							);
+						});
+
+						// Set description
+						document.getElementById("description").value =
+							data.product.description || "";
+						// Set shipping label image + required toggle
+						const labelImg = document.getElementById("existingLabelImg");
+						const firstImageInput = document.querySelector(
+							"input[name='firstImage']"
+						);
+						if (data.image_urls.image1_url) {
+							labelImg.src = data.image_urls.image1_url;
+							labelImg.style.display = "inline-block";
+							firstImageInput.removeAttribute("required");
+							// Reset file input and filename span
+							firstImageInput.value = "";
+							document.getElementById("fileName1").textContent = "No file chosen";
+						} else {
+							labelImg.style.display = "none";
+							firstImageInput.setAttribute("required", "required");
+						}
+
+						// Set claim images 2-5 + toggle required
+						for (let i = 2; i <= 5; i++) {
+							const imgEl = document.getElementById(`existingClaimImg${i}`);
+							const inputEl = document.querySelector(
+								`input[name='${["secondImage", "thirdImage", "fourthImage", "fifthImage"][i - 2]}']`
+							);
+							const fileNameSpan = document.getElementById(`fileName${i}`);
+
+							if (data.image_urls[`image${i}_url`]) {
+								imgEl.src = data.image_urls[`image${i}_url`];
+								imgEl.style.display = "inline-block";
+								inputEl.removeAttribute("required");
+								inputEl.value = "";
+								fileNameSpan.textContent = "No file chosen";
+							} else {
+								imgEl.style.display = "none";
+								inputEl.setAttribute("required", "required");
+							}
+						}
+					})
+					.catch((err) => {
+						console.error(err);
+						alert("Failed to load claim data.");
+					});
+			});
+		});
+
+		// Close modal handlers
+		closeBtn.addEventListener("click", () => {
+			modal.style.display = "none";
+		});
+
+		window.addEventListener("click", (event) => {
+			if (event.target === modal) {
+				modal.style.display = "none";
+			}
+		});
+	});
+	document.getElementById('claimForm').addEventListener('submit', function (e) {
+		e.preventDefault();
+
+		const formData = new FormData(this);
+
+		fetch('index.php?route=vendor/claim/claim_list/updateClaim', {
+			method: 'POST',
+			body: formData
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.success) {
+					alert('Claim updated!');
+					location.reload(); // or close modal
+				} else {
+					alert(data.error || 'Update failed.');
+				}
+			})
+			.catch((err) => {
+				console.error(err);
+				alert('Something went wrong.');
+			});
+	});
+
+
+
+</script>

@@ -1,0 +1,38 @@
+.legend_margin { margin-top: 20px; }
+#form-ciwhatsapp .legend { background-color: #999; color: #fff; padding: 8px 15px; }
+
+.form-group .col-sm-12.control-label{text-align:left;padding-bottom:5px}
+.btn-group .active{background:#1872A2;color:#fff;border-color:#1872A2}
+.btn-group .btn:hover{background:#1872A2;color:#fff;border-color:#1872A2}
+.nav.nav-tabs{border-bottom:none}
+.nav.nav-tabs > li.active > a,.nav.nav-tabs > li.active > a:hover,.nav.nav-tabs > li.active > a:focus{background-color:#eee;border:none;border-bottom:2px solid #bd4040}
+.nav.nav-tabs > li > a:hover,.nav.nav-tabs > li > a:focus{border-bottom:2px solid #bd4040}
+.nav.nav-pills > li > a{border-radius:0;-webkit-border-radius:0;color:#333}
+.nav.nav-pills > li.active > a,.nav.nav-pills > li.active > a:hover,.nav.nav-pills > li.active > a:focus{color:#333;background-color:#eee;border-bottom:2px solid #bd4040;font-weight:700}
+.nav.nav-pills > li > a:hover,.nav.nav-pills > li > a:focus{border-bottom:2px solid #bd4040}
+.nav.nav-tabs > li > a{padding:15px 20px;text-transform:uppercase;outline:0;border-bottom:2px solid #fff}
+.nav.nav-tabs > li > a i{font-size:18px;padding-right:5px}
+.nav.nav-pills > li > a{padding:15px;border-bottom:2px solid #fff}
+.form-group + .form-group{border-top:none}
+.btn-group .active.yes{background:#27ae60!important;border-color:#178444}
+.btn-group .active.no{background:#ed5149!important;border-color:#bd4040}
+.btn-group .btn.yes:hover {background:#27ae60!important;border-color:#178444}
+.btn-group .btn.no:hover {background:#ed5149!important;border-color:#bd4040}
+
+label.control-label .help {color: #f38733; }
+label.control-label .help:after {content : '' !important;}
+label.control-label .help:before {font-family: FontAwesome; color: #f38733; margin-right: 4px; content : "\f059" !important;}
+.panel-default .panel-heading{background: #eee;color: #000;}
+.panel-default {border-top: 2px solid #bd4040;}
+
+.preview { width: 45px; height: 35px; border: 1px solid #ccc;  }
+
+.alert-success { background-color: #c6dcb3; border-color: #a1cb7d; color: #3d7610; }
+.member-info { padding-left: 25px; padding-right: 25px; background: #eeeeee; border-radius: 2px; }
+.member-info legend { margin-left: -15px; margin-right: -15px; margin-bottom: 0; font-weight: bold; border-bottom: 1.5px solid #000;}
+.addmember-button{ margin-top: 3px; }
+.member-info .form-group .control-label { text-align: left; padding-bottom: 5px; }
+
+.group-weekdays table thead tr { background-color: #1872a2; color: #fff;}
+.group-weekdays table thead th { padding-top: 10px;  padding-bottom: 10px; font-size: 13px; }
+.weekday_name { font-size: 14px; }

@@ -1,0 +1,393 @@
+{{ header }}{{ column_left }}
+<div id="content">
+<div class="page-header">
+  <div class="container-fluid">
+    <div class="pull-right">
+      <a href="javascript:history.back()" data-toggle="tooltip">
+    		<button class="btn btn-info" ><i class="fa fa-reply"></i> </button>
+    	</a>
+      <!-- <button type="button" data-toggle="tooltip" title="{{ button_filter }}" onclick="$('#filter-order').toggleClass('hidden-sm hidden-xs');" class="btn btn-default hidden-md hidden-lg"><i class="fa fa-filter"></i></button>
+      <button type="submit" id="button-shipping" form="form-order" formaction="{{ shipping }}" formtarget="_blank" data-toggle="tooltip" title="{{ button_shipping_print }}" class="btn btn-info"><i class="fa fa-truck"></i></button>
+      <button type="submit" id="button-invoice" form="form-order" formaction="{{ invoice }}" formtarget="_blank" data-toggle="tooltip" title="{{ button_invoice_print }}" class="btn btn-info"><i class="fa fa-print"></i></button>
+      <a href="{{ add }}" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>  -->
+
+    <!-- <a href="http://localhost/sagar/admin/index.php?route=customer/customer_orders_history" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-reply"></i></a>  -->
+    </div>
+    <h1>{{ heading_title }}</h1>
+    <ul class="breadcrumb">
+      {% for breadcrumb in breadcrumbs %}
+      <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+ <div class="card mt-4 container-fluid">
+    <div class="card-header"><strong>Total Order Summary</strong></div>
+      <div class="card-body p-0"> 
+          <table class="table table-striped mb-0">
+          <thead class="thead-dark">
+              <tr>
+                  <th>{{ text_order_status }}</th>
+                  <th>{{ text_total_orders }}</th>
+                  <th>{{ text_total_amount }}</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for row in summary %}
+                  <tr>
+                      <td>{{ row.order_status }}</td>
+                      <td>{{ row.total_orders }}</td>
+                      <td>{{ row.total_amount }}</td>
+                  </tr>
+              {% endfor %}
+              <tr class="font-weight-bold bg-light">
+                  <td><strong>Total</strong></td>
+                  <td><strong>{{ grand_total_orders }}</strong></td>
+                  <td><strong>{{ grand_total_amount }}</strong></td>
+              </tr>
+          </tbody>
+      </table>
+
+      </div>
+</div>
+<div class="container-fluid">
+  <!-- {% if error_warning %}
+  <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+  {% if success %}
+  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %} -->
+  <div class="row">
+    <div id="filter-order" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="control-label" for="input-order-id">{{ entry_order_id }}</label>
+            <input type="text" name="filter_order_id" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id" class="form-control" />
+          </div>
+          <!-- <div class="form-group">
+            <label class="control-label" for="input-customer">{{ entry_customer }}</label>
+            <input type="text" name="filter_customer" value="{{ filter_customer }}" placeholder="{{ entry_customer }}" id="input-customer" class="form-control" />
+          </div> -->
+          <div class="form-group">
+            <label class="control-label" for="input-order-status">{{ entry_order_status }}</label>
+            <select name="filter_order_status_id" id="input-order-status" class="form-control">
+              <option value=""></option>
+              
+              {% if filter_order_status_id == '0' %}
+              
+              <option value="0" selected="selected">{{ text_missing }}</option>
+              
+              {% else %}
+              
+              <option value="0">{{ text_missing }}</option>
+              
+              {% endif %}
+              {% for order_status in order_statuses %}
+              {% if order_status.order_status_id == filter_order_status_id %}
+              
+              <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+              
+              {% else %}
+              
+              <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+              
+              {% endif %}
+              {% endfor %}
+            
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="input-payment-method">Payment Method</label>
+            <select name="filter_payment_method" id="input-payment-method" class="form-control">
+              <option value=""></option>
+
+              <option value="Cash On Delivery" {{ filter_payment_method == 'Cash On Delivery' ? 'selected="selected"' : '' }}>Cash On Delivery</option>
+              <option value="Pay Securely using UPI and Cards" {{ filter_payment_method == 'Pay Securely using UPI and Cards' ? 'selected="selected"' : '' }}>Pay Securely using UPI and Cards</option>
+              <option value="cod" {{ filter_payment_method == 'cod' ? 'selected="selected"' : '' }}>cod</option>
+              <option value="Free Checkout" {{ filter_payment_method == 'Free Checkout' ? 'selected="selected"' : '' }}>Free Checkout</option>
+              <option value="free_checkout" {{ filter_payment_method == 'free_checkout' ? 'selected="selected"' : '' }}>free_checkout</option>
+              <option value="Razorpay (UPI, Cards, Wallets, Netbanking)" {{ filter_payment_method == 'Razorpay (UPI, Cards, Wallets, Netbanking)' ? 'selected="selected"' : '' }}>Razorpay (UPI, Cards, Wallets, Netbanking)</option>
+              <option value="Card/Net Banking/Wallet/UPI - CashFree" {{ filter_payment_method == 'Card/Net Banking/Wallet/UPI - CashFree' ? 'selected="selected"' : '' }}>Card/Net Banking/Wallet/UPI - CashFree</option>
+              <option value="phonepePG" {{ filter_payment_method == 'phonepePG' ? 'selected="selected"' : '' }}>phonepePG</option>
+              <option value="cashfree" {{ filter_payment_method == 'cashfree' ? 'selected="selected"' : '' }}>cashfree</option>
+            </select>
+          </div>
+
+          <!-- <div class="form-group">
+            <label class="control-label" for="input-total">{{ entry_total }}</label>
+            <input type="text" name="filter_total" value="{{ filter_total }}" placeholder="{{ entry_total }}" id="input-total" class="form-control" />
+          </div> -->
+          <div class="form-group">
+            <label class="control-label" for="input-date-added">{{ entry_date_added }}</label>
+            <div class="input-group date">
+              <input type="text" name="filter_date_added" value="{{ filter_date_added }}" placeholder="{{ entry_date_added }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" />
+              <span class="input-group-btn">
+              <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+              </span> </div>
+          </div>
+          <!-- <div class="form-group">
+            <label class="control-label" for="input-date-modified">{{ entry_date_modified }}</label>
+            <div class="input-group date">
+              <input type="text" name="filter_date_modified" value="{{ filter_date_modified }}" placeholder="{{ entry_date_modified }}" data-date-format="YYYY-MM-DD" id="input-date-modified" class="form-control" />
+              <span class="input-group-btn">
+              <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+              </span> </div>
+          </div> -->
+          <div class="form-group text-right">
+            <button type="button" id="button-filter" class="btn btn-default"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9 col-md-pull-3 col-sm-12">
+       <!-- added for summary -->
+           <!-- <div class="card mt-4">
+    <div class="card-header"><strong>Order Summary</strong></div>
+    <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Status</th>
+                    <th>Total Orders</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in summary %}
+                    <tr>
+                        <td>{{ row.order_status }}</td>
+                        <td>{{ row.total_orders }}</td>
+                        <td>{{ row.total_amount }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div> -->
+
+          <!-- --===== -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+        </div>
+        
+        <div class="panel-body">
+          
+          <form method="post" action="" enctype="multipart/form-data" id="form-order">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    
+                    <!-- <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td> -->
+                    <td class="text-right">{% if sort == 'o.order_id' %} <a href="{{ sort_order }}" class="{{ order|lower }}">{{ column_order_id }}</a> {% else %} <a href="{{ sort_order }}">{{ column_order_id }}</a> {% endif %}</td>
+                    <!-- <td class="text-left">{% if sort == 'customer' %} <a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a> {% else %} <a href="{{ sort_customer }}">{{ column_customer }}</a> {% endif %}</td> -->
+                    <td class="text-left">{% if sort == 'order_status' %} <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a> {% else %} <a href="{{ sort_status }}">{{ column_status }}</a> {% endif %}</td>
+                    <td class="text-left">Image</td>
+                    <!-- added at 12-05-2025 -->
+                     <td class="text-left">{{column_product_name }}</td>
+                    <td class="text-right">{{column_product_price }}</td>
+                    <td class="text-right">{{column_quantity}}</td>
+                    <td class="text-left">{{column_payment_status}}</td>
+                     <!-- =====---------==== -->
+                    <td class="text-right">{% if sort == 'o.total' %} <a href="{{ sort_total }}" class="{{ order|lower }}">{{ column_total }}</a> {% else %} <a href="{{ sort_total }}">{{ column_total }}</a> {% endif %}</td>
+                    <td class="text-left">{% if sort == 'o.date_added' %} <a href="{{ sort_date_added }}" class="{{ order|lower }}">{{ column_date_added }}</a> {% else %} <a href="{{ sort_date_added }}">{{ column_date_added }}</a> {% endif %}</td>
+                    <!-- <td class="text-left">{% if sort == 'o.date_modified' %} <a href="{{ sort_date_modified }}" class="{{ order|lower }}">{{ column_date_modified }}</a> {% else %} <a href="{{ sort_date_modified }}">{{ column_date_modified }}</a> {% endif %}</td>
+                    <td class="text-right">{{ column_action }}</td> -->
+                  </tr>
+                </thead>
+                <tbody>
+                
+                {% if orders %}
+                {% for order in orders %}
+                <tr>
+                  <!-- <td class="text-center"> {% if order.order_id in selected %}
+                    <input type="checkbox" name="selected[]" value="{{ order.order_id }}" checked="checked" />
+                    {% else %}
+                    <input type="checkbox" name="selected[]" value="{{ order.order_id }}" />
+                    {% endif %}
+                    <input type="hidden" name="shipping_code[]" value="{{ order.shipping_code }}" /></td> -->
+                  <td class="text-right">{{ order.order_id }}</td>
+                  <!-- <td class="text-left">{{ order.customer }}</td> -->
+                  <td class="text-left">{{ order.status }}</td>
+                  <td><img src="{{order.product_image}}"></td>
+                  <!-- added by shubham at 12-05-2025 -->
+                   <td class="text-left">{{ order.product_name }}</td>
+                   <td class="text-right">{{ order.product_price }}</td>
+                   <td class="text-right">{{ order.product_quantity }}</td>
+                   <td class="text-left">{{ order.payment_method }}</td>
+
+                  <!-- ============-----------------= -->
+                  <td class="text-right">{{ order.total }}</td>
+                  <td class="text-left">{{ order.date_added }}</td>
+                  <!-- <td class="text-left">{{ order.date_modified }}</td> -->
+                  <!-- <td class="text-right"><div style="min-width: 120px;">
+                      <div class="btn-group"> <a href="{{ order.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                        <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                          <li><a href="{{ order.edit }}"><i class="fa fa-pencil"></i> {{ button_edit }}</a></li>
+                          <li><a href="{{ order.order_id }}"><i class="fa fa-trash-o"></i> {{ button_delete }}</a></li>
+                        </ul> 
+                      </div>
+                    </div></td> -->
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td class="text-center" colspan="8">{{ text_no_results }}</td>
+                </tr>
+                {% endif %}
+                  </tbody>
+                
+              </table>
+            </div>
+          </form>
+          <div class="row">
+            <div class="col-sm-6 text-left">{{ pagination }}</div>
+            <div class="col-sm-6 text-right">{{ results }}</div>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+  </div><script type="text/javascript">
+  $('#button-filter').on('click', function() {
+    let url = 'index.php?route=customer/customer_orders_history&user_token={{ user_token }}&customer_id={{ customer_id }}';
+
+    const filterOrderId = $('input[name="filter_order_id"]').val();
+    if (filterOrderId) {
+      url += '&filter_order_id=' + encodeURIComponent(filterOrderId);
+    }
+
+    const filterStatus = $('input[name="filter_status"]').val();
+    if (filterStatus) {
+      url += '&filter_status=' + encodeURIComponent(filterStatus);
+    }
+
+    const filterPaymentStatus = $('select[name="filter_payment_status"]').val();
+    if (filterPaymentStatus !== '') {
+      url += '&filter_payment_status=' + encodeURIComponent(filterPaymentStatus);
+    }
+
+    const filterPaymentMethod = $('select[name="filter_payment_method"]').val();
+    if (filterPaymentMethod !== '') {
+      url += '&filter_payment_method=' + encodeURIComponent(filterPaymentMethod);
+    }
+
+
+    var filter_order_status_id = $('select[name=\'filter_order_status_id\']').val();
+
+    if (filter_order_status_id !== '') {
+      url += '&filter_order_status_id=' + encodeURIComponent(filter_order_status_id);
+    }
+
+    const filterDateAdded = $('input[name="filter_date_added"]').val();
+    if (filterDateAdded) {
+      url += '&filter_date_added=' + encodeURIComponent(filterDateAdded);
+    }
+
+    location = url;
+  });
+</script>
+
+<script type="text/javascript">
+$('input[name="filter_order_id"]').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer_orders_history/autocomplete&user_token={{ user_token }}&filter_order_id=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: 'Order ID: ' + item['order_id'],
+            value: item['order_id']
+          };
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name="filter_order_id"]').val(item['value']);
+  }
+});
+</script>
+
+  <script type="text/javascript">
+$('input[name^=\'selected\']').on('change', function() {
+	$('#button-shipping, #button-invoice').prop('disabled', true);
+
+	var selected = $('input[name^=\'selected\']:checked');
+
+	if (selected.length) {
+		$('#button-invoice').prop('disabled', false);
+	}
+
+	for (i = 0; i < selected.length; i++) {
+		if ($(selected[i]).parent().find('input[name^=\'shipping_code\']').val()) {
+			$('#button-shipping').prop('disabled', false);
+
+			break;
+		}
+	}
+});
+
+$('#button-shipping, #button-invoice').prop('disabled', true);
+
+$('input[name^=\'selected\']:first').trigger('change');
+
+// IE and Edge fix!
+$('#button-shipping, #button-invoice').on('click', function(e) {
+	$('#form-order').attr('action', this.getAttribute('formAction'));
+});
+
+$('#form-order li:last-child a').on('click', function(e) {
+	e.preventDefault();
+	
+	var element = this;
+	
+	if (confirm('{{ text_confirm }}')) {
+		$.ajax({
+			url: '{{ catalog }}index.php?route=api/order/delete&api_token={{ api_token }}&store_id={{ store_id }}&order_id=' + $(element).attr('href'),
+			dataType: 'json',
+			beforeSend: function() {
+				$(element).parent().parent().parent().find('button').button('loading');
+			},
+			complete: function() {
+				$(element).parent().parent().parent().find('button').button('reset');
+			},
+			success: function(json) {
+				$('.alert-dismissible').remove();
+	
+				if (json['error']) {
+					$('#content > .container-fluid').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				}
+	
+				if (json['success']) {
+					location = '{{ delete }}';
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+	}
+});
+//--></script> 
+  <script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+  <link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+  <script type="text/javascript"><!--
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+//--></script></div>
+{{ footer }}

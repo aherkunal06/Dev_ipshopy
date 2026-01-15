@@ -1,0 +1,209 @@
+
+
+/* Added new --------------------------------------------------------- /* changed 12-04-2025*/
+ 
+.checkout {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  border-top: 1px solid #eee;
+  border-radius: 0 0 12px 12px;
+}
+
+.checkout a.btn {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  padding: 10px 0;
+  border-radius: 8px;
+  font-size: 15px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.checkout a.btn-view-cart {
+  background-color: #3e4853;
+  margin-right: 10px;
+}
+
+.checkout a.btn-checkout {
+  background-color: #93348f;
+} */
+.checkout {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-top: 1px solid #eee;
+  border-radius: 0 0 12px 12px;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+.checkout a.btn {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  padding: 8px 0;
+  border-radius: 10px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background 0.3s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* View Cart button */
+.checkout a.btn-view-cart {
+  background-color: #5a4d44;
+  color: #fff;
+  border: 2px solid transparent;
+}
+
+/* Checkout button */
+.checkout a.btn-checkout {
+  background-color: #93348f;
+  color: #fff;
+  border: 2px solid transparent;
+}
+
+/* Hover effect */
+.checkout a.btn:hover {
+  opacity: 0.9;
+}
+
+/* Force black text color inside the cart */
+#cart .table-striped td,
+#cart .table-striped td a,
+#cart .table-striped td small {
+  color: #000 !important;
+  font-size: small;
+}
+/* Remove all borders/lines from table rows and cells */
+#cart .table,
+#cart .table-striped,
+#cart .table-striped tr,
+#cart .table-striped td {
+  border: none !important;
+  border-bottom: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+   border-collapse: separate !important;
+  border-spacing: 0 12px; /* top-bottom space between rows */
+}
+
+#cart .table-striped td {
+  vertical-align: middle;
+}
+#cart .table-striped tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* Fix image size */
+#cart .size-img-cart,
+#cart .size-img-cart img {
+  width: 80px;
+  height: 50px;
+  object-fit: cover;
+  display: block;
+  margin: auto;
+}
+/* Truncate long product names */
+#cart .product-name {
+  display: block;
+  max-width: 160px; /* adjust if needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  color: #000;
+}
+/* Purple styling for remove (trash) button */
+#cart .btn-danger.btn-xs {
+  /* background-color: #8e44ad; */
+  color: #fff; /* White icon */
+  border: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+  background: transparent;
+    color: #8e44ad;
+    padding: 0;
+    font-size: 24px;
+}
+
+/* Optional: Darker purple on hover */
+#cart .btn-danger.btn-xs:hover {
+  /* background-color: #732d91; */
+}
+
+
+@media (max-width: 768px) {
+  #cart .dropdown-menu {
+    width: 300px;
+    margin: 0 auto;
+    border-radius: 0;
+    margin-right: 0px;
+  }
+
+  #cart .table-striped tr {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  #cart .size-img-cart,
+  #cart .size-img-cart img {
+    display: block !important;
+    margin-bottom: 10px;
+    width: 70px;
+    height: 70px;
+  }
+
+  #cart .text-left {
+    font-size: 14px;
+    padding: 0;
+    margin-bottom: 8px;
+  }
+
+  #cart .text-right {
+    text-align: left !important;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .checkout {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .checkout a.btn {
+    width: 100%;
+    padding: 8px 0;
+    font-size: 14px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+}
+
+
+#cart .product-name {
+  max-width: 100%;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 2 lines max */
+  -webkit-box-orient: vertical;
+}
+
+  .btn-shopping-cart .table > tbody > tr > td {
+   margin-left: 0px;  
+}
+#cart .dropdown-menu {
+width: 491px;      /* changed 12-04-2025*/
+margin:0px;
+padding:15px;
+}

@@ -1,0 +1,218 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+		<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-info" style="background-color: #953A93">
+		    <i class="fa fa-reply"></i>
+	    </a>
+      </div>
+      <h1>Return Images</h1>
+      
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Images Return List</h3>
+      </div>
+      <div class="panel-body image-popup-wrapper"> {# ✅ wrapper div #}
+        {% if returns %}
+          {% for return in returns %}
+            <div class="panel panel-info">
+              <div class="panel-heading" style="background: #f6f6f6; color: #333;">
+                <strong>Return ID:</strong> {{ return.return_id }} |
+                <strong>Order ID:</strong> {{ return.order_id }} |
+                <strong>Product:</strong> {{ return.product }}
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  {% for image in return.images %}
+                    <div class="col-md-2 col-sm-3 col-xs-6 text-center">
+                      <a href="{{ image }}" class="image-popup">
+                        <img src="{{ image }}" alt="{{ return.product }}" class="img-thumbnail" style="width: 100px; height: 100px;">
+                      </a>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="alert alert-warning text-center">
+            {{ text_no_results }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ footer }}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css">
+<script src="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/jquery.magnific-popup.min.js"></script>
+
+<style>
+.mfp-close {
+  cursor: pointer !important;
+  opacity: 1 !important;
+  z-index: 9999;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 44px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  text-align: center !important;
+  background: transparent !important;
+  color: #333 !important;
+  font-size: 28px !important;
+  font-weight: bold !important;
+}
+</style>
+
+<script>
+// Store a reference to the currently open popup
+var currentPopup = null;
+var isClosing = false;
+
+$(document).ready(function () {
+  // Completely remove any existing Magnific Popup elements
+  $('.mfp-bg, .mfp-wrap').remove();
+  
+  // Unbind any existing click handlers from images
+  $('.image-popup').off('click');
+  
+  // Initialize each image individually with a fresh handler
+  $('.image-popup').each(function() {
+    $(this).on('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Prevent opening during closing animation
+      if (isClosing) {
+        return false;
+      }
+      
+      // If there's already a popup open, close it first
+      if (currentPopup) {
+        currentPopup.close();
+        currentPopup = null;
+      }
+      
+      // Make sure any remnants are cleaned up - thorough cleanup
+      setTimeout(function() {
+        // Remove all possible Magnific Popup elements
+        $('.mfp-bg, .mfp-wrap, .mfp-container, .mfp-content, .mfp-figure, .mfp-img, .mfp-close').remove();
+        
+        // Reset any existing instances
+        if ($.magnificPopup) {
+          $.magnificPopup.instance = null;
+        }
+        
+        // Open new popup
+        currentPopup = $.magnificPopup.open({
+          items: {
+            src: e.currentTarget.getAttribute('href'),
+            type: 'image'
+          },
+          closeOnContentClick: true,
+          closeBtnInside: true,
+          fixedContentPos: true,
+          mainClass: 'mfp-no-margins mfp-with-zoom',
+          removalDelay: 300,
+          image: {
+            verticalFit: true,
+            titleSrc: function() {
+              return '';
+            }
+          },
+          callbacks: {
+            beforeOpen: function() {
+              // Remove any existing handlers
+              $(document).off('click', '.mfp-close');
+            },
+            open: function() {
+              // Add custom handler for close button with immediate effect
+              $(document).on('click', '.mfp-close', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (currentPopup && !isClosing) {
+                  isClosing = true;
+                  
+                  // Immediately hide the popup visually
+                  $('.mfp-wrap').css('display', 'none');
+                  $('.mfp-bg').css('display', 'none');
+                  
+                  // Then close it properly
+                  currentPopup.close();
+                  
+                  // Reset state after animation completes
+                  setTimeout(function() {
+                    currentPopup = null;
+                    isClosing = false;
+                  }, 350); // slightly longer than removalDelay
+                }
+                return false;
+              });
+            },
+            beforeClose: function() {
+              // Set closing flag
+              isClosing = true;
+              
+              // Clean up event handlers
+              $(document).off('click', '.mfp-close');
+            },
+            close: function() {
+              // Complete cleanup - remove all popup elements from DOM
+              $('.mfp-bg, .mfp-wrap, .mfp-container, .mfp-content, .mfp-figure, .mfp-img, .mfp-close').remove();
+              
+              // Force browser to release resources
+              if (window.collectGarbage) {
+                window.collectGarbage();
+              }
+              
+              // Reset state immediately to prevent any reopening issues
+              currentPopup = null;
+              
+              // Reset closing flag after a short delay to allow for any animations to complete
+              setTimeout(function() {
+                isClosing = false;
+              }, 350); // slightly longer than removalDelay
+            }
+          }
+        });
+      }, 100); // Small delay to ensure previous popup is fully closed
+      
+      return false;
+    });
+  });
+  
+  // Global close handler for ESC key
+  $(document).off('keydown.magnificPopup');
+  $(document).on('keydown.magnificPopup', function(e) {
+    if (e.keyCode === 27 && currentPopup && !isClosing) { // ESC key
+      isClosing = true;
+      
+      // Immediately hide the popup visually
+      $('.mfp-wrap').css('display', 'none');
+      $('.mfp-bg').css('display', 'none');
+      
+      // Then close it properly
+      currentPopup.close();
+      
+      // Reset state after animation completes
+      setTimeout(function() {
+        currentPopup = null;
+        isClosing = false;
+      }, 350); // slightly longer than removalDelay
+    }
+  });
+});
+
+</script>

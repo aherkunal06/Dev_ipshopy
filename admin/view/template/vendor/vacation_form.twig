@@ -1,0 +1,144 @@
+<!-- Bootstrap CSS (if not already included in header.twig) -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<style>
+  @media (max-width: 768px) {
+    .table-responsive-sm {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .page-header .pull-right {
+      float: none !important;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .page-header h1 {
+      font-size: 20px;
+    }
+
+    .panel-title {
+      font-size: 16px;
+    }
+
+    .table-bordered th, .table-bordered td {
+      white-space: nowrap;
+    }
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .alert ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+</style>
+
+{{ header }}
+
+{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        {% if status != 'Approved' %}
+          <a href="{{ approve }}" class="btn btn-success" id="btn-approve" data-toggle="tooltip" title="Approve"><i class="fa fa-check"></i> Approve</a>
+          <a href="{{ reject }}" class="btn btn-danger" id="btn-reject" data-toggle="tooltip" title="Reject"><i class="fa fa-times"></i> Reject</a>
+        {% endif %}
+        <a href="{{ cancel }}" id="close-btn1" class="btn btn-default" data-toggle="tooltip" title="Cancel"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    {#{% if error_warning %}#}
+    {#  <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>#}
+    {#{% endif %}#}
+    {% if success %}
+      <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}</div>
+    {% endif %}
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-info-circle"></i> Vacation Request Details</h3></div>
+      <div class="panel-body">
+        <div class="table-responsive-sm">
+          <table class="table table-bordered">
+            <tr><th>{{text_vacation_id}}</th><td>{{ vacation_id }}</td></tr>
+            <tr><th>{{text_vendor_id}}</th><td>{{ vendor_id }}</td></tr>
+            <tr><th>{{text_vendor_name}}</th><td>{{ firstname }} {{ lastname }}</td></tr>
+            <tr><th>{{text_display_name}}</th><td>{{ display_name }}</td></tr>
+            <tr><th>{{text_active_products}}</th><td>{{ active_products }}</td></tr>
+            <tr><th>{{text_total_product_quantity}}</th><td>{{ total_quantity }}</td></tr>
+            <tr><th>{{text_start_date}}</th><td>{{ start_date }}</td></tr>
+            <tr><th>{{text_end_date}}</th><td>{{ end_date }}</td></tr>
+            <tr><th>{{text_reason}}</th><td>{{ reason }}</td></tr>
+            <tr>
+              <th>{{text_status}}</th>
+              <td><span class="label label-{% if status == 'Approved' %}success{% elseif status == 'Rejected' %}danger{% else %}warning{% endif %}">{{ status }}</span></td>
+            </tr>
+<!-- 
+            {% if status == 'Pending' %}
+<tr>
+  <td colspan="2">
+    <div class="form-group">
+      <label><input type="checkbox" id="confirm_orders"> {{ text_confirm_orders_cleared }}</label>
+    </div>
+    <a href="{{ approve }}" class="btn btn-success" id="btn-approve" disabled>Approve</a>
+    <a href="{{ reject }}" class="btn btn-danger" id="btn-reject" disabled>Reject</a>
+  </td>
+</tr>
+{% endif %} -->
+
+            <tr><th>{{text_approval_date}}</th><td>{{ approval_date ?: 'N/A' }}</td></tr>
+          </table>
+        </div>
+
+
+    
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS (if not already included in footer.twig) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script>
+document.getElementById('confirm_orders').addEventListener('change', function () {
+  document.getElementById('btn-approve').disabled = !this.checked;
+  document.getElementById('btn-reject').disabled = !this.checked;
+});
+</script>
+
+{#------------ added changes regarding to the seller vacation 08-05-2025 -----------------#}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const closeBtn = document.getElementById('close-btn');
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent default anchor behavior
+        const userToken = '{{ user_token }}'; // Twig variable
+        window.location.href = 'index.php?route=vendor/vacation_list&user_token=' + userToken;
+      });
+    }
+  });
+</script>
+
+{#-----------------------------------------------------------------------------------------#}
+{{ footer }}

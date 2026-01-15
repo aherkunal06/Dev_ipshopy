@@ -1,0 +1,174 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-category" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-category" class="form-horizontal">
+          
+          <!-- Level 1 (Parent) Category Dropdown -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-parent">{{ entry_parent }}</label>
+            <div class="col-sm-10">
+              <select name="parent_id" id="input-parent" class="form-control">
+                <option value="0">{{ text_select }}</option>
+                {% for category in parent_categories %}
+                <option value="{{ category.category_id }}">{{ category.category_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <!-- Level 2 Category Dropdown (initially hidden) -->
+          <div class="form-group" id="level2-group" style="display: none;">
+            <label class="col-sm-2 control-label" for="input-level2">Parent Category(level 1)</label>
+            <div class="col-sm-10">
+              <select name="level2_id" id="input-level2" class="form-control">
+                <option value="0">{{ text_select }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Level 3 Category Dropdown (initially hidden) -->
+          <div class="form-group" id="level3-group" style="display: none;">
+            <label class="col-sm-2 control-label" for="input-level3">Parent Category(level 2)</label>
+            <div class="col-sm-10">
+              <select name="level3_id" id="input-level3" class="form-control">
+                <option value="0">{{ text_select }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Level 4 Category Dropdown (initially hidden) -->
+          <div class="form-group" id="level4-group" style="display: none;">
+            <label class="col-sm-2 control-label" for="input-level4">Parent Category(level 3)</label>
+            <div class="col-sm-10">
+              <select name="level4_id" id="input-level4" class="form-control">
+                <option value="0">{{ text_select }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- New Category Name Input -->
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="category_name" value="{{ category_name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+              {% if error_category_name %}
+              <div class="text-danger">{{ error_category_name }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    var userToken = '{{ user_token }}';
+console.log("user token is:"+userToken);
+    // Handle Level 1 (Parent) Category Change
+    $('#input-parent').on('change', function() {
+        var parentId = $(this).val();
+        if (parentId > 0) {
+            $('#level2-group').show();
+            loadSubCategories(parentId, '#input-level2');
+        } else {
+            $('#level2-group').hide();
+            $('#level3-group').hide();
+            $('#level4-group').hide();
+        }
+    });
+
+    // Handle Level 2 Category Change
+    $('#input-level2').on('change', function() {
+        var level2Id = $(this).val();
+        if (level2Id > 0) {
+            $('#level3-group').show();
+            loadSubCategories(level2Id, '#input-level3');
+        } else {
+            $('#level3-group').hide();
+            $('#level4-group').hide();
+        }
+    });
+
+    // Handle Level 3 Category Change
+    $('#input-level3').on('change', function() {
+        var level3Id = $(this).val();
+        if (level3Id > 0) {
+            $('#level4-group').show();
+            loadSubCategories(level3Id, '#input-level4');
+        } else {
+            $('#level4-group').hide();
+        }
+    });
+
+    // Function to load subcategories
+    function loadSubCategories(parentId, targetSelect) {
+        $.ajax({
+            url: 'index.php?route=vendor/category_management/getSubCategories',
+            type: 'GET',
+            data: {
+                user_token: userToken,
+                parent_id: parentId
+            },
+            dataType: 'json',
+            success: function(json) {
+                $(targetSelect).html('<option value="0">{{ text_select }}</option>');
+                
+                $.each(json, function(index, item) {
+                    $(targetSelect).append('<option value="' + item.category_id + '">' + item.category_name + '</option>');
+                });
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+
+    // Form submission handler
+    $('#form-category').on('submit', function(e) {
+        e.preventDefault();
+        // Remove any previous hidden parent_id
+        $('#form-category input[name="parent_id"][type="hidden"]').remove();
+        // Get the final parent ID (deepest selected, not 0)
+        var parentId = $('#input-level4').val();
+        if (!parentId || parentId == '0') parentId = $('#input-level3').val();
+        if (!parentId || parentId == '0') parentId = $('#input-level2').val();
+        if (!parentId || parentId == '0') parentId = $('#input-parent').val();
+        // Add the parent ID to the form data as hidden input
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'parent_id',
+            value: parentId
+        }).appendTo('#form-category');
+        // Submit the form
+        this.submit();
+    });
+});
+</script>
+{{ footer }}

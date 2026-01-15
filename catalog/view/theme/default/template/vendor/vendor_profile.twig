@@ -1,0 +1,1308 @@
+<!-- Font Awesome CDN for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="catalog\view\theme\default\stylesheet\vendor_profile_page.css">
+
+{{ header }}
+<script type="text/javascript" src="catalog/view/javascript/megnor/megnor.min.js"></script>
+<script type="text/javascript" src="catalog/view/javascript/megnor/custom.js"></script>
+<script type="text/javascript" src="catalog/view/javascript/megnor/jquery.custom.min.js"></script>
+<script type="text/javascript" src="catalog/view/javascript/megnor/jstree.min.js"></script>
+<div class="container">
+	<ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+		<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		{% endfor %}
+	</ul>
+	{% if error_warning %}
+	<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+	{% endif %}
+	{% if success %}
+	<div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}</div>
+	{% endif %}
+	<div class="row">{{ column_left }}
+		{% if column_left and column_right %}
+		{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+		{% set class = 'col-sm-9' %}
+		{% else %}
+		{% set class = 'col-sm-12' %}
+		{% endif %}
+		<div id="content" class="{{ class }} vendor_profile">{{ content_top }}
+			<!-- <div class="page-container">
+				<aside class="sidebar">
+					<h2>Departments</h2>
+					<ul>
+						<li><a href="#" class="active">Electronics & Devices</a></li>
+						<li><a href="#">Home & Kitchen</a></li>
+						<li><a href="#">Fashion & Accessories</a></li>
+						<li><a href="#">Sports & Outdoors</a></li>
+						<li><a href="#">All Categories</a></li>
+					</ul>
+				</aside>
+				<main class="main-content"> -->
+			<div class="cover-main">
+				<img src="{{profilebanner}}" alt="{{ name }}" title="{{ name }}"
+					class="img-responsive banner-image" />
+				<div class="banner-overlay"></div>
+
+				<div class="banner-info-box">
+					<div class="brand-icon">
+						<i class="fa fa-archive"></i>
+					</div>
+					<div class="brand-details">
+						<h3 class="brand-title">{{ name }}</h3>
+						<div class="brand-rating-followers">
+							{% if show_productreview == 1 %}
+							<div data-sort="{{ vendor_productreviewsort }}">
+								<a href="#reviews" data-toggle="tab" aria-expanded="false"><span class="stars"
+										style="color: yellow;">
+										<!-- <i class="fa fa-archive"></i> -->
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star-o"></i>
+									</span> {{ producttotal }}</a>
+							</div>
+							{% endif %}
+							<div class="followers-count">
+								followers
+							</div>
+						</div>
+					</div>
+					<div class="share-button">
+						<button id="shareBtn"><i class="fa fa-share-alt"></i> Share</button>
+					</div>
+
+				</div>
+			</div>
+
+
+			<div class="col-sm-12 profile">
+				{# <div class="image">
+						<img src="{{ images }}" class="img-responsive" alt="profile" title="profile" />
+					</div>
+					<div class="detail">
+						{% if vendor_hidevname %}
+						<h4>{{ display_name }}</h4>
+						{% endif %}
+						<div class="rating">
+							{% for i in 1..5 %}
+							{% if reviewvalue < i %} <span class="fa fa-stack"><i
+									class="fa fa-star-o fa-stack-2x"></i></span>
+								{% else %}
+								<span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i
+										class="fa fa-star-o fa-stack-2x"></i></span>
+								{% endif %}
+								{% endfor %}
+						</div>
+					</div> #}
+				{# <!------------- slideeeeeee --------------------------------------> #}
+
+				<div class="section-heading-wrapper">
+					<h3 class="section-heading" id="topDeals">Explore Top Deals</h3>
+					{# <p class="vendordescrption">{{ product.description }}</p> #}
+					<div class="slider-buttons">
+						<button onclick="slideLeft()"><span>&lt;</span></button>
+						<button onclick="slideRight()"><span>&gt;</span></button>
+					</div>
+				</div>
+				<div class="slider-container slider-row" id="topDealsSlider">
+
+					{% for product in products %}
+					<div class="product-layout product-grid">
+						<div class="product-thumb1">
+
+							<div class="image">
+								<a href="{{ product.href }}">
+									<img src="{{ product.pimage }}" alt="{{ product.name }}" title="{{ product.name }}"
+										class="img-responsive" loading="lazy">
+								</a>
+							</div>
+							<div class="caption">
+								<h4><a href="{{ product.href }}">{{ product.name }}</a></h4>
+								{# <!-- <p class="vendordescrption">{{ product.description }}</p> --> #}
+								{% if product.ratings %}
+								<div class="rating">
+									{% for i in 1..5 %}
+									{% if product.ratings < i %} <span class="fa fa-stack"><i
+											class="fa fa-star-o fa-stack-2x"></i></span>
+										{% else %}
+										<span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i
+												class="fa fa-star-o fa-stack-2x"></i></span>
+										{% endif %}
+										{% endfor %}
+								</div>
+								{% endif %}
+								{% if product.price %}
+								<p class="price">
+									{% if not product.special %}
+									{{ product.price }}
+									{% else %}
+									<span class="price-new">{{ product.special }}</span>
+									<span class="price-old">{{ product.price }}</span>
+									{% endif %}
+									{# <!-- {% if product.tax %}
+										<span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+										{% endif %} --> #}
+								</p>
+								{% endif %}
+							</div>
+							<div class="button-group">
+								<button type="button"
+									onclick="cart.add('{{ product.product_id }}', '{{ product.minimum }}');">
+									<i class="fa fa-shopping-cart"></i>
+									<span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span>
+								</button>
+								<button type="button" data-toggle="tooltip" title="{{ button_wishlist }}"
+									onclick="wishlist.add('{{ product.product_id }}');">
+									<i class="fa-regular fa-heart"></i>
+								</button>
+								<button type="button" data-toggle="tooltip" title="{{ button_compare }}"
+									onclick="compare.add('{{ product.product_id }}');">
+									<i class="fa fa-exchange"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div class="section-heading-wrapper">
+					<h3 class="section-heading">{{ text_best_selling_products }}</h3>
+					<div class="slider-buttons">
+						<button onclick="slideLeftpopular()"><span>&lt;</span></button>
+						<button onclick="slideRightpopular()"><span>&gt;</span></button>
+					</div>
+				</div>
+				<div class="slider-container slider-row" id="PopularSlider">
+					  {% for best_selling_product in best_selling_products %}
+
+					<div class="product-layout product-grid">
+						<div class="product-thumb1">
+							<div class="image">
+								<a href="{{ best_selling_product.href }}" class="product-link" data-product-id="{{ best_selling_product.product_id }}">
+									<img src="image/{{ best_selling_product.image }}"
+										alt=" {{ best_selling_product.name }}" title=" {{ best_selling_product.name }}"
+										class="img-responsive" loading="lazy">
+								</a>
+							</div>
+							<div class="caption">
+								<h4><a href="{{ best_selling_product.href }}" class="product-link" data-product-id="{{ best_selling_product.product_id }}"> {{ best_selling_product.name }}</a></h4>
+								{# <!-- <p class="vendordescrption">{{ best_selling_products.description }}</p> --> #}
+								{% if best_selling_product.rating %}
+								<div class="rating">
+									{% for i in 1..5 %}
+									{% if best_selling_product.rating < i %} <span class="fa fa-stack"><i
+											class="fa fa-star-o fa-stack-2x"></i></span>
+										{% else %}
+										<span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i
+												class="fa fa-star-o fa-stack-2x"></i></span>
+										{% endif %}
+										{% endfor %}
+								</div>
+								{% endif %}
+								{% if best_selling_product.mrp  %}
+								<p class="price">
+									{% if not best_selling_product.special_price %}
+									{{ best_selling_product.mrp }}
+									{% else %}
+									<span class="price-new">&#8377;{{ best_selling_product.special_price }}</span>
+									<span class="price-old">&#8377;{{ best_selling_product.mrp }}</span>
+									{% endif %}
+									{# <!-- {% if product.tax %}
+										<span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+										{% endif %} --> #}
+								</p>
+								{% endif %}
+							</div>
+							<div class="button-group">
+								<button type="button"
+									onclick="cart.add('{{best_selling_product.product_id }}', '{{ product.minimum }}');">
+									<i class="fa fa-shopping-cart"></i>
+									<span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span>
+								</button>
+								<button type="button" data-toggle="tooltip" title="{{ button_wishlist }}"
+									onclick="wishlist.add('{{ best_selling_product.product_id }}');">
+									<i class="fa-regular fa-heart"></i>
+								</button>
+								<button type="button" data-toggle="tooltip" title="{{ button_compare }}"
+									onclick="compare.add('{{ best_selling_product.product_id }}');">
+									<i class="fa fa-exchange"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+
+				<div class="section-heading-wrapper">
+					<h3 class="section-heading">{{ text_latest_products }}</h3>
+					<div class="slider-buttons">
+						<button onclick="slideLeftlatest()"><span>&lt;</span></button>
+						<button onclick="slideRightlatest()"><span>&gt;</span></button>
+					</div>
+				</div>
+				<div class="slider-container slider-row" id="latestArrivalsSlider">
+					{% for latest_product in latest_products %}
+
+					<div class="product-layout product-grid">
+						<div class="product-thumb1">
+							<div class="image">
+								<a href="{{ latest_product.href }}" class="latest-product-link" data-product-id="{{ latest_product.product_id }}">
+									<img src="image/{{ latest_product.image }}" alt="{{ latest_product.name  }}"
+										title="{{ latest_product.name  }}" class="img-responsive" loading="lazy">
+								</a>
+							</div>
+							<div class="caption">
+								<h4><a href="{{ latest_product.href }}" class="latest-product-link" data-product-id="{{ latest_product.product_id }}"> {{ latest_product.name }}</a></h4>
+								{# <!-- <p class="vendordescrption">{{latest_product.description }}</p> --> #}
+								{% if latest_product.rating %}
+								<div class="rating">
+									{% for i in 1..5 %}
+									{% if latest_product.rating < i %} <span class="fa fa-stack"><i
+											class="fa fa-star-o fa-stack-2x"></i></span>
+										{% else %}
+										<span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i
+												class="fa fa-star-o fa-stack-2x"></i></span>
+										{% endif %}
+										{% endfor %}
+								</div>
+								{% endif %}
+								{% if latest_product.mrp  %}
+								<p class="price" style="color:#953A93 !important; font-weight: 600;">
+									{% if not latest_product.special_price %}
+									&#8377;{{ latest_product.mrp }}
+									{% else %}
+									<span class="price-new">&#8377;{{ latest_product.special_price }}</span>
+									<span class="price-old">&#8377;{{ latest_product.mrp }}</span>
+									{% endif %}
+									{# <!-- {% if product.tax %}
+										<span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+										{% endif %} --> #}
+								</p>
+								{% endif %}
+							</div>
+							<div class="button-group">
+								<button type="button"
+									onclick="cart.add('{{latest_product.product_id}}', '{{ product.minimum }}');">
+									<i class="fa fa-shopping-cart"></i>
+									<span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span>
+								</button>
+								<button type="button" data-toggle="tooltip" title="{{ button_wishlist }}"
+									onclick="wishlist.add('{{ latest_product.product_id}}');">
+									<i class="fa-regular fa-heart"></i>
+								</button>
+								<button type="button" data-toggle="tooltip" title="{{ button_compare }}"
+									onclick="compare.add('{{ latest_product.product_id }}');">
+									<i class="fa fa-exchange"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		{# <!------------------------ categories------------------------- --> #}
+
+		{% if show_tabproduct == 1 %}
+
+		<div class="tab-pane" id="products">
+			<div class="row-paddleft">
+				<div class="col-sm-12" style="margin: 13px 20px;
+					background: #f4e9f6;
+					border-radius: 10px;">
+
+					<div class="category-bar-wrapper">
+						<h3 class="shop-category-title">Shop by Category</h3>
+
+						<div class="category-bar" id="categoryBar">
+							{% if categories %}
+							{% for category in categories %}
+							{% if category.category_id %}
+							<li class="active">
+								{% if category.category_id == category_id %}
+								<a style="cursor:pointer" rel="{{ catevendor_id }}" class=" active load-category"
+									rel1="{{ category.category_id }}">{{
+									category.categoryname }} </a>
+								{% else %}
+								<a style="cursor:pointer" rel="{{ catevendor_id }}" class="active load-category"
+									rel1="{{ category.category_id }}">{{
+									category.categoryname }} </a>
+								{% endif %}
+								{# {% if category.children %} --> #}
+								{#  <ul>
+										{% for child in category.children %}
+
+										<li class="collapsable">
+
+											{% if child.category_id == child_id %}
+											<a style="cursor:pointer" class="active load-subcategory"
+												rel="{{ catevendor_id }}" subcatrel="{{ child.category_id }}">{{
+												child.name }}</a>
+											{% else %}
+											<a style="cursor:pointer" class="load-subcategory" rel="{{ catevendor_id }}"
+												subcatrel="{{ child.category_id }}">{{
+												child.name }}</a>
+											{% endif %}
+
+											{% if child.children1 %}
+											<ul class="sub3">
+												{% for child1 in child.children1 %}
+												<li>
+													{% if child1.category_id == child_id1 %}
+													<a style="cursor:pointer" class="active load-subcategory"
+														rel="{{ catevendor_id }}"
+														subcatrel="{{ child1.category_id }}">{{ child1.name
+														}}</a>
+													{% else %}
+													<a style="cursor:pointer" class="load-subcategory"
+														rel="{{ catevendor_id }}"
+														subcatrel="{{ child1.category_id }}">{{ child1.name
+														}}</a>
+													{% endif %}
+												</li>
+												{% endfor %}
+											</ul>
+											{% endif %}
+										</li>
+
+										{% endfor %}
+									</ul>
+								{% endif %} #}
+							</li>
+							{% endif %}
+							{% endfor %}
+							{% endif %}
+							</ul>
+						</div>
+					</div>
+
+					{% if categories %}
+					<div class="col-sm-9">
+						{% else %}
+						<div class="col-sm-12">
+							{% endif %}
+
+							<div class="loadcate">
+								{# <!-- <div id="vendorproduct"></div> -->
+								<!-- <h1>hello there</h1> --> #}
+							</div>
+						</div>
+
+					</div>
+				</div>
+				{% endif %}
+
+			</div>
+
+			<div class="col-sm-12 profile">
+				<div class="section-heading-wrapper">
+					<h3 class="section-heading">{{ text_most_discounted_products }}</h3>
+					<div class="slider-buttons">
+						<button onclick="slideLeftDiscounted()"><span>&lt;</span></button>
+						<button onclick="slideRightDiscounted()"><span>&gt;</span></button>
+					</div>
+				</div>
+
+				<div class="slider-container slider-row" id="topDiscountedSlider">
+
+					  {% for most_discounted_products in most_discounted_products %}
+
+					<div class="product-layout product-grid">
+						<div class="product-thumb1">
+							<div class="image">
+								<a href="{{most_discounted_products.href }}" class="discounted-product-link" data-product-id="{{ most_discounted_products.product_id }}">
+									<img src="image/{{ most_discounted_products.image }}"
+										alt=" {{ most_discounted_products.name }}"
+										title=" {{ most_discounted_products.name }}" class="img-responsive"
+										loading="lazy">
+								</a>
+							</div>
+							<div class="caption">
+								<h4><a href="{{ most_discounted_products.href }}" class="discounted-product-link" data-product-id="{{ most_discounted_products.product_id }}"> {{ most_discounted_products.name }}</a></h4>
+								{# <!-- <p class="vendordescrption">{{  most_discounted_products.description }}</p> --> #}
+								{% if most_discounted_products.rating %}
+								<div class="rating">
+									{% for i in 1..5 %}
+									{% if most_discounted_products.rating  < i %} <span class="fa fa-stack"><i
+											class="fa fa-star-o fa-stack-2x"></i></span>
+										{% else %}
+										<span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i
+												class="fa fa-star-o fa-stack-2x"></i></span>
+										{% endif %}
+										{% endfor %}
+								</div>
+								{% endif %}
+								{% if  most_discounted_products.mrp  %}
+								<p class="price">
+									{% if not most_discounted_products.selling_price  %}
+									{{ most_discounted_products.mrp }}
+									{% else %}
+									<span class="price-new">&#8377;{{ most_discounted_products.selling_price }}</span>
+									<span class="price-old">&#8377;{{ most_discounted_products.mrp }}</span>
+									{% endif %}
+									{# <!-- {% if product.tax %}
+										<span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+										{% endif %} --> #}
+								</p>
+								{% endif %}
+							</div>
+							<div class="button-group">
+								<button type="button"
+									onclick="cart.add('{{ most_discounted_products.product_id }}', '{{ product.minimum }}');">
+									<i class="fa fa-shopping-cart"></i>
+									<span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span>
+								</button>
+								<button type="button" data-toggle="tooltip" title="{{ button_wishlist }}"
+									onclick="wishlist.add('{{ most_discounted_products.product_id }}');">
+									<i class="fa-regular fa-heart"></i>
+								</button>
+								<button type="button" data-toggle="tooltip" title="{{ button_compare }}"
+									onclick="compare.add('{{  most_discounted_products.product_id}}');">
+									<i class="fa fa-exchange"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				{# <!---------------products---------------03 10 2019/////yyyyyyyyyyyyyyy ----------------------> #}
+				<div>
+					{# <!-- {% if show_tabproduct == 1 %}
+						<div data-sort="{{ vendor_tabproductsort }}" style="font-size: 24px;">
+							<a href="#products" data-toggle="tab" aria-expanded="false"><span><i
+										class="fa fa-copy"></i></span> {{ text_products }} ({{ totals }})</a>
+						</div>
+						{% endif %} --> #}
+					<h3 class="section-heading">All Products ({{ totals }})</h3>
+					<div class="row">
+						{% for product in products %}
+						{% if loop.index <= 5 %} <div
+							class="product-layout product-grid custom-col-5 col-md-4 col-sm-6 col-xs-12">
+							<div class="product-image">
+								<div class="image">
+									<a href="{{ product.href }}">
+										<img src="{{ product.pimage }}" alt="{{ product.name }}"
+											title="{{ product.name }}" class="img-responsive" loading="lazy">
+									</a>
+								</div>
+								<div class="caption">
+									<h4><a href="{{ product.href }}">{{ product.name }}</a></h4>
+									{# <!-- <p class="vendordescrption">{{ product.description }}</p> --> #}
+									{% if product.ratings %}
+									<div class="rating">
+										{% for i in 1..5 %}
+										{% if product.ratings < i %} <span class="fa fa-stack"><i
+												class="fa fa-star-o fa-stack-2x"></i></span>
+											{% else %}
+											<span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i
+													class="fa fa-star-o fa-stack-2x"></i></span>
+											{% endif %}
+											{% endfor %}
+									</div>
+									{% endif %}
+									{% if product.price %}
+									<p class="price">
+										{% if not product.special %}
+										{{ product.price }}
+										{% else %}
+										<span class="price-new">{{ product.special }}</span>
+										<span class="price-old">{{ product.price }}</span>
+										{% endif %}
+										{# <!-- {% if product.tax %}
+											<span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+											{% endif %} --> #}
+									</p>
+									{% endif %}
+								</div>
+								<div class="button-group">
+									<button type="button"
+										onclick="cart.add('{{ product.product_id }}', '{{ product.minimum }}');">
+										<i class="fa fa-shopping-cart"></i>
+										<span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span>
+									</button>
+									<button type="button" data-toggle="tooltip" title="{{ button_wishlist }}"
+										onclick="wishlist.add('{{ product.product_id }}');">
+										<i class="fa-regular fa-heart"></i>
+									</button>
+									<button type="button" data-toggle="tooltip" title="{{ button_compare }}"
+										onclick="compare.add('{{ product.product_id }}');">
+										<i class="fa fa-exchange"></i>
+									</button>
+								</div>
+							</div>
+					</div>
+					{% endif %}
+					{% endfor %}
+
+					{#<div class="col-xs-12 text-center" style="margin-top: 20px;">#}
+					{#	<a href="index.php?route=vendor/vendor_products&vendor_id={{ vendor_id }}"#}
+					{#		class="btn btn-primary" style="background-color: #a735a7;">#}
+					{#		View All Products#}
+					{#	</a>#}
+					{#</div>#}
+
+
+			
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+	{# <!--------------------------------- {% if vendorcontact == 0 %} ---------------------------------> #}
+
+
+
+
+	<ul class="list-inline">
+		{% if vendor_hidevponeno %}
+		<li><i class="fa fa-phone"></i> {{ telephone }}</li>
+		{% endif %}
+
+		{% if vendor_hidevemail %}
+		<li><i class="fa fa-envelope-o"></i> <a class="vendoremail" href="mailto:{{ email }}" target="_top">{{
+				email }}</a></li>
+		{% endif %}
+	</ul>
+
+
+	{% if vendor_hidevsocialicon %}
+	<ul class="list-unstyled btn-social">
+		<li>
+			{% if facebookurl %}
+			<a href="{{ facebookurl }}" target="new"><i class="fa fa-facebook"></i></a>
+			{% endif %}
+			{% if googleurl %}
+			<a href="{{ googleurl }}" target="new"><i class="fa fa-google"></i></a>
+			{% endif %}
+			{% if vendorfindme %}
+			<a href="{{ vendorfindme }}" target="new"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+			{% endif %}
+		</li>
+	</ul>
+	{% endif %}
+	 {#{% endif %}#}
+	<!-- </div> -->
+	<!-- <div class="onhover">
+		<img src="{{ logos }}" class="img-responsive" title="logo" alt="logo" />
+	</div> --> 
+	</main>
+</div>
+</div>
+</div>
+
+{#<div class="row">#}
+{#	<div class="col-sm-12">#}
+{#		<ul class="nav nav-tabs list-inline maintabs">#}
+
+			{# <!--############ 13 02 2021 Update data-sort start ############--> #}
+{#			{% if show_profiletab == 1 %}#}
+{#			{% if about %}#}
+{#			<li data-sort="{{ vendor_profilestoresort }}">#}
+{#				<a href="#profiles" data-toggle="tab" aria-expanded="true"><span><i class="fa fa-user"></i></span>{{#}
+{#					text_profile }}</a>#}
+{#			</li>#}
+{#			{% endif %}#}
+{#			{% endif %}#}
+{#			{% if show_aboutstoretab == 1 %}#}
+{#			<li data-sort="{{ vendor_aboutstoresort }}">#}
+{#				<a href="#about" data-toggle="tab" aria-expanded="false"><span><i class="fa fa-comment"></i></span>{{#}
+{#					text_about }}</a>#}
+{#			</li>#}
+{#			{% endif %}#}
+{#			{% if show_tabproduct == 1 %}#}
+{#			<li data-sort="{{ vendor_tabproductsort }}">#}
+				 {#<!-- <a href="#products" data-toggle="tab" aria-expanded="false"><span><i class="fa fa-copy"></i></span>#}
+{#					{{ text_products }} ({{ totals }})</a> --> #}
+{#			</li>#}
+{#			{% endif %}#}
+{#			{% if show_reviewtab == 1 %}#}
+{#			<li data-sort="{{ vendor_reviewsort }}">#}
+{#				<a href="#review" data-toggle="tab" aria-expanded="false"><span><i class="fa fa-comment"></i></span>{{#}
+{#					text_reviews }} {{ sellertotal }}</a>#}
+{#			</li>#}
+{#			{% endif %}#}
+{#			{% if show_productreview == 1 %}#}
+{#			<li data-sort="{{ vendor_productreviewsort }}">#}
+{#				<a href="#reviews" data-toggle="tab" aria-expanded="false"><span><i class="fa fa-archive"></i></span>{{#}
+{#					text_pro_reviews }} {{ producttotal }}</a>#}
+{#			</li>#}
+{#			{% endif %}#}
+			{# <!--############ 13 02 2021 Update data-sort eND ############--> #}
+
+{#		</ul>#}
+{#		<div class="tab-content">#}
+
+			{# <!--############  13 02 2021 Update active Dynamic code start ############ --> #}
+{#			{% if show_profiletab == 1 %}#}
+{#			<div class="tab-pane " id="profiles">#}
+
+{#				<div class="row">#}
+{#					<p>{{ about }}</p>#}
+{#				</div>#}
+
+{#			</div>#}
+{#			{% endif %}#}
+
+{#			{% if show_aboutstoretab == 1 %}#}
+{#			<div class="tab-pane" id="about">#}
+				{# <!-- new code 13-06-2019  --> #}
+{#				<div class="aboutmodule">#}
+{#					<ul class="nav nav-tabs list-inline">#}
+						{# <!-- new code 14-06-2019  --> #}
+{#						{% if store_about %}#}
+{#						<li class="active">#}
+{#							<a href="#aboutstore" data-toggle="tab" aria-expanded="true">{{ text_aboutstore#}
+{#								}}</a>#}
+{#						</li>#}
+{#						{% endif %}#}
+{#						{% if storedescription %}#}
+{#						{% if store_about =='' %}#}
+						{# <!-- new code 14-06-2019  --> #}
+{#						<li class="active">#}
+{#							{% else %}#}
+{#						<li>#}
+{#							{% endif %}#}
+							{# <!-- new code 14-06-2019  --> #}
+{#							<a href="#storedesc" data-toggle="tab" aria-expanded="false">{{ text_storedescrption#}
+{#								}}</a>#}
+{#						</li>#}
+{#						{% endif %}#}
+{#						{% if shipping_policy %}#}
+{#						<li>#}
+{#							<a href="#shippingpolicy" data-toggle="tab" aria-expanded="false">{{#}
+{#								text_storeshipingpolicy }}</a>#}
+{#						</li>#}
+{#						{% endif %}#}
+{#						{% if return_policy %}#}
+{#						<li>#}
+{#							<a href="#returnpolicy" data-toggle="tab" aria-expanded="false">{{#}
+{#								text_storereturnpolicy }}</a>#}
+{#						</li>#}
+{#						{% endif %}#}
+{#					</ul>#}
+{#					<div class="tab-content">#}
+{#						<div class="tab-pane active" id="aboutstore">#}
+{#							<p>{{ store_about }}</p>#}
+{#						</div>#}
+						{# <!-- new code 14-06-2019  --> #}
+{#						{% if store_about =='' %}#}
+{#						<div class="tab-pane active" id="storedesc">#}
+{#							{% else %}#}
+{#							<div class="tab-pane" id="storedesc">#}
+{#								{% endif %}#}
+{#								<p>{{ storedescription }}</p>#}
+{#								{% if store_about =='' %}#}
+{#							</div>#}
+{#							{% else %}#}
+{#						</div>#}
+{#						{% endif %}#}
+
+{#						<div class="tab-pane" id="shippingpolicy">#}
+{#							<p>{{ shipping_policy }}</p>#}
+{#						</div>#}
+{#						<div class="tab-pane" id="returnpolicy">#}
+{#							<p>{{ return_policy }}</p>#}
+{#						</div>#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
+{#			{% endif %}#}
+
+
+
+			 {#{% if show_tabproduct == 1 %}#}
+			{#29-1-2019 new code end#}
+			{#---------------------- categories------------------------- #}
+			 {#<div class="tab-pane" id="products">#}
+				{#<div class="row paddleft">#}
+				{#	<aside id="column-left" class="col-sm-3 hidden-xs">#}
+				{#		<div class="list-group">#}
+				{#			<ul class="treeview-list treeview">#}
+				{#				{% if categories %}#}
+				{#				{% for category in categories %}#}
+				{#				{% if category.category_id %}#}
+				{#				<li class="active">#}
+				{#					{% if category.category_id == category_id %}#}
+				{#					<a style="cursor:pointer" rel="{{ catevendor_id }}" class=" active load-category"#}
+				{#						rel1="{{ category.category_id }}">{{#}
+				{#						category.categoryname }} </a>#}
+				{#					{% else %}#}
+				{#					<a style="cursor:pointer" rel="{{ catevendor_id }}" class="active load-category"#}
+				{#						rel1="{{ category.category_id }}">{{#}
+				{#						category.categoryname }} </a>#}
+				{#					{% endif %}#}
+				{#					{% if category.children %}#}
+				{#					<ul>#}
+				{#						{% for child in category.children %}#}
+									
+				{#						<li class="collapsable">#}
+											
+				{#							{% if child.category_id == child_id %}#}
+				{#							<a style="cursor:pointer" class="active load-subcategory"#}
+				{#								rel="{{ catevendor_id }}" subcatrel="{{ child.category_id }}">{{#}
+				{#								child.name }}</a>#}
+				{#							{% else %}#}
+				{#							<a style="cursor:pointer" class="load-subcategory" rel="{{ catevendor_id }}"#}
+				{#								subcatrel="{{ child.category_id }}">{{#}
+				{#								child.name }}</a>#}
+				{#							{% endif %}#}
+											
+				{#							{% if child.children1 %}#}
+				{#							<ul class="sub3">#}
+				{#								{% for child1 in child.children1 %}#}
+				{#								<li>#}
+				{#									{% if child1.category_id == child_id1 %}#}
+				{#									<a style="cursor:pointer" class="active load-subcategory"#}
+				{#										rel="{{ catevendor_id }}"#}
+				{#										subcatrel="{{ child1.category_id }}">{{ child1.name#}
+				{#										}}</a>#}
+				{#									{% else %}#}
+				{#									<a style="cursor:pointer" class="load-subcategory"#}
+				{#										rel="{{ catevendor_id }}"#}
+				{#										subcatrel="{{ child1.category_id }}">{{ child1.name#}
+				{#										}}</a>#}
+				{#									{% endif %}#}
+				{#								</li>#}
+				{#								{% endfor %}#}
+				{#							</ul>#}
+				{#							{% endif %}#}
+				{#						</li>#}
+										
+				{#						{% endfor %}#}
+				{#					</ul>#}
+				{#					{% endif %}#}
+				{#				</li>#}
+				{#				{% endif %}#}
+				{#				{% endfor %}#}
+				{#				{% endif %}#}
+				{#			</ul>#}
+				{#		</div>#}
+				{#	</aside>#}
+					
+				{#	{% if categories %}#}
+				{#	<div class="col-sm-9">#}
+				{#		{% else %}#}
+				{#		<div class="col-sm-12">#}
+				{#			{% endif %}#}
+						
+				{#			<div class="row sortby">#}
+				{#				<div class="col-md-4 ">#}
+				{#					<div class="btn-group hidden-xs">#}
+				{#						<button type="button" id="list-view" class="btn btn-default"#}
+				{#							data-toggle="tooltip" title="" data-original-title="{{ text_list }}"><i#}
+				{#								class="fa fa-th-list"></i></button>#}
+				{#						<button type="button" id="grid-view" class="btn btn-default"#}
+				{#							data-toggle="tooltip" title="" data-original-title="{{ text_grid }}"><i#}
+				{#								class="fa fa-th"></i></button>#}
+				{#					</div>#}
+				{#				</div>#}
+				{#				<div class="col-md-2 text-right">#}
+				{#					<label class="control-label" for="input-sort">{{ text_sortby }}</label>#}
+				{#				</div>#}
+				{#				<div class="col-md-3 text-right">#}
+				{#					<select id="input-sort" class="form-control" name="sortorder">#}
+				{#						{% for sorts in sorts %}#}
+				{#						<option value="{{ sorts.value }}">{{ sorts.text }}</option>#}
+				{#						{% endfor %}#}
+
+				{#					</select>#}
+				{#				</div>#}
+				{#				<div class="col-md-1 text-right">#}
+				{#					<label class="control-label" for="input-limit">{{ text_limit }}</label>#}
+				{#				</div>#}
+				{#				<div class="col-md-2 text-right">#}
+				{#					<select id="input-limit" class="form-control" name="showlimit">#}
+				{#						{% for limits in limits %}#}
+				{#						<option value="{{ limits.value }}">{{ limits.text }}</option>#}
+				{#						{% endfor %}#}
+				{#					</select>#}
+				{#				</div>#}
+				{#			</div>#}
+
+				{#			<div class="loadcate">#}
+				{#				<div id="vendorproduct"></div>#}
+				{#			</div>#}
+				{#		</div>#}
+
+				{#	</div>#}
+				{#</div>#}
+				{#{% endif %} #}
+
+{#			{% if show_reviewtab == 1 %}#}
+{#			<div class="tab-pane" id="review">#}
+{#				<p>{{ text_loginplz }}</p>#}
+{#				{% if customerloggin %}#}
+{#				<div class="text-right">#}
+{#					{% if (customerloggin != ids) and (vendorids != vids) %}#}
+{#					<button type="button" data-toggle="modal" data-target="#myModal">{{ text_write#}
+{#						}}</button>#}
+{#					{% endif %}#}
+{#				</div>#}
+{#				{% endif %}#}
+
+{#				{% if field_infos %}#}
+{#				{% for field_info in field_infos %}#}
+{#				<div class="review-box row">#}
+{#					<div class="col-sm-8 col-xs-12">#}
+{#						<ul class="list-inline link">#}
+{#							<li><i class="fa fa-user"></i> {{ field_info.cnames }}</li>#}
+{#							<li><i class="fa fa-calendar"></i> {{ field_info.date_added }}</li>#}
+{#						</ul>#}
+{#						<p>{{ field_info.reviewtext }}</p>#}
+{#					</div>#}
+{#					<div class="col-sm-4 col-xs-12">#}
+{#						<ul class="list-unstyled value">#}
+{#							<li>#}
+{#								{% if field_info.ratings %}#}
+{#								{% for sellerrating in field_info.ratings %}#}
+{#								<div class="rating">#}
+{#									<span class="filedrating">{{ sellerrating.field_name }} :</span>#}
+{#									{% for i in 1..5 %}#}
+{#									{% if sellerrating.value < i %} <span class="fa fa-stack"><i#}
+{#											class="fa fa-star-o fa-stack-2x"></i></span>#}
+{#										{% else %}#}
+{#										<span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i#}
+{#												class="fa fa-star-o fa-stack-2x"></i></span>#}
+{#										{% endif %}#}
+{#										{% endfor %}#}
+{#								</div>#}
+{#								{% endfor %}#}
+{#								{% endif %}#}
+{#							</li>#}
+{#						</ul>#}
+{#					</div>#}
+{#				</div>#}
+{#				{% endfor %}#}
+{#				{% endif %}#}
+{#			</div>#}
+{#			{% endif %}#}
+
+{#			{% if show_productreview == 1 %}#}
+{#			<div class="tab-pane " id="reviews">#}
+				{# ############ 03 02 2021 end############  #}
+{#				{% if sellerreviews %}#}
+{#				{% for sellerreview in sellerreviews %}#}
+{#				<div class="review-box row">#}
+{#					<div class="col-sm-8 col-xs-12">#}
+{#						<ul class="list-inline link">#}
+{#							<li><i class="fa fa-user"></i> {{ sellerreview.author }}</li>#}
+{#							<li><i class="fa fa-calendar"></i> {{ sellerreview.date_added }}</li>#}
+{#						</ul>#}
+{#						<h4><a href="{{ sellerreview.href }}">{{ sellerreview.names }}</a></h4>#}
+{#						<p>{{ sellerreview.text }}</p>#}
+{#					</div>#}
+{#					<div class="col-sm-4 col-xs-12">#}
+{#						<ul class="list-unstyled value">#}
+{#							<li>#}
+{#								<div class="rating">#}
+{#									{{ text_rating }}#}
+{#									{% for i in 1..5 %}#}
+{#									{% if sellerreview.rating < i %} <span class="fa fa-stack"><i#}
+{#											class="fa fa-star-o fa-stack-2x"></i></span>#}
+{#										{% else %}#}
+{#										<span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i#}
+{#												class="fa fa-star-o fa-stack-2x"></i></span>#}
+{#										{% endif %}#}
+{#										{% endfor %}#}
+{#								</div>#}
+{#							</li>#}
+{#						</ul>#}
+{#					</div>#}
+{#				</div>#}
+{#				{% endfor %}#}
+{#				{% else %}#}
+{#				<p>{{ text_proreview }}</p>#}
+{#				{% endif %}#}
+{#			</div>#}
+{#			{% endif %}#}
+
+{#		</div>#}
+{#	</div>#}
+{#</div>#}
+{{ content_bottom }}
+</div>
+{{ column_right }}
+</div>
+
+</div>
+{#<div class="modal fade" id="myModal" role="dialog">#}
+{#	<div class="modal-dialog">#}
+		{# <!-- Modal content--> #}
+{#		<div class="modal-content">#}
+{#			<div class="modal-header">#}
+{#				<button type="button" class="close" data-dismiss="modal">&times;</button>#}
+{#				<h4 class="modal-title">{{ text_write }}</h4>#}
+{#			</div>#}
+{#			<div class="modal-body">#}
+{#				<form class="form-horizontal" id="form-review">#}
+{#					<input type="hidden" value="{{ customer_id }}" name="customer_id" class="form-control" />#}
+{#					<input type="hidden" value="{{ vendor_id }}" name="vendor_id" class="form-control" />#}
+{#					<div class="form-group required">#}
+{#						<div class="col-sm-12">#}
+{#							<label class="control-label" for="input-name">{{ text_name }}</label>#}
+{#							<input value="{{ customername }}" disabled class="form-control" />#}
+{#						</div>#}
+{#					</div>#}
+{#					<div class="form-group required">#}
+{#						<div class="col-sm-12">#}
+{#							<label class="control-label" for="input-review">{{ text_comment }}</label>#}
+{#							<textarea type="text" name="text" rows="4" id="input-review"#}
+{#								class="form-control"></textarea>#}
+{#							<div class="help-block">#}
+{#								<span class="text-danger">Note:</span> HTML is not translated!#}
+{#							</div>#}
+{#						</div>#}
+{#					</div>#}
+{#					{% if review_fields %}#}
+{#					{% for field in review_fields %}#}
+{#					<div class="form-group required">#}
+{#						<div class="col-sm-12">#}
+{#							<label class="control-label">{{ field['field_name'] }}:</label>#}
+{#							&nbsp;&nbsp;&nbsp; Bad&nbsp;#}
+{#							<input name="reviewfield[{{ field['rf_id'] }}]" value="1" type="radio">#}
+{#							&nbsp;#}
+{#							<input name="reviewfield[{{ field['rf_id'] }}]" value="2" type="radio">#}
+{#							&nbsp;#}
+{#							<input name="reviewfield[{{ field['rf_id'] }}]" value="3" type="radio">#}
+{#							&nbsp;#}
+{#							<input name="reviewfield[{{ field['rf_id'] }}]" value="4" type="radio">#}
+{#							&nbsp;#}
+{#							<input name="reviewfield[{{ field['rf_id'] }}]" value="5" type="radio">#}
+{#							&nbsp;Good#}
+{#						</div>#}
+{#					</div>#}
+{#					{% endfor %}#}
+{#					{% endif %}#}
+{#				</form>#}
+{#			</div>#}
+{#			<div class="modal-footer">#}
+{#				<button type="button" class="btn btn-default" data-dismiss="modal">{{ button_close }}</button>#}
+{#				<button type="button" class="btn btn-primary reviews" rel="{{ vendor_id }}"#}
+{#					data-loading-text="{{ text_loading }}">{{ button_send }}</button>#}
+{#			</div>#}
+{#		</div>#}
+{#	</div>#}
+
+{#</div>#}
+
+<script type="text/javascript" src="catalog/view/javascript/vendor/summernote/summernote.js"></script>
+<link href="catalog/view/javascript/vendor/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="catalog/view/javascript/vendor/summernote/opencart.js"></script>
+
+
+{# <!-- --------------------------yyyyyy-----slider----------------------------------------------------- --> #}
+
+<script>
+	function getScrollItemWidth(containerId) {
+		const container = document.getElementById(containerId);
+		const item = container.querySelector('.product-layout');
+		if (!item) return 0;
+		return item.offsetWidth;
+	}
+
+	function slide(containerId, direction) {
+		const itemWidth = getScrollItemWidth(containerId);
+		const container = document.getElementById(containerId);
+		container.scrollBy({ left: direction * itemWidth, behavior: 'smooth' });
+	}
+
+	function slideLeft() {
+		slide('topDealsSlider', -1);
+	}
+	function slideRight() {
+		slide('topDealsSlider', 1);
+	}
+	function slideLeftpopular() {
+		slide('PopularSlider', -1);
+	}
+	function slideRightpopular() {
+		slide('PopularSlider', 1);
+	}
+	function slideLeftlatest() {
+		slide('latestArrivalsSlider', -1);
+	}
+	function slideRightlatest() {
+		slide('latestArrivalsSlider', 1);
+	}
+	function slideLeftDiscounted() {
+		slide('topDiscountedSlider', -1);
+	}
+	function slideRightDiscounted() {
+		slide('topDiscountedSlider', 1);
+	}
+	function getScrollItemWidth(containerId) {
+		const container = document.getElementById(containerId);
+		const item = container.querySelector('.product-layout');
+		if (!item) return 0;
+		const style = window.getComputedStyle(item);
+		return item.offsetWidth;  // no need to calculate margins anymore because gap is handled by flexbox
+	}
+
+
+
+</script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const categoryBar = document.getElementById('categoryBar');
+		const scrollLeftBtn = document.querySelector('.scroll-left');
+		const scrollRightBtn = document.querySelector('.scroll-right');
+
+		// Set scroll amount (scroll one item width)
+		const scrollAmount = categoryBar.querySelector('li')
+			? categoryBar.querySelector('li').offsetWidth + 16  // 16 = gap
+			: 150;  // fallback
+
+		// Scroll left
+		scrollLeftBtn.addEventListener('click', function () {
+			categoryBar.scrollBy({
+				left: -scrollAmount,
+				behavior: 'smooth'
+			});
+		});
+
+		// Scroll right
+		scrollRightBtn.addEventListener('click', function () {
+			categoryBar.scrollBy({
+				left: scrollAmount,
+				behavior: 'smooth'
+			});
+		});
+	});
+</script>
+<script>
+	document.getElementById('shareBtn').addEventListener('click', function () {
+		if (navigator.share) {
+			navigator.share({
+				title: document.title,
+				text: 'Check this out!',
+				url: window.location.href,
+			})
+				.then(() => console.log('Shared successfully'))
+				.catch((error) => console.error('Sharing failed:', error));
+		} else {
+			alert('Sharing not supported on this browser. Please copy the link manually.');
+		}
+	});
+</script>
+
+<input type="hidden" value="0" name="category_id" id="category_id" />
+<script>
+	$('.reviews').click(function () {
+		var vendor_id = $(this).attr('rel');
+		$.ajax({
+			url: 'index.php?route=vendor/vendor_profile/review&vendor_id=' + vendor_id,
+			data: $('#form-review input[type=\'text\'], #form-review input[type=\'hidden\'], #form-review input[type=\'radio\']:checked, #form-review textarea'),
+			type: 'post',
+
+			beforeSend: function () {
+				$('.reviews').button('loading');
+			},
+			complete: function () {
+				$('.reviews').button('reset');
+			},
+
+			success: function (json) {
+				$('.alert, .text-danger1').remove();
+
+				if (json['error']) {
+					$('#input-review').after('<div class="alert text-danger1">' + json['error'] + '</div>');
+
+					$('.warning').fadeIn('slow');
+				}
+
+				if (json['success']) {
+					if (json['success']) {
+						setTimeout(function (e) { $('.close').trigger('click'); location.reload(); }, 1000);
+						$('input[name=text]').val('');
+						$('input[name=\'rating\']:checked').prop('checked', false);
+					}
+				}
+			}
+		});
+	});
+	// Load category
+	$(document).on('click', '.load-category', function () {
+		category_id = $(this).attr('rel1');
+
+		vendor_id = $(this).attr('rel');
+		$('#category_id').val(category_id);
+		$('.loadcate').load('index.php?route=vendor/vendor_profile/loadcategory&vendor_id=' + vendor_id + '&category_id=' + category_id);
+
+	});
+	$(document).on('click', '.load-subcategory', function () {
+		category_id = $(this).attr('subcatrel');
+		vendor_id = $(this).attr('rel');
+		$('#category_id').val(category_id);
+		$('.loadcate').load('index.php?route=vendor/vendor_profile/loadcategory&vendor_id=' + vendor_id + '&category_id=' + category_id);
+
+	});
+
+	// Load Sort Order
+	$('select[name=\'sortorder\']').on('change', function () {
+		sortrel = $('#input-sort').val();
+		relcate = $('#category_id').val();
+		$('.loadcate').load('index.php?route=vendor/vendor_profile/loadcategory&category_id=' + relcate + '&' + sortrel);
+	});
+
+
+	// Load Show Limit
+	$('select[name=\'showlimit\']').on('change', function () {
+		limitrel = $('#input-limit').val();
+		relcate = $('#category_id').val();
+		$('.loadcate').load('index.php?route=vendor/vendor_profile/loadcategory&category_id=' + relcate + '&' + limitrel);
+	});
+
+	$('.loadcate').delegate('.pagination a', 'click', function (e) {
+		e.preventDefault();
+
+		$('.loadcate').fadeOut('slow');
+
+		$('.loadcate').load(this.href);
+
+		$('.loadcate').fadeIn('slow');
+	});
+
+</script>
+<script>
+	$('#follows').click(function () {
+		$.ajax({
+			url: 'index.php?route=vendor/vendor_profile/follow',
+			type: 'post',
+			dataType: 'json',
+			data: $('.addfollow input[type=\'hidden\']'),
+			beforeSend: function () {
+
+			},
+			success: function (json) {
+				if (json['success']) {
+
+				}
+				setTimeout(function (e) { $('.close').trigger('click'); location.reload(); }, 500);
+			}
+		});
+	});
+</script>
+
+<script>
+	// img delete
+	$('#delfollow').click(function () {
+		var vendor_id = $(this).attr('rel');
+		$.ajax({
+			url: 'index.php?route=vendor/vendor_profile/delfollow&vendor_id=' + vendor_id,
+			type: 'post',
+			dataType: 'json',
+			beforeSend: function () {
+			},
+			success: function (json) {
+				if (json['success']) {
+
+				}
+				setTimeout(function (e) { $('.close').trigger('click'); location.reload(); }, 500);
+			}
+		});
+	});
+</script>
+
+<script type="text/javascript">
+	$('#vendorproduct').delegate('.pagination a', 'click', function (e) {
+		e.preventDefault();
+
+		$('#vendorproduct').fadeOut('slow');
+
+		$('#vendorproduct').load(this.href);
+
+		$('#vendorproduct').fadeIn('slow');
+	});
+
+	$('#vendorproduct').load('index.php?route=vendor/vendor_profile/vendorproduct&vendor_id={{ vendor_id }}');
+
+	//--></script>
+
+{#// <!--03 10 2019-->#}
+{% if vendorchat_id %}
+<script type="text/javascript">
+	var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+	(function () {
+		var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+		s1.async = true;
+		s1.src = 'https://embed.tawk.to/{{vendorchat_id}}';
+		s1.charset = 'UTF-8';
+		s1.setAttribute('crossorigin', '*');
+		s0.parentNode.insertBefore(s1, s0);
+	})();
+</script>
+{% endif %}
+{#// <!--03 10 2019-->#}
+{#// <!--############ 03 02 2021############ -->#}
+<script type="text/javascript">
+	var $sorted_items,
+		getSorted = function (selector, attrName) {
+			return $(
+				$(selector).toArray().sort(function (a, b) {
+					var aVal = parseInt(a.getAttribute(attrName)),
+						bVal = parseInt(b.getAttribute(attrName));
+					return aVal - bVal;
+				})
+			);
+		};
+
+	$sorted_items = getSorted('.maintabs > li', 'data-sort').clone();
+	$('.maintabs').html($sorted_items);
+	$('.maintabs a:first').tab('show');
+</script>
+{#// <!--############ 03 02 2021############ -->#}
+
+ {# Changes by sheetal Madam - 29/05/2025 #}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.product-link').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault(); // prevent the default link behavior
+      var productId = this.getAttribute('data-product-id');
+      window.location.href = 'index.php?route=product/product&product_id=' + productId;
+    });
+  });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.latest-product-link').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault(); // prevent the default link behavior
+      var productId = this.getAttribute('data-product-id');
+      if (productId) {
+        window.location.href = 'index.php?route=product/product&product_id=' + productId;
+      }
+    });
+  });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.discounted-product-link').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault(); // prevent default link behavior
+      var productId = this.getAttribute('data-product-id');
+      if (productId) {
+        window.location.href = 'index.php?route=product/product&product_id=' + productId;
+      }
+    });
+  });
+});
+</script>
+
+{# ------------------------------------------ #}
+{{ footer }}

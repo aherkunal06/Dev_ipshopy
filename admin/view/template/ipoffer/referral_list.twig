@@ -1,0 +1,89 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <a href="{{ back }}" class="btn btn-default"><i class="fa fa-reply"></i> </a>
+      </div>
+      <h1>Referral Customers</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if success %}
+      <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}</div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> Referral Customers List</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td>ID</td>
+                <td>Customer Name</td>
+                <td>Customer Email</td>
+                <td>Referral Code</td>
+                <td>Referral Link</td>
+                <td>Visit</td>
+                <td>Conversion</td>
+                <td>Earned</td>
+                <td>Status</td>
+                <td>Date Added</td>
+                <td>Date Modified</td>
+                <td>Action</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% if referrals %}
+              {% for referral in referrals %}
+              <tr>
+                <td>{{ referral.referral_id }}</td>
+                <td>{{ referral.customer_name }}</td>
+                <td>{{ referral.customer_email }}</td>
+                <td>{{ referral.refer_code }}</td>
+                <td>{{ referral.refer_link }}</td>
+                <td>{{ referral.visit }}</td>
+                <td>{{ referral.conversion }}</td>
+                <td>{{ referral.earned }}</td>
+                <td>
+                  {% if referral.status == 0 %}
+                    <span class="label label-warning">{{ referral.status_text }}</span>
+                  {% elseif referral.status == 1 %}
+                    <span class="label label-success">{{ referral.status_text }}</span>
+                  {% else %}
+                    <span class="label label-danger">{{ referral.status_text }}</span>
+                  {% endif %}
+                </td>
+                <td>{{ referral.date_added }}</td>
+                <td>{{ referral.date_modified }}</td>
+                <td>
+                    <a href='{{referral_buyers}}' >view</a>
+                  <a href="{{ referral.approve }}" class="btn btn-success" title="Approve" onclick="return confirm('Are you sure you want to approve this referral?');">
+                    <i class="fa fa-thumbs-up"></i>
+                  </a>
+                  <a href="{{ referral.disapprove }}" class="btn btn-danger" title="Disapprove" onclick="return confirm('Are you sure you want to disapprove this referral?');">
+                    <i class="fa fa-thumbs-down"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <td colspan="9">No referral customers found</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

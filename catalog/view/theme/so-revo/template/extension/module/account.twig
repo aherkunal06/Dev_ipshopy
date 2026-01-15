@@ -1,0 +1,77 @@
+{#<div class="module">#}
+{#  <h3 class="modtitle"><span>{{ heading_title }} </span></h3>#}
+{#  <div class="module-content custom-border">#}
+{#    <ul class="list-box">#}
+{#      {% if not logged %} #}
+{#      <li><a href="{{ login }} ">{{ text_login }} </a> / <a href="{{ register }} ">{{ text_register }} </a></li>#}
+{#      <li><a href="{{ forgotten }} ">{{ text_forgotten }} </a></li>#}
+{#      {% endif %} #}
+{#      <li><a href="{{ account }} ">{{ text_account }} </a></li>#}
+{#      {% if logged %} #}
+{#      <li><a href="{{ edit }} ">{{ text_edit }} </a></li>#}
+{#      <li><a href="{{ password }} ">{{ text_password }} </a></li>#}
+{#      {% endif %} #}
+{#      <li><a href="{{ address }} ">{{ text_address }} </a></li>#}
+{#      <li><a href="{{ wishlist }} ">{{ text_wishlist }} </a></li>#}
+{#      <li><a href="{{ order }} ">{{ text_order }} </a></li>#}
+{#      <li><a href="{{ download }} ">{{ text_download }} </a></li>#}
+{#      <li><a href="{{ recurring }} ">{{ text_recurring }} </a></li>#}
+{#      <li><a href="{{ reward }} ">{{ text_reward }} </a></li>#}
+{#      <li><a href="{{ return }} ">{{ text_return }} </a></li>#}
+{#      <li><a href="{{ transaction }} ">{{ text_transaction }} </a></li>#}
+{#      <li><a href="{{ newsletter }} ">{{ text_newsletter }} </a></li>#}
+{#      {% if logged %} #}
+{#      <li><a href="{{ logout }} ">{{ text_logout }} </a></li>#}
+{#      {% endif %} #}
+{#    </ul>#}
+{#  </div>#}
+{#</div>#}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/customer/account/sidebar.css">
+
+<!-- Menu Icon: only for mobile -->
+<button class="menu-icon" onclick="toggleMenu()">
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+<!-- Sidebar Menu -->
+<div class="sidebar-menu" id="accountMenu">
+  <!-- Close Button (mobile only) -->
+  <button class="close-btn" onclick="toggleMenu()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+
+  {% if not logged %} 
+    <a href="{{ login }}"><i class="fa-regular fa-user"></i> {{ text_login }}</a>  
+    <a href="{{ register }}"><i class="fa-solid fa-file"></i> {{ text_register }}</a>
+    <a href="{{ forgotten }}"><i class="fa-solid fa-key"></i> {{ text_forgotten }}</a>
+  {% endif %}
+
+  <a href="{{ account }}"><i class="fa-regular fa-user"></i> {{ text_account }}</a>
+
+  {% if logged %} 
+    <!-- <a href="{{ edit }}"><i class="fa-regular fa-pen-to-square"></i> {{ text_edit }}</a> -->
+    <a href="{{ password }}"><i class="fa-solid fa-lock"></i> {{ text_password }}</a>
+  {% endif %} 
+
+  <a href="{{ address }}"><i class="fa-regular fa-address-book"></i> {{ text_address }}</a>
+  <a href="{{ wishlist }}"><i class="fa-regular fa-heart"></i> {{ text_wishlist }}</a>
+  <a href="{{ order }}"><i class="fa-solid fa-truck"></i> {{ text_order }}</a>
+  <a href="{{ download }}"><i class="fa-solid fa-download"></i> {{ text_download }}</a>
+  <a href="{{ reward }}"><i class="fa-solid fa-gift"></i> {{ text_reward }}</a>
+  <a href="{{ return }}"><i class="fa-solid fa-reply"></i> {{ text_return }}</a>
+  <a href="{{ transaction }}"><i class="fa-solid fa-credit-card"></i> {{ text_transaction }}</a>
+  <a href="{{ newsletter }}"><i class="fa-regular fa-newspaper"></i> {{ text_newsletter }}</a>
+
+  {% if logged %} 
+    <a href="{{ logout }}" class="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> {{ text_logout }}</a>
+  {% endif %}
+</div>
+
+<script>
+  function toggleMenu() {
+    document.getElementById("accountMenu").classList.toggle("active");
+  }
+</script>
+

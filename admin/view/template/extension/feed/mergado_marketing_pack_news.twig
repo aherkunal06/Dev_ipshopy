@@ -1,0 +1,65 @@
+<div class="tab-pane" id="news">
+    <div class="row">
+        <div class="col-sm-12 col-md-8">
+
+        
+            <div class="panel panel-default">
+                <div class="panel-heading"><strong>{{ news_heading }}</strong></div>
+                <div class="panel-body">
+
+                    {% if news.data.news is not empty %}
+
+                        {% for item in news.data.news %}
+                        <div class="media">
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="{{ item.url }}" target="_blank"><strong>{{ item.title }}</strong></a></h4>
+                                <div>
+                                    <span class="label label-success">{{ category_news }}</span>
+                                    <span><i>{{ item.pubdate }}</i></span>
+                                </div>
+                                <p>{{ item.description }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    {% else %}
+                        {{ news_empty_text }}
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><strong>{{ update_heading }}</strong></div>
+                <div class="panel-body">
+
+                    {% if news.data.update is not empty %}
+
+                        {% for item in news.data.update %}
+                        <div class="media">
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="{{ item.url }}" target="_blank"><strong>{{ item.title }}</strong></a></h4>
+                                <div>
+                                    <span class="label label-info">{{ category_update }}</span>
+                                    <span><i>{{ item.pubdate }}</i></span>
+                                </div>
+                                <p>{{ item.description }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    {% else %}
+                        {{ update_empty_text }}
+                    {% endif %}
+                    
+                </div>
+            </div>
+
+        </div>
+
+        <!-- sidebar -->
+        {{ sidebar_view }}
+        <!-- ./sidebar -->
+
+    </div>
+</div> 

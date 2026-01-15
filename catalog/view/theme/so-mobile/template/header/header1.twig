@@ -1,0 +1,101 @@
+{#=====Check Home page=====#}
+{% set barStatic = soconfig.get_settings('barnav') ? '' : 'bar-static' %}
+{% if soconfig.is_mobile_page() or soconfig.is_home_page() %}
+	<header class=" bar bar-nav bar-navhome typeheader-{{soconfig.get_settings('mtypeheader')}} {{barStatic}}">
+		<div class="row navbar-bar ">
+		
+			<div class="navbar-menu col-xs-2">
+			   <a class="toggle-panel" href="#panel-menu">
+			   	<span class="icon-bar"></span>
+			   	<span class="icon-bar bar2"></span>
+			   	<span class="icon-bar"></span>
+			   </a>
+			</div>
+
+			<div class="navbar-logo col-xs-3">
+				{{soconfig.get_logoMobile()}}
+			</div>
+			<div class="navbar-search col-xs-7">
+				{{search_block}}
+			</div>
+
+		</div>
+	</header>
+{% else %}
+{#=====Check Subpage page =====#}
+	<header class="bar bar-nav {{barStatic}}">
+		<a class="btn btn-link btn-nav pull-left" href="#" onClick="history.go(-1); return false;">
+			<span class="icon icon-left-nav"></span>
+		</a>
+		<a class="btn btn-link btn-nav pull-right toggle-panel" href="#panel-menu">
+			<span class="icon icon-bars"></span>
+		</a>
+		<h1 class="title">{{title}}</h1>
+	</header>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+{# 
+<link rel="stylesheet" href="catalog/view/theme/so-mobile/stylesheet/custom.css">
+
+{% set barStatic = soconfig.get_settings('barnav') ? '' : 'bar-static' %}
+
+{% if soconfig.is_mobile_page() or soconfig.is_home_page() %}
+<header class="bar bar-nav bar-navhome typeheader-{{ soconfig.get_settings('mtypeheader') }} {{ barStatic }}">
+	<div class="row navbar-bar">
+
+	
+		<div class="header-buttons">
+			<div class='header_image_wrapper'>
+				{{ soconfig.get_logoMobile() }}
+				
+			</div>
+			<div id="header_icon" class="placeholder-button store-button">
+					
+					</div>
+		</div>
+
+	
+		<div class="search-bar-mobile-header">
+			<div class="search-input-mobile-header">
+				{{ search_block|raw }}
+			</div>
+		</div>
+
+	</div>
+</header>
+
+{% else %}
+	{% if route == 'product/search' %}
+		
+	{% else %}
+		<header class="bar bar-nav {{ barStatic }}">
+			<a class="btn btn-link btn-nav pull-left" href="#" onClick="history.go(-1); return false;">
+				<span class="icon icon-left-nav"></span>
+			</a>
+
+			{% set first_word = title|split(' ')|first|lower %}
+			{% if first_word == 'search' %}
+				<input type="text" class="search-input" placeholder="Search...">
+				<a class="icon-btn" href="index.php?route=checkout/cart">
+					<i class="fas fa-shopping-cart"></i>
+				</a>
+			{% elseif route starts with 'product/product' %}
+				<h1 class="title">Product Details</h1>
+			{% else %}
+				<h1 class="title">{{ title }}</h1>
+			{% endif %}
+		</header>
+	{% endif %}
+{% endif %} #}

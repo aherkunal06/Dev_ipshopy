@@ -1,0 +1,284 @@
+{{ header }}
+
+<div class="page-wrapper">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-inner">
+            {% for section in sections %}
+            <div class="sidebar-item sidebar-link {% if section.section_id == selected_section_id %}active{% endif %}"
+                 data-cat-ids="{{ section.cat_ids }}"
+                 data-banner="{{ section.banner }}">
+                <a href="javascript:void(0);">
+                    <div class="icon-wrapper">
+                        <img src="{{ section.thumb }}" alt="{{ section.name }}">
+                    </div>
+                    <span>{{ section.name }}</span>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Banner -->
+        <div id="category-banner" style="margin-bottom:15px;">
+            {% if sections|length > 0 %}
+                <img src="{{ sections[0].banner }}" alt="Banner" style="width:100%; border-radius:10px;">
+            {% endif %}
+        </div>
+
+        <div id="categories-content">
+            {% if categories_with_children %}
+                {% for cat in categories_with_children %}
+                    <h2 class="section-title">{{ cat.heading }}</h2>
+                    <div class="subcategory-grid">
+                        {% for child in cat.children %}
+                            <div class="subcategory-card">
+                                <a href="{{ child.href }}">
+                                    <div class="image-wrapper">
+                                        <img src="{{ child.thumb }}" alt="{{ child.name }}">
+                                        <div class="arrow-circle">
+                                            <span class="arrow-icon">›</span>
+                                        </div>
+                                    </div>
+                                    <p>{{ child.name }}</p>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No categories found.</p>
+            {% endif %}
+        </div>
+
+        <div id="categories-loader" style="display:none; text-align:center; padding:20px;">
+            Loading...
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    const contentArea = document.getElementById('categories-content');
+    const loader = document.getElementById('categories-loader');
+    const bannerArea = document.getElementById('category-banner');
+
+    sidebarLinks.forEach(link => {
+    link.addEventListener('click', function() {
+        sidebarLinks.forEach(item => item.classList.remove('active'));
+        this.classList.add('active');
+
+        const catIds = this.dataset.catIds;
+        const bannerImg = this.dataset.banner;
+
+        // Change banner instantly
+        if (bannerImg && bannerArea) {
+            bannerArea.innerHTML = `<img src="${bannerImg}?t=${Date.now()}" alt="Banner" style="width:100%; border-radius:10px;">`;
+        }
+
+        loader.style.display = 'block';
+        contentArea.innerHTML = '';
+
+        fetch(`index.php?route=common/all_categories&group_ids=${catIds}&ajax=1`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            loader.style.display = 'none';
+            if (Array.isArray(data) && data.length > 0) {
+                let html = '';
+                data.forEach(block => {
+                    html += `<h2 class="section-title">${block.heading}</h2><div class="subcategory-grid">`;
+                    block.children.forEach(child => {
+                        html += `
+                            <div class="subcategory-card">
+                                <a href="${child.href}">
+                                    <div class="image-wrapper">
+                                        <img src="${child.thumb}" alt="${child.name}">
+                                        <div class="arrow-circle">
+                                            <span class="arrow-icon">›</span>
+                                        </div>
+                                    </div>
+                                    <p>${child.name}</p>
+                                </a>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                });
+                contentArea.innerHTML = html;
+            } else {
+                contentArea.innerHTML = '<p>No categories found.</p>';
+            }
+        })
+        .catch(err => {
+            loader.style.display = 'none';
+            contentArea.innerHTML = '<p>Error loading categories.</p>';
+            console.error(err);
+        });
+    });
+});
+
+
+    // Default load first category
+    if (sidebarLinks.length > 0) {
+        sidebarLinks[0].click();
+    }
+});
+</script>
+
+
+<style> 
+
+.category-page {
+    display: flex;
+    font-family: Arial, sans-serif;
+}
+
+
+.sidebar {
+    width: 80px;
+    background: #f5d9f5;
+    position: fixed;
+    top: 35px; 
+    left: 0;
+    height: calc(100vh - 35px); 
+    overflow-y: auto;
+    scrollbar-width: none; 
+}
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+
+.sidebar-inner {
+    padding: 15px 5px;
+}
+
+
+.sidebar-item {
+    text-align: center;
+    padding-bottom: 10px;
+}
+.sidebar-item a {
+    text-decoration: none;
+    display: block;
+}
+.icon-wrapper {
+    border-radius: 50%;
+    margin: 5px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon-wrapper img {
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.sidebar-item span {
+    display: block;
+    font-size: 10px;
+    color: #333;
+    margin-top: 5px;
+    line-height: 1.3;
+}
+
+.sidebar-item.active {
+    background: #8e44ad;
+    border-radius: 8px;
+    padding: 5px 0;
+}
+
+.sidebar-item.active .icon-wrapper img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+}
+
+.sidebar-item.active span {
+    color: white; 
+}
+
+
+.main-content {
+    flex: 1;
+    margin-left: 80px;
+    padding: 15px;
+}
+
+.section-title {
+    font-size: 14px;
+    color: black;
+    font-weight: 600;
+    margin: 20px 0 15px;
+}
+
+
+.subcategory-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.subcategory-card {
+    background: #fff;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 10px;
+    transition: transform 0.2s ease;
+}
+
+.subcategory-card:hover {
+    transform: translateY(-3px);
+}
+
+.image-wrapper {
+    position: relative;
+}
+
+.subcategory-card img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+
+.arrow-circle {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrow-icon {
+    color: #9b59b6;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.subcategory-card p {
+    margin-top: 8px;
+    font-weight: 600;
+    font-size: 10px;
+    color: #333;
+}
+
+</style>
+
+
+    

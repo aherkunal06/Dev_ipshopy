@@ -1,0 +1,302 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading d-flex justify-content-between align-items-center" style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 class="panel-title" style="font-size: 30px; font-weight:500px; margin: 0;">Warehouse Address</h3>
+        <div class="form-actions" style="display: flex; gap: 10px;">
+          <button type="submit" form="vendor-form" class="btn" id="save-btn" title="Save" style="background-color: #3399ff; color: white; border: none; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 4px;">
+            <i class="fa fa-floppy-o" aria-hidden="true" style="font-size: 18px;"></i>
+          </button>
+          <a href="{{ back }}" class="btn btn-default" title="Back" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 4px;">
+            <i class="fa fa-reply" style="font-size: 18px;"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" id="vendor-form" novalidate>
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="input-display-name">Display Name</label>
+              <input type="text" name="display_name" value="{{ warehouse.display_name }}" placeholder="Display Name" id="input-display-name" class="form-control" readonly />
+            </div>
+
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" name="firstname" value="{{ warehouse.firstname|default('') }}" class="form-control" readonly>
+            </div>
+
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" name="lastname" value="{{ warehouse.lastname|default('') }}" class="form-control" readonly>
+            </div>
+
+            <div class="form-group" id="group-email">
+              <label>E-Mail</label>
+             <input type="email" name="email" value="{{ warehouse.email|default('') }}" class="form-control" readonly>
+
+             </div>
+
+              
+            <div class="form-group" id="group-telephone">
+              <label>Telephone <span style="color: red;">*</span></label>
+              <input type="tel" name="telephone" value="{{ warehouse.telephone|default('') }}" class="form-control" maxlength="10" pattern="[0-9]*" inputmode="numeric" required>
+
+              <div id="error-telephone" style="color: red; font-size: 13px; margin-top: 5px; display: none;">Please enter a valid 10 digit numeric telephone number</div>
+            </div>
+
+            <div class="form-group" id="group-address-1">
+              <label>Address 1 <span style="color: red;">*</span></label>
+              <input type="text" name="address_1" id="address_1" value="{{ vendor.address_1|default('') }}" class="form-control" maxlength="250" required>
+              <div id="error-address-1" style="color: red; font-size: 13px; margin-top: 5px; display: none;">This field is mandatory and max 250 characters</div>
+            </div>
+
+            <div class="form-group" id="group-address-2">
+              <label>Address 2 </span></label>
+              <input type="text" name="address_2" value="{{ vendor.address_2|default('') }}" class="form-control" maxlength="250" required>
+              <div id="error-address-2" style="color: red; font-size: 13px; margin-top: 5px; display: none;">This field is mandatory and max 250 characters</div>
+            </div>
+
+            {# <div class="form-group" id="group-city">
+              <label>Store City <span style="color: red;">*</span></label>
+              <input type="text" name="city" value="{{ vendor.city|default('') }}" class="form-control" required>
+              <div id="error-city" style="color: red; font-size: 13px; margin-top: 5px; display: none;">This field is mandatory</div>
+            </div> #}
+
+            <div class="form-group" id="group-postcode">
+              <label>Post Code <span style="color: red;">*</span></label>
+              <input type="text" name="postcode" value="{{ vendor.postcode|default('') }}" class="form-control" maxlength="6" pattern="[0-9]*" inputmode="numeric" required>
+              <div id="error-postcode" style="color: red; font-size: 13px; margin-top: 5px; display: none;">Please enter a valid 6 digit numeric postcode</div>
+              <div id="error-postcode-api" style="color: red; font-size: 13px; margin-top: 5px; display: none;">Invalid PIN code. Could not fetch city/state info.</div>
+            </div>
+   
+             <div class="form-group" id="group-city">
+              <label>Store City <span style="color: red;">*</span></label>
+              <input type="text" name="city" value="{{ vendor.city|default('') }}" class="form-control" required>
+              <div id="error-city" style="color: red; font-size: 13px; margin-top: 5px; display: none;">This field is mandatory</div>
+            </div>
+
+
+            <div class="form-group" id="group-country-id">
+              <label>Store Country <span style="color: red;">*</span></label>
+              <select name="country_id" class="form-control" required>
+              <option value="">Select Country</option>
+              {% for country in countries %}
+               {% if country.name == 'India' %}
+              <option value="{{ country.country_id }}" {% if country.country_id == vendor.country_id %}selected{% endif %}>{{ country.name }}</option>
+              {% endif %}
+              {% endfor %}
+              </select>
+
+              <div id="error-country-id" style="color: red; font-size: 13px; margin-top: 5px; display: none;">Please select a country</div>
+            </div>
+
+            <div class="form-group" id="group-zone-id">
+              <label>City Zone <span style="color: red;">*</span></label>
+              <select name="zone_id" class="form-control" required>
+                <option value="">Select Zone</option>
+              </select>
+              <div id="error-zone-id" style="color: red; font-size: 13px; margin-top: 5px; display: none;">Please select a zone</div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  input, select {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  .input-error {
+    border: 1px solid red;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const countrySelect = document.querySelector("[name='country_id']");
+    const zoneSelect = document.querySelector("[name='zone_id']");
+    const form = document.getElementById("vendor-form");
+
+    const fields = {
+      address_1: { input: document.getElementById("address_1"), error: document.getElementById("error-address-1"), maxLength: 250 },
+     
+     // email: {
+       // input: document.querySelector("[name='email']"),
+       // error: document.getElementById("error-email"),
+       // maxLength: 50,
+       // validate: val => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)
+     // },
+      telephone: {
+        input: document.querySelector("[name='telephone']"),
+        error: document.getElementById("error-telephone"),
+        maxLength: 10,
+        validate: val => /^[0-9]{10}$/.test(val)
+      },
+      postcode: {
+        input: document.querySelector("[name='postcode']"),
+        error: document.getElementById("error-postcode"),
+        errorApi: document.getElementById("error-postcode-api"),
+        maxLength: 6,
+        validate: val => /^[0-9]{6}$/.test(val)
+      },
+      city: { input: document.querySelector("[name='city']"), error: document.getElementById("error-city") },
+      country_id: { input: document.querySelector("[name='country_id']"), error: document.getElementById("error-country-id") },
+      zone_id: { input: document.querySelector("[name='zone_id']"), error: document.getElementById("error-zone-id") }
+    };
+
+    function loadZones(country_id, selected_zone_id = "") {
+      if (!country_id) {
+        zoneSelect.innerHTML = '<option value="">Select Zone</option>';
+        return;
+      }
+      zoneSelect.innerHTML = '<option value="">Loading...</option>';
+      fetch("index.php?route=vendor/warehouse/zone&country_id=" + country_id)
+        .then(res => res.json())
+        .then(data => {
+          zoneSelect.innerHTML = '<option value="">Select Zone</option>';
+          data.forEach(zone => {
+            const selected = (zone.zone_id == selected_zone_id) ? 'selected' : '';
+            zoneSelect.innerHTML += `<option value="${zone.zone_id}" ${selected}>${zone.name}</option>`;
+          });
+        });
+    }
+
+    // Load zones on page load if default country/zone set
+    const defaultCountry = "{{ vendor.country_id|default('') }}";
+    const defaultZone = "{{ vendor.zone_id|default('') }}";
+    if (defaultCountry) loadZones(defaultCountry, defaultZone);
+
+    countrySelect.addEventListener("change", function () {
+      loadZones(this.value);
+    });
+
+    form.addEventListener("submit", function (e) {
+      let valid = true;
+      for (const key in fields) {
+        const field = fields[key];
+        const value = field.input.value.trim();
+        if (!value || (field.maxLength && value.length > field.maxLength) || (field.validate && !field.validate(value))) {
+          valid = false;
+          if (field.error) field.error.style.display = "block";
+          field.input.classList.add("input-error");
+        } else {
+          if (field.error) field.error.style.display = "none";
+          field.input.classList.remove("input-error");
+        }
+      }
+      if (!valid) {
+        e.preventDefault();
+        for (const key in fields) {
+          const field = fields[key];
+          if (field.input.classList.contains("input-error")) {
+            field.input.focus(); break;
+          }
+        }
+      }
+    });
+
+    fields.telephone.input.addEventListener("input", () => {
+      fields.telephone.input.value = fields.telephone.input.value.replace(/[^0-9]/g, '').slice(0, 10);
+    });
+
+    fields.postcode.input.addEventListener("input", () => {
+      fields.postcode.input.value = fields.postcode.input.value.replace(/[^0-9]/g, '').slice(0, 6);
+    });
+
+    // Pincode API fetch function
+    fields.postcode.input.addEventListener("blur", function () {
+      const pincode = this.value.trim();
+      if (!fields.postcode.validate(pincode)) {
+        fields.postcode.error.style.display = "block";
+        fields.postcode.errorApi.style.display = "none";
+        return;
+      }
+
+      fields.postcode.error.style.display = "none";
+      fields.postcode.errorApi.style.display = "none";
+
+      fetch('https://api.postalpincode.in/pincode/' + pincode)
+        .then(response => response.json())
+        .then(data => {
+          if (!data || !Array.isArray(data) || data[0].Status !== "Success" || !data[0].PostOffice || data[0].PostOffice.length === 0) {
+            fields.postcode.errorApi.style.display = "block";
+            return;
+          }
+
+          const postOffice = data[0].PostOffice[0];
+          fields.city.input.value = postOffice.District || "";
+
+          const countryName = postOffice.Country || "";
+          let matchedCountryId = "";
+          for (const option of countrySelect.options) {
+            if (option.text.toLowerCase() === countryName.toLowerCase()) {
+              matchedCountryId = option.value;
+              break;
+            }
+          }
+
+          if (matchedCountryId) {
+            countrySelect.value = matchedCountryId;
+        
+    fetch('index.php?route=vendor/warehouse/zone&country_id=' + matchedCountryId)
+  .then(response => response.json())
+  .then(zones => {
+    zoneSelect.innerHTML = '<option value="">Select Zone</option>';
+
+    let matchedZoneId = "";
+
+    zones.forEach(zone => {
+      const option = document.createElement('option');
+      option.value = zone.zone_id;
+      option.textContent = zone.name;
+      zoneSelect.appendChild(option);
+
+      if (zone.name.toLowerCase().trim() === (postOffice.State || '').toLowerCase().trim()) {
+        matchedZoneId = zone.zone_id;
+      }
+    });
+
+    // Set matched zone after populating options
+    if (matchedZoneId) {
+      zoneSelect.value = matchedZoneId;
+    }
+  });
+
+          } else {
+            countrySelect.value = "";
+            zoneSelect.innerHTML = '<option value="">Select Zone</option>';
+          }
+        })
+        .catch(() => {
+          fields.postcode.errorApi.style.display = "block";
+        });
+    });
+  });
+</script>
+
+
+{{ footer }}

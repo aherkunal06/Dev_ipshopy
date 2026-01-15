@@ -1,0 +1,345 @@
+
+
+
+{#<div style="width: 100%; font-family: DejaVu Sans, sans-serif; font-size: 8pt; color: #333; margin: 0 auto; padding: 5px;">#}
+{#  {% for order in orders %}#}
+
+{#    <!-- Top Header -->#}
+{#    <div style="text-align: center; font-size: 14pt; font-weight: bold; margin-bottom: 4px;">INVOICE</div>#}
+
+{#    <!-- Logo + Invoice Info -->#}
+{#    <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">#}
+{#      <tr>#}
+{#        <td width="50%" style="vertical-align: middle;">#}
+{#          <img src="https://www.ipshopy.com/image/catalog/A-Satyashil/Logo props.png" alt="ipshopy" style="height: 30px;">#}
+{#        </td>#}
+{#        <td width="50%" style="text-align: right; font-size: 8pt;">#}
+{#          <strong>Invoice No:</strong> {{ order.invoice_no }}<br>#}
+{#          <strong>Order ID:</strong> {{ order.order_id }}<br>#}
+{#          <strong>Date:</strong> {{ order.date_added }}<br>#}
+{#          <strong>Payment:</strong> {{ order.payment_method }}<br>#}
+{#          {% if order.shipping_method %}#}
+{#          <strong>Shipping:</strong> {{ order.shipping_method }}#}
+{#          {% endif %}#}
+{#        </td>#}
+{#      </tr>#}
+{#    </table>#}
+
+{#    <!-- Address Section -->#}
+{#    <table width="100%" cellpadding="2" cellspacing="0" style="margin-top: 5px;">#}
+{#      <tr>#}
+{#        <td width="50%" style="border: 1px solid #ccc; vertical-align: top;">#}
+{#          <strong>Billing Address</strong><br>{{ order.payment_address }}#}
+{#        </td>#}
+{#        <td width="50%" style="border: 1px solid #ccc; vertical-align: top;">#}
+{#          <strong>Shipping Address</strong><br>{{ order.shipping_address }}#}
+{#        </td>#}
+{#      </tr>#}
+{#    </table>#}
+
+{#    <!-- Product Table -->#}
+{#    <table width="100%" cellpadding="2" cellspacing="0" style="margin-top: 5px; border: 1px solid #ccc; border-collapse: collapse; page-break-inside: avoid;">#}
+{#      <thead style="background-color: #f1f1f1;">#}
+{#        <tr>#}
+{#          <th style="border: 1px solid #ccc;">Product</th>#}
+{#          <th style="border: 1px solid #ccc;">HSN</th>#}
+{#          <th style="border: 1px solid #ccc;">Qty</th>#}
+{#          <th style="border: 1px solid #ccc;">GST</th>#}
+{#          <th style="border: 1px solid #ccc;">Courier</th>#}
+{#          <th style="border: 1px solid #ccc;">Price</th>#}
+{#          <th style="border: 1px solid #ccc;">Total</th>#}
+{#        </tr>#}
+{#      </thead>#}
+{#      <tbody>#}
+{#        {% for product in order.product %}#}
+{#          {% set price_total = product.price|replace({'₹':'', ',':''}) * product.quantity %}#}
+{#          {% set gst_total = gst_type == 'cgst_sgst' ? (product.cgst + product.sgst) : product.igst %}#}
+{#          {% set courier_total = product.courier_charges|replace({'₹':'', ',':''}) %}#}
+{#        <tr>#}
+{#          <td style="border: 1px solid #ccc;">#}
+{#            {{ product.name|slice(0, 35) }}{% if product.name|length > 35 %}...{% endif %}#}
+{#            {% for option in product.option %}#}
+{#              <br><small>{{ option.name|slice(0, 10) }}: {{ option.value|slice(0, 10) }}</small>#}
+{#            {% endfor %}#}
+{#          </td>#}
+{#          <td style="border: 1px solid #ccc;">{{ product.hsn_code }}</td>#}
+{#          <td style="border: 1px solid #ccc;">{{ product.quantity }}</td>#}
+{#          <td style="border: 1px solid #ccc;">₹{{ gst_total|number_format(2) }}</td>#}
+{#          <td style="border: 1px solid #ccc;">₹{{ courier_total }}</td>#}
+{#          <td style="border: 1px solid #ccc;">₹{{price_total}}</td>#}
+{#          <td style="border: 1px solid #ccc;">₹{{ product.total }}</td>#}
+{#        </tr>#}
+{#        {% endfor %}#}
+
+{#        {% for voucher in order.voucher %}#}
+{#        <tr>#}
+{#          <td style="border: 1px solid #ccc;">{{ voucher.description }}</td>#}
+{#          <td colspan="5" style="border: 1px solid #ccc;"></td>#}
+{#          <td style="border: 1px solid #ccc;">{{ voucher.amount }}</td>#}
+{#        </tr>#}
+{#        {% endfor %}#}
+
+{#        {% for total in order.total %}#}
+{#        <tr>#}
+{#          <td colspan="6" style="border: 1px solid #ccc; text-align: right;"><strong>{{ total.title }}</strong></td>#}
+{#          <td style="border: 1px solid #ccc;"><strong>{{ total.text }}</strong></td>#}
+{#        </tr>#}
+{#        {% endfor %}#}
+{#      </tbody>#}
+{#    </table>#}
+
+{#    {% if order.comment %}#}
+{#    <div style="padding: 3px; background-color: #fff8dc; border: 1px solid #ccc; font-size: 8pt; margin-top: 5px;">#}
+{#      <strong>Comment:</strong><br>{{ order.comment }}#}
+{#    </div>#}
+{#    {% endif %}#}
+
+{#    <!-- Footer -->#}
+{#    <div style="text-align: center; font-size: 8pt; color: #555; padding: 5px; margin-top: 5px;">#}
+{#      Thank you for shopping with us! <a href="https://ipshopy.com" style="color: #007bff;">ipshopy.com</a>#}
+{#    </div>#}
+
+{#  {% endfor %}#}
+{#</div>#}
+
+<div style="width: 100%; font-family: DejaVu Sans, sans-serif; font-size: 8pt; color: #333; margin: 0 auto; padding: 5px;">
+  {% for order in orders %}
+    {% set compact_mode = order.product|length > 1 %}
+    {% set fs = compact_mode ? '8pt' : '10pt' %}
+    {% set pad = compact_mode ? '2px' : '6px' %}
+    {% set th_bg = '#f1f1f1' %}
+
+    <!-- Top Heading -->
+    <div style="text-align: center; font-size: 14pt; font-weight: bold; margin-bottom: 4px;">INVOICE</div>
+
+    <!-- Logo + Invoice Info -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; font-size: {{ fs }}; margin-bottom: 10px;">
+      <tr>
+        <td width="50%">
+          <img src="/home/ipshopy2/ipshopy.com/image/Logo.png" alt="ipshopy" style="height: 30px;">
+        </td>
+        <td width="50%" style="text-align: right;">
+          <strong>Invoice No:</strong> {{ order.invoice_no }}<br>
+          <strong>Order ID:</strong> {{ order.order_id }}<br>
+          <strong>Date:</strong> {{ order.date_added }}<br>
+          <strong>Payment:</strong> {{ order.payment_method }}<br>
+          {% if order.shipping_method %}
+          <strong>Shipping:</strong> {{ order.shipping_method }}
+          {% endif %}
+        </td>
+      </tr>
+    </table>
+
+    <!-- Address Section -->
+    <table width="100%" cellpadding="2" cellspacing="0" style="margin-top: 5px; font-size: {{ fs }}; padding: 10px;">
+      <tr>
+        <td width="50%" style="border: 1px solid #ccc; vertical-align: top; padding: {{ pad }};">
+        <strong>Billing Address</strong><br>{{ order.payment_address }}
+        </td>
+        <td width="50%" style="border: 1px solid #ccc; vertical-align: top; padding: {{ pad }};">
+        <strong>Shipping Address</strong><br>{{ order.shipping_address }}
+        </td>
+      </tr>
+    </table>
+
+    <!-- Product Table -->
+    <table width="100%" cellspacing="0" style="margin-top: 5px; border: 1px solid #ccc; border-collapse: collapse; page-break-inside: avoid; font-size: {{ fs }};">
+      <thead style="background-color: {{ th_bg }};">
+        <tr>
+          <th style="width: 40%; border: 1px solid #ccc; padding: {{ pad }};">Product</th>
+          <th style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">HSN</th>
+          <th style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">Qty</th>
+          <th style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">GST</th>
+          <th style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">Courier Charges</th>
+          <th style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">Price</th>
+          <th style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in order.product %}
+          {% set price_total = product.price|replace({'₹':'', ',':''}) * product.quantity %}
+          {% set gst_total = gst_type == 'cgst_sgst' ? (product.cgst + product.sgst) : product.igst %}
+          {% set courier_total = product.courier_charges|replace({'₹':'', ',':''}) %}
+        <tr>
+        <td style="width: 40%; border: 1px solid #ccc; padding: {{ pad }};">
+          {% set name_limit = compact_mode ? 35 : 100 %}
+          {{ product.name|slice(0, name_limit) }}{% if product.name|length > name_limit %}...{% endif %}
+          {% for option in product.option %}
+            <br><small>{{ option.name|slice(0, 10) }}: {{ option.value|slice(0, 10) }}</small>
+          {% endfor %}
+        </td>
+          <td style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">{{ product.hsn_code }}</td>
+          <td style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">{{ product.quantity }}</td>
+          <td style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">₹{{ gst_total|number_format(2) }}</td>
+          <td style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">₹{{ courier_total }}</td>
+          <td style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">₹{{ price_total }}</td>
+          <td style="width: 10%; border: 1px solid #ccc; padding: {{ pad }};">{{ product.total }}</td>
+        </tr>
+        {% endfor %}
+
+        {% for voucher in order.voucher %}
+        <tr>
+          <td style="border: 1px solid #ccc; padding: {{ pad }};">{{ voucher.description }}</td>
+          <td colspan="5" style="border: 1px solid #ccc;"></td>
+          <td style="border: 1px solid #ccc;">{{ voucher.amount }}</td>
+        </tr>
+        {% endfor %}
+
+        {% for total in order.total %}
+        <tr>
+          <td colspan="6" style="border: 1px solid #ccc; text-align: right; padding: {{ pad }};"><strong>{{ total.title }}</strong></td>
+          <td style="border: 1px solid #ccc; padding: {{ pad }};"><strong>{{ total.text }}</strong></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% if order.comment %}
+    <div style="padding: 4px; background-color: #fff8dc; border: 1px solid #ccc; font-size: {{ fs }}; margin-top: 5px;">
+      <strong>Comment:</strong><br>{{ order.comment }}
+    </div>
+    {% endif %}
+
+    <!-- Footer -->
+    <div style="text-align: center; font-size: {{ fs }}; color: #555; padding: 5px; margin-top: 5px;">
+      Thank you for shopping with us! <a href="https://ipshopy.com" style="color: #007bff;">ipshopy.com</a>
+    </div>
+
+  {% endfor %}
+</div>
+
+
+
+
+
+
+
+{#<table width="100%" cellpadding="0" cellspacing="0" style="font-family: DejaVu Sans, sans-serif; font-size: 10pt; color: #333; border-collapse: collapse;">#}
+{#    {% for order in orders %}#}
+{#    <tr>#}
+{#      <td colspan="2" style="text-align: center; font-size: 14pt; font-weight: bold; padding: 10px 0;">{{ text_invoice }} #{{ order.order_id }}</td>#}
+{#    </tr>#}
+{#    <tr>#}
+{#        <td colspan="2" style="padding:0;">#}
+{#          <table width="100%" cellpadding="4" cellspacing="0">#}
+{#            <tr>#}
+{#              <td width="50%" style="vertical-align: middle;">#}
+{#                <!-- LOGO: Use an HTTPS path, not local C:\ -->#}
+{#                <img src="ipshopy.com/image/Ipshopy Logo.png" alt="Ipshopy" style="height: 50px;">#}
+{#              </td>#}
+{#              <td width="50%" style="vertical-align: top; text-align: right; font-size: 10pt; padding:0">#}
+{#                <strong>Invoice No:</strong> {{ order.invoice_no }}<br>#}
+{#                <strong>Order ID:</strong> {{ order.order_id }}<br>#}
+{#                <strong>Date Added:</strong> {{ order.date_added }}<br>#}
+{#                <strong>Payment Method:</strong> {{ order.payment_method }}<br>#}
+{#                {% if order.shipping_method %}#}
+{#                <strong>Shipping Method:</strong> {{ order.shipping_method }}<br>#}
+{#                {% endif %}#}
+{#              </td>#}
+{#            </tr>#}
+{#          </table>#}
+{#        </td>#}
+{#      </tr>#}
+
+{#    <tr>#}
+{#      <td colspan="2" style="padding: 10px 0;">#}
+{#        <table width="100%" cellpadding="4" cellspacing="0">#}
+{#          <tr>#}
+{#            <td width="50%" style="border: 1px solid #ccc; vertical-align: top; font-size: 10pt;"><strong>Payment Address</strong><br>{{ order.payment_address }}#}
+{#            </td>#}
+{#            <td width="50%" style="border: 1px solid #ccc; vertical-align: top; font-size: 10pt;"><strong>Shipping Address</strong><br>{{ order.shipping_address }}#}
+{#            </td>#}
+{#          </tr>#}
+{#        </table>#}
+{#      </td>#}
+{#    </tr>#}
+
+{#    <tr>#}
+{#      <td colspan="2" style="padding: 10px 0;">#}
+{#        <table width="100%" cellpadding="4" cellspacing="0" style="border: 1px solid #ccc;">#}
+{#          <thead>#}
+{#            <tr style="background-color: #f1f1f1;">#}
+{#              <th width="45%" style="border: 1px solid #ccc; text-align: left;">Product</th>#}
+{#              <th width="15%" style="border: 1px solid #ccc; text-align: left;">Model</th>#}
+{#              <th width="15%" style="border: 1px solid #ccc; text-align: left;">HSN</th>#}
+{#              <th width="10%" style="border: 1px solid #ccc; text-align: left;">Qty</th>#}
+{#              {% if gst_type == 'cgst_sgst' %}#}
+{#              <th width="20%" style="border: 1px solid #ccc; text-align: left;"><b>CGST</b></th>#}
+{#                  <th width="20%" style="border: 1px solid #ccc; text-align: left;"><b>SGST</b></th>#}
+{#                {% else %}#}
+{#                  <th width="20%" style="border: 1px solid #ccc; text-align: left;"><b>IGST</b></th>#}
+{#             {% endif %}#}
+        
+{#                <th width="20%" class="text-right"><b>Courier Charges</b></th>#}
+              
+{#              <th width="15%" style="border: 1px solid #ccc; text-align:left;">Price (₹)</th>#}
+{#              <th width="15%" style="border: 1px solid #ccc; text-align:left;">Total (₹)</th>#}
+{#            </tr>#}
+{#          </thead>#}
+{#          <tbody>#}
+{#            {% for product in order.product %}#}
+{#            <tr>#}
+{#              <td style="border: 1px solid #ccc;">{{ product.name }}#}
+{#                {% for option in product.option %}#}
+{#                <br><small>{{ option.name }}: {{ option.value }}</small>#}
+{#                {% endfor %}#}
+{#              </td>#}
+{#              <td style="border: 1px solid #ccc;">{{ product.model }}</td>#}
+{#              <td style="border: 1px solid #ccc;">{{ product.hsn_code }} {{ product.description }}</td>#}
+{#              <td style="border: 1px solid #ccc; ">{{ product.quantity }}</td>#}
+{#              {% set rate = product.gst_rate is defined and product.gst_rate > 0 ? product.gst_rate : 18 %}#}
+{#              {% if gst_type == 'cgst_sgst' %}#}
+{#              <td style="border: 1px solid #ccc; ">₹{{ product.cgst|number_format(2) }}<br /> <span style='padding-top:5px;'> ({{ (product.gst_rate / 2)|number_format(0) }}%)</span></td>#}
+{#              <td style="border: 1px solid #ccc; ">₹{{ product.sgst|number_format(2) }}<br /><span style='padding-top:5px;'> ({{ (product.gst_rate / 2)|number_format(0) }}%)</span></td>#}
+{#              {% else %}#}
+{#              <td class="text-center">₹{{ product.igst|number_format(2, '.', '') }}<br /><span style='padding-top:2px;'> ({{ (product.gst_rate / 2)|number_format(0) }}%)</span></td>#}
+{#              {% endif %}#}
+{#              <td class="text-right" >{{ product.courier_charges }}</td>#}
+{#              <td style="border: 1px solid #ccc; text-align:left;">{{ product.price }}</td>#}
+{#              <td style="border: 1px solid #ccc; text-align: left;">{{ product.total }}</td>#}
+{#            </tr>#}
+{#            {% endfor %}#}
+
+{#            {% for voucher in order.voucher %}#}
+{#            <tr>#}
+{#              <td style="border: 1px solid #ccc;">{{ voucher.description }}</td>#}
+{#              <td style="border: 1px solid #ccc;"></td>#}
+{#              <td style="border: 1px solid #ccc; text-align: right;">1</td>#}
+{#              <td style="border: 1px solid #ccc; text-align: right;">{{ voucher.amount }}</td>#}
+{#              <td style="border: 1px solid #ccc; text-align: right;">{{ voucher.amount }}</td>#}
+{#            </tr>#}
+{#            {% endfor %}#}
+
+{#            {% for total in order.total %}#}
+{#            <tr>#}
+{#              <td colspan="4" style="border: 1px solid #ccc; text-align: right;"><strong>{{ total.title }}</strong></td>#}
+{#              <td style="border: 1px solid #ccc; text-align: right;"><strong>{{ total.text }}</strong></td>#}
+{#            </tr>#}
+{#            {% endfor %}#}
+{#          </tbody>#}
+{#        </table>#}
+{#      </td>#}
+{#    </tr>#}
+
+{#    {% if order.comment %}#}
+{#    <tr>#}
+{#      <td colspan="2" style="padding: 10px; background-color: #fff8dc; border: 1px solid #ccc; font-size: 10pt;">#}
+{#        <strong>Comment:</strong><br>#}
+{#        {{ order.comment }}#}
+{#      </td>#}
+{#    </tr>#}
+{#    {% endif %}#}
+
+{#    <!-- Add min-height/filler -->#}
+{#    <tr>#}
+{#      <td colspan="2" style="height: 100px;"></td>#}
+{#    </tr>#}
+
+{#    <tr>#}
+{#      <td colspan="2" style="text-align: center; font-size: 9pt; color: #555; padding: 10px;">#}
+{#        Thank you for shopping with us!<br>#}
+{#        <a href="https://ipshopy.com" style="color: #007bff;">ipshopy.com</a>#}
+{#      </td>#}
+{#    </tr>#}
+{#    {% endfor %}#}
+{#</table>#}

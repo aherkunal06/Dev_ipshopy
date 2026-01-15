@@ -1,0 +1,205 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+    <div class="page-header">
+    <div class="container-fluid">
+        <div class="pull-right">
+            <a href="index.php?route=customer/ticket&user_token={{ user_token }}" class="btn btn-default" title="Back to Ticket List">
+                <i class="fa fa-reply"></i> Back
+            </a>
+        </div>
+        <h1>Ticket Details</h1>
+    </div>
+</div>
+
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-ticket"></i> Ticket #{{ ticket.ticket_id }}</h3>
+            </div>
+            {# <div class="panel-body">
+                <p><strong>Ticket ID:</strong> {{ ticket.ticket_id }}</p>
+                <p><strong>Customer Name:</strong> {{ ticket.customer_name }}</p>
+                <p><strong>Subject:</strong> {{ ticket.subject }}</p>
+                <p><strong>Message:</strong> {{ ticket.description }}</p>
+                <p><strong>Category:</strong> {{ ticket.category }}</p>
+                <p><strong>Status:</strong> Open</p>
+                <p><strong>Date Added:</strong> {{ ticket.date_added }}</p>
+                <!-- Attachment code starts here -->
+                <p><strong>Attachment:</strong>
+                    {% if ticket.file %}
+                        <a href="/sagar/image/ticket_uploads/{{ ticket.file }}" target="_blank">
+                            <img src="/sagar/image/ticket_uploads/{{ ticket.file }}" style="max-width:100px;border:2px solid #ccc;padding:5px;">
+                        </a>
+                    {% else %}
+                        <span>-</span>
+                    {% endif %}
+                </p>
+                <!-- Attachment code ends here -->
+            </div> #}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ticket Details</h3>
+                </div>
+                <div class="panel-body">
+                    <h4><i class="fa fa-info-circle"></i> Ticket Information</h4>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td><strong>Ticket ID</strong></td>
+                            <td>{{ ticket.ticket_id }}</td>
+                            <td><strong>Status</strong></td>
+                            <td>
+                                {% if ticket.status == 'Pending' %}
+                                    <span class="label label-danger">PENDING</span>
+                                {% elseif ticket.status == 'Closed' %}
+                                    <span class="label label-success">CLOSED</span>
+                                {% else %}
+                                    <span class="label label-default">{{ ticket.status }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Customer Name</strong></td>
+                            <td>{{ ticket.customer_name }}</td>
+                            <td><strong>Date Added</strong></td>
+                            <td>{{ ticket.date_added }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Subject</strong></td>
+                            <td colspan="3">{{ ticket.subject }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Category</strong></td>
+                            <td colspan="3">{{ ticket.category }}</td>
+                        </tr>
+                    </table>
+
+                    {# <h4><i class="fa fa-comments"></i> Conversation History</h4> #}
+                    {% for message in ticket.conversations %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong><i class="fa fa-user"></i> {{ message.sender }}</strong>
+                                <span class="pull-right"><i class="fa fa-clock-o"></i> {{ message.date_added }}</span>
+                            </div>
+                            <div class="panel-body">
+                                <p>{{ message.message }}</p>
+                                {% if message.attachment %}
+                                    <a href="/sagar/image/ticket_uploads/{{ message.attachment }}" target="_blank">
+                                        <img src="/sagar/image/ticket_uploads/{{ message.attachment }}" style="max-width:150px;border:1px solid #ccc;padding:5px;">
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+{# Replies container first #}
+        {# <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Conversation History</h3>
+            </div>
+            <div class="panel-body">
+                {% if replies %}
+                    {% for reply in replies %}
+                        <div style="margin-bottom:20px;">
+                            <strong>
+                                {% if reply.user_type == 'admin' %}
+                                    Admin
+                                {% else %}
+                                    {{ reply.firstname ? reply.firstname : 'Customer' }}
+                                {% endif %}
+                            </strong> {{ reply.message }}<br>
+                            {% if reply.file %}
+                                <a href="/sagar/image/ticket_uploads/{{ reply.file }}" target="_blank">
+                                    <img src="/sagar/image/ticket_uploads/{{ reply.file }}" style="max-width:100px;border:2px solid #ccc;padding:5px;"><br>
+                                </a>
+                            {% endif %}
+                            <small>{{ reply.date_added }}</small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No replies yet.</p>
+                {% endif %}
+            </div>
+        </div> #}
+<!-- Conversation History Panel -->
+<div class="panel panel-default conversation-history">
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-comments"></i> Conversation History</h3>
+    </div>
+    <div class="panel-body" style="background:#f9f9f9;">
+        {% if replies %}
+            {% for reply in replies %}
+                <div class="panel panel-default" style="background:#fcfcfc; padding:10px; margin-bottom:15px; border:1px solid #e3e3e3;">
+                    <div class="panel-heading" style="background:#f5f5f5; padding:8px;">
+                        <strong><i class="fa fa-user"></i> 
+                            {% if reply.user_type == 'admin' %}
+                                Admin
+                            {% else %}
+                                {{ reply.firstname ? reply.firstname : 'Customer' }}
+                            {% endif %}
+                        </strong>
+                        <span class="pull-right"><i class="fa fa-clock-o"></i> {{ reply.date_added }}</span>
+                    </div>
+                    <div class="panel-body" style="padding:10px;">
+                        <p style="margin-bottom:10px;">{{ reply.message }}</p>
+
+                        {% if reply.file %}
+                            <a href="/sagar/image/ticket_uploads/{{ reply.file }}" target="_blank">
+                                <img src="/sagar/image/ticket_uploads/{{ reply.file }}" 
+                                     style="max-width:150px; border:1px solid #ccc; padding:4px;">
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No replies yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Status Dropdown Panel -->
+<div class="panel panel-default" style="margin-bottom: 20px;">
+    <div class="panel-heading">
+        <i class="fa fa-info-circle"></i> Ticket Status
+    </div>
+    <div class="panel-body">
+        <form action="index.php?route=customer/ticket_view/updateStatus&user_token={{ user_token }}&ticket_id={{ ticket.ticket_id }}" method="post">
+    <select name="ticket_status" class="form-control">
+        <option value="Open" {% if ticket.status == 'Open' %}selected{% endif %}>Open</option>
+        <option value="Pending" {% if ticket.status == 'Pending' %}selected{% endif %}>Pending</option>
+        <option value="Closed" {% if ticket.status == 'Closed' %}selected{% endif %}>Closed</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Update Status</button>
+</form>
+
+    </div>
+</div>
+
+{# Reply to Ticket container at the bottom #}
+        <div class="panel panel-default" style="margin-top:40px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Reply to Ticket</h3>
+            </div>
+            <div class="panel-body">
+                <form action="index.php?route=customer/ticket_view/reply&user_token={{ user_token }}&ticket_id={{ ticket.ticket_id }}" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Message:</label>
+                        <textarea name="reply_message" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Attachment:</label>
+                        <input type="file" name="reply_file" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Reply</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ footer }}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Confirmation - IPSHOPY</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+
+    .wrapper {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 10px;
+    }
+
+    .header {
+      background-color: #953a93;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .content {
+      padding: 15px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    td {
+      font-size: 12px;
+      padding: 7px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    thead td {
+      background-color: #efefef;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .footer {
+      background-color: #f0f0f0;
+      text-align: center;
+      padding: 15px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .product-table {
+      width: 100%;
+      min-width: unset;
+    }
+
+    .product-name {
+      width: 250px;
+      white-space: normal;
+    }
+
+    .table-scroll-wrapper {
+      overflow: visible;
+      border: none;
+      padding-bottom: 0;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .table-scroll-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid #ccc;
+        padding-bottom: 8px;
+      }
+
+      .product-table {
+        width: 900px;
+        min-width: 700px;
+      }
+
+      .product-table td {
+        font-size: 9px;
+      }
+
+      .table-scroll-wrapper::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .table-scroll-wrapper::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      .table-scroll-wrapper::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+      }
+
+      .table-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <h2>Order Confirmation</h2>
+    </div>
+
+    <div class="content">
+      <p>Hello {{ firstname }} {{ lastname }},</p>
+      <p>Thank you for your order! You can view your order by clicking the link below:</p>
+      <p><a href="{{ order_link }}">{{ order_link }}</a></p>
+
+      <table>
+        <thead>
+          <tr><td colspan="2">Order Details</td></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>Order ID:</strong> {{ order_id }}<br>
+              <strong>Date Added:</strong> {{ date_added }}<br>
+              <strong>Payment Method:</strong> {{ payment_method }}<br>
+              <strong>Shipping Method:</strong> {{ shipping_method }}
+            </td>
+            <td>
+              <strong>Email:</strong> {{ email }}<br>
+              <strong>Telephone:</strong> {{ telephone }}<br>
+              <strong>IP Address:</strong> {{ ip }}<br>
+              <strong>Order Status:</strong> {{ order_status }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead><tr><td>Instructions</td></tr></thead>
+        <tbody>
+          <tr><td>Please ensure someone is available to receive the package at the given address.</td></tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <td>Payment Address</td>
+            <td>Shipping Address</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ payment_address|nl2br }}</td>
+            <td>{{ shipping_address|nl2br }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-scroll-wrapper">
+        <table class="product-table">
+          <thead>
+            <tr>
+              <td class="product-name">Product</td>
+              <td>Model</td>
+              <td style="text-align:right;">Quantity</td>
+              <td style="text-align:right;">GST</td>
+              <td style="text-align:right;">Courier Charges</td>
+              <td style="text-align:right;">Price</td>
+              <td style="text-align:right;">Total</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+              <tr>
+                <td class="product-name">{{ product.name }}</td>
+                <td>{{ product.model }}</td>
+                <td style="text-align:right;">{{ product.quantity }}</td>
+                <td style="text-align:right;">&#8377;{{ product.gst }}</td>
+                <td style="text-align:right;">{{ product.courier }}</td>
+                <td style="text-align:right;">{{ product.price }}</td>
+                <td style="text-align:right;">{{ product.total }}</td>
+              </tr>
+            {% endfor %}
+
+            {% for voucher in vouchers %}
+              <tr>
+                <td class="product-name">{{ voucher.description }}</td>
+                <td></td>
+                <td style="text-align:right;">1</td>
+                <td colspan="2"></td>
+                <td colspan="2" style="text-align:right;">{{ voucher.amount }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          {#<tfoot>#}
+          {#  <tr>#}
+          {#    <td colspan="5"></td>#}
+          {#    <td style="text-align:right;"><strong>Subtotal:</strong></td>#}
+          {#    <td style="text-align:right;">{{ subtotal }}</td>#}
+          {#  </tr>#}
+          {#  <tr>#}
+          {#    <td colspan="5"></td>#}
+          {#    <td style="text-align:right;"><strong>GST:</strong></td>#}
+          {#    <td style="text-align:right;">{{ gst_total }}</td>#}
+          {#  </tr>#}
+          {#  <tr>#}
+          {#    <td colspan="5"></td>#}
+          {#    <td style="text-align:right;"><strong>Total:</strong></td>#}
+          {#    <td style="text-align:right;">{{ total }}</td>#}
+          {#  </tr>#}
+          {#</tfoot>#}
+        </table>
+      </div>
+
+      <p>If you have any questions, just reply to this email — we're happy to help!</p>
+      <p style="margin-top: 30px; font-size: 14px; color: #555;">
+        Thanks for shopping with us!<br><strong>IPSHOPY</strong>
+      </p>
+    </div>
+
+    <div class="footer">
+      &copy; {{ "now"|date("Y") }} IPSHOPY. All rights reserved.
+    </div>
+  </div>
+</body>
+</html>

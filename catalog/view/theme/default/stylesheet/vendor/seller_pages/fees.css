@@ -1,0 +1,183 @@
+
+	body {
+
+		font-family: Arial, sans-serif;
+	}
+
+	.Seller-hading-main {
+		background: linear-gradient(to bottom, #F3E5F5, #ffffff);
+		padding: 80px 0;
+
+	}
+
+	.text-center {
+		padding: 0;
+	}
+
+	.Seller-hading-main .title {
+		color: #953A93;
+		font-weight: bold;
+		font-size: 48px;
+		line-height: 72px;
+	}
+
+	.Seller-hading-main .subtitle {
+		color: #333333;
+		font-size: 18px;
+	}
+	.table {
+		background-color: white !important;
+		--bs-table-bg: transparent;
+	}
+
+	.card {
+		border-radius: 10px;
+
+		background: #00000000;
+		margin-bottom: 30px;
+	}
+
+	.card-header {
+		background: transparent;
+		color: #6a1b9a;
+		font-weight: bold;
+		text-align: center;
+		font-size: 18px;
+		border: none;
+		padding: 20px 26px 0;
+		text-align: left;
+	}
+
+	.card-body {
+		padding: 20px;
+	}
+
+	.table th,
+	.table td {
+		color: #333333;
+		font-weight: bold;
+		font-size: 16px;
+		font-weight: 400
+	}
+
+
+	.table thead tr th {
+		color: #953A93;
+		font-weight: bold;
+		font-size: 16px;
+		font-weight: 500;
+	}
+
+
+	.colour-bg {
+		background-color: #FAF4FF;
+	}
+
+	.card-body tr {
+		line-height: 30px;
+	}
+
+
+	.list-unstyled li {
+		color: #333333;
+		font-weight: 400;
+		font-size: 16px;
+	}
+
+	.list-unstyled li i {
+
+		padding: 8px;
+
+	}
+
+
+	.otherfees .card-body {
+		padding: 20px 35px;
+		text-align: left;
+		line-height: 43px;
+	}
+
+	.otherfees .card {
+		border-radius: 10px;
+		background: #00000000;
+		/* padding: 63px 0; */
+		padding-bottom: 60px;
+		/* padding: 50px 0px; */
+		
+	}
+
+
+	.table-custom {
+		background: #f3e6f8;
+		color: #6a1b9a;
+
+	}
+	.cta-section {
+		background: linear-gradient(45deg, #9C27B063, #953A93);
+		color: white;
+		text-align: center;
+		padding: 60px;
+		border-radius: 10px;
+		/* margin-top: 60px; */
+		margin: 60px 0;
+	}
+	.cta-section .btn {
+		background: white;
+		color: #b24592;
+		border-radius: 20px;
+		padding: 10px 20px;
+		font-weight: bold;
+		border: none;
+	}
+
+
+	.category .table {
+		background-color: white !important;
+		--bs-table-bg: transparent;
+		border: 1px solid #00000026;
+	}
+
+	.category .table tr {
+		line-height: 40px;
+	}
+
+	.table-dange {
+		background-color: #F3E5F5;
+	}
+
+	.category .text-purple {
+		font-size: 24px;
+		font-weight: 600;
+		padding: 20px 0 0 0;
+		color: #953A93;
+	}
+
+
+	.category tr {
+
+		border-style: none !important;
+		border: none;
+
+	}
+
+	.category thead {
+		border-color: inherit;
+		border-style: none;
+		border-width: 0;
+	}
+
+	.pink-color {
+		color: #953a93 !important;
+	}
+
+	.category td {
+		border-color: inherit;
+		border-style: none;
+		border-width: 0;
+		padding-left: 16px;
+	}
+
+	.cta-section button a {
+		color: #9a4399;
+		text-decoration: none;
+	}

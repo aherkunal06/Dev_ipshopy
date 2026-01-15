@@ -1,0 +1,31 @@
+.content-product-left {
+    float: left;
+    padding-right: 30px;
+}
+
+.content-product-right {
+    float: right;
+}
+
+.zoomContainer {
+    right: 0 !important;
+    left: auto !important;
+}
+
+.product-info {
+    clear: both;
+    padding-top: 30px;
+}
+
+@media (max-width: 767px) {
+    .content-product-left,
+    .content-product-right {
+        float: none;
+        width: 100%;
+        padding: 0;
+    }
+    
+    .zoomContainer {
+        display: none;
+    }
+}

@@ -1,0 +1,122 @@
+{% if mergadoHideRatingWidget == 0 %}
+  <style>
+
+    #mergadoRatingModal h4 {
+      color: #4cb64b !important;
+      width: 100% !important;
+      text-align: center !important;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    #mergadoRatingModal .modal-body .number {
+      font-weight: bold !important;
+      color: #4cb64b !important;
+    }
+
+    #mergadoRatingModal .modal-body img {
+      display: block;
+      width: 60% !important;
+      margin: 10px auto !important;
+    }
+
+    #mergadoRatingModal .modal-body p {
+      display: block;
+      font-size: 16px !important;
+      width: 100% !important;
+      text-align: center !important;
+    }
+
+    #mergadoRatingModal .btn-success {
+      display: block;
+      max-width: 200px !important;
+      margin: 10px auto !important;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #4cb64b !important;
+    }
+
+    #mergadoRatingModal .btn-success:hover,
+    #mergadoRatingModal .btn-success:active,
+    #mergadoRatingModal .btn-success:focus{
+      opacity: 0.9;
+    }
+
+  </style>
+
+  <div id="mergado-rating-widget" class="container-fluid">
+    <div class="panel panel-default">
+
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="icon fa fa-star"></span>&nbsp;{{ mergado }}</h3>
+        <div class="pull-right">
+          <button type="button" id="mergado-rating-close" class="btn btn-danger"><i class="fa fa-times-circle"></i></button>
+        </div>
+      </div>
+
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-12 col-md-12">
+
+              <p>{{ mergado_rating_text }}</p>
+              <br/>
+              <a href="#" class="btn btn-success" data-toggle="modal" data-target="#mergadoRatingModal">{{ mergado_rate_now_btn }}</a>
+              <a href="javascript:void(0);" class="btn btn-primary" onClick="hideMergadoRatingBox('30days')">{{ mergado_rate_later_btn }}</a>
+              <a href="javascript:void(0);" class="btn btn-danger" onClick="hideMergadoRatingBox('forever')">{{ mergado_rated_btn }}</a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Rating Modal -->
+  <div class="modal fade" id="mergadoRatingModal" tabindex="-1" role="dialog" aria-labelledby="mergadoRatingModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">{{ mergado_rating_popup_heading }}</h4>
+        </div>
+        <div class="modal-body">
+          <p>{{ mergado_rating_popup_text1 }}</p>
+          <img src="{{ mergado_rating_popup_img1 }}">
+          <p>{{ mergado_rating_popup_text2 }}</p>
+          <img src="{{ mergado_rating_popup_img2 }}">
+          <p>{{ mergado_rating_popup_text3 }}</p>
+          <img src="{{ mergado_rating_popup_img3 }}">
+        </div>
+        <div class="modal-footer">
+          <a href="{{ mergado_rating_url }}" class="btn btn-success" target="_blank" onClick="hideMergadoRatingBox('now')">{{ mergado_rating_popup_rate_btn }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ./Rating Modal -->
+
+  <script type="text/javascript"><!--
+  $(document).ready(function(){
+    $('#mergado-rating-close').on('click', function() {
+      hideMergadoRatingBox('30days');
+    });
+  });
+
+  function hideMergadoRatingBox(param){
+
+    if(param == 'now') {
+      $('#mergadoRatingModal').modal('hide');
+    }
+
+    $.ajax({
+    url: 'index.php?route={{ route }}/hide-mergado-rating&user_token={{ user_token }}',
+    data: {interval: param },
+    method: 'POST',
+    success : function(response){
+      $('#mergado-rating-widget').slideUp();
+    },
+    error : function(){
+      $('#mergado-rating-widget').slideUp();
+    }
+    });
+  }
+  //--></script>
+{% endif %}

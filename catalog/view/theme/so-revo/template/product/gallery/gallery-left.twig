@@ -1,0 +1,320 @@
+<style>
+
+ .zoom-container {
+  position: relative;
+  display: inline-block;
+}
+
+.wishlist-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+
+  .wishlist-btn:hover {
+    background: #f5f5f5;
+  }
+
+  .zoom-image {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid #ccc;
+    display: block;
+  }
+  .zoom-lens {
+    position: absolute;
+    border: 2px solid #000;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.3);
+    display: none;
+    pointer-events: none;
+  }
+  .zoom-result {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 680px;
+      height: 500px;
+      margin-left: 15px;
+      border: 1px solid #ccc;
+      display: none;
+      z-index: 9999;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-color: #fff;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      border-radius: 6px;
+  }
+  
+  .thumb-vertical-outer {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-width: 100px;
+    padding: 5px;
+    background: #fff;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .thumb-vertical-outer::-webkit-scrollbar {
+    display: none;
+  }
+
+  .thumb-vertical {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .thumb-vertical li {
+    margin-bottom: 8px;
+  }
+
+  .thumb-vertical img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    transition: border 0.2s ease-in-out;
+    border-radius: 4px;
+  }
+
+  .thumb-vertical img:hover {
+    border: 2px solid #000;
+  }
+
+  .zoom-overlay-on .content-product-right {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.3s ease;
+
+ 
+    z-index: 1;
+}
+
+.content-product-left {
+    float: left;
+    z-index: 2;
+}
+
+.content-product-right {
+    float: right;
+
+}
+
+.zoomContainer {
+    right: 0 !important;
+    left: auto !important;
+}
+
+.product-info {
+    clear: both;
+    padding-top: 30px;
+}
+
+@media (max-width: 767px) {
+    .content-product-left,
+    .content-product-right {
+        float: none;
+        width: 100%;
+        padding: 0;
+    }
+    
+    .zoomContainer {
+        display: none;
+    }
+}
+
+@media (max-width: 1440px) {
+    .zoom-result {
+        width: 680px;
+        height: 500px;  
+    }
+
+@media (max-width: 1200px) {
+    .zoom-result {
+        width: 600px;
+        height: 400px;
+    }
+}
+
+ }
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .zoom-image {
+      width: 337px;
+      height: auto;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .zoom-image {
+      width: 230px;
+      height: 394px;
+    }
+    .zoom-lens,
+    .zoom-result {
+      display: none !important;
+    }
+  }
+  
+  @media (max-width: 1300px) and (min-width: 1150px) {
+      .zoom-result {
+          width: 600px;
+          height: 480px;
+      }
+  }
+</style>
+
+<div id="thumb-slider" class="thumb-vertical-outer">
+  <ul class="thumb-vertical">
+    {% for key,image in images %}
+    <li class="image-additional">
+<a
+  data-index="{{ key }}"
+  class="img thumbnail"
+  data-image="{{ image.popup|replace({'\\':'/'}) }}"
+  title="{{ heading_title }}"
+>
+  <img
+    src="{{ image.thumb|replace({'\\':'/'}) }}"
+    data-zoom="{{ image.original|replace({'\\':'/'}) }}"
+    title="{{ heading_title }}"
+    alt="{{ heading_title }}"
+  />
+</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<button type="button" onclick="wishlist.toggle({{ product_id }}, this);" 
+        class="wishlist-btn" data-product-id="{{product_id}}">
+  <i class="fa fa-heart-o"></i>
+</button>
+
+
+<div class="zoom-container" id="zoomBox">
+  <img
+    id="zoomImage"
+    class="zoom-image"
+    src="{{ popup }}" 
+    data-zoom="{{ original }}"
+    alt="{{ heading_title }}"
+  />
+  <div id="zoomLens" class="zoom-lens"></div>
+  <div id="zoomResult" class="zoom-result"></div>
+</div>
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const body = document.documentElement;
+  const container = document.getElementById("zoomBox");
+  const image = document.getElementById("zoomImage");
+  const lens = document.getElementById("zoomLens");
+  const result = document.getElementById("zoomResult");
+
+  if (!container || !image || !lens || !result) return;
+
+  function setResultBackground(src) {
+    result.style.backgroundImage = `url('${src}')`;
+  }
+
+  // Initialize zoom with main image
+  setResultBackground(image.getAttribute("data-zoom") || image.src);
+
+  function showZoom() {
+    lens.style.display = "block";
+    result.style.display = "block";
+    body.classList.add("zoom-overlay-on");
+  }
+
+  function hideZoom() {
+    lens.style.display = "none";
+    result.style.display = "none";
+    body.classList.remove("zoom-overlay-on");
+  }
+function moveLens(e) {
+  const rect = container.getBoundingClientRect();
+  const lensW = lens.offsetWidth || 1;
+  const lensH = lens.offsetHeight || 1;
+
+  let x = e.clientX - rect.left - lensW / 2;
+  let y = e.clientY - rect.top - lensH / 2;
+
+  if (
+    e.clientX < rect.left ||
+    e.clientX > rect.right ||
+    e.clientY < rect.top ||
+    e.clientY > rect.bottom
+  ) {
+    hideZoom();
+    return;
+  }
+
+  showZoom();
+
+  x = Math.max(0, Math.min(x, rect.width - lensW));
+  y = Math.max(0, Math.min(y, rect.height - lensH));
+
+  lens.style.left = x + "px";
+  lens.style.top = y + "px";
+
+  const cx = result.offsetWidth / lensW;
+  const cy = result.offsetHeight / lensH;
+
+  result.style.backgroundSize = `${image.width * cx}px ${image.height * cy}px`;
+  result.style.backgroundPosition = `-${x * cx}px -${y * cy}px`;
+}
+
+
+// Events
+container.addEventListener("mousemove", moveLens);
+container.addEventListener("mouseleave", hideZoom);
+
+//   container.addEventListener("mousemove", moveLens);
+
+  // Thumbnail click/hover
+const thumbs = document.querySelectorAll("#thumb-slider .img.thumbnail");
+thumbs.forEach((thumb) => {
+  function updateImage() {
+  const newSrc = thumb.getAttribute("data-image");
+  const zoomSrc = thumb.querySelector("img").getAttribute("data-zoom") || newSrc; 
+
+  if (!newSrc) return;
+  image.src = newSrc;
+  image.setAttribute('data-zoom', zoomSrc);
+
+  image.onload = () => {
+    setResultBackground(zoomSrc); 
+  };
+
+  thumbs.forEach((t) => t.classList.remove("active"));
+  thumb.classList.add("active");
+}
+
+  thumb.addEventListener("click", (e) => {
+    e.preventDefault();
+    updateImage();
+  });
+
+  thumb.addEventListener("mouseenter", updateImage);
+});
+
+});
+</script>

@@ -1,0 +1,337 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content" class="col-sm-10 faq-container">
+  <h2 style="color:#953A93;">Product FAQs</h2>
+
+ <div class="faq-status-wrapper">
+  <div class="faq-status-box" onclick="location.href='{{ url_all }}'">
+    <div class="faq-status-count">{{ count_all }}</div>
+    <div>All FAQs</div>
+  </div>
+
+  <div class="faq-status-box" onclick="location.href='{{ url_approved }}'">
+    <div class="faq-status-count">{{ count_approved }}</div>
+    <div>Approved</div>
+  </div>
+
+  <div class="faq-status-box" onclick="location.href='{{ url_disapproved }}'">
+    <div class="faq-status-count">{{ count_disapproved }}</div>
+    <div>Disapproved</div>
+  </div>
+
+  <div class="faq-status-box" onclick="location.href='{{ url_answered }}'">
+    <div class="faq-status-count">✓</div>
+    <div>Answered</div>
+  </div>
+
+  <div class="faq-status-box" onclick="location.href='{{ url_unanswered }}'">
+    <div class="faq-status-count">–</div>
+    <div>Unanswered</div>
+  </div>
+</div>
+
+
+  {% if faqs %}
+  <div class="faq-table-wrapper">
+    <table class="faq-table">
+      <thead>
+        <tr>
+          <!-- <th>Vendor ID</th>
+          <th>Product ID</th> -->
+          <th>Product</th>
+          <th>Customer</th>
+          <th>Seller</th>
+          <th>Question</th>
+          <th>Answer</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for faq in faqs %}
+        <tr>
+          <!-- <td>{{ faq.vendor_id }}</td>
+          <td>{{ faq.product_id }}</td> -->
+          <td title="{{ faq.product_name }}">{{ faq.product_name|slice(0, 30) ~ (faq.product_name|length > 30 ? '...' : '') }}</td>
+          <td>{{ faq.customer_name ?: '-' }}</td>
+          <td>{{ faq.seller_name ?: '-' }}</td>
+          <td>{{ faq.question }}</td>
+          <td class="answer-column">{{ faq.answer ?: '-' }}</td>
+          <td>{{ faq.date_added ?: '-' }}</td>
+          <td>
+            {% if faq.status == 1 %}
+              <button class="btn-disapprove" onclick="changeStatus('{{ faq.product_faq_id }}', 0)">Disapprove</button>
+            {% else %}
+              <button class="btn-approve" onclick="changeStatus('{{ faq.product_faq_id }}', 1)">Approve</button>
+            {% endif %}
+          </td>
+          <td>
+            <button class="btn-purple"
+              onclick="openModal('{{ faq.product_faq_id }}', '{{ faq.product_id }}', `{{ faq.question | escape('js') }}`, `{{ faq.answer | escape('js') }}`)">Answer</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if pagination %}
+    <div class="pagination">{{ pagination|raw }}</div>
+  {% endif %}
+  {% else %}
+    <div class="alert alert-info">No FAQ found for your products.</div>
+  {% endif %}
+</div>
+
+<!-- Modal -->
+<div id="faqModal" class="faq-modal">
+  <form method="post" action="{{ action }}">
+    <h4 id="modalQuestion">Question</h4>
+    <input type="hidden" name="product_faq_id" id="modalFaqId">
+    <input type="hidden" name="product_id" id="modalProductId">
+    <textarea name="answer" id="modalAnswer" rows="4" class="form-control" style="width:100%; padding:8px; margin-top:10px;" required></textarea>
+    <div style="margin-top:15px;">
+      <button type="submit" class="btn-purple">Submit</button>
+      <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </form>
+</div>
+
+<!-- JavaScript -->
+<script>
+  function openModal(faqId, productId, question, answer) {
+    document.getElementById('faqModal').style.display = 'block';
+    document.getElementById('modalFaqId').value = faqId;
+    document.getElementById('modalProductId').value = productId;
+    document.getElementById('modalQuestion').innerText = question;
+    document.getElementById('modalAnswer').value = answer;
+  }
+
+  function closeModal() {
+    document.getElementById('faqModal').style.display = 'none';
+  }
+
+  function changeStatus(faqId, status) {
+    if (confirm('Are you sure you want to change status?')) {
+      const url = new URL(window.location.href);
+      const page = url.searchParams.get("page") || 1;
+      const filter_status = url.searchParams.get("filter_status") || '';
+      window.location.href = 'index.php?route=vendor/faq/changeStatus&faq_id=' + faqId + '&status=' + status + '&page=' + page + '&filter_status=' + filter_status + '&user_token={{ user_token }}';
+    }
+  }
+</script>
+
+<!-- CSS -->
+<style>
+/* Base Scroll Setup */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+
+/* Container for Whole Content */
+#content.faq-container {
+  padding: 20px;
+  background-color: #fff;
+  font-size: 14px;
+}
+
+/* FAQ Status Top Bar */
+.faq-status-wrapper {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 20px;
+  justify-content: space-around;
+  background-color: white;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.faq-status-box {
+  text-align: center;
+  cursor: pointer;
+}
+
+.faq-status-count {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Desktop only horizontal scroll fix */
+@media (min-width: 992px) {
+  .faq-table-wrapper {
+    overflow-x: auto;
+    max-width: 100%;
+    margin-top: 10px;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 998;
+  }
+}
+
+/* FAQ Table */
+.faq-table {
+  width: 1800px;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.faq-table th,
+.faq-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Specific Column Widths */
+.faq-table th:nth-child(1),
+.faq-table td:nth-child(1) {
+  width: 200px;
+}
+.faq-table th:nth-child(2),
+.faq-table td:nth-child(2) {
+  width: 180px;
+}
+.faq-table th:nth-child(3),
+.faq-table td:nth-child(3) {
+  width: 250px;
+}
+.faq-table th:nth-child(4),
+.faq-table td:nth-child(4) {
+  width: 300px;
+}
+.faq-table th:nth-child(5),
+.faq-table td:nth-child(5) {
+  width: 400px;
+}
+.faq-table th:nth-child(6),
+.faq-table td:nth-child(6) {
+  width: 200px;
+}
+.faq-table th:nth-child(7),
+.faq-table td.answer-column {
+  width: 130px;
+}
+.faq-table th:nth-child(8),
+.faq-table td:nth-child(8) {
+  width: 140px;
+}
+.faq-table th:nth-child(9),
+.faq-table td:nth-child(9) {
+  width: 130px;
+}
+.faq-table th:nth-child(10),
+.faq-table td:nth-child(10) {
+  width: 130px;
+}
+
+.faq-table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+/* Buttons */
+.btn-purple {
+  background-color: #953A93;
+  color: #fff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-purple:hover {
+  background-color: #7b2f7c;
+}
+
+.btn-cancel {
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-approve {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-disapprove {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Modal */
+.faq-modal {
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border: 2px solid #953A93;
+  border-radius: 8px;
+  padding: 20px;
+  z-index: 1000;
+  width: 40%;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.faq-modal h4 {
+  color: #953A93;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  list-style-type: none;
+}
+
+.pagination a,
+.pagination span {
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  text-decoration: none;
+  color: black;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.pagination a:hover {
+  background-color: #f2f2f2;
+  border-color: #953A93;
+  color: #953A93;
+}
+
+.pagination .current {
+  background-color: #953A93;
+  color: white;
+  border-color: #953A93;
+}
+</style>
+

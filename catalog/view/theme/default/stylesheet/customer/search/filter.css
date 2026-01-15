@@ -1,0 +1,225 @@
+.filter_form{
+    position:sticky;
+    top:-230px;
+}
+.filter_form #price-slider {
+	position: relative;
+	height: 6px;
+	background: #ddd;
+	margin-top: 20px;
+	border-radius: 3px;
+	width: 100%;
+	overflow: visible; /* ✅ important */
+}
+
+.filter_form #price-slider .range {
+	position: absolute;
+	height: 100%;
+	background: #953A93;
+	border-radius: 3px;
+	z-index: 1;
+}
+.filter_form #price-slider {
+	overflow: visible !important; /* ✅ allows full thumb to show */
+}
+
+.filter_form #price-slider .thumb {
+	position: absolute;
+	top: -4.5px; /* (15px height - 6px slider height) / 2 = 4.5px */
+	width: 15px;
+	height: 15px;
+	background: #fff;
+	border: 2px solid #953A93;
+	border-radius: 50%;
+	cursor: pointer;
+	z-index: 2;
+	box-shadow: 0 0 3px rgba(149, 58, 147, 0.3);
+}
+.filter_form #price-slider .thumb:hover {
+	box-shadow: 0 0 8px rgba(149, 58, 147, 0.5);
+}
+
+/* === Form === */
+.filter_form {
+	font-family: 'Inter', sans-serif;
+	font-size: 14px;
+	color: #333;
+	background: #fff;
+	padding: 15px;
+	border: 1px solid #ddd;
+	width: 280px;
+	height: fit-content;
+    display: block;
+    min-width: 280px;
+}
+
+/* === Filter Header === */
+.filter_form .filter-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
+	padding: 8px 0;
+	border-bottom: 1px solid #eee;
+}
+.filter_form .filter-header label {
+	font-weight: bold;
+	font-size: 13px;
+	color: #000;
+	text-transform: uppercase;
+	margin: 0;
+}
+.filter_form .filter-header button {
+	background: none;
+	border: none;
+	font-size: 14px;
+	color: #444;
+	cursor: pointer;
+	transform: rotate(0deg);
+	transition: transform 0.3s ease;
+}
+.filter_form .filter-header.open button {
+	transform: rotate(180deg);
+}
+
+/* === Dropdowns === */
+.filter_form .brand-dropdown,
+.filter_form .color-dropdown,
+.filter_form .discount-dropdown,
+.filter_form .size-dropdown,
+.filter_form .rating-dropdown {
+	display: none;
+	padding-top: 5px;
+}
+.filter_form .brand-dropdown.open,
+.filter_form .color-dropdown.open,
+.filter_form .discount-dropdown.open,
+.filter_form .size-dropdown.open,
+.filter_form .rating-dropdown.open {
+	display: block;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+}
+
+.filter_form .brand-checkboxes,
+.filter_form .color-checkboxes,
+.filter_form .discount-checkboxes,
+.filter_form .size-checkboxes,
+.filter_form .rating-checkboxes {
+	max-height: 140px;
+	overflow-y: auto;
+	padding-right: 5px;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 10px;
+}
+
+.filter_form .form-control.mb-2 {
+	margin-bottom: 10px;
+	padding: 6px 10px;
+	font-size: 13px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	width: 100%;
+}
+
+.filter_form .brand-item,
+.filter_form .discount-item,
+.filter_form .size-item,
+.filter_form .rating-item,
+.filter_form .color-item {
+	display: flex;
+	align-items: center;
+	font-size: 13px;
+	color: #333;
+	margin-bottom: 6px;
+	white-space: nowrap;
+	gap: 5px;
+}
+
+.filter_form input[type="checkbox"] {
+	-webkit-appearance: none;
+	appearance: none;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	width: 16px;
+	height: 16px;
+	position: relative;
+	cursor: pointer;
+}
+.filter_form input[type="checkbox"]:checked::before {
+	content: "✔";
+	font-size: 11px;
+	position: absolute;
+	top: 0;
+	left: 3px;
+	color: #953A93;
+}
+
+.filter_form .size-item input[type="checkbox"],
+.filter_form .rating-item input[type="checkbox"],
+.filter_form .discount-item input[type="checkbox"] {
+	border-color: #953A93;
+}
+
+.filter_form .brand-checkboxes::-webkit-scrollbar,
+.filter_form .color-checkboxes::-webkit-scrollbar,
+.filter_form .size-checkboxes::-webkit-scrollbar {
+	width: 6px;
+}
+.filter_form .brand-checkboxes::-webkit-scrollbar-thumb,
+.filter_form .color-checkboxes::-webkit-scrollbar-thumb,
+.filter_form .size-checkboxes::-webkit-scrollbar-thumb {
+	background: #8b8b8b;
+	border-radius: 3px;
+}
+
+.filter_form #toggle-brands {
+	display: inline-block;
+	margin-top: 5px;
+	font-size: 13px;
+	color: #953A93;
+	cursor: pointer;
+}
+
+/* === Misc Styling === */
+.filter_form .price-slider-container,
+.filter_form .brand-filter,
+.filter_form .color-filter,
+.filter_form .discount-filter,
+.filter_form .size-filter,
+.filter_form .rating-filter {
+	margin-bottom: 20px;
+}
+
+.filter_form .price-values {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+.filter_form .price-values input {
+	width: 90px;
+	height: 34px;
+	font-size: 14px;
+	text-align: center;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: #fff;
+	cursor: default;
+	appearance: none;
+}
+.filter_form .price-values span {
+	margin: 0 10px;
+	font-weight: 600;
+	color: #666;
+}
+
+@media(max-width: 768px) {
+	 .filter_form {
+		max-width: 100%;
+		padding: 10px;
+	}
+}
+		
+
+		

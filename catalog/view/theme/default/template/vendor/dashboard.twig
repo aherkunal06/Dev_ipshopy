@@ -1,0 +1,606 @@
+ <!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+
+{{ header }}{{ column_left }}
+
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1 style='font-weight : bold;'>{{welcome}}{{ vendor_title_name }}</h1>
+		</div>
+	</div>
+	<div
+		class="container-fluid">
+		<!-- Carousel Slider -->
+		<div
+			id="dashboard-carousel">
+			<!-- Carousel Track -->
+			<div id="carousel-track" style="display: flex; transition: transform 0.5s ease-in-out; gap: 1rem;">
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<a href="{{ viewallorder }}">
+						<div class="dashboard-card bg-purple">
+							<div class="dashboard-content">
+								<h5>Total Orders</h5>
+								<div style="border-bottom: 1px solid rgba(247, 247, 247, .38) !important;"></div>
+								<h3>{{ totalorder  }}</h3>
+								<!-- <p><i class="fa fa-info-circle"></i> Last 30 days</p> -->
+							</div>
+						</div>
+					</a>
+
+				</div>
+
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<a href="{{ orders }}">
+
+						<div class="dashboard-card bg-blue">
+							<div class="dashboard-content">
+								<h5>Today's  Order</h5>
+								<div style="border-bottom: 1px solid rgba(247, 247, 247, .38) !important;"></div>
+								<h3>{{ todays_order  }}</h3>
+								<!-- <p><i class="fa fa-calendar"></i> {{ today_date }}</p> -->
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<a href="{{ viewshippedorder }}">
+
+						<div class="dashboard-card bg-blue-light">
+							<div class="dashboard-content">
+								<h5>Dispatched Order</h5>
+								<div style="border-bottom: 1px solid rgba(247, 247, 247, .38) !important;"></div>
+								<h3>{{ totalshippedorders }}</h3>
+								<!-- {# <p><i class="fa fa-calendar"></i> {{ yesterday_date }}</p> #} -->
+
+							</div>
+						</div>
+					</a>
+				</div>
+
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<a href="{{ viewcompleteorder }}">
+						<div class="dashboard-card bg-green">
+							<div class="dashboard-content">
+								<h5>Order Completed</h5>
+								<div style="border-bottom: 1px solid rgba(247, 247, 247, .38) !important;"></div>
+								<h3>{{ totalcompletedorder  }}</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<a href="{{ product }}">
+						<div class="dashboard-card bg-orange">
+							<div class="dashboard-content">
+								<h5>Products</h5>
+								<div style="border-bottom: 1px solid rgba(247, 247, 247, .38) !important;"></div>
+								<h3>
+									{{ totalproduct   }}</h3>
+
+								<!-- <p><i class="fa fa-info-circle"></i> In Kg</p> -->
+							</div>
+						</div>
+					</a>
+				</div>
+
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					{#<a href="{{ vendor_payout }}">#}
+						<div class="dashboard-card bg-info">
+							<div class="dashboard-content">
+								<h5>Complete Order Sale</h5>
+								<div style="border-bottom: 1px solid rgba(247, 247, 247, .38) !important;"></div>
+								<h3>₹
+									{{ totalcompleteordersale }}</h3>
+								{# <p><i class="fa fa-info-circle"></i></p> #}
+							</div>
+						</div>
+					{#</a>#}
+				</div>
+				{#<!-- <div class="col-lg-2 col-md-3 col-sm-6">#}
+				{#       <div class="dashboard-card bg-red">#}
+				{#         <div class="dashboard-content">#}
+				{#           <h5> Settlements</h5>#}
+				{#           <div  class="bottom-border"></div>#}
+				{#           <h5>₹ {{ avg_shipment_cost }}</h5>#}
+				           
+				{#         </div>#}
+				{#       </div>#}
+				{#     </div> -->#}
+				<div class="col-lg-2 col-md-3 col-sm-6">
+				    <a  href="{{ viewcancelledorder }}" >
+				    <div class="dashboard-card bg-red">
+						<div class="dashboard-content">
+							<h5>Cancel Orders</h5>
+							<div style="border-bottom: 1px solid rgba(247, 247, 247, .38) !important;"></div>
+							<h3>{{ totalcancelledorder }}</h3>
+						</div>
+					</div>
+					</a>
+				</div>
+			</div>
+
+			<!-- Side Arrows -->
+			<button id="carousel-prev">
+				<i class="fa fa-chevron-left left-arrow"></i>
+			</button>
+			<button id="carousel-next">
+				<i class="fa fa-chevron-right right-arrow"></i>
+			</button>
+		</div>
+
+
+		<div class="d-flex justify-content-start mb-2 w-100">
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<h3 class="text-design-shipment">Shipment Details</h3>
+					<div class="shipment-cards mt-5">
+						{#<div class="card mb-2">#}
+						{#	<a href="{{ viewprocessingorder }}">#}
+						{#		<div#}
+						{#			class="card-body">#}
+						{#			<!-- <span> 0 (0%)</span> -->#}
+						{#			<br>#}
+						{#			<span>Processing = Pending Labels</span>#}
+						{#		</div>#}
+						{#	</a>#}
+						{#	<div class="card-footer bg-secondary"></div>#}
+						{#</div>#}
+						<div class="card mb-2">
+							<a href="{{ viewpickup_scheduledorder }}">
+								<div
+									class="card-body">
+									<span>{{totalpickupscheduledorders}}</span>
+									<br>
+									<span>Pick Up Scheduled</span>
+								</div>
+							</a>
+							<div class="card-footer bg-info"></div>
+						</div>
+						<div class="card mb-2">
+							<a href="{{ viewin_transitorder }}">
+
+								<div
+									class="card-body">
+									<span>{{ totalintransitorders }}</span>
+									<br>
+									<span>In Transit</span>
+								</div>
+							</a>
+							<div class="card-footer bg-warning"></div>
+						</div>
+						<!-- <div class="card mb-2">
+						             <div class="card-body">
+						               <span> 0 (0%)</span>
+						               <br>
+						               <span>In Transit</span>
+						             </div>
+						             <div class="card-footer bg-info"></div>
+						           </div> -->
+						<div class="card mb-2">
+							<a href="{{ view_out_for_delivery_orders }}">
+
+								<div
+									class="card-body">
+									<span>{{totaloutfordeliveryorders}}</span>
+									<br>
+									<span>Out For Delivery</span>
+								</div>
+							</a>
+							<div class="card-footer bg-primary"></div>
+						</div>
+						<div class="card mb-2">
+							<a href="{{ view_delivered_orders }}">
+								<div
+									class="card-body">
+									<span>{{totaldeliveredorders}}</span>
+									<br>
+									<span>Delivered</span>
+								</div>
+							</a>
+							<div class="card-footer bg-success"></div>
+						</div>
+
+
+						<div class="card mb-2">
+							<a href="{{ view_undelivered_orders }}">
+								<div
+									class="card-body">
+									<span>{{totalundeliveredorders}}</span>
+									<br>
+									<span>Un-delivered</span>
+								</div>
+							</a>
+							<div class="card-footer" style='background-color : #ff4848;'></div>
+						</div>
+						<div class="card mb-2">
+							<a href="{{ view_rto_in_transit_orders }}">
+								<div
+									class="card-body">
+									<span>{{totalrtointransitorders}}</span>
+									<br>
+									<span>RTO In-Transit</span>
+								</div>
+							</a>
+							<div class="card-footer bg-light-green"></div>
+						</div>
+						<div class="card mb-2">
+							<a href="{{ view_rto_delivered_orders }}">
+
+								<div
+									class="card-body">
+									<span>{{totalrtodeliveredorders}}</span>
+									<br>
+									<span>RTO Delivered</span>
+								</div>
+							</a>
+							<div class="card-footer bg-dark"></div>
+						</div>
+						<div class="card mb-2">
+							<a href="{{ view_lost_shipments_orders }}">
+
+								<div
+									class="card-body">
+									<span>{{totallostshipmentorders}}</span>
+									<br>
+									<span>LOST Shipments</span>
+								</div>
+							</a>
+							<div class="card-footer bg-purple"></div>
+						</div>
+
+
+						<div class="card mb-2">
+							<a href="{{ view_return_orders }}">
+								<div
+									class="card-body">
+									<span>{{totalreturnorders}}</span>
+									<br>
+									<span>Return orders</span>
+								</div>
+								<div class="card-footer bg-info"></div>
+							</a>
+						</div>
+
+                    	<div class="card mb-2">
+							<a href="https://www.ipshopy.com/index.php?route=vendor/claim/claim_list">
+								<div class="card-body">
+									{#<span>{{totalreturnorders}}</span>#}
+									<br>
+									<span>Return Claim</span>
+								</div>
+								<div class="card-footer bg-info"></div>
+							</a>
+						</div>
+						{#<div class="card mb-2">#}
+						{#	<a href="{{ viewcancelledorder }}">#}
+						{#		<div class="card-body">#}
+						{#			<span>#}
+						{#				{{ totalcancelledorder }}</span>#}
+						{#			<br>#}
+						{#			<span>Cancelled</span>#}
+						{#		</div>#}
+						{#		<div class="card-footer bg-info"></div>#}
+						{#	</a>#}
+						{#</div>#}
+						<div class="card mb-2">
+							<a href="{{ view_breached_orders }}">
+								<div
+									class="card-body">
+									<span>{{totalbreachedorders}}</span>
+									<br>
+									<span>Breached  Shipments</span>
+								</div>
+							</a>
+							<div class="card-footer bg-red"></div>
+						</div>
+						<!-- <div class="card mb-2">
+						             <div class="card-body">
+						               <span> 0 (0%)</span>
+						               <br>
+						               <span>RTO Return</span>
+						             </div>
+						             <div class="card-footer bg-red"></div>
+						           </div> -->
+
+						<!-- <div class="card mb-2">
+						            <a href="{{ viewcancelledorder }}">
+						        <div class="card-body">
+						          <span> {{ totalcancelledorder }} (0%)</span>
+						          <br>
+						          <span>Cancelled</span>
+						        </div>
+						        <div class="card-footer bg-info"></div>
+						          </a>
+						      </div> -->
+
+					</div>
+				</div>
+
+				
+				     {# <div class="col-lg-5 col-md-12">#}
+				     {#  <div id="promo-slider" class="promo-slider">#}
+				     {#    <div class="promo-banner slide active" style="background: linear-gradient(to right, #0066ff, #00ccff); padding: 20px; border-radius: 10px; text-align: center; color: #fff;">#}
+				     {#      <h2>Massive Discounts on<br>High Quality Packaging Material</h2>#}
+				     {#      <button class="shop-now" style="background: #7ed957; border: none; padding: 10px 20px; border-radius: 5px; color: white; font-weight: bold;">Shop Now</button>#}
+				     {#    </div>#}
+				     {#    <div class="promo-banner slide" style="background: linear-gradient(to right, #ff6600, #ffcc00); padding: 20px; border-radius: 10px; text-align: center; color: #fff;">#}
+				     {#      <h2>Exclusive Deals on<br>Shipping Materials</h2>#}
+				     {#      <button class="shop-now" style="background: #ff4747; border: none; padding: 10px 20px; border-radius: 5px; color: white; font-weight: bold;">Shop Now</button>#}
+				     {#    </div>#}
+				     {#    <div class="promo-banner slide" style="background: linear-gradient(to right, #00cc99, #33ffcc); padding: 20px; border-radius: 10px; text-align: center; color: #fff;">#}
+				     {#      <h2>Best Offers on<br>Bulk Orders</h2>#}
+				     {#      <button class="shop-now" style="background: #009966; border: none; padding: 10px 20px; border-radius: 5px; color: white; font-weight: bold;">Shop Now</button>#}
+				     {#    </div>#}
+				     {#  </div>#}
+				     {#  <div class="banner-dots" style="text-align: center; margin-top: 10px;">#}
+				     {#    <span class="dot active" onclick="moveSlide(0)"></span>#}
+				     {#    <span class="dot" onclick="moveSlide(1)"></span>#}
+				     {#    <span class="dot" onclick="moveSlide(2)"></span>#}
+				     {#  </div>#}
+				     {#</div>#}
+
+
+			</div>
+		</div>
+
+
+		<!-- graphs -->
+
+		{# <div class="row mt-5">
+		      <div class="col-lg-6 col-sm-12 shadow-lg animate fadeInDown">
+		       <div class="card-charts shadow-lg animate fadeInUp">
+		           <h3>All Sales</h3>
+		           <div id="myPlot"> </div>
+		          
+		          </div>
+		      
+		      </div>
+		      <div class="col-lg-6 col-sm-12 shadow-lg animate fadeInDown">
+		          <div class="card-charts shadow-lg animate fadeInUp">
+		              <h3>All Orders</h3>
+		          <div
+		          id="myChart" >
+		          </div>
+		          </div>
+		      </div>
+		      
+		    
+		      </div> #}
+
+
+		<!-- latest order -->
+
+			<div class="row"> <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">{{ latestorder }}</div>
+		</div>
+
+
+		<!-- offer card -->
+		<!-- <div class="offer-section">
+		
+		  <div class="offer-card" data-aos="fade-up">
+		     <i class="fas fa-gift"></i>
+		     <div class="offer-title">Exclusive Discount</div>
+		     <div class="offer-details">Get 20% off on listing your first 10 products!</div>
+		     <a href="#" class="offer-btn">Claim Now</a>
+		  </div>
+		  
+		  
+		  <div class="offer-card" data-aos="fade-up" data-aos-delay="200">
+		     <i class="fas fa-truck"></i>
+		     <div class="offer-title">Free Shipping</div>
+		     <div class="offer-details">Enjoy free shipping for your first 5 orders.</div>
+		     <a href="#" class="offer-btn">Start Selling</a>
+		  </div>
+		  
+		  
+		  <div class="offer-card" data-aos="fade-up" data-aos-delay="400">
+		     <i class="fas fa-star"></i>
+		     <div class="offer-title">Premium Badge</div>
+		     <div class="offer-details">Get a "Featured Seller" badge for high sales.</div>
+		     <a href="#" class="offer-btn">Learn More</a>
+		  </div>
+		  </div> -->
+
+	</div>
+
+
+</div></div>{{ footer }}<!-- carousel script --><script>
+document.addEventListener("DOMContentLoaded", function () {
+const track = document.getElementById("carousel-track");
+const prevButton = document.getElementById("carousel-prev");
+const nextButton = document.getElementById("carousel-next");
+
+const cardWidth = document.querySelector(".col-lg-2").offsetWidth + 16; // Card width + gap
+const visibleCards = Math.floor(document.getElementById("dashboard-carousel").offsetWidth / cardWidth);
+let currentIndex = 0;
+
+const moveCarousel = () => {
+const offset = - currentIndex * cardWidth;
+track.style.transform = `translateX(${offset}px)`;
+};
+
+nextButton.addEventListener("click", () => {
+const maxIndex = track.children.length - visibleCards;
+currentIndex = Math.min(currentIndex + 1, maxIndex);
+moveCarousel();
+});
+
+prevButton.addEventListener("click", () => {
+currentIndex = Math.max(currentIndex - 1, 0);
+moveCarousel();
+});
+});</script><!-- dot script --><script>
+document.addEventListener("DOMContentLoaded", function () {
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
+const dots = document.querySelectorAll(".dot");
+
+function moveSlide(index) {
+slides.forEach((slide, i) => {
+slide.style.display = i === index ? "block" : "none";
+dots[i].classList.toggle("active", i === index);
+});
+currentSlide = index;
+}
+
+setInterval(() => {
+let nextSlide = (currentSlide + 1) % slides.length;
+moveSlide(nextSlide);
+}, 3000);
+
+dots.forEach((dot, index) => {
+dot.addEventListener("click", () => moveSlide(index));
+});
+
+moveSlide(0);
+});</script><script>
+document.addEventListener("DOMContentLoaded", function () {
+let currentSlide = 0;
+const dots = document.querySelectorAll(".dot");
+
+function showSlide(index) {
+if (! dots.length || ! dots[index]) 
+return;
+ // Check if dots exist and index is valid
+
+dots.forEach(dot => dot.classList.remove("active"));
+dots[index].classList.add("active");
+}
+
+function nextSlide() {
+currentSlide = (currentSlide + 1) % dots.length;
+showSlide(currentSlide);
+}
+
+setInterval(nextSlide, 3000);
+});</script><!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script> <!-- Add this line --><!-- <script>
+	  window.onload = function () {
+	     var salesCanvas = document.getElementById('salesChart');
+	     if (salesCanvas) {
+	         var ctxSales = salesCanvas.getContext('2d');
+	         var salesChart = new Chart(ctxSales, {
+	             type: 'line',
+	             data: {
+	                 labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+	                 datasets: [{
+	                     label: 'Sales',
+	                     data: [3000, 59, 80, 81, 56, 55, 40],
+	                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+	                     borderColor: 'rgba(54, 162, 235, 1)',
+	                     borderWidth: 2,
+	                     tension: 0.4
+	                 }]
+	             },
+	             options: {
+	                 responsive: true,
+	                 maintainAspectRatio: false
+	             }
+	         });
+	     }
+	  };
+	  </script>  --><script>
+google.charts.load('current', {'packages': ['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+// piechart
+
+function drawChart() { // Set Data
+const data = google.visualization.arrayToDataTable([
+[
+'Contry', 'Mhl'
+],
+[
+'Italy', 54.8
+],
+[
+'France', 48.6
+],
+[
+'Spain', 44.4
+],
+[
+'USA', 23.9
+],
+[
+'Argentina', 14.5
+]
+]);
+
+// Set Options
+const options = {
+title: 'All Orders',
+is3D: true
+};
+
+// Draw
+const chart = new google.visualization.PieChart(document.getElementById('myChart'));
+chart.draw(data, options);
+
+}</script><!-- line graph --><script>
+const xArray = [
+50,
+60,
+70,
+80,
+90,
+100,
+110,
+120,
+130,
+140,
+150
+];
+const yArray = [
+7,
+8,
+8,
+9,
+9,
+9,
+10,
+11,
+14,
+14,
+15
+];
+
+const data = [{
+x: xArray,
+y: yArray,
+mode: "lines"
+}];
+
+const layout = {
+xaxis: {
+range: [
+40, 160
+],
+title: "Square Meters"
+},
+yaxis: {
+range: [
+5, 16
+],
+title: "Price in Millions"
+},
+title: "House Prices vs. Size"
+};
+
+Plotly.newPlot("myPlot", data, layout);</script><!-- AOS Animation Script --><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script><script>
+AOS.init({duration: 800, easing: "ease-in-out", once: true});</script>
+
+
+
+
+
+
+
+------------------------------------------------------

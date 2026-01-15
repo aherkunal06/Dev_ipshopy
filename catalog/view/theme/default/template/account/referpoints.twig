@@ -1,0 +1,78 @@
+{{ header }}
+<div style='display:flex; gap:30px;'>
+    {{column_left_account}}
+<div id="account-referpoints" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <h1>{{ heading_title }}</h1>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-users"></i> Customers Who Ordered via This Referral</h3>
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>BUYER NAME</th>
+                  <th>EMAIL</th>
+                  <th>PRODUCT NAME</th>
+                  <th>PRICE</th>
+                  <th>DATE</th>
+                  <th>QUANTITY</th>
+                  <th>STATUS</th>
+                  <th>EARN</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if referred_buyers and referred_buyers|length > 0 %}
+                  {% for buyer in referred_buyers %}
+                  <tr>
+                    <td>{{ buyer.customer_name }}</td>
+                    <td>{{ buyer.email }}</td>
+                    <td>{{ buyer.product_name }}</td>
+                    <td>{{ buyer.price }}</td>
+                    <td>{{ buyer.date }}</td>
+                    <td>{{ buyer.quantity }}</td>
+                    <td>
+                      {% if buyer.status == 'Completed' %}
+                        <span class="label label-success">Completed</span>
+                      {% elseif buyer.status == 'Pending' %}
+                        <span class="label label-warning">Pending</span>
+                      {% else %}
+                        <span class="label label-default">{{ buyer.status }}</span>
+                      {% endif %}
+                    </td>
+                    <td>{{ buyer.earn }}</td>
+                  </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td colspan="8" class="text-center">No referred buyers found.</td>
+                  </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <a href="{{ back }}" class="btn btn-default"><i class="fa fa-arrow-left"></i> Back to Account</a>
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+</div>
+{{ footer }}

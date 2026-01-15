@@ -1,0 +1,404 @@
+{{ header }}
+{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<div class="input-group">
+					<div class="input-group-addon">
+						{{ entry_active_store }}
+						<select name="store" id="input-store" class="form-select">
+							{% for store in stores %}&nbsp;&nbsp;
+							<option value="{{ store.href }}" {% if store.store_id == store_id %} selected{% endif %}>{{ store.name }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<button type="button" id="ps-patch-htaccess" data-toggle="tooltip" title="{{ button_patch_htaccess }}" class="btn btn-warning"><i class="fa fa-save"></i> {{ button_patch_htaccess }}</button>
+					<button type="submit" form="form-feed" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+					<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+				</div>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+				<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-feed" class="form-horizontal">
+
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+            <li><a href="#tab-support" data-toggle="tab">{{ tab_help_and_support }}</a></li>
+          </ul>
+
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+
+							<div class="form-group">
+								<label for="input-status" class="col-sm-2 control-label">{{ entry_status }}</label>
+								<div class="col-sm-10">
+									<select name="feed_ps_google_sitemap_status" id="input-status" class="form-control">
+										{% if feed_ps_google_sitemap_status %}
+										<option value="1" selected="selected">{{ text_enabled }}</option>
+										<option value="0">{{ text_disabled }}</option>
+										{% else %}
+										<option value="1">{{ text_enabled }}</option>
+										<option value="0" selected="selected">{{ text_disabled }}</option>
+										{% endif %}
+									</select>
+								</div>
+							</div>
+
+							<fieldset>
+								<legend>{{ heading_product }}</legend>
+
+								<div class="form-group">
+									<label for="input-product" class="col-sm-2 control-label">{{ entry_product }}</label>
+									<div class="col-sm-10">
+										<select name="feed_ps_google_sitemap_product" id="input-product" class="form-control">
+											{% if feed_ps_google_sitemap_product %}
+											<option value="1" selected="selected">{{ text_enabled }}</option>
+											<option value="0">{{ text_disabled }}</option>
+											{% else %}
+											<option value="1">{{ text_enabled }}</option>
+											<option value="0" selected="selected">{{ text_disabled }}</option>
+											{% endif %}
+										</select>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="input-product-images" class="col-sm-2 control-label">{{ entry_product_images }}</label>
+									<div class="col-sm-10">
+										<select name="feed_ps_google_sitemap_product_images" id="input-product-images" class="form-control">
+											{% if feed_ps_google_sitemap_product_images %}
+											<option value="1" selected="selected">{{ text_enabled }}</option>
+											<option value="0">{{ text_disabled }}</option>
+											{% else %}
+											<option value="1">{{ text_enabled }}</option>
+											<option value="0" selected="selected">{{ text_disabled }}</option>
+											{% endif %}
+										</select>
+									</div>
+								</div>
+
+								<div id="max-product-images-group" class="form-group required"{% if not feed_ps_google_sitemap_product_images %} style="display: none;"{% endif %}>
+									<label for="input-max-product-images" class="col-sm-2 control-label">{{ entry_max_product_images }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="feed_ps_google_sitemap_max_product_images" value="{{ feed_ps_google_sitemap_max_product_images }}" placeholder="{{ entry_fee }}" id="input-max-product-images" class="form-control">
+										{% if error_input_max_product_images %}<div class="text-danger">{{ error_input_max_product_images }}</div>{% endif %}
+										<div class="help-block text-muted">{{ help_product_images }}</div>
+									</div>
+								</div>
+
+							</fieldset>
+							<fieldset>
+								<legend>{{ heading_category }}</legend>
+
+								<div class="form-group">
+									<label for="input-category" class="col-sm-2 control-label">{{ entry_category }}</label>
+									<div class="col-sm-10">
+										<select name="feed_ps_google_sitemap_category" id="input-category" class="form-control">
+											{% if feed_ps_google_sitemap_category %}
+											<option value="1" selected="selected">{{ text_enabled }}</option>
+											<option value="0">{{ text_disabled }}</option>
+											{% else %}
+											<option value="1">{{ text_enabled }}</option>
+											<option value="0" selected="selected">{{ text_disabled }}</option>
+											{% endif %}
+										</select>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="input-category-images" class="col-sm-2 control-label">{{ entry_category_images }}</label>
+									<div class="col-sm-10">
+										<select name="feed_ps_google_sitemap_category_images" id="input-category-images" class="form-control">
+											{% if feed_ps_google_sitemap_category_images %}
+											<option value="1" selected="selected">{{ text_enabled }}</option>
+											<option value="0">{{ text_disabled }}</option>
+											{% else %}
+											<option value="1">{{ text_enabled }}</option>
+											<option value="0" selected="selected">{{ text_disabled }}</option>
+											{% endif %}
+										</select>
+									</div>
+								</div>
+
+							</fieldset>
+							<fieldset>
+								<legend>{{ heading_manufacturer }}</legend>
+
+								<div class="form-group">
+									<label for="input-manufacturer" class="col-sm-2 control-label">{{ entry_manufacturer }}</label>
+									<div class="col-sm-10">
+										<select name="feed_ps_google_sitemap_manufacturer" id="input-manufacturer" class="form-control">
+											{% if feed_ps_google_sitemap_manufacturer %}
+											<option value="1" selected="selected">{{ text_enabled }}</option>
+											<option value="0">{{ text_disabled }}</option>
+											{% else %}
+											<option value="1">{{ text_enabled }}</option>
+											<option value="0" selected="selected">{{ text_disabled }}</option>
+											{% endif %}
+										</select>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="input-manufacturer-images" class="col-sm-2 control-label">{{ entry_manufacturer_images }}</label>
+									<div class="col-sm-10">
+										<select name="feed_ps_google_sitemap_manufacturer_images" id="input-manufacturer-images" class="form-control">
+											{% if feed_ps_google_sitemap_manufacturer_images %}
+											<option value="1" selected="selected">{{ text_enabled }}</option>
+											<option value="0">{{ text_disabled }}</option>
+											{% else %}
+											<option value="1">{{ text_enabled }}</option>
+											<option value="0" selected="selected">{{ text_disabled }}</option>
+											{% endif %}
+										</select>
+									</div>
+								</div>
+
+							</fieldset>
+							<fieldset>
+								<legend>{{ heading_information }}</legend>
+
+								<div class="form-group">
+									<label for="input-information" class="col-sm-2 control-label">{{ entry_information }}</label>
+									<div class="col-sm-10">
+										<select name="feed_ps_google_sitemap_information" id="input-information" class="form-control">
+											{% if feed_ps_google_sitemap_information %}
+											<option value="1" selected="selected">{{ text_enabled }}</option>
+											<option value="0">{{ text_disabled }}</option>
+											{% else %}
+											<option value="1">{{ text_enabled }}</option>
+											<option value="0" selected="selected">{{ text_disabled }}</option>
+											{% endif %}
+										</select>
+									</div>
+								</div>
+
+							</fieldset>
+
+							<fieldset>
+								<legend>{{ heading_robotstxt }}</legend>
+
+								<div class="form-group">
+									<label for="input-user-agent" class="col-sm-2 control-label">{{ entry_user_agent }}</label>
+									<div class="col-sm-10">
+										<select id="input-user-agent" class="form-control">
+											{% for key, value in user_agents %}
+												<option value="{{ key }}">{{ value }}</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-validation-results">{{ entry_validation_results }}</label>
+									<div class="col-sm-10">
+										<textarea rows="6" id="input-validation-results" class="form-control" readonly></textarea>
+									</div>
+									<div class="col-sm-offset-2 col-sm-12">
+										<button type="button" id="ps-validate-robotstxt" data-toggle="tooltip" title="{{ button_validate_robotstxt }}" class="btn btn-info"><i class="fa fa-file"></i> {{ button_validate_robotstxt }}</button>
+									</div>
+								</div>
+
+							</fieldset>
+
+							<ul class="nav nav-tabs">
+								<li class="active"><a href="#tab-data-feed-url" data-toggle="tab">{{ tab_data_feed_url }}</a></li>
+								<li><a href="#tab-data-feed-seo-url" data-toggle="tab">{{ tab_data_feed_seo_url }}</a></li>
+							</ul>
+
+							<div class="tab-content">
+								<div class="tab-pane active" id="tab-data-feed-url">
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="input-data-feed">{{ entry_data_feed_url }}</label>
+										<div class="col-sm-10">
+											{% for language in languages %}
+											<div class="input-group">
+												<span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"></span>
+												<input type="text" name="data_feed_{{ language.language_id }}" value="{{ data_feed_urls[language.language_id] }}" id="input-data-feed-{{ language.language_id }}" class="form-control" readonly>
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-info btn-copy" data-toggle="tooltip" data-input-id="input-data-feed-{{ language.language_id }}" title="{{ help_copy }}"><i class="fa fa-copy"></i></button>
+													<button type="button" class="btn btn-light btn-open" data-toggle="tooltip" data-input-id="input-data-feed-{{ language.language_id }}" title="{{ help_open }}"><i class="fa fa-link"></i></button>
+												</span>
+											</div>
+											{% endfor %}
+										</div>
+									</div>
+
+								</div>
+								<div class="tab-pane" id="tab-data-feed-seo-url">
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="input-data-feed">{{ entry_data_feed_url }}</label>
+										<div class="col-sm-10">
+											{% for language in languages %}
+											<div class="input-group">
+												<span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"></span>
+												<input type="text" value="{{ data_feed_seo_urls[language.language_id] }}" id="input-data-feed-seo-{{ language.language_id }}" class="form-control" readonly>
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-info btn-copy" data-toggle="tooltip" data-input-id="input-data-feed-seo-{{ language.language_id }}" title="{{ help_copy }}"><i class="fa fa-copy"></i></button>
+													<button type="button" class="btn btn-light btn-open" data-toggle="tooltip" data-input-id="input-data-feed-seo-{{ language.language_id }}" title="{{ help_open }}"><i class="fa fa-link"></i></button>
+												</span>
+											</div>
+											{% endfor %}
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="input-htaccess-mod">{{ entry_htaccess_mod }}</label>
+										<div class="col-sm-10">
+											<div class="input-group">
+												<textarea rows="4" id="input-htaccess-mod" class="form-control" readonly>{{ htaccess_mod }}</textarea>
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-info btn-copy" data-toggle="tooltip" data-input-id="input-htaccess-mod" title="{{ help_copy }}"><i class="fa fa-copy"></i></button>
+												</span>
+											</div>
+											<div class="help-block text-muted">{{ help_htaccess_mod }}</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+            </div>
+            <div class="tab-pane" id="tab-support">
+
+							<h3>{{ heading_getting_started }}</h3>
+							{{ text_getting_started }}
+							<hr>
+							<h3>{{ heading_setup }}</h3>
+							{{ text_setup }}
+							<hr>
+							<h3>{{ heading_troubleshot }}</h3>
+							{{ text_troubleshot }}
+							<hr>
+							<h3>{{ heading_faq }}</h3>
+							{{ text_faq }}
+							<hr>
+							<h3>{{ heading_contact }}</h3>
+							{{ text_contact }}
+
+            </div>
+					</div>
+
+					<input type="hidden" name="store_id" value="{{ store_id }}">
+        </form>
+      </div>
+    </div>
+  </div>
+	<script>
+		$('#input-store').on('change', function () {
+			window.location = $(this).val();
+		});
+
+		$('#input-product-images').on('change', function () {
+			if ($(this).prop('selectedIndex')) {
+				$('#max-product-images-group').fadeOut();
+			} else {
+				$('#max-product-images-group').fadeIn();
+			}
+		});
+
+    $('.btn-copy').on('click', function () {
+			var copyText = $("#" + $(this).data('inputId'));
+
+			if (copyText.length) {
+					copyText.select();
+					copyText[0].setSelectionRange(0, 99999);
+					document.execCommand("copy");
+			}
+		});
+
+		$('.btn-open').on('click', function () {
+			var linkUrl = $("#" + $(this).data('inputId')).val();
+
+			if (linkUrl.length) {
+					window.open(linkUrl, '_blank');
+			}
+		});
+
+		$('#input-validate-robotstxt').on('change', function () {
+			$('#input-user-agent').prop('disabled', $(this).prop('selectedIndex'));
+			$('#ps-validate-robotstxt').prop('disabled', $(this).prop('selectedIndex'));
+		});
+
+		$('#ps-validate-robotstxt').on('click', function() {
+			var $this = $(this);
+			var action = $(this).data('fix-action');
+
+			$.ajax({
+			  url: 'index.php?route=extension/feed/ps_google_sitemap/validaterobotstxt&user_token={{ user_token }}&store_id={{ store_id}}&user_agent=' + $('#input-user-agent option:selected').val(),
+			  dataType: 'json',
+				beforeSend: function () {
+					$($this).button('loading');
+				},
+				complete: function () {
+					$($this).button('reset');
+				},
+				success: function (json) {
+					$('.alert-dismissible').remove();
+
+					if (json['error']) {
+						$('.panel-default').before('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+					}
+
+					if (json['results']) {
+						$('#input-validation-results').text(json['results']);
+					}
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+
+		$('#ps-patch-htaccess').on('click', function() {
+			var $this = $(this);
+			var action = $(this).data('fix-action');
+
+			$.ajax({
+			  url: 'index.php?route=extension/feed/ps_google_sitemap/patchhtaccess&user_token={{ user_token }}',
+			  dataType: 'json',
+				beforeSend: function () {
+					$($this).button('loading');
+				},
+				complete: function () {
+					$($this).button('reset');
+				},
+				success: function (json) {
+					$('.alert-dismissible').remove();
+
+					if (json['error']) {
+						$('.panel-default').before('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+					}
+
+					if (json['success']) {
+						$('.panel-default').before('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+					}
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+	</script>
+</div>
+{{ footer }}

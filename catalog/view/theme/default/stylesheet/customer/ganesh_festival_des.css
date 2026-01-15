@@ -1,0 +1,340 @@
+/* ===== General ===== */
+.gf-page {
+	background: #fffdf8;
+	padding: 15px;
+	font-family: "Poppins", sans-serif;
+	color: #333;
+}
+
+.gf-categories {
+	display: flex;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	gap: 10px;
+	padding: 10px 0;
+	scrollbar-width: none;
+}
+
+.gf-categories::-webkit-scrollbar {
+	display: none;
+}
+
+.gf-category-card {
+	flex: 0 0 auto;
+	width: 200px;
+	height: 150px;
+	overflow: hidden;
+	text-align: center;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	position: relative;
+}
+
+.gf-category-card:hover {
+	transform: scale(1.05);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.gf-img-wrapper {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.gf-img-wrapper img {
+	width: 100%;
+	height: 88%;
+	padding-top: 20px;
+	object-fit: cover;
+}
+
+
+.gf-section-title {
+	font-size: 20px;
+	font-weight: 700;
+	margin: 15px 0;
+	color: #a83279;
+	border-left: 5px solid #f39c12;
+	padding-left: 10px;
+}
+
+/* ===== Banners ===== */
+.gf-top-banner img,
+.gf-second-banner img,
+.gf-third-banner img,
+.gf-fourth-banner img {
+	border-radius: 16px;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
+}
+
+/* ===== Category Scroll ===== */
+.gf-category-card {
+	position: relative;
+	width: 150px;
+	border-radius: 100px;
+	overflow: hidden;
+	display: inline-block;
+	margin: 10px;
+}
+
+.gf-category-card .gf-title {
+	position: absolute;
+	bottom: 30px;
+	left: 0;
+	right: 0;
+	text-align: center;
+	color: #fff;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+
+/* ===== Subcategory Cards ===== */
+.gf-subcategory-list {
+	display: flex;
+	gap: 10px;
+	overflow-x: auto;
+	padding-bottom: 10px;
+	justify-content: space-around;
+}
+
+.gf-subcategory-list::-webkit-scrollbar {
+	display: none;
+}
+
+.gf-subcategory-card {
+	background: #fff;
+	border: 1px solid #eee;
+	border-radius: 12px;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+	text-align: center;
+	width: 180px;
+	flex: 0 0 auto;
+	transition: transform 0.3s ease;
+	padding: 10px;
+	position: relative;
+}
+
+.gf-subcategory-card:hover {
+	transform: translateY(-5px);
+}
+
+.gf-subcategory-card img {
+	width: 100%;
+	height: 160px;
+	object-fit: cover;
+	border-radius: 8px;
+	margin-bottom: 8px;
+
+}
+
+.gf-subcategory-card h6 {
+	font-size: 12px;
+	font-weight: 600;
+	margin: 5px 0;
+	color: #444;
+}
+
+/* ===== Price Styling ===== */
+.gf-price {
+	margin: 5px 0;
+}
+
+.gf-new-price {
+	color: #d9534f;
+	font-weight: 700;
+}
+
+.gf-old-price {
+	text-decoration: line-through;
+	color: #888;
+	margin-left: 6px;
+}
+
+.gf-current-price {
+	color: #333;
+}
+
+.gf-product-title {
+	font-size: 15px;
+	font-weight: 600;
+	margin: 5px 0;
+	color: #444;
+}
+
+.gf-product-price {
+	margin: 5px 0;
+}
+
+/* ===== Festival Categories (Rounded Arch Cards) ===== */
+.gf-festival-categories {
+	background: #fff8e6;
+	padding: 35px;
+	border-radius: 12px;
+	margin: 20px 0;
+}
+
+.gf-festival-title {
+	font-size: 22px;
+	font-weight: 700;
+	margin-bottom: 15px;
+}
+
+.gf-festival-cards {
+	display: flex;
+	gap: 20px;
+	justify-content: center;
+}
+
+.gf-festival-card {
+	flex: 1 1 220px;
+	max-width: 220px;
+	background: #fddc7a;
+	border-radius: 120px 120px 10px 10px;
+	text-align: center;
+	padding: 10px;
+	position: relative;
+	transition: 0.3s;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gf-festival-card:hover {
+	transform: translateY(-6px);
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gf-festival-card-img {
+	position: relative;
+	top: -40px;
+}
+
+.gf-festival-card-img img {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+	object-position: top;
+	border-radius: 12px;
+}
+
+.gf-festival-card-text {
+	margin-top: -25px;
+	padding-bottom: 10px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #222;
+}
+
+/* ===== Extra Categories (Horizontal Scroll Cards) ===== */
+.gf-extra-title {
+	font-size: 20px;
+	font-weight: 700;
+	margin-bottom: 16px;
+	color: #222;
+}
+
+.gf-extra-cards {
+	display: flex;
+	justify-content: space-around;
+	gap: 16px;
+	overflow-x: auto;
+	scrollbar-width: none;
+	padding-bottom: 8px;
+}
+
+.gf-extra-cards::-webkit-scrollbar {
+	display: none;
+}
+
+.gf-extra-card {
+	position: relative;
+	flex: 0 0 auto;
+	width: 160px;
+	height: 200px;
+	border-radius: 14px;
+	overflow: hidden;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s ease;
+}
+
+.gf-extra-card:hover {
+	transform: translateY(-6px);
+}
+
+.gf-extra-card img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.gf-extra-card-overlay {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 12px;
+	text-align: center;
+}
+
+.gf-extra-card-overlay span {
+	color: #000;
+	font-size: 12px;
+	font-weight: 600;
+	display: block;
+}
+
+/* ===== Modak Badge ===== */
+.gf-modak-badge {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	z-index: 5;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: bounce-wobble 2.5s infinite ease-in-out;
+}
+
+/* Image inside Modak Badge */
+.gf-modak-badge img {
+	width: 30px;
+	height: 30px;
+	object-fit: contain;
+}
+
+/* Keyframes for bounce + wobble */
+@keyframes bounce-wobble {
+	0%, 100% {
+		transform: translateY(0) rotate(0deg) scale(1);
+	}
+	20% {
+		transform: translateY(-8px) rotate(-5deg) scale(1.1);
+	}
+	40% {
+		transform: translateY(0) rotate(5deg) scale(0.95);
+	}
+	60% {
+		transform: translateY(-5px) rotate(-3deg) scale(1.05);
+	}
+	80% {
+		transform: translateY(0) rotate(3deg) scale(1);
+	}
+}
+
+
+/* ===== Responsive ===== */
+@media(max-width:768px) {
+	.gf-subcategory-card {
+		width: 150px;
+	}
+
+	.gf-category-card img {
+		width: 65px;
+		height: 65px;
+	}
+}

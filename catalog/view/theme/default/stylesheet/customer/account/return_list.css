@@ -1,0 +1,321 @@
+/*.container {*/
+/*	font-family: 'Arial', sans-serif;*/
+/*	padding: 20px;*/
+/*	background-color: #f8f9fa;*/
+/*}*/
+
+.table-bordered > tbody > tr > td,
+.table-bordered > thead > tr > td {
+	border: none;
+}
+
+/* Breadcrumb Styling */
+.breadcrumb {
+	background: none;
+	padding: 10px 0;
+}
+
+.breadcrumb li {
+	display: inline;
+	font-size: 14px;
+}
+
+.breadcrumb li a {
+	color: #6c757d;
+	text-decoration: none;
+}
+
+.filter-section {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
+	align-items: center;
+}
+
+.filter-dropdown,
+.date-picker,
+.search-box {
+	padding: 10px;
+	border-radius: 5px;
+}
+
+/* Table Styling */
+.table-responsive {
+	border-radius: 10px;
+	background: #fff;
+	border: none;
+}
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: none;
+	background: #fff;
+}
+
+.table th,
+.table td {
+	padding: 12px;
+	text-align: left;
+	border: none;
+}
+
+.table thead {
+	background: #ffffff;
+	color: #000000;
+	border: none;
+}
+
+.table tbody tr:nth-child(even) {
+	background: #ffffff;
+	border-bottom: none;
+}
+
+.product-info {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.product-img {
+	width: 40px;
+	height: 40px;
+	border-radius: 5px;
+}
+
+/* Status Badges */
+.status-label {
+	padding: 5px 10px;
+	border-radius: 5px;
+	font-weight: bold;
+	text-transform: capitalize;
+}
+
+.status-label.pending {
+	background: #ffc107;
+	color: #fff;
+}
+
+.status-label.approved {
+	background: #28a745;
+	color: #fff;
+}
+
+.status-label.rejected {
+	background: #dc3545;
+	color: #fff;
+}
+
+.action-links {
+	gap: 10px;
+}
+
+.btn-view,
+.btn-track {
+	text-decoration: none;
+	padding: 5px 10px;
+	font-size: 14px;
+}
+
+.view-link {
+	color: #d63384;
+	padding: 5px 10px;
+}
+
+.view-link:hover {
+	color: #d63384;
+}
+
+.track-link {
+	color: #d63384;
+}
+
+.track-link:hover {
+	color: #d63384;
+}
+
+strong {
+	margin: 0;
+}
+
+/* Pagination */
+.content-wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+
+.left-content {
+	text-align: left;
+}
+
+.right-content {
+	text-align: right;
+}
+
+.return-content {
+	width: 100% !important;
+}
+
+/* Responsive - Convert Table to Cards */
+@media (max-width: 768px) {
+	.table thead {
+		display: none;
+	}
+
+	.table tbody {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	.table tr {
+		display: block;
+		background: #fff;
+		border-radius: 10px;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		padding: 15px;
+	}
+
+	.table td {
+		display: block;
+		text-align: left;
+		border: none;
+		padding: 5px 0;
+	}
+
+	.table td:before {
+		content: attr(data-label);
+		font-weight: bold;
+		display: block;
+		color: #555;
+		margin-bottom: 3px;
+	}
+
+	.action-links {
+		justify-content: space-between;
+		margin-top: 10px;
+	}
+
+	.return-card {
+		display: flex;
+		flex-direction: column;
+		padding: 15px;
+		margin-bottom: 15px;
+		border-radius: 10px;
+		background: #fff;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		border: none;
+		width: 100%;
+	}
+
+	.product-info {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.product-img {
+		width: 60px;
+		height: 60px;
+		border-radius: 8px;
+	}
+
+	.product-details {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.product-name {
+		font-size: 16px;
+		font-weight: bold;
+	}
+
+	.sku {
+		font-size: 12px;
+		color: #666;
+	}
+
+	.date-info {
+		display: flex;
+		justify-content: space-between;
+		font-size: 14px;
+		color: #333;
+		margin: 8px 0;
+	}
+
+	.date-info span {
+		font-weight: bold;
+	}
+
+	.refund-amount {
+		font-size: 14px;
+		font-weight: bold;
+		color: #000;
+	}
+
+	.action-links {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 10px;
+	}
+
+	.action-links a {
+		text-decoration: none;
+		font-size: 14px;
+		font-weight: bold;
+		padding: 5px 10px;
+		border-radius: 5px;
+	}
+
+	.view-details {
+		color: #d63384;
+	}
+
+	.track-return {
+		color: #007bff;
+	}
+
+	.actions {
+		display: flex;
+		gap: 15px;
+		margin-left: auto;
+	}
+
+	.view-details,
+	.track-return {
+		color: #8B5CF6;
+		font-size: 14px;
+		text-decoration: none;
+		font-weight: bold;
+	}
+}
+
+/* Tablet View - Keep Table Layout */
+@media (min-width: 768px) and (max-width: 1024px) {
+	.table {
+		display: table;
+		width: 100%;
+	}
+
+	.table thead {
+		display: table-header-group;
+	}
+
+	.table tbody {
+		display: table-row-group;
+	}
+
+	.table tr {
+		display: table-row;
+	}
+
+	.table td {
+		display: table-cell;
+		padding: 10px;
+		border: 1px solid #ddd;
+	}
+}

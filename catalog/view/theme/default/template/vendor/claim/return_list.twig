@@ -1,0 +1,224 @@
+<!-- Font Awesome CDN -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/vendor/claim/return_claim.css"/>
+
+
+{{ header }}
+{{ column_left }}
+
+<div id='content'>
+	<div class="" style='width:100%; display:flex; flex-direction:row; justify-content:space-between; padding:0px 40px; align-items:center; margin-top:20px;'>
+		<h1 style='width:fit-content'>Return Products</h1>
+		<div class="" style='width:fit-content'>
+    				<a href="https://www.ipshopy.com/index.php?route=vendor/claim/claim_list" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-info">
+    				    <i class="fa fa-reply"></i>
+    			    </a>
+    			</div>
+	</div>
+	<div class="container-fluid">
+		<div id='return_orders'>
+
+			<table class="claims-table">
+				<thead>
+					<tr>
+						<th>Sr</th>
+						<th>Product Details</th>
+						<th>Product Id</th>
+						<th>Return ID</th>
+						<th>Order ID</th>
+						<th>Return Date</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					{% if return_orders %}
+
+						{% for return in return_orders %}
+							<tr>
+
+								<td>{{ return.sr }}</td>
+								<td>
+									{{ return.Product }}...
+								</td>
+								<td>{{ return.product_id }}</td>
+								<td>{{ return.return_id }}</td>
+								<td>{{ return.order_id }}</td>
+
+								<td>{{ return.return_date }}</td>
+								<td>
+									<button id='myBtn' data-return-id="{{return.return_id}}" class="claim-btn btn-custom btn-primary-custom">Claim
+									</button>
+								</td>
+							</tr>
+							{# </td> #}
+						</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td colspan="7">{{ text_no_results }}</td>
+					</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</div>
+</div></div><!-- The Modal --><div id="myModal" class="modal">
+<div class="modal-content">
+	<div class="modal-header">
+		<span class="close">&times;</span>
+		<h2>New Claim
+			{#<a href='{{vendor_claim_list}}'>vendor claims</a>#}
+		</h2>
+	</div>
+	<form action="index.php?route=vendor/claim/return_list/create_claim" enctype="multipart/form-data" method="POST">
+		<div
+			class="modal-body">
+
+			{# product details end #}
+			<div id="product-info"></div>
+			<div id="claimForm">
+				<div id='selectSection'>
+					<div class='select_wrapper'>
+						<p>Issue area of affected Item</p>
+						<div class="wrapper">
+							<select class="custom-select" name="claim_issue_area_id">
+
+								<option value="" selected hidden>Select the Issue Area</option>
+								{% for detail in issue_details %}
+									<option value="{{ detail.claim_issue_area_id }}">
+										{{ detail.claim_issue_area }}
+									</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class='select_wrapper'>
+						<p>Issue Type</p>
+						<div class="wrapper">
+							<select class="custom-select" name="claim_issue_type_id">
+								<option value="" selected hidden>Select the Issue Type</option>
+								{% for detail in issue_details %}
+									<option value="{{ detail.claim_issue_type_id }}">
+										{{ detail.claim_issue_name }}
+									</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+				</div>
+
+				{# shipping proof #}
+				<div id='shippingProof'>
+					<p>Upload photo proof of shipping label
+					</p>
+					<div class="label_img claim_img">
+						<input type="file" name="firstImage" onchange="previewImage(event, 'img1', 'fileName1')" required>
+						<img id="img1" src="" alt="Upload Image">
+						<span id="fileName1" class="file-name">No file chosen</span>
+					</div>
+				</div>
+				{# product image  #}
+				<div id="images">
+					<p>Upload photo proof of damaged product</p>
+					<div class="productImg">
+						<div class="claim_img">
+							<input type="file" name="secondImage" onchange="previewImage(event, 'img2', 'fileName2')" required>
+							<img id="img2" src="" alt="Upload Image">
+							<span id="fileName2" class="file-name">No file chosen</span>
+						</div>
+
+						<div class="claim_img">
+							<input type="file" name="thirdImage" onchange="previewImage(event, 'img3', 'fileName3')" required>
+							<img id="img3" src="" alt="Upload Image">
+							<span id="fileName3" class="file-name">No file chosen</span>
+						</div>
+
+						<div class="claim_img">
+							<input type="file" name="fourthImage" onchange="previewImage(event, 'img4', 'fileName4')" required>
+							<img id="img4" src="" alt="Upload Image">
+							<span id="fileName4" class="file-name">No file chosen</span>
+						</div>
+
+						<div class="claim_img">
+							<input type="file" name="fifthImage" onchange="previewImage(event, 'img5', 'fileName5')" required>
+							<img id="img5" src="" alt="Upload Image">
+							<span id="fileName5" class="file-name">No file chosen</span>
+						</div>
+					</div>
+				</div>
+				{# discription  #}
+				<div style='margin-top:30px;'>
+					<p>Detailed Description of issue</p>
+					<textarea name="description" id="discription" rows="5"></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+		</div>
+	</form>
+</div></div>{# claim #}<script>
+// Get the modal, button, and close elements
+var modal = document.getElementById("myModal");
+// var btn = document.getElementById("myBtn");
+var closeBtn = document.getElementsByClassName("close")[0];
+var closeBtnFooter = document.getElementById("closeBtn");
+document.addEventListener('DOMContentLoaded', function () { // Select the button after the DOM is fully loaded
+const claimButtons = document.querySelectorAll('.claim-btn');
+
+console.log('return id - ', claimButtons);
+
+// Ensure the element exists before adding an event listener
+if (claimButtons) {
+claimButtons.forEach(button => {
+button.addEventListener('click', function () { // Get return_id and vendor_id from the button's data attributes
+var returnId = this.getAttribute('data-return-id');
+modal.style.display = "block";
+// Assuming `modal` is already defined in your code
+
+// Prepare the data to send in the request
+var data = new FormData();
+data.append('return_id', returnId);
+
+// Send the request via Fetch API
+fetch('index.php?route=vendor/claim/return_list/fetch_return_product', {
+method: 'POST',
+body: data
+}).then(response => response.text()).then(result => {
+document.getElementById('product-info').innerHTML = result;
+}).catch(error => {
+console.error('Error:', error);
+});
+});
+});
+}
+});
+
+// When the user clicks on <span> (x), close the modal
+closeBtn.onclick = function () {
+modal.style.display = "none";
+}
+
+// When the user clicks on the "Close" button in the footer,
+// close the modal
+closeBtnFooter.onclick = function () {
+modal.style.display = "none";
+}</script><script type="text/javascript">
+// Function to preview the selected image and show file name
+function previewImage(event, imgId, fileNameId) {
+var file = event.target.files[0];
+var reader = new FileReader();
+
+reader.onload = function () { // Set the image preview
+document.getElementById(imgId).src = reader.result;
+
+// Set the file name below the image
+document.getElementById(fileNameId).textContent = file.name;
+};
+
+if (file) {
+reader.readAsDataURL(file);
+}
+}</script>

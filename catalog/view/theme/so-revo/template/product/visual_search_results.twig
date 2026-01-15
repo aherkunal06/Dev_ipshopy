@@ -1,0 +1,310 @@
+{{ header }}
+<style>
+    /* Container for all product cards */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Single product card */
+.product-card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 6px #00000010;
+  transition: box-shadow 0.3s;
+  text-align: center;
+}
+
+.product-grid .product-card:hover {
+  box-shadow: 0 6px 12px #0000001a;
+}
+
+/* Image Section */
+.product-grid .product-card .image-wrapper {
+  position: relative;
+  height: 200px;
+  background: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-grid .product-card  .product-image {
+  max-height: 180px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* Discount Badge */
+.product-grid .product-card  .discount-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #b135b3;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* Side Icons */
+.product-grid .product-card  .side-icons {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 20px;
+}
+
+.product-grid .product-card  .side-icons .icon {
+  background: #953A93;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* Product Info */
+.product-grid .product-card  .product-info {
+  padding: 12px;
+}
+
+.product-grid .product-card  .product-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+  height: 38px;
+  overflow: hidden;
+}
+
+/* Price & Cart */
+.product-grid .product-card .price-or-cart {
+  position: relative;
+  height: 32px;
+  overflow: hidden;
+}
+
+/* Initial state: Add to Cart is below and hidden */
+.product-grid .product-card .add-to-cart-btn {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  opacity: 0;
+  background: #953A93;
+  color: white;
+  padding: 6px;
+  border: none;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+/* On hover: slide Add to Cart up, hide price */
+.product-grid  .product-card:hover .add-to-cart-btn {
+  top: 0;
+  opacity: 1;
+}
+
+.product-grid .product-card .price-block {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  opacity: 1;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.product-card:hover .price-block {
+  opacity: 0;
+  top: -100%;
+}
+
+.product-grid .product-card .price-or-cart {
+  position: relative;
+  height: 32px;
+  overflow: hidden;
+}
+
+/* Initial state: Add to Cart is below and hidden */
+.product-grid .product-card .add-to-cart-btn {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  opacity: 0;
+  background: #953A93;
+  color: white;
+  padding: 6px;
+  border: none;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+/* On hover: slide Add to Cart up, hide price */
+.product-card:hover .add-to-cart-btn {
+  top: 0;
+  opacity: 1;
+}
+
+.product-grid .product-card .price-block {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  opacity: 1;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.product-card:hover .price-block {
+  opacity: 0;
+  top: -100%;
+}
+/* Container for side icons */
+.product-grid .product-card .side-icons {
+  position: absolute;
+  top: 15px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none; /* Prevent hover outside */
+}
+
+/* Individual icon buttons */
+.product-grid .product-card .side-icons .icon {
+  background: #953A93;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  pointer-events: auto; /* Enable button clicks */
+  transform: translateX(30px); /* start hidden to the right */
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  border:none;
+}
+
+/* On hover: icons slide in from the right */
+.product-card:hover .side-icons .icon {
+  transform: translateX(0);
+  opacity: 1;
+}
+.product-grid .product-card .side-icons .icon:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.product-grid .product-card .side-icons .icon:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.product-grid .product-card .side-icons .icon:nth-child(3) {
+  transition-delay: 0.3s;
+}
+.product-grid .product-card .product-mrp{
+        text-decoration: line-through;
+}
+.product-grid .product-card .product-price{
+    font-weight: 600;
+    color: #953a93;
+    font-size: 18px;
+    margin-right: 5px;
+}
+#previewModal.modal.fade.in{
+    background:#0008;
+}
+.pagination_container{
+    display:flex;
+    flex-direction:column;
+    align-items: end;
+    margin-bottom:20px;
+    padding-right:20px;
+    
+}
+.pagination_container .pagination .pagination{
+    margin-bottom:10px;
+
+}
+</style>
+<div id="product-visual-search" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  
+{% if results %}
+  <div class="product-grid">
+    {% for result in results.results %}
+<div class="product-card">
+  <div class="image-wrapper">
+      <a href="{{ result.product_url }}">
+    <img src="{{ result.image_url }}" alt="{{ result.product_name }}" class="product-image" />
+    </a>
+    <div class="discount-badge">-{{ result.discount_percentage|round }}%</div>
+
+    <div class="side-icons">
+        
+     <button class="wishlist btn-button icon" type="button" title="{{ button_wishlist }}" onclick="wishlist.add('{{ result.product_id }}');"> <span ><i class="fa fa-heart-o"></i></span></button>
+     <button class="compare btn-button icon" type="button" title="{{ button_compare }}" onclick="compare.add('{{ result.product_id }}');"> <span ><i class="fa fa-exchange"></i></span></button>
+      {#<span class="icon"><i class="fa fa-search"></i></span>#}
+    </div>
+  </div>
+
+  <div class="product-info">
+      <a href="{{ result.product_url }}">
+    <div class="product-name">{{ result.product_name|slice(0, 25) ~ '...' }}</div>
+</a>
+    <div class="price-or-cart">
+      <div class="price-block">
+        <span class="product-price">₹{{ result.special_price }}</span>
+        <span class="product-mrp">₹{{ result.mrp_price }}</span>
+      </div>
+      <button class="add-to-cart-btn" data-product-id="{{ result.product_id }} " onclick="cart.add('{{ result.product_id }}', '{{ 1 }}');">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+
+
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No visual search results found.</p>
+{% endif %}
+
+
+<div class='pagination_container'>
+    <div class="pagination" style='margin:0px;'>{{ pagination|raw }}</div>
+    <div class="results-info">{{ results_total }}</div>
+</div>
+
+</div>
+
+
+<script>
+// Will be populated with JavaScript to fetch and display results
+// Function to handle pagination
+
+</script>
+{{ footer }}

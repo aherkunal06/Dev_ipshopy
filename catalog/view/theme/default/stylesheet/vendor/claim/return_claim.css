@@ -1,0 +1,552 @@
+
+
+	/* claims list */
+:root {
+  --ipPrimarylogolight: #953A9350;   
+  --ipTextSecond: #6c757d;      
+  --ipTextBlack: black;      
+  --ipPrimarylogo: #953A93;        
+  --ipTextWhite: #ffffff;          
+}
+	.claims-container .text-center{
+	    text-align:center;
+	}
+	.claims-container {
+		padding: 0px 20px 20px 20px;
+		background-color: #f8f9fa;
+		border-radius: 8px;
+}
+.claims-header {
+		display: flex;
+		/*justify-content: space-between;*/
+		align-items: center;
+    background: white;
+    padding: 20px 40px;
+    margin-bottom: 23px;
+    border-radius: 10px;
+}
+.claims-header .claim-header-wrapper{
+    width: 50%;
+    display: grid;
+    gap: 40px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.claims-table tbody tr td .btn-info{
+    background-color:#953a93;
+    border-color:#953a93;
+}
+.claims-header h1 {
+		font-size: 22px;
+		font-weight: bold;
+}
+.claims-stats {
+		display: flex;
+		gap: 15px;
+}
+
+#productDetails .title h4{
+    text-transform: capitalize;
+}
+.claims-stats {
+		display: flex;
+		justify-content: flex-start;
+		gap: 30px;
+		padding: 15px;
+		background-color: #ffffff;
+		border-radius: 8px;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		margin-bottom: 20px;
+width: 100%;
+}
+.stat-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		font-size: 14px;
+		font-weight: 600;
+		color: var(--ipTextBlack);
+		position: relative;
+		padding-bottom: 5px;
+transition: transform 0.3s ease, color 0.3s ease;
+}
+.stat-number {
+		font-size: 18px;
+		font-weight: bold;
+		background: var(--ipPrimarylogolight);
+		border-radius: 5px;
+		width: 100%;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: background 0.3s ease, transform 0.3s ease;
+}
+
+
+.stat-item:hover {
+		transform: translateY(-3px);
+		color: var(--ipPrimarylogo);
+}
+.stat-item:hover .stat-number {
+		background: var(--ipPrimarylogo);
+		color: #fff;
+		transform: scale(1.1);
+}
+
+.stat-item::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		width: 0;
+		height: 3px;
+		background: var(--ipPrimarylogo);
+		transition: width 0.3s ease;
+}
+.stat-item:hover::after {
+		width: 100%;
+}
+.stat-item.active .stat-number {
+		background: var(--ipPrimarylogo);
+		color: #fff;
+}
+.stat-item.active::after {
+		width: 100%;
+}
+.claims-table {
+		width: 100%;
+		background: #fff;
+		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+		border-radius: 10px;
+		overflow: hidden;
+		padding-inline: 15px;
+}
+.claims-table th, .claims-table td {
+		padding: 15px 0px;
+		text-align: left;
+		border-bottom: 1px solid #ddd;
+		max-width: 300px;
+}
+.claims-table th {
+		background: var(--ipPrimarylogo);
+		font-weight: bold;
+color: var(--ipTextWhite);
+}
+/*.status-processing {*/
+/*		background: #ffebcc;*/
+/*		color: #d48806;*/
+/*		padding: 5px 10px;*/
+/*		border-radius: 5px;*/
+/*		font-size: 12px;*/
+/*		font-weight: bold;*/
+/*}*/
+.see-details {
+		color: var(--ipPrimarylogo);
+		text-decoration: none;
+		font-weight: bold;
+}
+.see-details:hover {
+		text-decoration: underline;
+}
+.claims-actions {
+	 display: flex;
+justify-content: flex-end;	
+align-items: center;
+padding: 5px;
+/* background-color: #ffffff; */
+border-radius: 8px;
+/* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+margin-bottom: 0;
+gap: 15px;
+}
+
+.claims-table{
+	color: var(--ipTextBlack);
+}
+table thead{
+	background-color: var(--ipPrimarylogo) !important;
+}
+table thead a {
+	color: var(--ipTextWhite) !important;
+}
+.claims-actions .btn-custom a{
+	color: var(--ipPrimarylogo) ;
+}
+.claims-actions .btn-primary-custom a{
+	color: var(--ipTextWhite);
+}
+
+.claims-actions .btn-custom a:hover{
+	color: var(--ipTextWhite) !important;
+}
+.claims-actions .btn-primary-custom:hover a,.claims-actions .btn-primary-custom a:hover
+{
+	color: var(--ipPrimarylogo) !important;
+}
+/* All cells in the first column */
+table th:nth-child(1),table td:nth-child(1) {
+  padding-left: 20px;
+}
+table th:nth-child(n+1):nth-last-child(1),table td:nth-child(n+1):nth-last-child(1) {
+  /* padding-right: 20px; */
+}
+/*.status-processing{*/
+/*	border: 1px solid;*/
+/*	background-color: var(--ipTextWhite);*/
+
+/*}*/
+.claims-actions select{
+
+	border: 2px solid var(--ipPrimarylogolight);
+	padding: 8px 12px;
+	border-radius: 5px;
+	font-size: 14px;
+	color: var(--ipPrimarylogo);
+}
+.claims-actions select:hover{
+	border: 2px solid var(--ipPrimarylogo);
+}
+.claims-actions select option:hover{
+	background-color: var(--ipPrimarylogo);
+	color: var(--ipTextWhite);
+}
+
+
+
+
+
+/* claim model  */
+
+/* Basic styles for the modal */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto!important; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+}
+
+/* Modal Content */
+.modal-content {
+	background-color: #fff;
+	margin: 50px auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 60%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* Modal Header */
+.modal-header {
+	padding: 10px 0;
+	font-size: 1.5em;
+}
+
+/* Modal Footer */
+.modal-footer {
+	padding: 10px 0;
+	text-align: right;
+}
+
+/* Button Styling */
+
+.btn-custom {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		padding: 8px 15px;
+		font-size: 14px;
+		font-weight: bold;
+		border: 1px solid var(--ipPrimarylogo);
+		border-radius: 5px;
+		background: none;
+		color: var(--ipPrimarylogo);
+		cursor: pointer;
+		transition: all 0.3s ease;
+}
+.btn-custom i {
+		font-size: 16px;
+}
+.btn-custom:hover {
+		background:var(--ipPrimarylogo);
+
+		color: #fff;
+}
+.btn-primary-custom {
+		background: var(--ipPrimarylogo);
+		color: #fff;
+		border: 1px solid var(--ipPrimarylogo);
+}
+.btn-primary-custom:hover {
+		background: var(--ipTextWhite);
+		color: var(--ipPrimarylogo);
+
+}
+.dropdown-custom {
+		border: 1px solid #ccc;
+		padding: 8px 12px;
+		border-radius: 5px;
+		font-size: 14px;
+}
+a:hover{
+	color: var(--ipPrimarylogo);
+}
+.btn {
+	/* background-color: #4CAF50; */
+	color: white;
+	/* padding: 10px 20px; */
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.btn:hover {
+	background-color: rgb(89, 0, 255);
+	
+}
+.productImg {
+	display: grid;
+	gap: 10px;
+	grid-template-columns: repeat(4, 1fr);
+
+}
+.label_img {
+	width: 180px;
+	height: 180px;
+
+}
+.claim_img {
+	/* width: 100px;
+	height: 90px; */
+	background-color: rgb(249 249 249);
+	cursor: pointer;
+	/* padding: 10px; */
+	border: 1px solid #e3e3e3;
+	/* box-shadow: 0 0 5px rgb(233 233 233); */
+}
+.claim_img:hover {
+	background-color: lightgray
+}
+
+#productDetails {
+	/* background: lightgray; */
+	border-bottom: 1px solid lightgray;
+
+}
+.title {
+	display: flex;
+	gap: 20px;
+	align-items: center;
+}
+.custom-select {
+	width: 100%;
+	padding: 12px;
+	font-size: 14px;
+	background-color: #f9f9f9;
+	border: 1px solid #e3e3e3;
+	border-radius: 5px;
+	box-sizing: border-box; /* Include padding in width */
+	cursor: pointer;
+	/* margin-top: 20px; */
+}
+
+/* Optional: Styling the select box when it is focused */
+.custom-select:focus {
+	outline: none;
+	border-color: #4CAF50;
+}
+
+/* Styling the options within the select dropdown */
+.custom-select option {
+	padding: 10px;
+	font-size: 16px;
+	color: #333;
+}
+
+/* Hover effect for options */
+.custom-select option:hover {
+	background-color: #4CAF50;
+	color: white;
+}
+#selectSection {
+	display: flex;
+	gap: 20px
+}
+#shippingProof,
+#selectSection,
+#productDetails,
+#images {
+	padding: 30px 0;
+	border-bottom: 1px solid lightgray;
+}
+#discription {
+	width: 100%;
+}
+
+
+.claim_img {
+	position: relative;
+	display: inline-block;
+	/* width: 200px;*/
+	height: 180px;
+	border: 1px solid #e3e3e3;
+	border-radius: 5px;
+	overflow: hidden;
+	margin: 10px;
+	text-align: center;
+}
+
+.claim_img img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.claim_img input[type="file"] {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0; /* Hide the file input */
+	cursor: pointer;
+}
+
+.file-name {
+	margin-top: 10px;
+	font-size: 14px;
+	color: #333;
+}
+.contents {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+
+}
+.contents div {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+.select_wrapper {
+	width: fit-content;
+}
+.select_wrapper p {
+	margin-bottom: 5px;
+}
+.select_wrapper select {
+	-webkit-appearance: none;
+	appearance: none;
+	padding-right: 30px;
+}
+.select_wrapper .wrapper {
+	
+	position: relative;
+}
+
+.select_wrapper .wrapper::after {
+	content: "▼";
+	font-size: 1rem;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 10px;
+	position: absolute;
+color: var(--ipPrimarylogo);
+}
+	.custom_table thead {
+ background-color: var(--ipPrimarylogo);
+}
+.custom_table tbody td{
+	border: 1px solid #ddd;
+}
+.custom_table tbody td{
+	border: 1px solid var();
+}
+
+.custom_button{
+	background-color: var(--ipPrimarylogo) !important;
+	color: var(--ipTextWhite) !important;
+	transition: all .3s ease-in-out;
+	border: 1px solid var(--ipPrimarylogo) !important;
+	font-size: 14px !important;
+}
+.custom_button:hover{
+	background-color: var(--ipTextWhite) !important;
+	color: var(--ipPrimarylogo) !important;
+}
+.custom_button a{
+	color: var(--ipTextWhite);
+}
+.custom_button:hover a{
+color: var(--ipPrimarylogo);
+}
+.custom_button_light{
+	background-color: var(--ipTextWhite);
+	color: var(--ipPrimarylogo);
+}
+.custom_button_light:hover{
+	background-color: var(--ipPrimarylogo);
+	color: var(--ipTextWhite);
+}
+.custom_table{
+	width: 100%;
+    background: #fff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    padding-inline: 15px;
+		font-size: 14px;
+}
+.custom_table th:nth-child(1), table td:nth-child(1){
+	padding-left: 20px;
+
+}
+.status{
+    	padding: 5px 10px;
+		border-radius: 5px;
+		font-size: 12px;
+		font-weight: bold;
+		border:1px solid;
+		display:block;
+		min-width:max-content;
+		max-width:max-content;
+}
+.status40 {
+  background-color: #fff;
+  color: #953A93;
+}
+
+.status41 {
+  background-color: #fff;
+  color: #F0AD4E;
+}
+
+.status42 {
+  background-color: #fff;
+  color: #5CB85C;
+}
+
+.status43 {
+  background-color: #fff;
+  color: #D9534F;
+}
+
+
+

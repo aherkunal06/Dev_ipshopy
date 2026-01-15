@@ -1,0 +1,760 @@
+<link rel="stylesheet" href="catalog/view/theme/so-mobile/css/customer/login.css">
+
+{{ header }}
+<style>
+.form-group-i {
+  position: relative;
+  margin: 20px 0;
+}
+
+/* Input styling - only bottom border */
+.form-group-i input {
+  width: 100%;
+  padding: 10px 12px 8px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  background: none;
+}
+
+/* Thicker bottom border on focus */
+.form-group-i input:focus {
+  border-bottom: 2px solid #333;
+}
+
+/* Placeholder same font size as input text */
+.form-group-i input::placeholder {
+  font-size: 14px;
+  color: transparent; /* Hide placeholder text (we use label instead) */
+}
+
+/* Label default position */
+.form-group-i label {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #777;
+  font-size: 12px;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  background: #fff;
+  padding: 0 4px;
+}
+
+/* Float label when focused or has value */
+.form-group-i input:focus + label,
+.form-group-i input:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 8px;
+  font-size: 12px;
+  color: #333;
+}
+
+.resend-o-link-btn{
+    color: #007bff;            /* Bootstrap blue */
+    font-size: 16px;           /* Bigger text */
+    font-weight: bold;         /* Bold */
+    text-decoration: none;     /* Remove underline */
+    padding: 6px 12px;         /* Add spacing */
+    
+    display: inline-block;     /* Make it behave like a button */
+    cursor: pointer;
+    transition: 0.3s;
+}
+/* Change link styling */
+.change-o-link {
+    color: #007bff;           /* Gray (secondary) */
+    font-size: 16px;          /* Slightly smaller */
+    font-weight: bold;
+    text-decoration: none;    /* No underline */
+    margin-left: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+/* Hover effect */
+.change-o-link:hover {
+    color: #0056b3;           /* Darker blue on hover */
+    text-decoration: underline;
+}
+</style>
+<style>
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+<div id="processing-overlay-o" style="display:none; 
+    position: absolute; top:0; left:0; right:0; bottom:0;
+    background: rgba(255,255,255,0.9); 
+    z-index: 9999; 
+    text-align:center; 
+    padding-top:150px; 
+    font-size:18px; 
+    font-weight:bold; 
+    color:#333;">
+    
+    <!-- Spinner -->
+    <div class="spinner-o" style="
+        margin: 0 auto 20px auto;
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;">
+    </div>
+
+    Processing... Please wait
+</div>
+
+<div id="account-login" class="container">
+	<ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+			<li>
+				<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+			</li>
+		{% endfor %}
+	</ul>
+	{% if success %}
+		<div class="alert alert-success alert-dismissible">
+			<i class="fa fa-check-circle"></i>
+			{{ success }}</div>
+	{% endif %}
+	{% if error_warning %}
+		<div class="alert alert-danger alert-dismissible">
+			<i class="fa fa-exclamation-circle"></i>
+			{{ error_warning }}</div>
+	{% endif %}
+	<div class="row">{{ column_left }}
+		{% if column_left and column_right %}
+			{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+			{% set class = 'col-sm-9' %}
+		{% else %}
+			{% set class = 'col-sm-12' %}
+		{% endif %}
+		<div id="content" class="{{ class }}">{{ content_top }}
+			<div class="row">
+				
+		<div class="login-card"> <h2>Login</h2>
+					
+
+        <!-- OTP Login Section (Default Visible) -->
+        <div id="otp-login-section">
+        
+          <!-- Identifier Input -->
+          <div id="identifier-section" class="form-group-i">
+           
+            <input type="text" id="input-identifier" name="identifier"
+                 class="form-control-o input-identifier" placeholder=" " />
+           <label for="input-identifier">Enter Email/WhatsApp mobile number</label>
+           <small id="error-msg" style="color:red; display:none;"></small>
+          </div>
+        
+          <!-- Terms -->
+          <p id="terms-text" class="terms-text">
+            By continuing, you agree to <span class="brand">ipshopy</span>'s
+            <a href="https://www.ipshopy.com/terms_and_condition">Terms of Use</a> and <a href="https://www.ipshopy.com/privacy_and_policy">Privacy Policy</a>.
+          </p>
+        
+          <!-- Info After OTP Sent -->
+          <p id="otp-sent-info" style="display:none;">
+            OTP sent to <span id="sent-number"></span> 
+            (<a href="javascript:void(0);" id="change-number" class="change-o-link">Change</a>)
+          </p>
+        
+          <!-- OTP Section -->
+          <div id="otp-section" style="display:none; margin-top:10px;">
+            <div class="form-group">
+              <label for="otp-input">Enter OTP</label>
+              <input type="text" id="otp-input" class="form-control-o otp-input" placeholder="Enter OTP" />
+            </div>
+          </div>
+        
+          <!-- Buttons -->
+          <div class="btn-group-o">
+            <button type="button" id="send-otp-btn" class="btn-o btn-primary">Request OTP</button>
+            <button type="button" id="verify-otp-btn" class="btn-o btn-success" style="display:none;">Verify OTP</button>
+          </div>
+        
+          <!-- Timer / Resend -->
+          <div id="resend-info" style="display:none; margin-top:10px;">
+            Wait <span id="timer">30</span> seconds to resend OTP
+          </div>
+          <p id="resend-link" style="display:none; margin-top:10px;">
+            Didn’t get OTP? <a href="javascript:void(0);" id="resend-otp-btn" class="resend-o-link-btn">Resend OTP</a>
+          </p>
+        
+           <!-- Status Message -->
+           <p id="otp-message" class="otp-message"></p>
+
+        </div>
+        
+        
+        <!-- Password Login Section (Hidden by default) -->
+        <div id="password-login-section" style="display:none; margin-top:-10px;">
+        
+          <div class=" col-reg registered-account">
+         <div class="block-content">
+             <form action="{{ action }}" method="post" enctype="multipart/form-data">
+            	<!-- Email Field -->
+            	<div class="form-group icon-input">
+            		<label for="input-email">Email</label>
+            		<input type="text" name="email" id="input-email" value="{{ email }}" placeholder="Enter your email" class="form-control"/>
+            		<i class="fa fa-envelope input-icon"></i>
+            	</div>
+            
+            	<!-- Password Field -->
+            	<div class="form-group icon-input">
+            		<label for="input-password">Password</label>
+            		<input type="password" name="password" id="input-password" value="{{ password }}" placeholder="Enter your password" class="form-control"/>
+            		<i class="fa fa-lock input-icon"></i>
+            	</div>
+            
+            	<!-- Forgot Password Link -->
+            	<div class="forgot-link">
+            		<a href="{{ forgotten }}">{{ text_forgotten }}</a>
+            	</div>
+            
+            	<!-- Submit Button -->
+            	<input type="submit" value="{{ button_login }}" class="btn-login"/>
+            
+            	{% if redirect %}
+            		<input type="hidden" name="redirect" value="{{ redirect }}"/>
+            	{% endif %}
+            </form>
+        {# <form class="form form-login" action="{{ login }}" method="post" id="login-form" style="margin-top: -22px;" >#}
+        {# <fieldset class="fieldset login" data-hasrequired="* Required Fields">#}
+        {# <div class="field email required email-input">#}
+        {# <div class="control">#}
+        {#<label for="email">Email</label>#}
+        {# <span class="input-group-addon"> <i class="fa fa-envelope"></i> </span>#}
+        {# <input name="email" value="" autocomplete="off" id="email" type="email" class="input-text" title="Email" placeholder="E-mail Address" />#}
+        {# </div>#}
+        {# </div>#}
+        {# <div class="field password required pass-input">#}
+        {# <div class="control">#}
+        {#<label for="pass">Password</label>#}
+        {# <span class="input-group-addon"><i class="fa fa-lock"></i></span>#}
+        {# <input name="password" type="password" autocomplete="off" class="input-text" id="pass" title="Password" placeholder="Password" />#}
+        {# </div>#}
+        {# </div>#}
+         
+        {# <div class="secondary ft-link-p"><a class="action remind" href="{{ link_forgot_password }}"><span>{{ text_forgot_password }}</span></a></div>#}
+        {# <div class="actions-toolbar">#}
+        {# <div class="primary"><button type="submit" class="action login primary" name="send" id="send2"><span>{{ text_login }}</span></button></div>#}
+        {# </div>#}
+        {# </fieldset>#}
+        {# </form>#}
+         </div>
+         </div> 
+        </div>
+        
+        <!-- Toggle Link -->
+        <div class="switch-link" style="margin-bottom:15px; text-align:center;">
+          <a href="javascript:void(0)" id="toggle-btn" style="color:#007bff; text-decoration:none; font-size:14px;">
+            Login with Password
+          </a>
+        </div>
+
+					<div class="social-login-mobile">
+							<a href="https://accounts.google.com/o/oauth2/auth?response_type=code&redirect_uri=https%3A%2F%2Fwww.ipshopy.com%2Findex.php%3Froute%3Dextension%2Fmodule%2Fso_sociallogin%2FGoogleLogin&client_id=892390831625-r1rd3dqinakup2481o8g3fd0a54q5vi0.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&access_type=offline&approval_prompt=force" class="google-btn">
+						<button class="google-btn">
+								<i class="fa fa-google"></i>
+								Sign in with Google
+						</button>
+								</a>
+
+
+							<a href="https://www.facebook.com/v2.4/dialog/oauth?client_id=3276900275985782&state=504bf25c7d740d13a3125ad90c956b56&response_type=code&sdk=php-sdk-5.5.0&redirect_uri=https%3A%2F%2Fwww.ipshopy.com%2Findex.php%3Froute%3Dextension%2Fmodule%2Fso_sociallogin%2FFacebookLogin&scope=public_profile%2Cemail" class="facebook-btn">
+						<button class="facebook-btn">
+								<i class="fa fa-facebook"></i>
+								Sign in with Facebook
+						</button>
+							</a>
+					</div>
+
+					<div class="register-link">
+						New user?
+						<a href="{{ register }}">Create an Account</a>
+					</div>
+				</div>
+
+			</div>
+			{{ content_bottom }}</div>
+		{{ column_right }}</div>
+</div>
+{{ footer }}
+
+<style>
+/* Main container */
+
+
+#input-identifier{
+  background-color: white !important;
+  border-bottom: 0.1px solid #d6d5d5;
+}
+
+/* Image section (fit full height) */
+
+
+/* Inputs */
+.form-group-i {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-control-o {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control-o:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0,123,255,0.25);
+}
+
+/* OTP input */
+.otp-input {
+  letter-spacing: 3px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Buttons */
+.btn-group-o {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn-o {
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+#send-otp-btn{
+ background: #a04bae !important;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-o {
+  background: #007bff;
+  color: #fff;
+}
+
+.btn-o:hover {
+  background: #0069d9;
+}
+
+.btn-success {
+  background: #28a745;
+  color: #fff;
+}
+
+.btn-success:hover {
+  background: #218838;
+}
+
+.btn-warning {
+  background: #ffc107;
+  color: #333;
+}
+
+.btn-warning:hover {
+  background: #e0a800;
+}
+
+/* Timer */
+.resend-info {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #555;
+}
+
+/* Status Message */
+.otp-message {
+  margin-top: 15px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #d9534f;
+}
+
+/* Terms */
+.terms-text {
+  font-size: smaller;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.terms-text a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.terms-text a:hover {
+  text-decoration: underline;
+}
+
+.brand {
+  color: #007bff;
+  font-weight: 600;
+}
+
+/* New User Link */
+.new-user-link {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.new-user-link a {
+  margin-left: 5px;
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.new-user-link a:hover {
+  text-decoration: underline;
+}
+
+
+</style>
+
+<script>
+
+
+
+
+
+
+ // const input = document.getElementById("input-identifier");
+  //const errorMsg = document.getElementById("error-msg");
+
+ // function validateIdentifier(value) {
+    // ✅ Simple email regex
+ //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // ✅ WhatsApp (10 digit number only)
+  //  const phoneRegex = /^\d{10}$/;
+
+   // return emailRegex.test(value) || phoneRegex.test(value);
+ // }
+
+  //input.addEventListener("blur", function () {
+   // const value = input.value.trim();
+   // if (value && !validateIdentifier(value)) {
+   //   errorMsg.textContent = "Enter a valid email or 10-digit WhatsApp number.";
+    //  errorMsg.style.display = "block";
+    //  input.style.borderColor = "red";
+   // } else {
+   //   errorMsg.style.display = "none";
+    //  input.style.borderColor = "#ccc";
+  //  }
+ // });
+</script>
+
+<script>
+$(document).ready(function(){
+
+  // Track state (true = OTP, false = Password)
+  let isOtpLogin = true;
+
+  $('#toggle-btn').on('click', function() {
+    if (isOtpLogin) {
+      // Switch to Password login
+      $('#otp-login-section').hide();
+      $('#password-login-section').show();
+      $('#toggle-btn').text("Login with OTP");
+      isOtpLogin = false;
+    } else {
+      // Switch to OTP login
+      $('#password-login-section').hide();
+      $('#otp-login-section').show();
+      $('#toggle-btn').text("Login with Password");
+      isOtpLogin = true;
+    }
+  });
+
+});
+</script>
+
+
+<script>
+$(document).ready(function(){
+
+    let countdown;
+    let currentLoginType = 'otp'; // Track current login type
+    const defaultLogin = 'otp'; // OTP login is default
+
+    // =====================
+    // Validation helpers
+    // =====================
+    function isValidEmail(email) {
+        var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    function isValidPhone(phone) {
+        var re = /^[0-9]{10}$/;
+        return re.test(phone);
+    }
+
+    // =====================
+    // Timer
+    // =====================
+    function startTimer(seconds = 30) {
+        let timeLeft = seconds;
+        $("#resend-info").show();
+        $("#resend-link, #resend-otp-btn").hide();
+        $("#timer").text(timeLeft);
+
+        countdown = setInterval(function() {
+            timeLeft--;
+            $("#timer").text(timeLeft);
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                $("#resend-info").hide();
+                $("#resend-link, #resend-otp-btn").show();
+            }
+        }, 1000);
+    }
+
+    // =====================
+    // Reset OTP UI
+    // =====================
+    function resetOtpUI() {
+        clearInterval(countdown);
+        $('#otp-section, #verify-otp-btn, #otp-sent-info, #resend-info, #resend-link').hide();
+        $('#identifier-section, #terms-text, #send-otp-btn').show();
+        $('#input-identifier, #otp-input').val('');
+        $('#otp-message').text('');
+        $('#sent-number').text('');
+    }
+
+    // =====================
+    // Reset Password UI
+    // =====================
+    function resetPasswordUI() {
+        $('#password-login-section').hide();
+        $('#email, #pass').val('');
+    }
+
+    // =====================
+    // Rollback OTP if AJAX fails
+    // =====================
+    function rollbackOtpUI() {
+        resetOtpUI();
+    }
+
+    // =====================
+    // Show login section
+    // =====================
+    function showLoginSection(type) {
+        currentLoginType = type; // update current type
+        if(type === 'otp'){
+            $('#otp-login-section').show();
+            $('#password-login-section').hide();
+            $('#toggle-btn').text('Login with Password');
+        } else {
+            $('#otp-login-section').hide();
+            $('#password-login-section').show();
+            $('#toggle-btn').text('Login with OTP');
+        }
+    }
+
+    // =====================
+    // Request OTP - instant show
+    // =====================
+   $('#send-otp-btn').on('click', function() {
+    var identifier = $('#input-identifier').val().trim();
+
+    if (!(isValidEmail(identifier) || isValidPhone(identifier))) {
+        $('#otp-message').css('color','red').text("Enter a valid email or 10-digit mobile number");
+        return;
+    }
+
+    if (!navigator.onLine) {
+        $('#otp-message').css('color','red').text("No internet connection. Please check and try again.");
+        return;
+    }
+
+    // First check if identifier is registered
+    $.ajax({
+        url: 'index.php?route=account/login/checkIdentifier',
+        type: 'post',
+        data: { identifier: identifier },
+        dataType: 'json',
+        success: function(json) {
+            if (json.registered) {
+                // ✅ Identifier exists → jump instantly to OTP section
+                $('#sent-number').text(identifier);
+                $('#otp-sent-info').show();
+                $('#identifier-section, #terms-text, #send-otp-btn').hide();
+                $('#otp-section, #verify-otp-btn').show();
+                $('#otp-input').focus();
+                startTimer();
+
+                // Now trigger OTP sending in background
+                $.ajax({
+                    url: 'index.php?route=account/login/sendOtp',
+                    type: 'post',
+                    data: { identifier: identifier },
+                    dataType: 'json',
+                    success: function(res) {
+                        if (res.success) {
+                            $('#otp-message').css('color','green').text(res.success);
+                        } else if (res.error) {
+                            $('#otp-message').css('color','red').text(res.error);
+                        }
+                    },
+                    error: function() {
+                        $('#otp-message').css('color','red').text("Error sending OTP. Please try again.");
+                    }
+                });
+
+            } else {
+                // ❌ Identifier not found
+                $('#otp-message').css('color','red').text("This email/phone is not registered with us.");
+            }
+        },
+        error: function() {
+            $('#otp-message').css('color','red').text("Failed to check identifier. Please try again.");
+        }
+    });
+});
+
+
+    // =====================
+    // Verify OTP
+    // =====================
+    $('#verify-otp-btn').on('click', function() {
+    var otp = $('#otp-input').val();
+    var identifier = $('#input-identifier').val();
+
+    var $btn = $(this);
+    $btn.prop('disabled', true).text('Verifying...');
+
+    $.ajax({
+        url: 'index.php?route=account/login/verifyOtp',
+        type: 'post',
+        data: { identifier: identifier, otp: otp },
+        dataType: 'json',
+        success: function(json) {
+            if(json.success){
+                // Show processing overlay
+                $('#login-modal .modal-content > *').hide(); // hide all modal fields
+                $('#processing-overlay-o').show(); // show only overlay
+
+                $('#otp_verified').val(1);
+                $('#otp-message').css('color','green').text(json.success);
+
+                // Redirect
+                window.location.href = 'index.php?route=account/account';
+            } else if(json.error){
+                $('#otp-message').css('color','red').text(json.error);
+            }
+        },
+        error: function() {
+            $('#otp-message').css('color','red').text("Error verifying OTP. Please try again.");
+        },
+        complete: function() {
+            // Re-enable button only if still in modal (in case of error)
+            if($('#processing-overlay-o').is(':hidden')){
+                $btn.prop('disabled', false).text('Verify OTP');
+            }
+        }
+    });
+});
+
+    // =====================
+    // Resend OTP
+    // =====================
+    $('#resend-otp-btn, #resend-otp').on('click', function() {
+        var identifier = $('#input-identifier').val();
+        $('#otp-message').css('color','blue').text("Requesting OTP...");
+        $.ajax({
+            url: 'index.php?route=account/login/resendOtp',
+            type: 'post',
+            data: { identifier: identifier },
+            dataType: 'json',
+            success: function(json) {
+                if(json.success){
+                    $('#otp-message').css('color','green').text(json.success);
+                    startTimer();
+                } else if(json.error){
+                    $('#otp-message').css('color','red').text(json.error);
+                }
+            }
+        });
+    });
+
+    // =====================
+    // Change number
+    // =====================
+    $('#change-number').on('click', function(){
+        rollbackOtpUI();
+    });
+
+    // =====================
+    // Toggle OTP / Password login
+    // =====================
+    $('#toggle-btn').on('click', function() {
+        if(currentLoginType === 'otp'){
+            showLoginSection('password');
+        } else {
+            showLoginSection('otp');
+        }
+    });
+
+    // =====================
+    // Close modal
+    // =====================
+    $('.close-login').on('click', function() {
+        $('#login-modal').modal('hide');
+
+        resetOtpUI();
+        resetPasswordUI();
+        showLoginSection('otp');
+
+        $.ajax({
+            url: 'index.php?route=account/login/resetOtpSession',
+            type: 'post',
+            dataType: 'json',
+            success: function(response){
+                console.log(response.success || "OTP session cleared");
+            },
+            error: function(){
+                console.log("Failed to reset OTP session");
+            }
+        });
+    });
+
+    // =====================
+    // On modal open
+    // =====================
+    $('#login-modal').on('show.bs.modal', function () {
+        showLoginSection('otp');
+        resetOtpUI();
+        resetPasswordUI();
+    });
+
+});
+</script>

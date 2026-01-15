@@ -1,0 +1,129 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content" style="background-color: #f5f7fa; min-height: 100vh;">
+  <div class="page-header" style="border-bottom: 1px solid #ddd;">
+    <div class="container-fluid">
+      <h1 style="color: #333;"><i class="fa fa-users"></i> {{ heading_title }}</h1>
+      <div class="pull-right">
+        <a href="{{ add_url }}" class="btn btn-primary" style="box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+          <i class="fa fa-plus"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  {% if success %}
+  <div class="alert alert-success alert-dismissible" style="margin:10px;">
+    <i class="fa fa-check-circle"></i> {{ success }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+{% endif %}
+ <div class="panel panel-default" style="box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-radius: 8px;">
+      <div class="panel-heading" style="background-color: white; color: black; border-radius: 8px 8px 0 0;">
+        <h3 class="panel-title"><i class="fa fa-tasks"></i> Assign Sellers</h3>
+      </div>
+
+  <div class="container-fluid">
+    <!-- Username Filter Block with Gray Background -->
+    <div style="background-color: #f5f5f5; padding: 15px; border-radius: 4px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.12);">
+      <form action="{{ action }}" method="get" id="filter-form">
+        <input type="hidden" name="route" value="assign/assign_work" />
+        <input type="hidden" name="user_token" value="{{ user_token }}" />
+        
+        <div class="row">
+          <div class="col-md-12">
+            <label style="font-weight: bold; color: #333; display: block; margin-bottom: 8px;">Username</label>
+            <div class="row">
+              <div class="col-sm-4">
+                <input type="text" name="filter_username" value="{{ filter_username }}" placeholder="Username" id="input-username" class="form-control" style="height: 34px;" autocomplete="off">
+                <input type="hidden" name="filter_user_id" id="input-user-id" value="{{ filter_user_id }}">
+              </div>
+              <div class="col-sm-3">
+                <button type="submit" id="button-filter" class="btn btn-primary" style="width: 100%;">
+                  <i class="fa fa-filter"></i> Filter
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Results Table -->
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr style="background-color: #f1f1f1;">
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Total No. of Sellers</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if users %}
+            {% for user in users %}
+              <tr>
+                <td>{{ user.user_id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.seller_count }}</td>
+                <td class="text-center">
+                  <a href="{{ user.view_url }}&filter_assign_date={{ user.assign_date }}" class="btn btn-primary btn-sm">
+                    <i class="fa fa-eye"></i>
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td class="text-center" colspan="4">No results found</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Autocomplete styles/scripts -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css" />
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  $('#input-username').autocomplete({
+    minLength: 0,
+    delay: 200,
+    source: function (request, response) {
+      $.ajax({
+        url: 'index.php?route=assign/assign_work/autocomplete&user_token={{ user_token }}&filter_username=' + encodeURIComponent(request.term),
+        dataType: 'json',
+        success: function (json) {
+          response($.map(json, function (item) {
+            return {
+              label: item.username,
+              value: item.username,
+              user_id: item.user_id
+            };
+          }));
+        }
+      });
+    },
+    focus: function (event, ui) {
+      $('#input-username').val(ui.item.label);
+      return false;
+    },
+    select: function (event, ui) {
+      $('#input-username').val(ui.item.label);
+      $('#input-user-id').val(ui.item.user_id);
+      return false;
+    }
+  });
+
+  $('#input-username').on('focus', function () {
+    $(this).autocomplete('search', $(this).val());
+  });
+});
+</script>
+
+{{ footer }}

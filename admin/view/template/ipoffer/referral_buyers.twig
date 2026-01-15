@@ -1,0 +1,70 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <a href="javascript:history.back()" class="btn btn-default pull-right"><i class="fa fa-reply"></i> </a>
+      <h1>Referred Buyers</h1>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <i class="fa fa-users"></i> Customers Who Ordered via This Referral
+          {% if referrer_name %}
+            <span style="font-weight:normal; font-size:14px; margin-left:20px;">
+              (Referrer: <b>{{ referrer_name }}</b>{% if referrer_email %} &lt;{{ referrer_email }}&gt;{% endif %})
+            </span>
+          {% endif %}
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Buyer Name</th>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Product Name</th>
+                <th>Product ID</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Earned</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if buyers %}
+                {% for buyer in buyers %}
+                  <tr>
+                    <td>{{ buyer.customer_name }}</td>
+                    <td>{{ buyer.order_id }}</td>
+                    <td>{{ buyer.order_date }}</td>
+                    <td>{{ buyer.product_name }}</td>
+                    <td>{{ buyer.product_id }}</td>
+                    <td>{{ buyer.price }}</td>
+                    <td>{{ buyer.quantity }}</td>
+                    <td>
+                      {% if buyer.status == 'Completed' %}
+                        <span class="label label-success">Completed</span>
+                      {% elseif buyer.status == 'Pending' %}
+                        <span class="label label-warning">Pending</span>
+                      {% else %}
+                        <span class="label label-default">{{ buyer.status }}</span>
+                      {% endif %}
+                    </td>
+                    <td>{{ buyer.earned }}</td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr><td colspan="7">No buyers found for this referral.</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

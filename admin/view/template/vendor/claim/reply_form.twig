@@ -1,0 +1,70 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>Reply to Claim Comments</h1>
+      <ul class="breadcrumb">
+        <li><a href="{{ cancel }}">← Back to Claims</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    {% if comments %}
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Comment Thread</h3></div>
+        <div class="panel-body">
+          {% for comment in comments %}
+            <div style="margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+              <strong>{{ comment.comment_by|capitalize }}</strong>
+              <small style="float: right;">{{ comment.date_added }}</small>
+              <p>{{ comment.comment_text }}</p>
+
+              {% if comment.media %}
+                <div>
+                  {% for file in comment.media %}
+                    {% if file ends with '.jpg' or file ends with '.jpeg' or file ends with '.png' %}
+                      <img src="image/{{ file }}" style="width: 80px; margin-right: 5px;" />
+                    {% else %}
+                      <a href="image/{{ file }}" target="_blank">{{ file }}</a><br>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <p>No comments yet for this claim.</p>
+    {% endif %}
+
+    <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Add Your Reply</h3></div>
+        <div class="panel-body">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <textarea name="reply" class="form-control" placeholder="Type your reply..." required></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Attach Media</label>
+            <div class="col-sm-10">
+              <input type="file" name="media[]" multiple class="form-control" />
+              <small>Allowed: jpg, png, zip, doc, pdf, mp4 | Max: 10MB each</small>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <button type="submit" class="btn btn-primary">Submit Reply</button>
+          <a href="{{ cancel }}" class="btn btn-default">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{{ footer }}

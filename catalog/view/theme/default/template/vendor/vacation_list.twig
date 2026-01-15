@@ -1,0 +1,110 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+
+      <div class="pull-right">
+        {% if not pending_vacation %}
+          {#<a href="{{ add_vacation_url }}" class="btn btn-primary">{{ button_apply_vacation }}</a>#}
+          <a href="{{ add_vacation_url  }}" class="btn btn-primary">Apply For Vacation  {{ button_apply_vacation }}</a>
+
+        {% else %}
+          <button class="btn btn-primary" disabled>Apply For Vacation (Pending Request)</button>
+        {% endif %}
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-info">
+          <i class="fa fa-reply"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    {% if success %}
+      <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}</div>
+    {% endif %}
+    {% if error_warning %}
+      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+    {% endif %}
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{ text_vacation_requests }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>{{ column_start_date }}</th>
+                <th>{{ column_end_date }}</th>
+                <th>{{ column_reason }}</th>
+                <th>{{ column_status }}</th>
+                <th>{{ column_date_added }}</th>
+                <th>{{ column_action }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if vacations %}
+                {% for vacation in vacations %}
+                  <tr>
+                    <td>{{ vacation.start_date }}</td>
+                    <td>{{ vacation.end_date }}</td>
+                    <td>{{ vacation.reason }}</td>
+                    <td>{{ vacation.status }}</td>
+                    <td>{{ vacation.date_added }}</td>
+                    <td>
+                      <a href="{{ vacation.edit }}" class="btn btn-primary btn-sm">
+                        <i class="fa fa-eye"></i> {{ button_view }}
+                      </a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td class="text-center" colspan="6">{{ text_no_results }}</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{#{% if pending_vacation %}#}
+{#  <!-- Popup Modal -->#}
+{#  <div class="modal fade" id="pendingVacationModal" tabindex="-1" role="dialog" aria-labelledby="pendingVacationModalLabel" aria-hidden="true">#}
+{#    <div class="modal-dialog" role="document">#}
+{#      <div class="modal-content">#}
+{#        <div class="modal-header">#}
+{#          <h5 class="modal-title" id="pendingVacationModalLabel">Pending Vacation Request</h5>#}
+{#          <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#            <span aria-hidden="true">&times;</span>#}
+{#          </button>#}
+{#        </div>#}
+{#        <div class="modal-body">#}
+{#          You cannot apply for a new vacation until the current request is approved.#}
+{#        </div>#}
+{#        <div class="modal-footer">#}
+{#          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+{#  </div>#}
+{#  <script>#}
+{#    $(document).ready(function() {#}
+{#      $('#pendingVacationModal').modal('show');#}
+{#    });#}
+{#  </script>#}
+{#{% endif %}#}
+
+{{ footer }}

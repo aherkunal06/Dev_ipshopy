@@ -1,0 +1,259 @@
+{#{{ header }}{{ column_left }}#}
+{#<div id="content">#}
+{#  <div class="container-fluid">#}
+{#    <div class="row mb-3">#}
+{#      <div class="col-md-6">#}
+{#        <h1>Raise Ticket</h1>#}
+{#        </div>#}
+{#        <div class="col-md-6 text-right">#}
+{#        <a href="index.php?route=vendor/ticket_list" class="btn" style="background-color:#0f8db3">#}
+{#          <i class="fa fa-reply"></i>#}
+{#        </a>#}
+{#      </div>#}
+{#    </div>#}
+{#        <div class="panel panel-default">#}
+{#          <div class="panel-heading">#}
+{#            <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>#}
+{#          </div>#}
+{#          <div class="panel-body">#}
+{#            {% if success %}#}
+{#              <h3 class="text-success">{{ success }}</h3>#}
+{#            {% endif %}#}
+           
+{#            <form action="{{ action }}" method="post" enctype="multipart/form-data" id="ticket-form">#}
+{#              <div class="form-group">#}
+{#                <input type="hidden" name="vendor_id" value="{{ vendor_id }}">#}
+{#                <label>{{ entry_subject }}Subject</label>#}
+{#                <input type="text" name="subject" class="form-control" required />#}
+{#                {% if error_subject %}#}
+{#                  <div class="text-danger">{{ error_subject }}</div>#}
+{#                {% endif %}#}
+{#              </div>#}
+
+{#              <div class="form-group">#}
+{#                <label>{{ entry_subject }} Category</label>#}
+{#                <select name="ticket_category" class="form-control" required>#}
+{#                  <option value="">-- Select Category --</option>#}
+{#                  <option value="Payment Error">Payment Error</option>#}
+{#                  <option value="Product Listing">Product Listing</option>#}
+{#                  <option value="Technical">Technical</option>#}
+{#                  <option value="Login/Password Issue">Login/Password Issue</option>#}
+{#                  <option value="Warehouse">Add Warehouse</option>#}
+{#                  <option value="Commission/Fees">Commission/Fees</option>#}
+{#                </select>#}
+{#                {% if error_subject %}#}
+{#                  <div class="text-danger">{{ error_subject }}</div>#}
+{#                {% endif %}#}
+{#              </div>#}
+
+{#              <div class="form-group">#}
+{#                <label>{{ entry_message }}Description</label>#}
+{#                <textarea name="message" class="form-control" rows="5" required></textarea>#}
+{#                {% if error_message %}#}
+{#                  <div class="text-danger">{{ error_message }}</div>#}
+{#                {% endif %}#}
+{#              </div>#}
+
+{#              <div class="form-group">#}
+{#                <label>Upload Image</label>#}
+{#                <input type="file" id="image-upload" name="ticket_image" class="form-control" accept=".jpg,.jpeg,.png" required>#}
+{#                {% if error_ticket_image %}#}
+{#                  <div class="text-danger">{{ error_ticket_image }}</div>#}
+{#                {% endif %}#}
+{#                <p id="upload-message" style="color: green;"></p>#}
+{#              </div>#}
+{#              <button type="submit" class="btn btn-success">Submit Ticket</button>#}
+{#            </form>#}
+{#            <p id="success-message" style="color: green; display: none;">✅ Ticket submitted successfully!</p>#}
+{#            {% if success %}#}
+{#              <h3 class="text-success">{{ success }}</h3>#}
+{#            {% endif %}#}
+{#          </div>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+{#  </div>#}
+{#</div>#}
+
+{#<script>#}
+{#document.getElementById('image-upload').addEventListener('change', function () {#}
+{#    const file = this.files[0];#}
+{#    const maxSize = 5 * 1024 * 1024; // 5MB#}
+{#    const message = document.getElementById('upload-message');#}
+
+{#    message.textContent = ''; #}
+
+{#    if (!file) return;#}
+
+{#    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];#}
+
+{#    if (!allowedTypes.includes(file.type)) {#}
+{#        alert("Only JPG, JPEG, and PNG images are allowed.");#}
+{#        this.value = '';#}
+{#    } else if (file.size > maxSize) {#}
+{#        alert("File size must be less than 5MB.");#}
+{#        this.value = '';#}
+{#    } else {#}
+{#        message.textContent = '✅ File has been succesfully  upload.';#}
+{#    }#}
+{#});#}
+
+{#document.getElementById('ticket-form').addEventListener('submit', function (e) {#}
+   
+{#    document.getElementById('success-message').style.display = 'block';#}
+{#});#}
+{#</script>#}
+{#{{ footer }}#}
+
+{{ header }}{{ column_left }}
+<style>
+ /* Decrease font size for the form */
+.panel.panel-default,
+.panel.panel-default label,
+.panel.panel-default input,
+.panel.panel-default select,
+.panel.panel-default textarea,
+.panel.panel-default .btn,
+.panel.panel-default .form-control {
+    font-size: 15px !important;
+}
+.panel-title {
+    font-size: 20px !important;
+    font-weight: 700;
+}
+input[type="file"].form-control {
+    /* background-color: #3DBEEF !important; */
+    /* color: #fff !important; */
+    border: 1px solid #ced4da !important;
+    border-radius: 4px;
+    padding: 2px 8px !important;   /* Smaller height and padding */
+    font-size: 13px !important;    /* Smaller font */
+    height: 32px !important;       /* Small height */
+    max-width: 350px;              /* Increased width */
+    width: 100%;      /* Makes it responsive within max-width */
+}
+input[type="file"].form-control::file-selector-button {
+    /* background: #3DBEEF !important; */
+    /* color: #fff !important; */
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 13px;
+    cursor: pointer;
+}
+.btn {
+    background-color: #337ab7 !important;
+}
+</style>
+<div id="content">
+  <div class="container-fluid container-new" style="width:80%;">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <h1 style="font-size:38px;">Raise Tickets</h1>
+      </div>
+      <div class="col-md-6 text-right">
+        <a href="index.php?route=vendor/ticket_list" class="btn btn-primary" title="Back to Ticket List" style="font-size:18px;">
+          <i class="fa fa-reply"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading" style="background-color: #337ab7 !important; color: white !important; font-weight: bold !important;">
+        <h3 class="panel-title"><i class="fa fa-ticket"></i> Raise Ticket</h3>
+      </div>
+
+      <div class="panel-body">
+        {# Show closed message if status is closed #}
+        {% if ticket is defined and ticket.status is defined and ticket.status|lower == 'closed' %}
+          <div class="alert alert-danger" style="font-size:18px;">
+            This ticket is closed.
+          </div>
+        {% endif %}
+
+        {% if success %}
+          <div class="alert alert-success">{{ success }}</div>
+        {% endif %}
+
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="ticket-form">
+          <input type="hidden" name="vendor_id" value="{{ vendor_id }}">
+
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" name="subject" id="subject" class="form-control" required />
+            {% if error_subject %}
+              <div class="text-danger">{{ error_subject }}</div>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select name="ticket_category" id="category" class="form-control" required>
+              <option value="">-- Select Category --</option>
+              <option value="Payment Error">Payment Error</option>
+              <option value="Product Listing">Product Listing</option>
+              <option value="Technical">Technical</option>
+              <option value="Login/Password Issue">Login/Password Issue</option>
+              <option value="Warehouse">Add Warehouse</option>
+              <option value="Commission/Fees">Commission/Fees</option>
+            </select>
+            {% if error_ticket_category %}
+              <div class="text-danger">{{ error_ticket_category }}</div>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="message">Description</label>
+            <textarea name="message" id="message" class="form-control" rows="5" required></textarea>
+            {% if error_message %}
+              <div class="text-danger">{{ error_message }}</div>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="image-upload">Upload Image</label>
+            <input type="file"  style="background-color: #ccc !important;; color:black;" id="image-upload" name="ticket_image" class="form-control" accept=".jpg,.jpeg,.png" required>
+            <p id="upload-message" class="text-success" style="margin-top: 5px;"></p>
+            {% if error_ticket_image %}
+              <div class="text-danger">{{ error_ticket_image }}</div>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="btn btn-info">SUBMIT TICKET</button>
+          <p id="success-message" class="text-success mt-2" style="display: none;">✅ Ticket submitted successfully!</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('image-upload').addEventListener('change', function () {
+    const file = this.files[0];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const message = document.getElementById('upload-message');
+    message.textContent = '';
+
+    if (!file) return;
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+    if (!allowedTypes.includes(file.type)) {
+        message.textContent = '';
+        alert("Only JPG, JPEG, and PNG images are allowed.");
+        this.value = '';
+    } else if (file.size > maxSize) {
+        message.textContent = '';
+        alert("File size must be less than 5MB.");
+        this.value = '';
+    } else {
+        message.textContent = '✅ File has been successfully uploaded.';
+    }
+});
+
+document.getElementById('ticket-form').addEventListener('submit', function () {
+    document.getElementById('success-message').style.display = 'block';
+});
+</script>
+
+{{ footer }}

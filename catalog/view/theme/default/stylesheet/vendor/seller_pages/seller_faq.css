@@ -1,0 +1,206 @@
+/* General Styling */
+
+/* FAQ Header Section */
+.faq-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 30px;
+    background-color: #E1CAE62E;
+    flex-wrap: wrap;
+    padding-inline: 60px;
+}
+
+.faq-content {
+    max-width: 600px;
+}
+
+.faq-content h1 {
+    font-size: 30px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.faq-content p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.start-btn {
+    background-color: #953A93;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.faq-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+    background-color: #E1CAE62E;
+}
+
+/* FAQ List */
+.faq-list {
+    background: #fff;
+    padding: 20px;
+    margin: 30px auto;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+}
+
+.faq-list h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.faq-item details {
+    background: #ffffff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+summary {
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+p {
+    font-size: small;
+}
+
+
+.faq-list h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    background-color:#E1CAE62E; /* Background color */
+    color: black; /* Text color */
+    padding: 10px; /* Padding around text */
+    border-radius: 5px; /* Rounded corners */
+    /* text-align: center; Center align text */
+}
+
+/* Download Section */
+.download-section {
+    text-align: center;
+    margin: 20px 0;
+    background-color: #E1CAE62E;
+    padding: 20px;
+}
+
+.download-btn {
+    color: black;
+    padding: 15px 25px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.pdf-btn {
+    background-color: #953A93;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-top: 12px;
+    display: inline-block;
+}
+
+/* Responsive Design for Tablets and Mobile Devices */
+@media (max-width: 1024px) {
+    .faq-header {
+        /* flex-direction: column; */
+        text-align: center;
+        padding: 40px;
+    }
+    
+    .faq-content {
+        text-align: center;
+    }
+
+    .faq-list {
+        width: 95%;
+    }
+}
+
+/* Mobile Devices (Up to 768px) */
+@media (max-width: 768px) {
+    .faq-header {
+        padding: 20px;
+        flex-direction: column;
+    }
+
+    .faq-content h1 {
+        font-size: 24px;
+    }
+
+    .faq-content p {
+        font-size: 14px;
+    }
+
+    .faq-list {
+        width: 75%;
+        padding: 15px;
+    }
+
+    .download-section {
+        padding: 15px;
+    }
+
+    .download-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+
+    .pdf-btn {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    .footer-links {
+        text-align: center;
+        font-size: 14px;
+    }
+}
+
+/* Small Phones (Up to 375px) */
+@media (max-width: 375px) {
+    .faq-header {
+        padding: 15px;
+    }
+
+    .faq-content h1 {
+        font-size: 22px;
+    }
+
+    .faq-content p {
+        font-size: 13px;
+    }
+
+    .start-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .faq-list {
+        padding: 10px;
+        width: 90%;
+    }
+
+    .download-btn {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+
+    .pdf-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}

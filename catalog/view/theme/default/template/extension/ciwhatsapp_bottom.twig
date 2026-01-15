@@ -1,0 +1,58 @@
+<div class="whatsapp_handle {{ shape == 'round' ? 'only_icon_whatsapp' : '' }} {{ position }} {{ layout }}">
+  <div class="whstapp_noti">
+    <div class="web_icon" onclick="openCiWhatsapp();"><i class="fa fa-whatsapp"></i>
+      {% if button_text %}
+      <span>{{ button_text }}</span>
+      {% endif %}
+    </div>
+    <div class="chat_main animated bounceInUp">
+      <div class="full_chat">
+        <div class="top_chat">
+          <div class="title_chat clearfix">
+            <h4 class="">{{ module_title }}</h4>
+
+            {% if module_description %}
+            <p>{{ module_description }}</p>
+            {% endif %}
+
+            <div class="close_icon" onclick="closeCiWhatsapp();"><i class="fa fa-times"></i></div>
+          </div>
+        </div>
+        {% if layout == 'list_work' %}
+          {% set captilize_class = (members|length >= 4 ? 'upper3' : 'lowerin3') %}
+        {% else %}
+          {% set captilize_class = (members|length >= 5 ? 'upper5' : 'lowerin4') %}
+        {% endif %}
+        <div class="main_user_chat {{ captilize_class }}">
+          {% for member in members %}
+          <div class="single_user clearfix {{ member['online_status'] ? 'online' : 'offline' }}">
+            <a href="{{ member['apilink'] }}" {{ member.online_status ? 'target="_blank"' : '' }}>
+              <div class="circle_design {{ member['online_status'] ? 'online' : 'offline' }}"></div>
+              <div class="user_image">
+                <div class="img_p">
+                <img src="{{ member['photo_thumb'] }}" class="img-responsive" />
+
+                <p class="status_dot"><span></span></p>
+              </div>
+              </div>
+              <div class="user_content">
+                {% if member['department_name'] %}
+                <h5>{{ member['department_name'] }}</h5>
+                {% endif %}
+
+                {% if member['member_name'] %}
+                <h4>{{ member['member_name'] }}</h4>
+                {% endif %}
+
+                {% if member['time_text'] %}
+                <p>{{ member['time_text'] }}</p>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

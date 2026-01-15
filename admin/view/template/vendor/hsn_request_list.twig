@@ -1,0 +1,44 @@
+{{ header }}
+{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <h1>{{ heading_title }}</h1>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>{{ column_vendor }}</th>
+          <th>{{ column_hsn_code }}</th>
+          <th>{{ column_description }}</th>
+          <th>{{ column_gst_rate }}</th>
+          <th>{{ column_status }}</th>
+          <th>{{ column_date }}</th>
+          <th>{{ column_action }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for hsn in hsn_requests %}
+          <tr>
+            <td>{{ hsn.id }}</td>
+            <td>{{ hsn.vendor_id }}</td>
+            <td>{{ hsn.hsn_code }}</td>
+            <td>{{ hsn.description }}</td>
+            <td>{{ hsn.gst_rate }}</td>
+            <td>{{ hsn.status }}</td>
+            <td>{{ hsn.date_added }}</td>
+            <td>
+              {% if hsn.status == 'Pending' %}
+              <a href="{{ hsn.approve }}" class="btn btn-success btn-sm">Approve</a>
+              <a href="{{ hsn.reject }}" class="btn btn-danger btn-sm">Reject</a>
+              {% else %}
+              {{ hsn.status }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+

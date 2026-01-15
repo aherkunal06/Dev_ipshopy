@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+ <link rel="stylesheet" href="catalog/view/theme/default/stylesheet/vendor/seller_pages/header.css">
+    {#<title>Seller Header</title>#}
+</head>
+
+<body>
+    <header>
+        <div class="Seller-header-top">
+            New: Launch your business with 3 months free on annual plans
+        </div>
+        <div class="Seller-header-main">
+            <div class="Seller-header-logo"><img src="https://www.ipshopy.com/image/catalog/A-Satyashil/Logo%20props.png" alt="Logo">
+                <div class="Business-hub">Business Hub</div>
+            </div>
+            <div class="Seller-header-main-menu">
+                <button class="Seller-header-menu-button">&#9776;</button>
+                <ul class="nav-links">
+                    <li><a href="{{seller_home}}">Home</a></li>
+                    {#<li><a href="#">Benefits</a></li>#}
+                    <li><a href="{{seller_pricing}}">Pricing</a></li>
+                    <li><a href="{{seller_success}}">Success Stories</a></li>
+                    {#<li><a href="#">Resources</a></li>#}
+                </ul>
+                <div class="auth-buttons">
+                         <a href='{{seller_login}}'>
+                    <button class="Seller-header-sign-in">
+                              Sign In 
+                              
+                              </button>
+                              </a>
+                              <a href='{{seller_register}}'>
+                    <button class="Seller-header-register">Register Now</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <button class="close-button">&times;</button>
+        <ul class="sidebar-nav-links">
+            <li><a href="{{seller_home}}">Home</a></li>
+            {#<li><a href="#">Benefits</a></li>#}
+            <li><a href="{{seller_pricing}}">Pricing</a></li>
+            <li><a href="{{seller_success}}">Success Stories</a></li>
+            {#<li><a href="#">Resources</a></li>#}
+        </ul>
+        <div>
+            <!-- <button class="Seller-header-sign-in">Sign In</button> -->
+            
+            <button class="sidebar-Seller-header-register">Register Now</button>
+        </div>
+    </div>
+
+    <script>
+       
+        const menuButton = document.querySelector('.Seller-header-menu-button');
+const sidebar = document.querySelector('.sidebar');
+const closeButton = document.querySelector('.close-button');
+
+let hideTimeout;
+
+// Open the sidebar when the menu button is clicked
+menuButton.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent triggering the document click event
+    sidebar.classList.add('show');
+
+    // Clear any previous timeout
+    clearTimeout(hideTimeout);
+
+    // Set timeout to hide sidebar after 5 seconds
+    // hideTimeout = setTimeout(() => {
+    //     sidebar.classList.remove('show');
+    // }, 3000);
+});
+
+// Close the sidebar when the close button is clicked
+closeButton.addEventListener('click', () => {
+    clearTimeout(hideTimeout); // Stop auto-hide if manually closed
+    sidebar.classList.remove('show');
+});
+
+// Close the sidebar if clicking anywhere outside the sidebar
+document.addEventListener('click', (event) => {
+    // If the click is not on the sidebar or the menu button, hide the sidebar
+    if (!sidebar.contains(event.target) && !menuButton.contains(event.target)) {
+        sidebar.classList.remove('show');
+        clearTimeout(hideTimeout); // Stop auto-hide if sidebar is manually closed
+    }
+});
+
+// Prevent click events inside the sidebar from triggering the document click listener
+sidebar.addEventListener('click', (event) => {
+    event.stopPropagation();
+});
+
+
+    </script>

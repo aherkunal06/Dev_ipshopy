@@ -1,0 +1,472 @@
+{{ header }}{{ column_left }}
+
+
+
+{% if show_access_warning is defined and show_access_warning %}
+  <div style="display: flex; justify-content: center; align-items: center; height: calc(100vh - 100px); width: 100%;margin-left: 75px;">
+    <div style="text-align: center; border: 1px solid #eee; padding: 30px; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0,0,0,0.05); max-width: 550px; background: #fff;">
+      <p style="color: red; font-size: 18px; margin-bottom: 20px;">
+        <span style='font-size: 24px; margin-right: 5px;'>🚨</span> {{ alert_message }}
+      </p>
+
+      {% if show_warehouse_button %}
+        <a href="{{ edit_seller }}" class="btn" style="background-color: purple; color: white; padding: 10px 25px; font-size: 16px; margin: 10px; border-radius: 5px;">
+          Create Warehouse
+        </a>
+      {% endif %}
+
+      {% if show_bank_button %}
+        <a href="{{ edit_seller }}" class="btn" style="background-color: purple; color: white; padding: 10px 25px; font-size: 16px; margin: 10px; border-radius: 5px;">
+          Add Bank Account
+        </a>
+      {% endif %}
+    </div>
+  </div>
+{% else %}
+  
+
+<div id="content"  class="product-list">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right"><a href="{{ add }}" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+        <button type="button" data-toggle="tooltip" title="{{ button_copy }}" class="btn btn-default" onclick="$('#form-product').attr('action', '{{ copy }}').submit()"><i class="fa fa-copy"></i></button>
+        <button type="button" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger" onclick="confirm('{{ text_confirm }}') ? $('#form-product').submit() : false;"><i class="fa fa-trash-o"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-info">
+		    <i class="fa fa-reply"></i>
+	    </a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+       {#<img src="https://www.ipshopy.com/image/catalog/youtube-logo.png" alt="Click to Play Video"  onclick="showVideo()" style='width: 30px;cursor: pointer;'>#}
+        {#<div id="videoContainer" style=' display: none;margin-top: 20px;'>#}
+        {#    <iframe width="560" height="315" src="https://www.youtube.com/embed/vLVOrgCOtOE?si=kvDmPBYXbN9SIh9j" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>#}
+        {# </div>#}
+        <!-- Video Thumbnail Trigger -->
+{#{{ load.controller('common/video_popup', { video_url: 'https://www.youtube.com/embed/YOUR_VIDEO_ID' }) }}#}
+{{product_video}}
+
+
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="well">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-name">{{ entry_name }}</label>
+                <input type="text" name="filter_name" value="{{ filter_name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-model">{{ entry_model }}</label>
+                <input type="text" name="filter_model" value="{{ filter_model }}" placeholder="{{ entry_model }}" id="input-model" class="form-control" />
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-price">{{ entry_price }}</label>
+                <input type="text" name="filter_price" value="{{ filter_price }}" placeholder="{{ entry_price }}" id="input-price" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-quantity">{{ entry_quantity }}</label>
+                <input type="text" name="filter_quantity" value="{{ filter_quantity }}" placeholder="{{ entry_quantity }}" id="input-quantity" class="form-control" />
+              </div>
+            </div>
+            <div class="col-sm-4">
+				<div class="form-group">
+                 <label class="control-label" for="input-status">{{ entry_status }}</label> 
+					<select name="filter_status" id="input-status" class="form-control">
+						<option value=""></option> 
+						  {% if filter_status == '1' %}
+						<option value="1" selected="selected">{{ text_enabled }}</option>
+						  {% else %}               
+						<option value="1">{{ text_enabled }}</option>
+						  {% endif %}
+						  {% if filter_status == '0' %}                
+						<option value="0" selected="selected">{{ text_disabled }}</option>
+						{% else %}
+						<option value="0">{{ text_disabled }}</option>
+						{% endif %}
+						
+						{% if filter_status == '2' %}
+						<option value="2" selected="selected">{{ text_approvepending}}</option>
+						{% else %}
+						<option value="2">{{ text_approvepending}}</option>
+						{% endif %}
+					</select>
+				</div>
+				<button type="button" id="button-filter" style="margin-top:12%;" class="btn btn-primary pull-right col-sm-12"><i class="fa fa-search"></i> {{ button_filter }}</button>
+            </div>
+          </div>
+        </div>
+        <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-product">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                  <td class="text-center">{{ column_image }}</td>
+                  <td class="text-left">{% if sort == 'pd.name' %}
+                    <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+                    {% else %}
+                    <a href="{{ sort_name }}">{{ column_name }}</a>
+                    {% endif %}</td>
+                  <td class="text-left">{% if sort == 'p.model' %}
+                    <a href="{{ sort_model }}" class="{{ order|lower }}">{{ column_model }}</a>
+                    {% else %}
+                    <a href="{{ sort_model }}">{{ column_model }}</a>
+                    {% endif %}</td>
+                  <td class="text-right">{% if sort == 'p.price' %}
+                    <a href="{{ sort_price }}" class="{{ order|lower }}">{{ column_price }}</a>
+                    {% else %}
+                    <a href="{{ sort_price }}">{{ column_price }}</a>
+                    {% endif %}</td>
+                  <td class="text-right">{% if sort == 'p.quantity' %}
+                    <a href="{{ sort_quantity }}" class="{{ order|lower }}">{{ column_quantity }}</a>
+                    {% else %}
+                    <a href="{{ sort_quantity }}">{{ column_quantity }}</a>
+                    {% endif %}</td>
+                  <td class="text-left">{% if sort == 'p.status' %}
+                    <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+                    {% else %}
+                    <a href="{{ sort_status }}">{{ column_status }}</a>
+                    {% endif %}</td>
+                   
+                  <td class="text-center">{{ column_action }}</td>
+                   {#ADDED ON THE 04-04-2025------------------#}
+                    <td class="text-left">{{text_approval_status}}</td>
+                    <td class="text-left">
+                      {% if sort == 'comment' %}
+                        <a href="{{ sort_comment }}" class="{{ order|lower }}">{{ text_approval_comment }}</a>
+                      {% else %}
+                        <a href="{{ sort_comment }}">{{ text_approval_comment }}</a>
+                      {% endif %}
+                    </td>
+                    {#------------------------------------------------------#}
+                </tr>
+              </thead>
+              <tbody>
+                {% if products %}
+                  {% for product in products %}
+                <tr>
+                  <td class="text-center">{% if product.product_id in selected %}
+                    <input type="checkbox" name="selected[]" value="{{ product.product_id }}" checked="checked" />
+                    {% else %}
+                    <input type="checkbox" name="selected[]" value="{{ product.product_id }}" />
+                    {% endif %}</td>
+                  <td class="text-center">{% if product.image %} <img src="{{ product.image }}" alt="{{ product.name }}" class="img-thumbnail" /> {% else %} <span class="img-thumbnail list"><i class="fa fa-camera fa-2x"></i></span> {% endif %}</td>
+                  <td class="text-left">{{ product.name }}</td>
+                  <td class="text-left">{{ product.model }}</td>
+                    <td class="text-right">{% if product.special %} <span style="text-decoration: line-through;">{{ product.price }}</span><br/>
+                      <div class="text-danger">{{ product.special }}</div>
+                      {% else %}
+                      {{ product.price }}
+                      {% endif %}</td>
+                  <td class="text-right">{% if product.quantity <= 0 %} <span class="label label-warning">{{ product.quantity }}</span> {% elseif product.quantity <= 5 %} <span class="label label-danger">{{ product.quantity }}</span> {% else %} <span class="label label-success">{{ product.quantity }}</span> {% endif %}</td>
+                <!-- new code 5 march 2020 --> 
+				{% if chkautoapprovedproduct ==1 %}			
+                  <td class="text-center" width="170px">
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label"></label>
+                      <div class="col-sm-10">
+                        <label class="switch inputbundle{{ product.product_id }}" >
+                          <input type="checkbox" value="1" name="status" class="quick-status" rel="{{ product.product_id }}" {% if product.chkstatus %} checked="checked" {% endif %}>
+						
+                          <span class="slider round {% if product.statusvalue ==2 %} chkaproval{% endif %}"></span>
+                          <span class="absolute-no {% if product.statusvalue ==2 %} chkaproval{% endif %}">{{ text_disabled }}</span>
+                        </label>
+						
+                      </div>
+						{% if product.statusvalue ==2 %}	
+						<span class="approval">{{ text_approvepending }}</span>
+						{% endif %}
+					</div>
+                  </td>
+				  {% else %}
+				  <td class="text-left"><span class="label{% if product.status=='Disabled' %} label-danger  {% elseif product.status=='Approval Pending' %} label-warning {% else %} label-success {% endif %}">{{ product.status }}</span></td>
+				  
+				  {% endif %}
+				  
+                <!-- new code 5 march 2020 -->
+                    <td class="text-center"><!--20 02 2020--><a href="{{ product.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn"><i class="fa fa-pencil-square-o eyeicon" aria-hidden="true"></i></a><!--20 02 2020--></td>
+                
+                 {#ADDED ON THE 04-04-2025------------------#}
+                   <!-- approval status -->
+                    <td>
+                      {% if product.statusvalue == 1 %}
+                        <span class="label label-success">Approved</span>
+                      {% elseif product.statusvalue == 0 %}
+                        <span class="label label-danger">Disapproved</span>
+                      {% elseif product.statusvalue == 2 %}
+                        <span class="label label-warning">Pending</span>
+                      {% else %}
+                        <span class="label label-default">Unknown</span>
+                      {% endif %}
+                    </td>
+                     {#----------------- product approval comment updated on 22-04-2025---------- #}
+                  
+                    <td>
+                      {% if product.comment_thread %}
+                            <a href="index.php?route=vendor/product/replyForm&product_id={{ product.product_id }}&user_token={{ user_token }}" 
+                            class="btn btn-warning btn-sm" 
+                            title="Edit your reply">
+                            <i class="fa fa-edit"></i> View Details
+                         </a>
+                      {% else %}
+                            <span class="text-muted">No comments</span>
+                      {% endif %}
+                    </td>
+                    {#--------------------------------------------------------------------------#}
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td class="text-center" colspan="8">{{ text_no_results }}</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </form>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=vendor/product';
+
+	var filter_name = $('input[name=\'filter_name\']').val();
+
+	if (filter_name) {
+		url += '&filter_name=' + encodeURIComponent(filter_name);
+	}
+
+	var filter_model = $('input[name=\'filter_model\']').val();
+
+	if (filter_model) {
+		url += '&filter_model=' + encodeURIComponent(filter_model);
+	}
+
+	var filter_price = $('input[name=\'filter_price\']').val();
+
+	if (filter_price) {
+		url += '&filter_price=' + encodeURIComponent(filter_price);
+	}
+
+	var filter_quantity = $('input[name=\'filter_quantity\']').val();
+
+	if (filter_quantity) {
+		url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
+	}
+
+	var filter_status = $('select[name=\'filter_status\']').val();
+
+  if (filter_status) {
+    url += '&filter_status=' + encodeURIComponent(filter_status);
+  } 
+
+	location = url;
+});
+</script>
+ <script type="text/javascript"><!--
+$('input[name=\'filter_name\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=vendor/product/autocomplete&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_name\']').val(item['label']);
+  }
+});
+
+$('input[name=\'filter_model\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=vendor/product/autocomplete&filter_model=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['model'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_model\']').val(item['label']);
+  }
+});
+//--></script>
+<!--2020-->
+<script type="text/javascript">
+$(document).on('click','.quick-status',function() {
+  rel=$(this).attr('rel');
+  val=$(this).prop("checked");
+  if(val ==true){
+    status =1;
+  }else{
+    status =0;
+  }
+  $.ajax({
+    url: 'index.php?route=vendor/product/quickStatus&product_id='+rel+'&status='+status,
+    type: 'post',
+    data: '',
+    dataType: 'json',
+    beforeSend: function() {
+    },
+    complete: function() {
+    },
+    success: function(json) {
+      $('.alert, .text-danger').remove();      
+      if (json['success']) {
+        $('.breadcrumb').after('<div class="alert alert-success alert-dismissible"> <i style="font-size:14px; " class="fa fa-thumbs-up" aria-hidden="true"></i>' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+		$('html, body').animate({ scrollTop: 0 }, 'slow');
+      }
+    },
+  });
+});
+
+$('input[name=\'filter_name\']').val('');
+$('input[name=\'filter_model\']').val('');
+$('input[name=\'filter_quantity\']').val('');
+$('input[name=\'filter_price\']').val('');
+
+</script>
+<style>
+.slider:after {content: "{{ text_enable }}";}  
+</style>
+<!--2020-->
+
+<script>
+//         function showVideo() {
+//             document.getElementById("videoContainer").style.display = "block";
+//         }
+ </script>
+<script src="catalog/view/javascript/vendor/video.js"></script>
+
+
+{#added on 04-04-2025#}
+<style>
+  .comment-thread {
+    background: #fdfdfd;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+  .comment-thread p {
+    margin-bottom: 5px;
+  }
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    background-color: #000;
+}
+.modal-backdrop.fade {
+    filter: alpha(opacity = 0);
+    opacity: 0 !important;
+    position: static !important;
+}
+
+
+  </style>
+<!-- Modal -->
+<div id="commentModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+<script>
+$(document).on('click', '.view-comment', function () {
+  var productId = $(this).data('product');
+  $('#commentModal .modal-content').html('<div class="text-center p-4">Loading...</div>');
+
+  $.ajax({
+    url: 'index.php?route=vendor/product/viewComment&product_id=' + productId + '&user_token={{ user_token }}',
+    dataType: 'html',
+    success: function (html) {
+      $('#commentModal .modal-content').html(html);
+      $('#commentModal').modal('show');
+      
+    },
+    error: function () {
+      $('#commentModal .modal-content').html('<div class="text-danger p-3">Failed to load comments.</div>');
+    }
+  });
+});
+</script>
+{#--------------------------------------------------------------#}
+
+{#Ashwini Madam Changes - 09/06/2025#}
+{# Price Code#}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const priceInput = document.getElementById('input-price');
+    priceInput.addEventListener('input', function () {
+        let value = this.value;
+        value = value.replace(/[^0-9.]/g, '');
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts.slice(1).join('');
+        }
+        this.value = value;
+    });
+});
+</script>
+
+{# Quantity #}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const quantityInput = document.getElementById('input-quantity');
+
+    quantityInput.addEventListener('input', function () {
+        // Remove all characters that are not digits
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+});
+</script>
+
+
+
+{{ footer }}
+{% endif %}

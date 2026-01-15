@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/customer/product/categories_list.css"/>
+
+{% for group in category_groups %}
+<div class="category-section category-Section">
+  
+
+  <div class="infinite-scroll-container">
+      <h3 class="section-title">{{ group.title }}</h3>
+    <div class="infinite-scroll-track">
+      {% for category in group.categories %}
+      <a href="{{ category.href }}" class="category-card">
+        <img src="{{ category.product_image }}" alt="{{ category.category_name }}">
+        <div class="name">{{ category.category_name }}</div>
+        <div class="price">From {{ category.price }}</div>
+      </a>
+      {% endfor %}
+
+       {#Duplicate the list for infinite loop #}
+      {% for category in group.categories %}
+      <a href="{{ category.href }}" class="category-card">
+        <img src="{{ category.product_image }}" alt="{{ category.category_name }}">
+        <div class="name">{{ category.category_name }}</div>
+        <div class="price">From {{ category.price }}</div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endfor %}

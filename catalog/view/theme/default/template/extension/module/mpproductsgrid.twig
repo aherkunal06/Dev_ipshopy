@@ -1,0 +1,40 @@
+<div class="row product-mpgrid">
+  <div class="col-sm-3">
+    <h3 class="mpgrid-heading">{{ heading_title }}</h3>
+  </div>
+  <div class="col-sm-9">
+    <!-- Bottom bar with filter -->
+    <div class="bar">
+      <div class="filter" id="filter-{{ module }}">
+        <span class="filter__label hide">{{ text_filter }}</span>
+        <button class="action filter__item filter__item--selected" data-filter="*">{{ text_all }}</button>
+
+        {% for type,mpgrid in mpgrids %}
+        {% for key,submpgrid in mpgrid %}
+        {# check products for particular grid #}
+        {% if products[ type ][ key ] %}
+          <button class="action filter__item" data-type="{{ type }}" data-filter=".{{ submpgrid.id }}">{% if submpgrid.image %}<img src="{{ submpgrid.image }}" alt="{{ submpgrid.name }}" />{% endif %} {% if submpgrid.name %}<span class="action__text">{{ submpgrid.name }}</span>{% endif %} </button>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="view">
+  <!-- mpgrid -->
+  <section class="mpgrid mpgrid--loading cs-style-3" id="mpgrid-{{ module }}">
+    <!-- Loader -->
+    <img class="mpgrid__loader" src="{{ img_loader }}" width="{{ img_loader_width }}" alt="Loader image" />
+    <!-- mpgrid sizer for a fluid Isotope (Masonry) layout -->
+    <div class="mpgrid_sizer"></div>
+    <!-- mpgrid items -->
+  {{ productsgrids }}
+    </section>
+  <!-- /mpgrid-->
+  <div class="btn-block text-center"><a data-set="{{ setting }}" data-module="{{ module }}" data-page="{{ page }}" onclick="mpproductsgrid.showMore(this);" class="btn btn-primary">{{ button_showmore }}</a></div>
+</div>
+<!-- /view -->
+{% if module == 0 %}
+  <script type="text/javascript" src="catalog/view/javascript/mpproductsgrid/js/main.js"></script>
+{% endif %}

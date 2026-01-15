@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap');
+
+*{
+  font-family: "Commissioner", sans-serif;
+} 
+
+.launch_container {
+   display: flex;
+   flex-wrap: wrap;
+   /*max-width: 1200px;*/
+   background: #fff;
+   padding: 40px;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+   align-items: center;
+   margin-bottom: 0px;
+}
+
+.launch_content {
+   flex: 1;
+   padding: 20px;
+}
+
+.launch_content h1 {
+   font-size: 22px;
+   color: #333;
+}
+
+.launch_content p {
+   font-size: 14px;
+   margin-top: 10px;
+   color: #555;
+}
+
+.launch_buttons {
+   margin-top: 20px;
+   
+}
+
+.btn {
+   padding: 12px 20px;
+   border: none;
+   border-radius: 5px;
+   font-size: 14px;
+   cursor: pointer;
+   transition: 0.3s;
+}
+
+.primary {
+   background-color: #953A93;
+   color: white;
+}
+
+.primary:hover {
+   background-color: #953A93;
+}
+
+.secondary {
+   background-color: #ddd;
+   color: #333;
+   margin-top: 20px;
+}
+
+.secondary:hover {
+   background-color: #bbb;
+}
+
+
+.launch_image-container {
+   flex: 1;
+   text-align: center;
+   padding: 20px;
+}
+
+.launch_image-container img {
+   max-width: 100%;
+   border-radius: 10px;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}   
+
+.launch_container1 {
+   display: flex;
+   /*max-width: 1200px;*/
+   background-color: rgba(221, 221, 221, 0.925);
+   padding: 40px;
+   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+   align-items: center;
+}
+
+/* Left Image Section */
+.launch_image-section {
+   flex: 1;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.launch_image-section img {
+   max-width: 100%;
+   border-radius: 5px;
+}
+
+/* Right Content Section */
+.launch_content-section1 {
+   flex: 1;
+   padding: 20px;
+}
+
+
+/* Headings & Text */
+h1 {
+   font-size: 22px;
+   font-weight: bold;
+   margin-bottom: 10px;
+}
+
+p {
+   font-size: 14px;
+   color: #555;
+}
+
+/* Benefits List */
+.benefits {
+   list-style: none;
+   padding: 0;
+}
+
+.benefits li {
+   font-size: 14px;
+   margin: 10px 0;
+   display: flex;
+   align-items: center;
+   color: #333;
+}
+
+.benefits i {
+   color: #953A93;
+   margin-right: 10px;
+   font-size: 17px;
+}
+
+/* Button */
+.register-btn {
+   background-color: #953A93;
+   color: white;
+   border: none;
+   padding: 10px 15px;
+   font-size: 14px;
+   border-radius: 5px;
+   cursor: pointer;
+   margin-top: 15px;
+}
+
+.launch_container2 {
+   /*max-width: 1200px;*/
+   margin: 0 auto;
+   text-align: center;
+   margin-top: 50px;
+}
+
+h2 {
+   font-size: 22px;
+   margin-bottom: 20px;
+   color: #333;
+}
+
+.launch_cards {
+   display: flex;
+   gap: 20px;
+   flex-wrap: wrap;
+   justify-content: center;
+}
+
+.launch_card {
+   background-color: #953A93;
+   color: white;
+   padding: 20px;
+   border-radius: 8px;
+   flex: 1;
+   min-width: 300px;
+   max-width: 400px;
+}
+
+.launch_card h3 {
+   margin-top: 15px;
+   font-size: 18px;
+   font-weight: bold;
+}
+
+.launch_card p {
+   font-size: 14px;
+   margin-top: 5px;  
+   color: #f1ffff;
+}
+
+.head h2{
+   font-size: 22px;
+   margin-top: 50px;
+   text-align: center;
+}
+.head p{
+   font-size: 14px;
+   text-align: center;
+}
+.launch_container3 {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+   gap: 20px;
+   padding: 40px;
+}
+
+.launch_card2 {
+   border: 1px solid #ddd;
+   border-radius: 8px;
+   padding: 20px;
+   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.icon{
+   font-size: 30px;
+   color: #953A93;
+   margin-bottom: 10px;
+}
+img {
+   width: 100%;
+   border-radius: 8px;
+   margin-top: 10px;
+}
+.launch_container4 {
+   background: #f2eef2;
+   padding: 40px;
+   /*max-width: 1200px;*/
+   /*width: 90%;*/
+   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+   margin-top: 50px;
+}
+h2 {
+   font-size: 18px;
+   font-weight: bold;
+   color: #222;
+   margin-bottom: 15px;
+}
+ul {
+   list-style: none;
+   padding: 0;
+}
+li {
+   display: flex;
+   align-items: center;
+   font-size: 14px;
+   color: #666;
+   margin-bottom: 10px;
+}
+.launch_container4 li::before {
+   content: "✔";
+   color: #953A93;
+   font-weight: bold;
+   margin-right: 10px;
+}
+
+
+@media(max-width: 100%) {
+   
+.secondary {
+   
+   margin-top: 20px;
+   
+}
+.launch_container1 {
+   display: block;
+   padding: 0px;
+  
+}
+
+.launch_card{
+   display: block;
+   border-radius: 0px;
+   padding: 0px;
+}
+.launch_card2{
+   display: block;
+
+}
+
+
+.launch_container {
+   display: contents !important;
+   
+}
+
+
+} 

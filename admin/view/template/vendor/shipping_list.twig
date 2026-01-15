@@ -1,0 +1,282 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <a href="{{ bulkshipping }}" data-toggle="tooltip" title="{{ button_bulkupload }}" class="btn btn-primary">{{ button_bulkupload }}</a>
+        <a href="{{ add }}" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+        <button type="button" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger" onclick="confirm('{{ text_confirm }}') ? $('#form-review').submit() : false;"><i class="fa fa-trash-o"></i></button>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+		</div>
+		<div class="panel-body">
+			<div class="well">
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label class="control-label" for="input-filter_store_name">{{ column_store }} </label>
+							<input type="text" name="filter_store_name" value="{{ filter_store_name }}" placeholder="{{ column_sellerstore }}" id="input-filter_store_name" class="form-control" />
+							<input type="hidden" name="vendor_id" value="{{ filter_vendor }}">
+						</div>
+
+						<div class="form-group">
+							<label class="control-label" for="input-filter_country">{{ column_country }} </label>
+							<select name="filter_country" id="input-country" class="form-control">
+								<option value="">{{ text_select }}</option>
+								{% for country in countries %}
+								{% if country.country_id == filter_country %}
+								<option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
+								{% else %}
+								<option value="{{ country.country_id }}">{{ country.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label class="control-label" for="input-filter_zipfrom">{{ column_zipfrom }} </label>
+							<input type="text" name="filter_zipfrom" value="{{ filter_zipfrom }}" placeholder="{{ column_zipfrom }}" id="input-filter_zipfrom" class="form-control" />
+						</div>
+
+						
+					</div>
+
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label class="control-label" for="input-filter_weightfrom">{{ column_weightfrom }} </label>
+							<input type="text" name="filter_weightfrom" value="{{ filter_weightfrom }}" placeholder="{{ column_weightfrom }}" id="input-filter_weightfrom" class="form-control" />
+						</div>
+
+						<div class="form-group">
+							<label class="control-label" for="input-filter_weightto">{{ column_weightto }} </label>
+							<input type="text" name="filter_weightto" value="{{ filter_weightto }}" placeholder="{{ column_weightto }}" id="input-filter_weightto" class="form-control" />
+						</div>
+					</div>
+
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label class="control-label" for="input-filter_price">{{ column_price }} </label>
+							<input type="text" name="filter_price" value="{{ filter_price }}" placeholder="{{ column_price }}" id="input-filter_price" class="form-control" />
+						</div>
+
+						<div class="text-center" style="margin-top:40px;">
+							<button type="button" id="button-filter" class="btn btn-primary col-sm-12"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+	        <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-review">
+	        	<div class="tab-first" id="myElem"></div>
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+								<td class="text-left">{% if sort == 'store_name' %}
+									<a href="{{ sort_store_name }}" class="{{ order|lower }}">{{ column_sellerstore }}</a>
+									{% else %}
+									<a href="{{ sort_store_name }}">{{ column_sellerstore }}</a>
+									{% endif %}
+								</td>
+								<td class="text-left">{% if sort == 'country' %}
+									<a href="{{ sort_country }}" class="{{ order|lower }}">{{ column_country }}</a>
+									{% else %}
+									<a href="{{ sort_country }}">{{ column_country }}</a>
+									{% endif %}
+								</td>
+								<td class="text-left">{% if sort == 'zipfrom' %}
+									<a href="{{ sort_zipfrom }}" class="{{ order|lower }}">{{ column_zipfrom }}</a>
+									{% else %}
+									<a href="{{ sort_zipfrom }}">{{ column_zipfrom }}</a>
+									{% endif %}
+								</td>
+								
+								<td class="text-left">{% if sort == 'weightfrom' %}
+									<a href="{{ sort_weightfrom }}" class="{{ order|lower }}">{{ column_weightfrom }}</a>
+									{% else %}
+									<a href="{{ sort_weightfrom }}">{{ column_weightfrom }}</a>
+									{% endif %}
+								</td>
+								<td class="text-left">{% if sort == 'weightto' %}
+									<a href="{{ sort_weightto }}" class="{{ order|lower }}">{{ column_weightto }}</a>
+									{% else %}
+									<a href="{{ sort_weightto }}">{{ column_weightto }}</a>
+									{% endif %}
+								</td>
+								<td class="text-left">{% if sort == 'price' %}
+									<a href="{{ sort_price }}" class="{{ order|lower }}">{{ column_price }}</a>
+									{% else %}
+									<a href="{{ sort_price }}">{{ column_price }}</a>
+									{% endif %}
+								</td>
+								<td class="text-right">{{ column_action }}</td>
+							</tr>
+						</thead>
+						<tbody>
+							{% if shippings %}
+							{% for shipping in shippings %}
+							<tr>
+								<td class="text-center">{% if shipping.shipping_id in selected %}
+									<input type="checkbox" name="selected[]" value="{{ shipping.shipping_id }}" checked="checked" />
+									{% else %}
+									<input type="checkbox" name="selected[]" value="{{ shipping.shipping_id }}" />
+									{% endif %}
+								</td>
+								<td class="text-left">{{ shipping.store_name }}</td>
+								<td class="text-left">{{ shipping.country_id }}</td>
+								<td class="text-left">{{ shipping.zip_from }}</td>
+							
+								<td class="text-left">{{ shipping.weight_from }}</td>
+								<td class="text-left">{{ shipping.weight_to }}</td>
+								<td class="text-left">{{ shipping.price }}</td>
+								<td class="text-right"><button rel="{{ shipping.shipping_id }}" class="btn btn-danger docdelete"><i class="fa fa-trash-o"></i></button></td>
+							</tr>
+							{% endfor %}
+							{% else %}
+							<tr>
+								<td class="text-center" colspan="9">{{ text_no_results }}</td>
+							</tr>
+							{% endif %}
+						</tbody>
+					</table>
+				</div>
+	        </form>
+	        <div class="row">
+	          <div class="col-sm-6 text-left">{{ pagination }}</div>
+	          <div class="col-sm-6 text-right">{{ results }}</div>
+	        </div>
+      	</div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=vendor/shipping&user_token={{ user_token }}';
+	/* 12 02 2020 */
+	var filter_store_name = $('input[name=\'filter_store_name\']').val();
+
+	if (filter_store_name) {
+		url += '&filter_store_name=' + encodeURIComponent(filter_store_name);
+	}
+	
+	var filter_vendor = $('input[name=\'vendor_id\']').val();
+
+	if (filter_vendor) {
+		url += '&filter_vendor=' + encodeURIComponent(filter_vendor);
+	}
+	/* 12 02 2020 */
+	
+	var filter_country = $('select[name=\'filter_country\']').val();
+
+	if (filter_country) {
+		url += '&filter_country=' + encodeURIComponent(filter_country);
+	}
+	
+	var filter_zipto = $('input[name=\'filter_zipto\']').val();
+
+	if (filter_zipto) {
+		url += '&filter_zipto=' + encodeURIComponent(filter_zipto);
+	}
+	
+	var filter_zipfrom = $('input[name=\'filter_zipfrom\']').val();
+
+	if (filter_zipfrom) {
+		url += '&filter_zipfrom=' + encodeURIComponent(filter_zipfrom);
+	}
+
+	var filter_weightto = $('input[name=\'filter_weightto\']').val();
+
+	if (filter_weightto) {
+		url += '&filter_weightto=' + encodeURIComponent(filter_weightto);
+	}
+
+	var filter_weightfrom = $('input[name=\'filter_weightfrom\']').val();
+
+	if (filter_weightfrom) {
+		url += '&filter_weightfrom=' + encodeURIComponent(filter_weightfrom);
+	}
+
+	var filter_price = $('input[name=\'filter_price\']').val();
+
+	if (filter_price) {
+		url += '&filter_price=' + encodeURIComponent(filter_price);
+	}
+		
+  location = url;
+});
+</script>
+
+<script>
+  $(document).on('click', '.docdelete',function(){
+	var shipping_id = $(this).attr('rel');
+	$.ajax({
+	url: 'index.php?route=vendor/shipping/shippingdelete&user_token={{ user_token }}&shipping_id='+shipping_id,
+	type:'post',
+	dataType:'json',
+	beforeSend: function() {
+	},
+	success: function(json) {
+		if (json['success']) {
+			$('.tab-first').after('<div class="alert alert-success">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			$('.payeehide'+shipping_id).remove();							 		
+		}
+	}
+});
+});
+	
+</script>
+
+<script type="text/javascript">
+$('input[name=\'filter_store_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=vendor/shipping/autocomplete&user_token={{ user_token }}&filter_store_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				json.unshift({
+					vendor_id: 0,
+					name:'{{ text_none }}'
+				});
+
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['vendor_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_store_name\']').val(item['label']);
+		$('input[name=\'vendor_id\']').val(item['value']);
+	}
+});
+</script>
+
+{{ footer }}

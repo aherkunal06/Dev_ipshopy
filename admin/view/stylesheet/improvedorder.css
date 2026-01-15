@@ -1,0 +1,88 @@
+#orderfilters {
+  display:inline-block;
+}
+.productpurchased {
+  position: relative;
+}
+.totalcount {
+position: absolute;
+font-size: 18px;
+background: black;
+width: 27px;
+border-radius: 13px;
+color: white;
+margin: auto;
+text-align: center;
+right: 0px;
+top: -5px;
+}
+.countvalue2 {
+    background-color: #ffcc00; /* Yellow background */
+    color: #333333; /* Dark font color for contrast */
+}
+
+.countvalue3 {
+    background-color: #3399ff; /* Blue background */
+    color: #ffffff; /* White font color for contrast */
+}
+
+.countvalue4 {
+    background-color: #ff6666; /* Red background */
+    color: #000000; /* Black font color for contrast */
+}
+
+.countvalue5 {
+    background-color: #66cc66; /* Green background */
+    color: #ffffff; /* White font color for contrast */
+}
+
+.countvalue6 {
+    background-color: #ff99cc; /* Pink background */
+    color: #000000; /* Black font color for contrast */
+}
+
+.countvalue7 {
+    background-color: #9966cc; /* Purple background */
+    color: #ffffff; /* White font color for contrast */
+}
+
+.countvalue8 {
+    background-color: #66cccc; /* Cyan background */
+    color: #000000; /* Black font color for contrast */
+}
+
+.countvalue9 {
+    background-color: #ff6600; /* Orange background */
+    color: #ffffff; /* White font color for contrast */
+}
+
+.countvalue10 {
+    background-color: #cc6600; /* Brown background */
+    color: #ffffff; /* White font color for contrast */
+}
+
+.countvalue11 {
+    background-color: #663300; /* Dark Brown background */
+    color: #ffffff; /* White font color for contrast */
+}
+
+.countvalue12 {
+    background-color: #cccccc; /* Light Gray background */
+    color: #000000; /* Black font color for contrast */
+}
+
+
+@media only screen and (min-width: 760px) {
+#orderfilters .form-group {
+     float: left;
+    width: 20%;
+    padding-left: 10px;
+    padding-right: 10px;
+    line-height: initial;
+}
+}
+@media only screen and (max-width: 760px) {
+#orderfilters .form-group {
+  width: 100%;
+}
+}

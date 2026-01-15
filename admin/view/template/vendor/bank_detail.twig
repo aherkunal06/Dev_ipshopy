@@ -1,0 +1,29 @@
+<div class="panel-body">
+	<form action="" method="post" enctype="multipart/form-data" id="form-payment" class="form-horizontal">
+		<div class="form-group payments">
+			<label class="col-sm-2 control-label" for="input-payment">{{ entry_payment }}</label>
+			<div class="col-sm-10">
+              <div class="radio">
+                <label>
+                  {% if payment_method == 'paypal' %}
+                  <input type="radio" name="payment_method" value="paypal" checked="checked" />
+                  {% else %}
+                  <input type="radio" name="payment_method" value="paypal" />
+                  {% endif %}
+                  {{ text_paypal }}</label>
+              </div>
+              <div class="radio">
+                <label>
+                  {% if payment_method == 'banktransfer' %}
+                  <input type="radio" name="payment_method" value="banktransfer" checked="checked" />
+                  {% else %}
+                  <input type="radio" name="payment_method" value="banktransfer" />
+                  {% endif %}
+                  {{ text_bank }}</label>
+              </div>
+            </div>
+		</div>
+
+			
+    </form>
+</div>

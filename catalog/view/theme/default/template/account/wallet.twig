@@ -1,0 +1,814 @@
+{{ header }}
+{{ column_left }}
+
+<style>
+    @media (max-width:468px) {
+        .modal-dialog .modal-fullscreen {
+
+            max-width: 300px !important;
+            margin: 0%;
+            margin: 0px;
+            display: grid;
+        }
+
+        .modal-dialog {
+            width: 300px !important;
+        }
+
+        .wallet-top-section .col-sm-6,
+        .col-md-9 {
+            width: 100% !important;
+        }
+
+        .wallet-actions {
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .wallet-info {
+            height: 100%;
+        }
+
+        .modal-body {
+            padding: 5px !important;
+        }
+
+
+
+    }
+
+    @media (max-width: 768px) {
+        .wallet-top-section .col-sm-6 {
+            width: 100%;
+        }
+    }
+
+    @media(max-width:768px) {
+        .col-xs-12 {
+            width: 40% !important;
+        }
+
+        .wallet-info {
+            height: 100%;
+            gap: 5px;
+        }
+
+        .modal-dialog {
+            max-width: 600px !important;
+        }
+
+
+        .modal-dialog .modal-fullscreen {
+            max-width: 600px !important;
+            /* align-items: start; */
+            display: contents;
+        }
+
+        .modal-fullscreen .modal-content {
+            max-width: 600px !important;
+            ;
+            display: block;
+        }
+
+        .modal-content {
+            /* align-items: flex-start; */
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            max-width: 400px;
+        }
+
+        .wallet-top-section {
+            display: flex;
+        }
+
+        .wallet-top-section .col-md-4 .col-sm-6 {
+            position: none !important;
+        }
+
+        .col-sm-12 {
+            width: 100% !important;
+        }
+    }
+
+#content{
+    display: flex;
+}
+    @media(max-width:576px) {
+
+        #content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wallet-section h1 {
+            text-align: center;
+        }
+
+        .modal-dialog {
+            max-width: 400px !important;
+        }
+    }
+
+    @media(max-width:1024px) {
+        .wallet-top-section {
+            /* display: flex; */
+            flex-direction: column;
+        }
+
+        .wallet-info {
+            margin-bottom: 20px;
+        }
+
+
+    }
+
+    @media(max-width:1200px) {
+
+        .container {
+            width: 100%;
+        }
+    }
+
+    .transactions h4 {
+        margin-top: 10px;
+        font-weight: 600;
+        color: #000;
+
+    }
+
+    .table-bordered {
+        margin-top: 20px;
+        border-radius: 8px;
+    }
+
+    .table th {
+        background-color: darkmagenta !important;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .table td {
+        text-align: center;
+        vertical-align: middle;
+        color: #333;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table-bordered td,
+    .table-bordered th {
+        border-color: #ddd;
+    }
+
+    .table td span {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .table td span.green {
+        color: green;
+    }
+
+    .table td span.red {
+        color: red;
+    }
+
+
+    #pagination-controls {
+        text-align: left;
+    }
+
+    #pagination-controls .btn.active {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+</style>
+
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-fullscreen .modal-content {
+        max-width: 1200px;
+    }
+
+    .modal-content {
+        max-width: 400px;
+        margin: auto;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        align-items: center;
+    }
+
+    .modal-content h4 {
+        margin-top: 0;
+    }
+
+    .close {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .modal-dialog {
+        width: 900px;
+    }
+
+    .modal-dialog .modal-fullscreen .modal-content {
+        margin: 0;
+        max-width: 1200px !important;
+
+    }
+
+
+    #viewtransactions {
+        color: #ffff;
+        background: darkmagenta;
+        border: 0;
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+    /* .col-sm-4 {
+        display: flex;
+        flex-direction: column;
+    } */
+
+    @media (max-width: 576px) {
+        .modal-content {
+            width: 95% !important;
+            margin: 5% auto;
+        }
+    }
+
+    #addMoneyModal button {
+        background-color: #28a745;
+        border-color: #28a745;
+
+    }
+
+    #wallet_amount {
+        border: 2px solid black !important;
+        border-radius: 5px;
+        height: 40px;
+        background: transparent;
+        font-size: 18px;
+        font-weight: 800;
+        padding-inline: 20px;
+        margin-bottom: 10px;
+        /* width: 70%; */
+    }
+
+    .input-group-text {
+        position: absolute;
+        /* margin-left: 10px; */
+        padding: 8px;
+        font-size: 17px;
+        color: #000;
+    }
+</style>
+
+
+
+<style>
+    /* .col-sm-12 {
+        width: 60% !important;
+    } */
+
+    .wallet-info {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .wallet-info h4 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #333333;
+        margin-bottom: 10px;
+    }
+
+    .wallet-info .wallet-balance {
+        font-size: 28px;
+        font-weight: bold;
+        color: #222222;
+        margin-bottom: 10px;
+    }
+
+    .wallet-info p {
+        color: #666666;
+        font-size: 14px;
+    }
+
+    .wallet-actions .input-group {
+        max-width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .wallet-actions input[type="number"] {
+        height: 45px;
+        font-size: 16px;
+        border: 1.5px solid #8B008B;
+        /* darkmagenta border */
+        border-radius: 8px;
+        padding: 0 15px;
+    }
+
+    .wallet-actions .btn {
+        height: 40px;
+        font-size: 16px;
+        padding: 0 20px;
+        border-radius: 8px;
+        transition: background 0.3s;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
+    .wallet-actions .btn-success {
+        background-color: #8B008B;
+        /* darkmagenta */
+        border-color: #8B008B;
+    }
+
+    .wallet-actions .btn-success:hover {
+        background-color: #6a006a;
+        /* darker magenta */
+    }
+
+    .wallet-actions .btn-danger {
+        background-color: #dc3545;
+        /* Bootstrap red */
+        border-color: #dc3545;
+        color: #fff;
+    }
+
+    .wallet-actions .btn-danger:hover {
+        background-color: #c82333;
+        /* darker red */
+        border-color: #bd2130;
+    }
+
+
+    .alert {
+        border-radius: 8px;
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+
+    #wallet_amount {
+        border: 1.5px solid #8B008B !important;
+        /* darkmagenta */
+        border-radius: 5px;
+        height: 40px;
+        background: transparent;
+        font-size: 18px;
+        font-weight: 700;
+        padding-inline: 20px;
+        margin-bottom: 10px;
+        /* width: 70%; */
+        color: #222;
+    }
+</style>
+
+<div class="container">
+    <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+    </ul>
+    <div id="content" class="row">
+        {{ column_right }}
+
+        <!-- Wallet Info Column -->
+
+
+        <div style="gap: 20px;">
+            <div class="wallet-section">
+                <div class="wallet-top-section">
+
+                    <!-- Wallet Info Box -->
+
+                    <div class="col-lg-12 col-md-12 ">
+
+                        <div class="wallet-info">
+                            <!-- <h1>{{ heading_title }}</h1> -->
+                            <h4 style="margin: 0 0 15px 0; font-weight: 700;">Total Balance</h4>
+                            <div style="font-size: 24px; font-weight: bold; color: #000; margin-bottom: 10px;">
+                                ₹{{ wallet_balance }}
+                            </div>
+                            <div style="font-size: 16px; color: #4CAF50; margin-bottom: 10px;">
+                                Referral Earnings: ₹{{ referral_earnings }}
+                            </div>
+                            <p>Your current wallet balance. Use it for future purchases.</p>
+
+                            {% if success %}
+                            <div class="alert alert-success mt-2">{{ success }}</div>
+                            {% endif %}
+                            {% if error %}
+                            <div class="alert alert-danger mt-2">{{ error }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Modal withdrawal using another upi -->
+                <div id="upiConfirmModal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeUpiModal()">&times;</span>
+                        <h4>Confirm UPI Transfer</h4>
+                        <label for="modal_amount">Enter Amount (₹):</label>
+                        <input type="number" id="modal_amount" min="1" required
+                            style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px;" />
+
+                        <p>Are you sure you want to transfer money using this UPI?</p>
+                        <button type="button" class="btn btn-secondary" onclick="submitUpiForm()">Yes, Transfer</button>
+                        <button type="button" class="btn btn-light" onclick="closeUpiModal()">Cancel</button>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Add Money Modal -->
+                <div id="addMoneyModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeAddMoneyModal()">&times;</span>
+                        <h4>Add Money to Wallet</h4>
+                        <form action="{{ action_add_wallet }}" method="post">
+                            <label for="amount">Amount (₹):</label>
+                            <input type="number" name="amount" min="1" max="100000" required placeholder="Enter amount"
+                                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 10px;" />
+                            <input type="hidden" name="reason" value="Manual top-up from customer" />
+                            <button type="submit" class="btn btn-primary">Add Money</button>
+
+                            {% if success %}
+                            <div class="alert alert-success" style="margin-top: 10px;">{{ success }}</div>
+                            {% endif %}
+                            {% if error %}
+                            <div class="alert alert-danger" style="margin-top: 10px;">{{ error }}</div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+
+
+                <!-- Withdrawal Modal -->
+                <div id="withdrawModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeWithdrawModal()">&times;</span>
+                        <h4>Withdraw Money</h4>
+                        <form action="{{ action_withdraw_wallet }}" method="post">
+                            <label for="withdraw_amount">Amount (₹):</label>
+                            <input type="number" name="amount" min="1" required placeholder="Enter amount"
+                                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 10px;" />
+                            <input type="hidden" name="reason" value="Manual withdrawal by customer" />
+                            <button type="submit" class="btn btn-danger">Withdraw</button>
+
+                            {% if withdraw_error %}
+                            <div class="text-danger" style="margin-top: 10px;">{{ withdraw_error }}</div>
+                            {% endif %}
+                            {% if withdraw_success %}
+                            <div class="alert alert-success" style="margin-top: 10px;">{{ withdraw_success }}</div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+
+
+
+                <!-- Transactions Column -->
+                <div class="col-md-12  transactions">
+
+                    <h4>Transaction History</h4>
+
+                    {% if transactions %}
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Reason</th>
+                                <th>UPI ID</th> <!-- New column -->
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for txn in transactions|slice(0, 5) %}
+                            <tr>
+                                <td>{{ txn.date_added }}</td>
+                                <td>{{ txn.type|capitalize }}</td>
+                                <td>
+                                    {% if txn.type == 'credit' %}
+                                    <span style="color:green;">+ ₹{{ txn.amount }}</span>
+                                    {% else %}
+                                    <span style="color:red;">- ₹{{ txn.amount }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ txn.reason }}</td>
+                                <td>{{ txn.upi_id ?? '-' }}</td> <!-- Display UPI ID if exists -->
+                                <td>{{ txn.status }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% else %}
+                    <p>No wallet transactions found.</p>
+                    {% endif %}
+                    <button id="viewtransactions" class="pull-right" class="btn btn-info" data-toggle="modal"
+                        data-target="#allTransactionsModal">View
+                        All
+                        Transactions</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Full-Screen All Transactions Modal -->
+        <div class="modal fade" id="allTransactionsModal" tabindex="-1" role="dialog"
+            aria-labelledby="allTransactionsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen" role="document">
+                <div class="modal-content">
+                    <div class=" modal-header text-white">
+                        <h4 class="modal-title" id="allTransactionsModalLabel">All Wallet Transactions</h4>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"
+                            style="font-size: 3.5rem;">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="overflow-y: auto; padding: 20px;">
+                        {% if transactions %}
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Reason</th>
+                                        <th>UPI ID</th> <!-- Added UPI ID header -->
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="transaction-rows">
+                                    {% for txn in transactions %}
+                                    <tr>
+                                        <td>{{ txn.date_added }}</td>
+                                        <td>
+                                            <span
+                                                class="{% if txn.type == 'credit' %}badge-success{% else %}badge-danger{% endif %}">
+                                                {{ txn.type|capitalize }}
+                                            </span>
+                                        </td>
+                                        <td style="font-weight: bold;">
+                                            {% if txn.type == 'credit' %}
+                                            <span style="color:green;">+ Rs.{{ txn.amount }}</span>
+                                            {% else %}
+                                            <span style="color:red;">- Rs.{{ txn.amount }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ txn.reason }}</td>
+                                        <td>{{ txn.upi_id ?? '-' }}</td> <!-- Display UPI ID or dash if none -->
+                                        <td>
+                                            <span class="badge-secondary">{{ txn.status }}</span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        {% else %}
+                        <p class="text-center text-muted">No wallet transactions found.</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="modal-footer justify-content-between">
+
+                        <div id="pagination-controls" class="d-flex justify-content-center mt-3"></div>
+                        <a href="{{ download_pdf_url }}" class="btn btn-danger">
+                            <i class="fa fa-download"></i> Download PDF
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{{ footer }}
+
+<!-- for withdrawing the amount from the wallet manually by the customer -->
+<script>
+    function openWithdrawModal() {
+        document.getElementById("withdrawModal").style.display = "block";
+    }
+
+    function closeWithdrawModal() {
+        document.getElementById("withdrawModal").style.display = "none";
+    }
+
+    // Close modal on click outside
+    window.onclick = function (event) {
+        var modal = document.getElementById("withdrawModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+
+
+
+<!-- for adding the amount to the wallet -->
+<script>
+    function openAddMoneyModal() {
+        document.getElementById("addMoneyModal").style.display = "block";
+    }
+
+    function closeAddMoneyModal() {
+        document.getElementById("addMoneyModal").style.display = "none";
+    }
+
+    // Close on outside click
+    window.onclick = function (event) {
+        var addModal = document.getElementById("addMoneyModal");
+        if (event.target === addModal) {
+            addModal.style.display = "none";
+        }
+    }
+
+</script>
+
+
+<!-- Added the pagination to the view all transactions page  -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const rowsPerPage = 15;
+        const tableBody = document.querySelector('.transaction-rows');
+        const rows = Array.from(tableBody.querySelectorAll('tr'));
+        const paginationControls = document.getElementById('pagination-controls');
+        const totalPages = Math.ceil(rows.length / rowsPerPage);
+        let currentPage = 1;
+
+        function displayRows(page) {
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            rows.forEach((row, index) => {
+                row.style.display = (index >= start && index < end) ? '' : 'none';
+            });
+        }
+
+        function setupPagination() {
+            paginationControls.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.classList.add('btn', 'btn-sm', 'btn-outline-primary', 'mx-1');
+                if (i === currentPage) btn.classList.add('active');
+
+                btn.addEventListener('click', () => {
+                    currentPage = i;
+                    displayRows(currentPage);
+                    setupPagination();
+                });
+
+                paginationControls.appendChild(btn);
+            }
+        }
+
+        // Initialize
+        displayRows(currentPage);
+        setupPagination();
+    });
+</script>
+
+<!-- Amount transfer through another  upi-ID-->
+<script>
+    function openUpiModal() {
+        document.getElementById("upiConfirmModal").style.display = "block";
+    }
+
+    function closeUpiModal() {
+        document.getElementById("upiConfirmModal").style.display = "none";
+    }
+
+    function submitUpiForm() {
+        const amount = document.getElementById("modal_amount").value;
+        if (!amount || amount <= 0) {
+            alert("Please enter a valid amount.");
+            return;
+        }
+
+        // Set amount into hidden input of the form
+        document.getElementById("upi_amount_hidden").value = amount;
+
+        // Submit the form
+        document.querySelector('form[action="{{ action_upi_transfer }}"]').submit();
+    }
+
+    // Optional: Close modal on outside click
+    window.onclick = function (event) {
+        const modal = document.getElementById("upiConfirmModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+</script>
+
+<!-- validation added to the upi-id form when the details are no filled then button will disable -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const upiInput = document.getElementById("upi_id");
+        const reasonInput = document.getElementById("reason");
+        const transferBtn = document.getElementById("upiTransferBtn");
+
+        function validateForm() {
+            const upi = upiInput.value.trim();
+            const reason = reasonInput.value.trim();
+
+            // Optional: Basic UPI ID pattern (e.g. name@bank)
+            const upiPattern = /^[\w.-]+@[\w.-]+$/;
+
+            if (upi && upiPattern.test(upi) && reason) {
+                transferBtn.disabled = false;
+            } else {
+                transferBtn.disabled = true;
+            }
+        }
+
+        upiInput.addEventListener("input", validateForm);
+        reasonInput.addEventListener("input", validateForm);
+    });
+</script>
+
+
+<!-- Inject PHP wallet balance into JS -->
+
+
+<!-- Logic -->
+<script>
+    const walletBalance = {{ wallet_balance }};
+    function redirectToPaymentOptions(type) {
+        const amountInput = document.getElementById('wallet_amount');
+        const amount = parseFloat(amountInput.value);
+
+        if (!amount || isNaN(amount)) {
+            alert('Please enter a valid amount');
+            amountInput.focus();
+            return;
+        }
+
+        if (type === 'withdraw') {
+            if (amount < 1 || amount > 10000) {
+                alert('Withdraw amount must be between ₹1 and ₹10,000');
+                amountInput.focus();
+                return;
+            }
+
+            if (amount > walletBalance) {
+                alert('You do not have enough wallet balance to withdraw ₹' + amount + '. Available: ₹' + walletBalance);
+                amountInput.focus();
+                return;
+            }
+        } else {
+            if (amount < 1 || amount > 10000) {
+                alert('Add amount must be between ₹1 and ₹10,000');
+                amountInput.focus();
+                return;
+            }
+        }
+
+        window.location.href = 'index.php?route=account/wallet/paymentoptions&amount=' + encodeURIComponent(amount) + '&type=' + encodeURIComponent(type);
+    }
+</script>

@@ -1,0 +1,792 @@
+<!-- /**
+ * OpenCart 3.x Backend Ecommerce Feed  application
+ * 
+ * @package Mega Feed Pro
+ * @author Andras Kato <developer@newcms.hu>
+ * @link https://www.newcms.hu/
+ * @copyright NewCart and NewCMS Software LTD. 2004-2021 (https://www.newcms.hu)
+ * @license https://www.www.newcms.hu/oc3/license/
+ * @version 1.2.7 Pro
+ * 
+ * Attention!
+ * In case you want to use a nulled software version, we will detect it due to the built-in protection and you will be prosecuted!
+ * DO NOT USE NULLED SOFTWARE BETTER USE ORIGINAL LICENSED SOFTWARE! 
+ * 
+ */-->
+<div class="tab-pane" id="systems">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div>
+                <ul class="nav nav-tabs" id="systems-store-tabs">
+                {% for store in stores %}
+                    <li><a href="#systems-store-{{ store.store_id }}" data-toggle="tab" data-store="{{ store.store_id  }}"><i class="fa fa-shopping-cart"></i>&nbsp;{{ store.name }}</a></li>
+                {% endfor %}
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+
+                    {% for store in stores %}
+                    <div class="tab-pane" id="systems-store-{{ store.store_id }}">
+
+                        <div class="row">
+                            <div class="col-sm-2">
+
+                                <ul class="nav nav-pills nav-stacked ad-systems" id="systems-{{ store.store_id }}-ad-tabs">
+                                    <li><a href="#systems-store-{{ store.store_id }}-google" data-toggle="tab" data-ad="0">{{ adverts_menu_google }}</a></li>
+                                    <li><a href="#systems-store-{{ store.store_id }}-facebook" data-toggle="tab" data-ad="1">{{ adverts_menu_facebook }}</a></li>
+                                    <li><a href="#systems-store-{{ store.store_id }}-heureka" data-toggle="tab" data-ad="2">{{ adverts_menu_heureka }}</a></li>
+                                    <li><a href="#systems-store-{{ store.store_id }}-glami" data-toggle="tab" data-ad="3">{{ adverts_menu_glami }}</a></li>
+                                    <li><a href="#systems-store-{{ store.store_id }}-seznam" data-toggle="tab" data-ad="4">{{ adverts_menu_seznam }}</a></li>
+                                    <!-- <li><a href="#systems-store-{{ store.store_id }}-etarget" data-toggle="tab" data-ad="5">{{ adverts_menu_etarget }}</a></li>
+                                    <li><a href="#systems-store-{{ store.store_id }}-najnakup-sk" data-toggle="tab" data-ad="6">{{ adverts_menu_najnakupsk }}</a></li>
+                                    <li><a href="#systems-store-{{ store.store_id }}-pricemania" data-toggle="tab" data-ad="7">{{ adverts_menu_pricemania }}</a></li> -->
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-10">
+
+                                <!-- advertising systems -->
+                                <div class="tab-content">
+
+                                    <div class="tab-pane" id="systems-store-{{ store.store_id }}-google">
+
+                                        <!-- Google Ads -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><strong>{{ adverts_google_ads_heading }}</strong></div>
+                                            <div class="panel-body">
+
+                                                <!-- conversion tracking -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_google_ads_status[{{ store.store_id }}]">{{ adverts_google_ads_tracking_label }}</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_google_ads_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox" name="{{ extension_fullname }}_adverts_google_ads_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_google_ads_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_google_ads_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_google_ads_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_google_ads_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                                <div id="{{ extension_fullname }}_adverts_google_ads_wrapper_{{ store.store_id }}">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_google_ads_code[{{ store.store_id }}]">{{ adverts_google_ads_code }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_google_ads_code[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_google_ads_code[{{ store.store_id }}]" placeholder="{{ adverts_google_ads_code_fill }}" value="{{ _context[extension_fullname ~ "_adverts_google_ads_code"][store.store_id] ? _context[extension_fullname ~ "_adverts_google_ads_code"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_google_ads_help_text1 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_google_ads_label[{{ store.store_id }}]">{{ adverts_google_ads_label }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_google_ads_label[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_google_ads_label[{{ store.store_id }}]" placeholder="{{ adverts_google_ads_label_fill }}" value="{{ _context[extension_fullname ~ "_adverts_google_ads_label"][store.store_id] ? _context[extension_fullname ~ "_adverts_google_ads_label"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_google_ads_help_text2 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <!-- ./conversion tracking -->
+
+                                                <!-- remarketing -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_google_ads_remarketing_status[{{ store.store_id }}]">{{ adverts_google_ads_remarketing_label }}</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_google_ads_remarketing_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox" name="{{ extension_fullname }}_adverts_google_ads_remarketing_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_google_ads_remarketing_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_google_ads_remarketing_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_google_ads_remarketing_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_google_ads_remarketing_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                                <div id="{{ extension_fullname }}_adverts_google_ads_remarketing_wrapper_{{ store.store_id }}">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_google_ads_remarketing[{{ store.store_id }}]">{{ adverts_google_ads_remarketing }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_google_ads_remarketing[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_google_ads_remarketing[{{ store.store_id }}]" placeholder="{{ adverts_google_ads_remarketing_fill }}" value="{{ _context[extension_fullname ~ "_adverts_google_ads_remarketing"][store.store_id] ? _context[extension_fullname ~ "_adverts_google_ads_remarketing"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_google_ads_help_text3 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <!-- ./remarketing -->
+                                            </div>
+                                        </div>
+                                        <!-- ./Google Ads -->
+
+                                        {#
+                                        <!-- Google Analytics - gtag.js -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><strong>{{ adverts_ga_heading }}</strong></div>
+                                            <div class="panel-body">
+                                                <div class="clearfix"></div>
+                                                <div class="help-block">
+                                                    <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">!</span>&nbsp;{{ adverts_ga_help_text1 }}</div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_ga_status[{{ store.store_id }}]"></label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_ga_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox"  name="{{ extension_fullname }}_adverts_ga_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_ga_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_ga_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_ga_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_ga_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                                <div id="{{ extension_fullname }}_adverts_ga_wrapper_{{ store.store_id }}">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_ga_id[{{ store.store_id }}]">{{ adverts_ga_id }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_ga_id[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_ga_id[{{ store.store_id }}]" placeholder="{{ adverts_ga_fill }}" value="{{ _context[extension_fullname ~ "_adverts_ga_id"][store.store_id] ? _context[extension_fullname ~ "_adverts_ga_id"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_ga_global_site_tracking_code[{{ store.store_id }}]">{{ adverts_ga_global_site_tracking_code }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_ga_global_site_tracking_code[{{ store.store_id }}]" value="off">
+                                                            <div class="checkbox mg-checkbox">
+                                                                <input type="checkbox"  name="{{ extension_fullname }}_adverts_ga_global_site_tracking_code[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_ga_global_site_tracking_code[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-default-state="{{ _context[extension_fullname ~ "_adverts_ga_global_site_tracking_code"][store.store_id] is null ? "off" : _context[extension_fullname ~ "_adverts_ga_global_site_tracking_code"][store.store_id] }}" {{ _context[extension_fullname ~ "_adverts_ga_global_site_tracking_code"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_ga_global_site_tracking_code"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_ga_help_text2 }}</div>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_ga_ecommerce_tracking[{{ store.store_id }}]">{{ adverts_ga_ecommerce_tracking }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_ga_ecommerce_tracking[{{ store.store_id }}]" value="off">
+                                                            <div class="checkbox mg-checkbox">
+                                                                <input type="checkbox"  name="{{ extension_fullname }}_adverts_ga_ecommerce_tracking[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_ga_ecommerce_tracking[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-default-state="{{ _context[extension_fullname ~ "_adverts_ga_ecommerce_tracking"][store.store_id] is null ? "off" : _context[extension_fullname ~ "_adverts_ga_ecommerce_tracking"][store.store_id] }}" {{ _context[extension_fullname ~ "_adverts_ga_ecommerce_tracking"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_ga_ecommerce_tracking"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_ga_help_text3 }}</div>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_ga_enhanced_ecommerce_tracking[{{ store.store_id }}]">{{ adverts_ga_enhanced_ecommerce_tracking }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_ga_enhanced_ecommerce_tracking[{{ store.store_id }}]" value="off">
+                                                            <div class="checkbox mg-checkbox">
+                                                                <input type="checkbox"  name="{{ extension_fullname }}_adverts_ga_enhanced_ecommerce_tracking[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_ga_enhanced_ecommerce_tracking[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-default-state="{{ _context[extension_fullname ~ "_adverts_ga_enhanced_ecommerce_tracking"][store.store_id] is null ? "off" : _context[extension_fullname ~ "_adverts_ga_enhanced_ecommerce_tracking"][store.store_id] }}" {{ _context[extension_fullname ~ "_adverts_ga_enhanced_ecommerce_tracking"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_ga_enhanced_ecommerce_tracking"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_ga_help_text4 }}</div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ./ Google Analytics - gtag.js -->
+
+                                        #}
+
+                                        <!-- Google Tag Manager -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><strong>{{ adverts_gtm_heading }}</strong></div>
+                                            <div class="panel-body">
+                                                <div class="clearfix"></div>
+                                                <div class="help-block">
+                                                    <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">!</span>&nbsp;{{ adverts_gtm_help_text1 }}</div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_gtm_status[{{ store.store_id }}]"></label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_gtm_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox"  name="{{ extension_fullname }}_adverts_gtm_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_gtm_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_gtm_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_gtm_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_gtm_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                                <div id="{{ extension_fullname }}_adverts_gtm_wrapper_{{ store.store_id }}">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_gtm_id[{{ store.store_id }}]">{{ adverts_gtm_id }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_gtm_id[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_gtm_id[{{ store.store_id }}]" placeholder="{{ adverts_gtm_fill }}" value="{{ _context[extension_fullname ~ "_adverts_gtm_id"][store.store_id] ? _context[extension_fullname ~ "_adverts_gtm_id"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+
+                                                    {#
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_gtm_global_site_tracking_code[{{ store.store_id }}]">{{ adverts_gtm_global_site_tracking_code }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_gtm_global_site_tracking_code[{{ store.store_id }}]" value="off">
+                                                            <div class="checkbox mg-checkbox">
+                                                                <input type="checkbox"  name="{{ extension_fullname }}_adverts_gtm_global_site_tracking_code[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_gtm_global_site_tracking_code[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-default-state="{{ _context[extension_fullname ~ "_adverts_gtm_global_site_tracking_code"][store.store_id] is null ? "off" : _context[extension_fullname ~ "_adverts_gtm_global_site_tracking_code"][store.store_id] }}" {{ _context[extension_fullname ~ "_adverts_gtm_global_site_tracking_code"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_gtm_global_site_tracking_code"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_gtm_help_text2 }}</div>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_gtm_ecommerce_tracking[{{ store.store_id }}]">{{ adverts_gtm_ecommerce_tracking }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_gtm_ecommerce_tracking[{{ store.store_id }}]" value="off">
+                                                            <div class="checkbox mg-checkbox">
+                                                                <input type="checkbox"  name="{{ extension_fullname }}_adverts_gtm_ecommerce_tracking[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_gtm_ecommerce_tracking[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-default-state="{{ _context[extension_fullname ~ "_adverts_gtm_ecommerce_tracking"][store.store_id] is null ? "off" : _context[extension_fullname ~ "_adverts_gtm_ecommerce_tracking"][store.store_id] }}" {{ _context[extension_fullname ~ "_adverts_gtm_ecommerce_tracking"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_gtm_ecommerce_tracking"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_gtm_help_text3 }}</div>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_gtm_enhanced_ecommerce_tracking[{{ store.store_id }}]">{{ adverts_gtm_enhanced_ecommerce_tracking }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_gtm_enhanced_ecommerce_tracking[{{ store.store_id }}]" value="off">
+                                                            <div class="checkbox mg-checkbox">
+                                                                <input type="checkbox"  name="{{ extension_fullname }}_adverts_gtm_enhanced_ecommerce_tracking[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_gtm_enhanced_ecommerce_tracking[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-default-state="{{ _context[extension_fullname ~ "_adverts_gtm_enhanced_ecommerce_tracking"][store.store_id] is null ? "off" : _context[extension_fullname ~ "_adverts_gtm_enhanced_ecommerce_tracking"][store.store_id] }}" {{ _context[extension_fullname ~ "_adverts_gtm_enhanced_ecommerce_tracking"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_gtm_enhanced_ecommerce_tracking"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_gtm_help_text4 }}</div>
+                                                    </div>
+                                                    #}
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ./ Google Tag Manager -->
+
+                                        {#
+                                        <!-- Google Customer Reviews-->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><strong>{{ adverts_gcr_heading }}</strong></div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_gcr_status[{{ store.store_id }}]"></label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_gcr_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox"  name="{{ extension_fullname }}_adverts_gcr_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_gcr_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_gcr_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_gcr_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_gcr_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                                <div id="{{ extension_fullname }}_adverts_gcr_wrapper_{{ store.store_id }}">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_gcr_id[{{ store.store_id }}]">{{ adverts_gcr_id }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_gcr_id[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_gcr_id[{{ store.store_id }}]" placeholder="{{ adverts_gcr_fill }}" value="{{ _context[extension_fullname ~ "_adverts_gcr_id"][store.store_id] ? _context[extension_fullname ~ "_adverts_gcr_id"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_gcr_order_time[{{ store.store_id }}]">{{ adverts_gcr_order_time }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_gcr_order_time[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_gcr_order_time[{{ store.store_id }}]" placeholder="{{ adverts_gcr_order_time_fill }}" value="{{ _context[extension_fullname ~ "_adverts_gcr_order_time"][store.store_id] ? _context[extension_fullname ~ "_adverts_gcr_order_time"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_gcr_help_text1 }}</div>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_gcr_delivery_days[{{ store.store_id }}]">{{ adverts_gcr_delivery_days }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_gcr_delivery_days[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_gcr_delivery_days[{{ store.store_id }}]" placeholder="{{ adverts_gcr_delivery_days_fill }}" value="{{ _context[extension_fullname ~ "_adverts_gcr_delivery_days"][store.store_id] ? _context[extension_fullname ~ "_adverts_gcr_delivery_days"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_gcr_help_text2 }}</div>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_gcr_position[{{ store.store_id }}]">{{ adverts_gcr_position }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_gcr_position[{{ store.store_id }}]" value="{{ _context[extension_fullname ~ "_adverts_gcr_position"][store.store_id] is defined and _context[extension_fullname ~ "_adverts_gcr_position"][store.store_id] == country|lower ? _context[extension_fullname ~ "_adverts_gcr_position"][store.store_id] : 0 }}">
+                                                            <select name="{{ extension_fullname }}_adverts_gcr_position[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_gcr_position[{{ store.store_id }}]" class="form-control">
+                                                                <option value="BOTTOM_LEFT" {% if _context[extension_fullname ~ "_adverts_gcr_position"][store.store_id] is null or _context[extension_fullname ~ "_adverts_gcr_position"][store.store_id] == "BOTTOM_LEFT" %} selected {% endif %} >{{ adverts_gcr_pos_bottom_left }}</option>
+                                                                <option value="INLINE" {% if _context[extension_fullname ~ "_adverts_gcr_position"][store.store_id] == "INLINE" %} selected {% endif %} >{{ adverts_gcr_pos_inline }}</option>
+                                                                <option value="BOTTOM_RIGHT" {% if _context[extension_fullname ~ "_adverts_gcr_position"][store.store_id] == "BOTTOM_RIGHT" %} selected {% endif %} >{{ adverts_gcr_pos_bottom_right }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_gcr_help_text3 }}</div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ./ Google Customer Reviews -->
+                                        #}
+
+                                    </div>
+
+                                    <div class="tab-pane" id="systems-store-{{ store.store_id }}-facebook">
+                                        <!-- Facebook Pixel -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><strong>{{ adverts_facebook_heading }}</strong></div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_facebook_pixel_status[{{ store.store_id }}]"></label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_facebook_pixel_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox" name="{{ extension_fullname }}_adverts_facebook_pixel_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_facebook_pixel_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_facebook_pixel_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_facebook_pixel_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_facebook_pixel_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                                <div id="{{ extension_fullname }}_adverts_facebook_pixel_wrapper_{{ store.store_id }}">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_facebook_pixel_id[{{ store.store_id }}]">{{ adverts_facebook_pixel_id }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_facebook_pixel_id[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_facebook_pixel_id[{{ store.store_id }}]" placeholder="{{ adverts_facebook_pixel_fill }}" value="{{ _context[extension_fullname ~ "_adverts_facebook_pixel_id"][store.store_id] ? _context[extension_fullname ~ "_adverts_facebook_pixel_id"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_facebook_help_text }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ./ Facebook Pixel -->
+                                    </div>
+
+                                    <div class="tab-pane" id="systems-store-{{ store.store_id }}-heureka">
+
+                                        {% for country in heureka_supported_countries %}
+
+                                        <!-- Heureka.{{ country }}: verified by customers -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><strong>Heureka.{{ country }} :&nbsp;{{ adverts_heureka_review_by_customers }}</strong></div>
+                                            <div class="panel-body">
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_heureka_customer_{{ country }}_status[{{ store.store_id }}]"></label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_heureka_customer_{{ country }}_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox"  name="{{ extension_fullname }}_adverts_heureka_customer_{{ country }}_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_heureka_customer_{{ country }}_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-parent="true" data-ignore-types="text" data-relation="{{ extension_fullname }}_adverts_heureka_customer_{{ country }}_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_heureka_customer_" ~ country ~ "_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_heureka_customer_" ~ country ~ "_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+
+                                                <div id="{{ extension_fullname }}_adverts_heureka_customer_{{ country }}_wrapper_{{ store.store_id }}">
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_heureka_customer_{{ country }}_id[{{ store.store_id }}]">{{ adverts_heureka_customer_id }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_heureka_customer_{{ country }}_id[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_heureka_customer_{{ country }}_id[{{ store.store_id }}]" placeholder="{{ adverts_heureka_customer_id_fill }}" value="{{ _context[extension_fullname ~ "_adverts_heureka_customer_" ~ country ~ "_id"][store.store_id] ? _context[extension_fullname ~ "_adverts_heureka_customer_" ~ country ~ "_id"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_heureka_help_text1 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_status[{{ store.store_id }}]">{{ adverts_heureka_customer_widget }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_status[{{ store.store_id }}]" value="off">
+                                                            <div class="checkbox mg-checkbox">
+                                                                <input type="checkbox"  name="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+
+                                                    <div id="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_wrapper_{{ store.store_id }}">
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_id[{{ store.store_id }}]">{{ adverts_heureka_customer_widget_id }}</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" name="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_id[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_id[{{ store.store_id }}]" placeholder="{{ adverts_heureka_customer_widget_id_fill }}" value="{{ _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_id"][store.store_id] ? _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_id"][store.store_id] : '' }}" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="help-block">
+                                                            <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_heureka_help_text3 }}</div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_position[{{ store.store_id }}]">{{ adverts_heureka_customer_widget_position }}</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="hidden" name="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_position[{{ store.store_id }}]" value="{{ _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_position"][store.store_id] is defined and _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_position"][store.store_id] == country|lower ? _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_position"][store.store_id] : 0 }}">
+                                                                <select name="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_position[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_position[{{ store.store_id }}]" class="form-control">
+                                                                    <option value="21" {% if _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_position"][store.store_id] is null or _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_position"][store.store_id] == 21 %} selected {% endif %} >{{ adverts_heureka_customer_widget_pos_left }}</option>
+                                                                    <option value="22" {% if _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_position"][store.store_id] == 22 %} selected {% endif %} >{{ adverts_heureka_customer_widget_pos_right }}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_top_margin[{{ store.store_id }}]">{{ adverts_heureka_customer_top_margin }}</label>
+                                                            <div class="col-sm-3">
+                                                                <div class="input-group">
+                                                                    <input type="number" min="0" step="1" name="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_top_margin[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_top_margin[{{ store.store_id }}]" placeholder="{{ adverts_heureka_customer_widget_top_margin_fill }}" value="{{ _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_top_margin"][store.store_id] ? _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_top_margin"][store.store_id] : '60' }}" class="form-control">
+                                                                    <span class="input-group-addon">px</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_mobile_status[{{ store.store_id }}]">{{ adverts_heureka_customer_widget_mobile }}</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="hidden" name="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_mobile_status[{{ store.store_id }}]" value="off">
+                                                                <div class="checkbox mg-checkbox">
+                                                                    <input type="checkbox"  name="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_mobile_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_mobile_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100"  {{ _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_mobile_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_mobile_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="help-block">
+                                                            <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_heureka_help_text5 }}</div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_min_screen_width[{{ store.store_id }}]">{{ adverts_heureka_customer_min_screen_width }}</label>
+                                                            <div class="col-sm-3">
+                                                                <div class="input-group">
+                                                                    <input type="number" min="0" step="1" name="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_min_screen_width[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_heureka_customer_widget_{{ country }}_min_screen_width[{{ store.store_id }}]" placeholder="{{ adverts_heureka_customer_widget_min_screen_width_fill }}" value="{{ _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~"_min_screen_width"][store.store_id] ? _context[extension_fullname ~ "_adverts_heureka_customer_widget_" ~ country ~ "_min_screen_width"][store.store_id] : '' }}" class="form-control">
+                                                                    <span class="input-group-addon">px</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="help-block">
+                                                            <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_heureka_help_text4 }}</div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-- ./Heureka.{{ country }} : verified by customers -->
+
+                                        <!-- Heureka.{{ country }}: conversion tracking -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><strong>Heureka.{{ country}} :&nbsp;{{ adverts_heureka_conversion_tracking }}</strong></div>
+                                            <div class="panel-body">
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_heureka_conversion_{{ country }}_status[{{ store.store_id }}]"></label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_heureka_conversion_{{ country }}_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox"  name="{{ extension_fullname }}_adverts_heureka_conversion_{{ country }}_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_heureka_conversion_{{ country }}_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-parent="true" data-ignore-types="text" data-relation="{{ extension_fullname }}_adverts_heureka_conversion_{{ country }}_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_heureka_conversion_" ~ country ~ "_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_heureka_conversion_" ~ country ~ "_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+
+                                                <div id="{{ extension_fullname }}_adverts_heureka_conversion_{{ country }}_wrapper_{{ store.store_id }}">
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_heureka_conversion_{{ country }}_id[{{ store.store_id }}]">{{ adverts_heureka_conversion_id }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_heureka_conversion_{{ country }}_id[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_heureka_conversion_{{ country }}_id[{{ store.store_id }}]" placeholder="{{ adverts_heureka_conversion_id_fill }}" value="{{ _context[extension_fullname ~ "_adverts_heureka_conversion_" ~ country ~ "_id"][store.store_id] ? _context[extension_fullname ~ "_adverts_heureka_conversion_" ~ country ~ "_id"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_heureka_help_text2 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-- ./Heureka.{{ country }} : conversion tracking -->
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                    <div class="tab-pane" id="systems-store-{{ store.store_id }}-glami">
+                                        <!-- Glami Pixel -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><strong>{{ adverts_glami_heading }}</strong></div>
+                                            <div class="panel-body">
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_glami_pixel_status[{{ store.store_id }}]"></label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_glami_pixel_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox"  name="{{ extension_fullname }}_adverts_glami_pixel_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_glami_pixel_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-parent="true" data-relation="{{ extension_fullname }}_adverts_glami_pixel_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_glami_pixel_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_glami_pixel_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                                <div id="{{ extension_fullname }}_adverts_glami_pixel_wrapper_{{ store.store_id }}">
+
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_glami_pixel_help_text }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    {% for country, web in glami_pixel_countries %}
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_glami_pixel_id[{{ store.store_id }}][{{ country|lower }}]">{{ adverts_glami_pixel_id ~ " (" ~ country ~ ")" }} </label>
+                                                            <div class="col-sm-3" id="{{ extension_fullname }}_adverts_glami_pixel_id_{{ store.store_id }}_{{ country|lower }}_wrapper">
+                                                                <input type="text" name="{{ extension_fullname }}_adverts_glami_pixel_id[{{ store.store_id }}][{{ country|lower }}]" id="{{ extension_fullname }}_adverts_glami_pixel_id[{{ store.store_id }}][{{ country|lower }}]" placeholder="{{ adverts_glami_pixel_fill }}" value="{{ _context[extension_fullname ~ "_adverts_glami_pixel_id"][store.store_id][country|lower] ? _context[extension_fullname ~ "_adverts_glami_pixel_id"][store.store_id][country|lower] : '' }}" class="form-control">
+                                                                <input type="hidden" name="{{ extension_fullname }}_adverts_glami_pixel_id_status[{{ store.store_id }}][{{ country|lower }}]" value="off">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="checkbox mg-checkbox">
+                                                                    <input type="checkbox"  name="{{ extension_fullname }}_adverts_glami_pixel_id_status[{{ store.store_id }}][{{ country|lower }}]" id="{{ extension_fullname }}_adverts_glami_pixel_id_status[{{ store.store_id }}][{{ country|lower }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_glami_pixel_id_{{ store.store_id }}_{{ country|lower }}_wrapper" {{ _context[extension_fullname ~ "_adverts_glami_pixel_id_status"][store.store_id][country|lower]=="on" or _context[extension_fullname ~ "_adverts_glami_pixel_id_status"][store.store_id][country|lower]=="1" ? 'checked' : '' }}>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-- ./ Glami Pixel -->
+
+                                        <!-- Glami Reviews -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><strong>{{ adverts_glami_reviews_heading }}</strong></div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_glami_reviews_status[{{ store.store_id }}]"></label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_glami_reviews_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox" name="{{ extension_fullname }}_adverts_glami_reviews_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_glami_reviews_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_glami_reviews_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_glami_reviews_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_glami_reviews_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                                <div id="{{ extension_fullname }}_adverts_glami_reviews_wrapper_{{ store.store_id }}">
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_glami_reviews_help_text }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_glami_reviews_merchant_id[{{ store.store_id }}]">{{ adverts_glami_reviews_merchant_id }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_glami_reviews_merchant_id[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_glami_reviews_merchant_id[{{ store.store_id }}]" placeholder="{{ adverts_glami_reviews_merchant_fill }}" value="{{ _context[extension_fullname ~ "_adverts_glami_reviews_merchant_id"][store.store_id] ? _context[extension_fullname ~ "_adverts_glami_reviews_merchant_id"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_glami_reviews_country[{{ store.store_id }}]">{{ adverts_glami_reviews_country }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_glami_reviews_country[{{ store.store_id }}]" value="{{ _context[extension_fullname ~ "_adverts_glami_reviews_country"][store.store_id] is defined and _context[extension_fullname ~ "_adverts_glami_reviews_country"][store.store_id] == country|lower ? _context[extension_fullname ~ "_adverts_glami_reviews_country"][store.store_id] : 0 }}">
+                                                            <select name="{{ extension_fullname }}_adverts_glami_reviews_country[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_glami_reviews_country[{{ store.store_id }}]" class="form-control">
+                                                                <option value="0" {% if _context[extension_fullname ~ "_adverts_glami_reviews_country"][store.store_id] is null or _context[extension_fullname ~ "_adverts_glami_reviews_country"][store.store_id] == 0 %} selected {% endif %} >{{ adverts_glami_reviews_country_label }}</option>
+                                                                {% for country, web in glami_pixel_countries %}
+                                                                    <option value="{{ country|lower }}" {% if _context[extension_fullname ~ "_adverts_glami_reviews_country"][store.store_id] is defined and _context[extension_fullname ~ "_adverts_glami_reviews_country"][store.store_id] == country|lower %} selected {% endif %} >{{ web.url }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ./ Glami Reviews -->
+                                    </div>
+
+                                    <div class="tab-pane" id="systems-store-{{ store.store_id }}-seznam">
+
+                                        <!-- Sklik -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><strong>{{ adverts_sklik_heading }}</strong></div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_sklik_conversion_status[{{ store.store_id }}]">{{ adverts_sklik_conversion_status }}</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_sklik_conversion_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox" name="{{ extension_fullname }}_adverts_sklik_conversion_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_sklik_conversion_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_sklik_conversion_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_sklik_conversion_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_sklik_conversion_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                                <div id="{{ extension_fullname }}_adverts_sklik_conversion_wrapper_{{ store.store_id }}">
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_sklik_conversion_id[{{ store.store_id }}]">{{ adverts_sklik_conversion_id }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_sklik_conversion_id[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_sklik_conversion_id[{{ store.store_id }}]" placeholder="{{ adverts_sklik_conversion_id_fill }}" value="{{ _context[extension_fullname ~ "_adverts_sklik_conversion_id"][store.store_id] ? _context[extension_fullname ~ "_adverts_sklik_conversion_id"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_sklik_help_text1 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_sklik_conversion_value[{{ store.store_id }}]">{{ adverts_sklik_conversion_value }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_sklik_conversion_value[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_sklik_conversion_value[{{ store.store_id }}]" placeholder="{{ adverts_sklik_conversion_value_fill }}" value="{{ _context[extension_fullname ~ "_adverts_sklik_conversion_value"][store.store_id] ? _context[extension_fullname ~ "_adverts_sklik_conversion_value"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_sklik_help_text2 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_sklik_dph[{{ store.store_id }}]">{{ adverts_sklik_dph }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_sklik_dph[{{ store.store_id }}]" value="off">
+                                                            <div class="checkbox mg-checkbox">
+                                                                <input type="checkbox"  name="{{ extension_fullname }}_adverts_sklik_dph[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_sklik_dph[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-default-state="{{ _context[extension_fullname ~ "_adverts_sklik_dph"][store.store_id] is null ? "off" : _context[extension_fullname ~ "_adverts_sklik_dph"][store.store_id] }}" {{ _context[extension_fullname ~ "_adverts_sklik_dph"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_sklik_dph"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_sklik_help_text4 }}</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="clearfix"></div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_sklik_retargeting_status[{{ store.store_id }}]">{{ adverts_sklik_retargeting_status }}</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_sklik_retargeting_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox" name="{{ extension_fullname }}_adverts_sklik_retargeting_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_sklik_retargeting_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_sklik_retargeting_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_sklik_retargeting_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_sklik_retargeting_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                                <div id="{{ extension_fullname }}_adverts_sklik_retargeting_wrapper_{{ store.store_id }}">
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_sklik_retargeting_id[{{ store.store_id }}]">{{ adverts_sklik_retargeting_id }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_sklik_retargeting_id[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_sklik_retargeting_id[{{ store.store_id }}]" placeholder="{{ adverts_sklik_retargeting_id_fill }}" value="{{ _context[extension_fullname ~ "_adverts_sklik_retargeting_id"][store.store_id] ? _context[extension_fullname ~ "_adverts_sklik_retargeting_id"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_sklik_help_text3 }}</div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ./ Sklik -->
+
+                                        <!-- Zbozi -->
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><strong>{{ adverts_zbozi_heading }}</strong></div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_zbozi_status[{{ store.store_id }}]"></label>
+                                                    <div class="col-sm-3">
+                                                        <input type="hidden" name="{{ extension_fullname }}_adverts_zbozi_status[{{ store.store_id }}]" value="off">
+                                                        <input type="checkbox" name="{{ extension_fullname }}_adverts_zbozi_status[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_zbozi_status[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-relation="{{ extension_fullname }}_adverts_zbozi_wrapper_{{ store.store_id }}" {{ _context[extension_fullname ~ "_adverts_zbozi_status"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_zbozi_status"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                    </div>
+                                                </div>
+                                                <div id="{{ extension_fullname }}_adverts_zbozi_wrapper_{{ store.store_id }}">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_zbozi_standard[{{ store.store_id }}]">{{ adverts_zbozi_conversion_tracking }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_zbozi_standard[{{ store.store_id }}]" value="off">
+                                                            <div class="checkbox mg-checkbox">
+                                                                <input type="checkbox"  name="{{ extension_fullname }}_adverts_zbozi_standard[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_zbozi_standard[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-default-state="{{ _context[extension_fullname ~ "_adverts_zbozi_standard"][store.store_id] is null ? "on" : _context[extension_fullname ~ "_adverts_zbozi_standard"][store.store_id] }}" {{ _context[extension_fullname ~ "_adverts_zbozi_standard"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_zbozi_standard"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_zbozi_help_text1 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_zbozi_shop_id[{{ store.store_id }}]">{{ adverts_zbozi_shop_id }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_zbozi_shop_id[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_zbozi_shop_id[{{ store.store_id }}]" placeholder="{{ adverts_zbozi_shop_id_fill }}" value="{{ _context[extension_fullname ~ "_adverts_zbozi_shop_id"][store.store_id] ? _context[extension_fullname ~ "_adverts_zbozi_shop_id"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_zbozi_help_text2 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_zbozi_secret_key[{{ store.store_id }}]">{{ adverts_zbozi_secret_key }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" name="{{ extension_fullname }}_adverts_zbozi_secret_key[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_zbozi_secret_key[{{ store.store_id }}]" placeholder="{{ adverts_zbozi_secret_key_fill }}" value="{{ _context[extension_fullname ~ "_adverts_zbozi_secret_key"][store.store_id] ? _context[extension_fullname ~ "_adverts_zbozi_secret_key"][store.store_id] : '' }}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">?</span>&nbsp;{{ adverts_zbozi_help_text3 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_zbozi_dph[{{ store.store_id }}]">{{ adverts_zbozi_dph }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_zbozi_dph[{{ store.store_id }}]" value="off">
+                                                            <div class="checkbox mg-checkbox">
+                                                                <input type="checkbox"  name="{{ extension_fullname }}_adverts_zbozi_dph[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_zbozi_dph[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-default-state="{{ _context[extension_fullname ~ "_adverts_zbozi_dph"][store.store_id] is null ? "on" : _context[extension_fullname ~ "_adverts_zbozi_dph"][store.store_id] }}" {{ _context[extension_fullname ~ "_adverts_zbozi_dph"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_zbozi_dph"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_zbozi_help_text5 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label" for="{{ extension_fullname }}_adverts_zbozi_debug[{{ store.store_id }}]">{{ adverts_zbozi_debug }}</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="hidden" name="{{ extension_fullname }}_adverts_zbozi_debug[{{ store.store_id }}]" value="off">
+                                                            <div class="checkbox mg-checkbox">
+                                                                <input type="checkbox"  name="{{ extension_fullname }}_adverts_zbozi_debug[{{ store.store_id }}]" id="{{ extension_fullname }}_adverts_zbozi_debug[{{ store.store_id }}]" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" data-default-state="{{ _context[extension_fullname ~ "_adverts_zbozi_debug"][store.store_id] is null ? "off" : _context[extension_fullname ~ "_adverts_zbozi_debug"][store.store_id] }}" {{ _context[extension_fullname ~ "_adverts_zbozi_debug"][store.store_id]=="on" or _context[extension_fullname ~ "_adverts_zbozi_debug"][store.store_id]=="1" ? 'checked' : '' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="help-block">
+                                                        <div class="col-sm-offset-3 col-sm-9"><span class="label label-info2">Info</span>&nbsp;{{ adverts_zbozi_help_text4 }}</div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ./ Zbozi -->
+
+                                    </div>
+
+                                    <div class="tab-pane" id="systems-store-{{ store.store_id }}-etarget">
+
+                                    </div>
+
+                                    <div class="tab-pane" id="systems-store-{{ store.store_id }}-najnakup-sk">
+
+
+                                    </div>
+
+                                    <div class="tab-pane" id="systems-store-{{ store.store_id }}-pricemania">
+
+                                    </div>
+
+                                </div>
+                                <!-- ./advertising systems -->
+                            </div>
+                        </div>
+                    
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- ./stores -->
+
+        </div>
+
+    </div>
+</div>

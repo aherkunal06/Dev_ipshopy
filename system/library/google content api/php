@@ -1,0 +1,11 @@
+// Load Google API client library
+require_once(DIR_SYSTEM . 'library/google/apiclient/vendor/autoload.php');
+
+// Initialize Google Client
+$client = new Google_Client();
+$client->setAuthConfig('/path/to/your/google_credentials.json');
+$client->addScope(Google_Service_ShoppingContent::CONTENT_API_SCOPE);
+$client->setAccessType('offline');
+
+// Create Google Service
+$service = new Google_Service_ShoppingContent($client);

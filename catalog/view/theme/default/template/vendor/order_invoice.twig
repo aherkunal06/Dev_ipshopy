@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ title }}</title>
+  <base href="{{ base }}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="view/javascript/bootstrap/css/bootstrap.css" rel="stylesheet" media="all" />
+  <script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
+  <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+  <link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="all" />
+
+  <style>
+
+body, table, td, th, p, h1, h2, h3, h4, h5, address {
+    /* font-family: Arial, Helvetica, sans-serif; */
+    font-style: normal;
+    color: #000;
+  }
+
+
+
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      /* overflow: auto; */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      background-color: #fff;
+      padding: 20px;
+    }
+
+    .table.table-bordered {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 12px;
+    }
+
+    .table.table-bordered thead tr {
+      background-color: #f8effc;
+    }
+
+    .table.table-bordered td,
+    .table.table-bordered th {
+      border: 1px solid #e2d2ee;
+      padding: 10px;
+      vertical-align: middle;
+    }
+
+    .table.table-bordered tbody tr td small {
+      color: #555;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+    .totals-box {
+    background-color: #f8effc; /* light pink */
+    border: 1px solid #e0cbe3;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 400px;
+margin-bottom: 10px;
+    font-size: 12px;
+    margin-top: 10px;
+    float:right;
+    text-align: left; /* Align the content to the left */
+  }
+
+  .totals-box table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0; /* Remove margin to align to left */
+  }
+
+  .totals-box td {
+    padding: 6px 0;
+    vertical-align: top;
+  }
+
+  .totals-box td:last-child {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* .totals-box tr:last-child td,
+  .totals-box tr:nth-last-child(2) td {
+    font-weight: bold;
+  } */
+    .invoice-header {
+      padding: 5px 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      margin-top:5px;
+    }
+
+    .invoice-header img {
+      height: 32px;
+      margin-right: 0.5rem;
+    }
+
+    .invoice-title {
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+    .invoice-title h2{
+        margin-block:0px;
+    }
+
+    .returns-policy {
+      margin-top: 30%;
+      padding-top: 20px;
+    }
+
+    .returns-policy h4 {
+      color: #7b1fa2;
+      font-weight: bold;
+    }
+
+    .returns-policy p {
+      color: #555;
+      font-size: 14px;
+      max-width: 720px;
+      margin-bottom: 30px;
+    }
+
+    /* .returns-policy p:last-child {
+      text-align: center;
+      font-weight: bold;
+      color: #7b1fa2;
+      font-size: 16px;
+    } */
+
+    @media (max-width: 768px) {
+      .invoice-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .invoice-title {
+        font-size: 1.1rem;
+      }
+
+      .table.table-bordered td,
+      .table.table-bordered th {
+        font-size: 12px;
+        padding: 6px;
+      }
+
+      .returns-policy p,
+      .returns-policy p:last-child {
+        font-size: 13px;
+      }
+
+      .table-bordered+.totals-box {
+        padding: 10px;
+        font-size: 13px;
+      }
+
+      .container {
+        padding: 15px;
+      }
+    }
+
+    @media (max-width: 768px) {
+  .responsive-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .responsive-table-wrapper table {
+    width: 900px; /* minimum width to allow scrolling */
+  }
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    {% for order in orders %}
+    <div class="invoice-header">
+      
+      <div class="d-flex align-items-center">
+        <img class="lazyautosizes lazyloaded" data-sizes="auto"
+          src="https://www.ipshopy.com/image/catalog/A-Satyashil/Logo props.png"
+          alt="ipshopy" sizes="202px">
+      </div>
+      <div class="invoice-title text-dark">
+        <h2>{{ text_invoice }}
+        {##{{ order.order_id }}#}
+        </h2>
+        
+      </div>
+    </div>
+
+    <div>
+      <div style="display: flex; justify-content: space-between; background-color: #f5f5f5; padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; font-weight: bold; font-size: 16px; color: #333;">
+        <div>
+          <b>{{ text_order_id }}</b> {{ order.order_id }}
+        </div>
+        <div>
+          <b>{{ text_date_added }}</b> {{ order.date_added }}
+        </div>
+      </div>
+      
+
+      <div class="row" style="margin-top: 10px; margin-bottom: 20px;    margin-left: 0px;margin-right: 0px;">
+        <div class="col-12 mb-3">
+          <div style=" border-radius: 8px; padding: 15px;">
+            <address>
+              <strong>{{ order.store_name }}</strong><br />
+              {{ order.store_address }}
+            </address>
+            <b>{{ text_telephone }}</b> {{ order.store_telephone }}<br />
+            {% if order.store_fax %}
+            <b>{{ text_fax }}</b> {{ order.store_fax }}<br />
+            {% endif %}
+            <b>{{ text_email }}</b> {{ order.store_email }}<br />
+            <b>{{ text_website }}</b> <a href="{{ order.store_url }}">{{ order.store_url }}</a>
+          </div>
+        </div>
+        
+      </div>
+  
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px;">
+  <div style="flex: 1; border: 1px solid #ddd; border-radius: 8px; padding: 15px;">
+    <strong>{{ text_payment_address }}</strong><br />
+    <address style="margin-bottom: 8px; font-size: 14px;">{{ order.payment_address }}</address>
+    <strong>{{ text_payment_method }}</strong> {{ order.payment_method }}
+  </div>
+  <div style="flex: 1;  border: 1px solid #ddd; border-radius: 8px; padding: 15px;">
+    <strong>{{ text_shipping_address }}</strong><br />
+    <address style="margin-bottom: 8px; font-size: 14px;">{{ order.shipping_address }}</address>
+    {% if order.shipping_method %}
+    <strong>{{ text_shipping_method }}</strong> {{ order.shipping_method }}
+    {% endif %}
+  </div>
+</div>
+
+
+<div class="responsive-table-wrapper">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <td><b>{{ column_product }}</b></td>
+        <td><b>{{ column_model }}</b></td>
+        <td class="text-right"><b>{{ column_quantity }}</b></td>
+        <td class="text-right"><b>{{ column_price }}</b></td>
+        <td class="text-right"><b>HSN</b></td>
+
+        {% if gst_type == 'cgst_sgst' %}
+          <td class="text-center"><b>CGST</b></td>
+          <td class="text-center"><b>SGST</b></td>
+        {% else %}
+          <td class="text-center"><b>IGST</b></td>
+        {% endif %}
+
+        <td class="text-center"><b>Courier Charges</b></td>
+        <td class="text-right"><b>{{ column_total }}</b></td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in order.product %}
+      <tr>
+        <td>{{ product.name }}
+          {% for option in product.option %}
+          <br /><small>- {{ option.name }}: {{ option.value }}</small>
+          {% endfor %}
+        </td>
+        <td>{{ product.model }}</td>
+        <td class="text-right">{{ product.quantity }}</td>
+        <td class="text-right">{{ product.price }}</td>
+        <td>{{ product.hsn_code }} {{ product.description }}</td>
+
+        {% set rate = product.gst_rate is defined and product.gst_rate > 0 ? product.gst_rate : 18 %}
+        {% if gst_type == 'cgst_sgst' %}
+          <td>₹{{ product.cgst|number_format(2) }} ({{ (product.gst_rate / 2)|number_format(0) }}%)</td>
+          <td>₹{{ product.sgst|number_format(2) }} ({{ (product.gst_rate / 2)|number_format(0) }}%)</td>
+        {% else %}
+          <td class="text-center">₹{{ product.igst|number_format(2, '.', '') }}<br />({{ product.gst_rate }}%)</td>
+        {% endif %}
+
+        <td class="text-right">{{ product.courier_charges }}</td>
+        <td class="text-right">{{ product.total }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+   <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; margin-top: 20px;">
+
+
+      
+  
+
+  <!-- Totals Box -->
+ 
+
+</div>
+{% set price_total = 0 %}
+{% set gst_total = 0 %}
+{% set courier_total = 0 %}
+{% set low_order_fee = 0 %}
+
+{% for product in order.product %}
+  {% set product_price = product.price|replace({'₹':'', ',':''}) %}
+  {% set product_quantity = product.quantity %}
+  {% set price_total = price_total + (product_price * product_quantity) %}
+
+  {% if gst_type == 'cgst_sgst' %}
+    {% set gst_total = gst_total + (product.cgst + product.sgst) %}
+  {% else %}
+    {% set gst_total = gst_total + product.igst %}
+  {% endif %}
+
+  {% set courier_charge = product.courier_charges|replace({'₹':'', ',':''}) %}
+  {% set courier_total = courier_total + courier_charge %}
+{% endfor %}
+
+{% for total in order.total %}
+  {% if total.title == 'Low Order Fee' %}
+    {% set low_order_fee = (total.text|replace({'₹':'', ',':''})) + 0 %}
+  {% endif %}
+{% endfor %}
+
+{% set product_total_with_gst_courier = price_total + gst_total + courier_total %}
+{% set final_total = product_total_with_gst_courier  %}
+
+<div class="totals-box" style="flex: 1 1 38%; min-width: 250px;">
+  <table>
+    <tr>
+      <td><strong>Price</strong></td>
+      <td>₹{{ price_total|number_format(0, '.', '')  }}</td>
+    </tr>
+    <tr>
+      <td><strong>GST</strong></td>
+      <td>₹{{ gst_total|number_format(0, '.', '')  }}</td>
+    </tr>
+    <tr>
+      <td><strong>Courier Charges</strong></td>
+      <td>₹{{ courier_total|number_format(0, '.', '')  }}</td>
+    </tr>
+    {#<tr>#}
+    {#  <td><strong>Low Order Fee</strong></td>#}
+    {#  <td>₹{{ low_order_fee|number_format(2, '.', ',') }}</td>#}
+    {#</tr>#}
+    <tr style="border-top: 1px solid #ccc;">
+      <td><strong>Total</strong></td>
+      <td><strong>₹{{ final_total|number_format(0, '.', '')  }}</strong></td>
+    </tr>
+  </table>
+</div>
+
+
+<!-- 
+<div class="totals-box" style="flex: 1 1 38%; min-width: 250px;">
+  <table>
+    <table>
+      {% for total in order.total %}
+        {% if total.title == 'Low Order Fee' %}
+          <tr>
+            <td>{{ total.title }}</td>
+            <td>{{ total.text }}</td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </table>
+    
+</div> -->
+
+    
+
+
+    {% if order.comment %}
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <td><b>{{ text_comment }}</b></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ order.comment }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+     
+
+
+       
+
+
+
+    <!-- <div class="returns-policy"> -->
+      <!-- ✅ Clean, neutral Return Policy Section -->
+<!-- <div style="margin-top: 30px;">
+  <h4 style=" font-size: 18px;">Returns Policy</h4>
+
+  {% for product in order.product %}
+    {% if product.return_policy_details or product.return_duration_period %}
+      <div style="margin-bottom: 15px; background-color: #fff8f2; border: 1px solid #e2d2ee; border-radius: 10px; padding: 15px;"> -->
+<!--         
+        {% if product.return_duration_period %}
+          <p style="margin: 0; font-size: 14px;"><strong>Return Period:</strong> {{ product.return_duration_period }}</p>
+        {% endif %} -->
+        <!-- {% if product.return_policy_details %}
+          <p style="margin: 0; font-size: 14px;"><strong>Return Policy:</strong> {{ product.return_policy_details }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endfor %} -->
+  <div class="returns-policy">
+    <!-- ✅ Clean, neutral Return Policy + Warranty Section -->
+    
+      <h4 style=" font-size: 14px;">Warranty & Returns Policy</h4>
+  
+      {% for product in order.product %}
+        {% if product.return_policy_details or product.return_duration_period or product.warranty_by or product.warranty_duration or product.warranty_description %}
+          <div style="margin-bottom: 15px; background-color: #fff8f2; border: 1px solid #e2d2ee; border-radius: 10px; padding: 15px;">
+
+
+            {% if product.warranty %}
+            <p style="margin: 0; font-size: 12px; margin-bottom:5px;">
+                <strong>Warranty Details:</strong>
+                <span style="font-weight: normal;">
+                    {{ product.warranty_by }} &nbsp; | &nbsp;
+                    {{ product.warranty_duration }} &nbsp; | &nbsp;
+                    {{ product.warranty_description }}
+                    
+                </span>
+            </p>
+            {% else %}
+            <p style="margin: 0; font-size: 12px; margin-bottom:5px;">
+              <strong>Warranty Details:</strong>
+                <span style="font-weight: normal;">
+                    {{product.No_warranty}} 
+                </span>
+            </p>
+        {% endif %}
+            {% if product.return_policy_details %}
+              <p style="margin: 0; font-size: 12px;"><strong>Return Policy:</strong> {{ product.return_policy_details }}</p>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+  
+  </div>
+  
+
+  <hr style="border: none; border-top: 1px dotted #555; margin: 20px 0;" />
+
+  <p style=" font-size: 13px; color: #444; text-align:center;">
+    The goods sold as part of this shipment are intended for end user consumption / retail sale and not for re‑sale.
+  </p>
+  <p style="text-align: center; font-weight: bold; color: #953A93; font-size: 16px;">
+    Thank You! <br><span style="font-weight: normal; font-size: 14px; color: #333;">for shopping with us</span>
+  </p>
+</div>
+      
+
+
+  <!-- Warranty Box -->
+  <!-- {% for product in order.product %}
+    {% if product.warranty_by or product.warranty_duration or product.warranty_description %}
+    <div style="flex: 1 1 58%; min-width: 300px; background-color: #f8effc; border: 1px solid #e2d2ee; border-radius: 10px; padding: 15px;">
+      <h5 style="color: #953A93; font-weight: bold; margin-bottom: 10px;">Warranty Details</h5>
+      <p style="margin: 0;"><strong>Warranty By:</strong> {{ product.warranty_by }}</p>
+      <p style="margin: 0;"><strong>Duration:</strong> {{ product.warranty_duration }}</p>
+      <p style="margin: 0;"><strong>Description:</strong> {{ product.warranty_description }}</p>
+    </div>
+    {% endif %}
+  {% endfor %}
+ -->
+
+
+      
+      <!-- <h4>Returns Policy</h4>
+      <p>
+        At Ipshopy we try to deliver perfectly each and every time. But in the off‑chance that you need to return
+        the item, please do so with the
+        <strong>original Brand box/price tag, original packing and invoice</strong>
+        without which it will be really difficult for us to act on your request.
+      </p>
+      <hr style="border: none; border-top: 1px dotted #555; margin: 20px 0;" />
+      <p style="font-style: italic; font-size: 13px; color: #444;">
+        The goods sold as part of this shipment are intended for end user consumption / retail sale and not for
+        re‑sale.
+      </p>
+      <p>Thank You! <span style="font-weight: normal; font-size: 14px; color: #333;">for shopping with us</span></p>
+    </div> -->
+    {% endfor %}
+
+  </div>
+</body>
+
+</html>

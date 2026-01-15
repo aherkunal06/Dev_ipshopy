@@ -1,0 +1,1634 @@
+{{ header }}{{ column_left }}
+{# added css on 08-04-2025 ---- regarding to the signature upload------------#}
+{#<style>#}
+{#.signecher #thumb-image img {#}
+{#	width: 75%;#}
+{#	height: 140px;#}
+{#	object-fit: cover;#}
+{#	border: 2px solid #ccc;#}
+{#	margin-top: 10px;#}
+{#	border-radius: 8px;#}
+{#	padding: 10px;#}
+{#}#}
+
+{#.signecher .btn {#}
+    {#/* background-color: #4CAF50; */#}
+{#    color: #000000;#}
+    {#/* padding: 10px 20px; */#}
+{#    font-size: 14px;#}
+{#    cursor: pointer;#}
+{#    margin-top: 0px;#}
+{#}#}
+
+{#.signecher .btn:hover {#}
+{#	background-color: rgb(15 141 179);#}
+{#	color: white;#}
+{#}#}
+
+
+{#.signecher .btn-default:focus {#}
+{#	color: #333;#}
+{#	background-color: transparent;#}
+{#	border-color: #ffffff;#}
+{#}#}
+
+
+{#/* Style for custom button */#}
+{#.custom-button {#}
+{#	display: inline-block;#}
+{#	background-color: #4CAF50;#}
+{#	color: white;#}
+{#	padding: 10px 20px;#}
+{#	font-size: 16px;#}
+{#	border: none;#}
+{#	border-radius: 5px;#}
+{#	cursor: pointer;#}
+{#}#}
+
+{#.custom-button:hover {#}
+{#	background-color: #45a049;#}
+{#}#}
+
+{##fileName {#}
+{#	margin-top: 10px;#}
+{#	font-style: italic;#}
+{#}#}
+
+{#.edit-panel {#}
+{#    margin-top: 20px !important;#}
+{#}#}
+
+{#.payment {#}
+{#  display: none;#}
+{#  margin-top: 15px;#}
+{#  padding: 10px;#}
+{#}#}
+
+{#input[type="radio"], .radio input[type="radio"], .radio-inline input[type="radio"] {#}
+{#    margin-right: 10px !important;#}
+{#}#}
+
+{#.panel-body {#}
+{#    overflow: hidden !important;#}
+{#}#}
+{#</style>#}
+
+<style>
+.signecher #thumb-image img {
+	width: 100%;
+	height: 100px;
+	object-fit: cover;
+	border: 2px solid #ccc;
+	margin-top: 10px;
+	border-radius: 8px;
+	padding: 10px;
+	object-fit:cover;
+}
+
+.signecher .btn {
+    /* background-color: #4CAF50; */
+    color: #000000;
+    /* padding: 10px 20px; */
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 0px;
+}
+
+.signecher .btn:hover {
+	background-color: rgb(15 141 179);
+	color: white;
+}
+
+
+.signecher .btn-default:focus {
+	color: #333;
+	background-color: transparent;
+	border-color: #ffffff;
+}
+
+
+/* Style for custom button */
+.custom-button {
+	display: inline-block;
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	font-size: 16px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.custom-button:hover {
+	background-color: #45a049;
+}
+
+#fileName {
+	margin-top: 10px;
+	font-style: italic;
+}
+
+.edit-panel {
+    margin-top: 20px !important;
+}
+
+.payment {
+  display: none;
+  margin-top: 15px;
+  padding: 10px;
+}
+
+input[type="radio"], .radio input[type="radio"], .radio-inline input[type="radio"] {
+    margin-right: 10px !important;
+}
+
+.panel-body {
+    overflow: hidden !important;
+}
+
+.upload-info-list {
+    background: #fff;
+    border: 1px solid #d9534f;
+    color: #d9534f;
+    border-radius: 6px;
+    padding: 10px 18px 10px 30px;
+    margin: 0 10px;
+    font-size: 14px;
+    font-weight: 500;
+    list-style: disc inside;
+    box-shadow: 0 2px 8px rgba(217,83,79,0.07);
+}
+.upload-info-list li {
+    margin-bottom: 4px;
+}
+.upload-info-list li:last-child {
+    margin-bottom: 0;
+}
+a.signature-example {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #007bff; /* Blue background */
+    color: #fff;               /* White text */
+    text-decoration: none;     /* Remove underline */
+    font-weight: bold;
+    border-radius: 4px;        /* Rounded corners */
+    transition: background-color 0.3s ease;
+    margin-top: 5px;
+}
+
+a.signature-example:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    color: #fff;
+    text-decoration: none;
+}
+.signature-link {
+    color: #007bff;             /* Link blue */
+    text-decoration: underline; /* Always underline */
+    cursor: pointer;            /* Pointer cursor on hover */
+}
+
+.signature-link:hover {
+    color: #0056b3;
+	             /* Darker blue on hover */
+}
+
+.btn {
+	/*color: white !important;*/
+	/*background-color: purple !important;*/
+	width: fit-content;
+}
+
+.vendor-edit .row {
+	border-bottom: none !important;
+}
+
+.imagebox {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    margin: 0 auto;
+    background: #fafafa;
+    overflow: hidden;
+}
+
+.imagebox img.thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: #fff;
+}
+
+</style>
+{#---------------------------------------------------#}
+
+<div id="content">
+	<div class="page-header vendor-edit">
+		<div class="container-fluid">
+			<div class="pull-left">
+				<h1>{{ heading_title }}</h1>
+			</div>
+			<div class="pull-right">
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-info">
+				    <i class="fa fa-reply"></i>
+			    </a>
+			</div>
+		</div>
+		<div class="container-fluid edit-panel">
+			{% if error_warning %}
+				<div class="alert alert-danger">
+					<i class="fa fa-exclamation-circle"></i>
+					{{ error_warning }}
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+				</div>
+			{% endif %}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<i class="fa fa-pencil"></i>
+						{{ text_form }}</h3>
+				</div>
+				<div class="panel-body">
+					<form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+						<ul class="nav nav-tabs">
+							<li class="active">
+								<a href="#tab-seller" data-toggle="tab">{{ tab_seller }}</a>
+							</li>
+							<li {% if error_showorderwarning %} class="warningorder" {% endif %}>
+								<a href="#tab-generalstore" data-toggle="tab">{{ tab_generalstore }}</a>
+							</li>
+							<li>
+								<a href="#tab-datastore" data-toggle="tab">{{ tab_datastore }}</a>
+							</li>
+							<li {% if error_showorderwarning %} class="warningorder" {% endif %}>
+								<a href="#tab-payment" data-toggle="tab">{{ tab_payment }}</a>
+							</li>
+							<li>
+								<a href="#tab-seo" data-toggle="tab">{{ tab_seo }}</a>
+							</li>
+							<li>
+								<a href="#tab-chat" data-toggle="tab">{{ tab_chat }}</a>
+							</li>
+
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active col-sm-12 col-xs-12" id="tab-seller">
+
+								<div class="row"></div>
+
+								<div class="row">
+									<div class="form-group required col-sm-4">
+										<div>
+											<label class="control-label" for="input-display_name">{{ entry_display_name }}</label>
+											<input type="text" name="display_name" value="{{ display_name }}" placeholder="{{ entry_display_name }}" id="input-display_name" class="form-control" readonly/>
+											{% if error_display_name %}
+												<div class="text-danger">{{ error_display_name }}</div>
+											{% endif %}
+										</div>
+									</div>
+
+									<div class="form-group required col-sm-4">
+										<div>
+											<label class="control-label" for="input-firstname">{{ entry_firstname }}</label>
+											<input type="text" name="firstname" value="{{ firstname }}" placeholder="{{ entry_firstname }}" id="input-firstname" class="form-control" readonly/>
+											{% if error_firstname %}
+												<div class="text-danger">{{ error_firstname }}</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="form-group required col-sm-4">
+										<div>
+											<label class="control-label" for="input-lastname">{{ entry_lastname }}</label>
+											<input type="text" name="lastname" value="{{ lastname }}" placeholder="{{ entry_lastname }}" id="input-lastname" class="form-control" readonly/>
+											{% if error_lastname %}
+												<div class="text-danger">{{ error_lastname }}</div>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group required col-sm-4">
+										<div>
+											<label class="control-label" for="input-email">{{ entry_email }}</label>
+											<input type="email" name="email" value="{{email}}" placeholder="{{ entry_email }}" id="input-email" class="form-control" readonly/>
+											{% if error_email %}
+												<div class="text-danger">{{ error_email }}</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="form-group required col-sm-4">
+										<div>
+											<label class="control-label" for="input-telephone">{{ entry_telephone }}</label>
+											<input type="tel" name="telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control"  readonly/>
+											{% if error_telephone %}
+												<div class="text-danger">{{ error_telephone }}</div>
+											{% endif %}
+										</div>
+									</div>
+
+
+									<div class="form-group required col-sm-4">
+										<div>
+											<label class="control-label" for="input-gstin">{{ entry_gstin }}</label>
+											<input type="text" name="gstin" maxlength='15' minlength='15' value="{{ gstin }}" pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$" title="Enter a valid GSTIN (15 characters, alphanumeric)" placeholder="{{ entry_gstin }}" id="input-gstin" class="form-control" readonly/>
+										</div>
+									</div>
+
+								</div>
+
+								<div class="row">
+									<div class="form-group col-sm-4">
+										<div>
+											<label class="control-label" for="input-company">{{ entry_company }}</label>
+
+											<input type="text" name="company" value="{{ company }}" placeholder="{{ entry_company }}" id="input-company" class="form-control" readonly/>
+										</div>
+									</div>
+
+									<div class="form-group required col-sm-4">
+										<div>
+											<label class="control-label" for="input-address-1">{{ entry_address_1 }}</label>
+											<input type="text" name="address_1" value="{{ address_1 }}" placeholder="{{ entry_address_1 }}" id="input-address-1" class="form-control" readonly/>
+											{% if error_address_1 %}
+												<div class="text-danger">{{ error_address_1 }}</div>
+											{% endif %}
+										</div>
+									</div>
+
+									<div class="form-group col-sm-4">
+										<div>
+											<label class="control-label" for="input-address-2">{{ entry_address_2 }}</label>
+											<input type="text" name="address_2" value="{{ address_2 }}" placeholder="{{ entry_address_2 }}" id="input-address-2" class="form-control" readonly/>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group required col-sm-4">
+										<div>
+											<label class="control-label" for="input-city">{{ entry_city }}</label>
+											<input type="text" name="city" value="{{ city }}" placeholder="{{ entry_city }}" id="input-city" class="form-control" readonly/>
+											{% if error_city %}
+												<div class="text-danger">{{ error_city }}</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="form-group required col-sm-4">
+										<div>
+											<label class="control-label" for="input-postcode">{{ entry_postcode }}</label>
+											<input type="text" name="postcode" value="{{ postcode }}" placeholder="{{ entry_postcode }}" id="input-postcode" class="form-control" readonly/>
+											{% if error_postcode %}
+												<div class="text-danger">{{ error_postcode }}</div>
+											{% endif %}
+										</div>
+									</div>
+
+								</div>
+
+
+								<div class="row">
+
+									<div class="form-group required col-sm-4">
+										<div>
+											<label class="control-label" for="input-country">{{ entry_country }}</label>
+
+											<select name="country_id" id="input-country" class="form-control" >
+												<option value="">{{ text_select }}</option>
+												{% for country in countries %}
+													{% if country.country_id == country_id %}
+														<option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
+													{% else %}
+														<option value="{{ country.country_id }}">{{ country.name }}</option>
+													{% endif %}
+												{% endfor %}
+											</select>
+											{% if error_country %}
+												<div class="text-danger">{{ error_country }}</div>
+											{% endif %}
+										</div>
+									</div>
+
+
+									<div class="form-group required col-sm-4">
+										<div>
+											<label class="control-label" for="input-zone">{{ entry_zone }}</label>
+											<select name="zone_id" id="input-zone" class="form-control"></select>
+											{% if error_zone %}
+												<div class="text-danger">{{ error_zone }}</div>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+
+
+								{#<div class="row">#}
+								{#	<div class="form-group col-sm-8">#}
+								{#		<div>#}
+								{#			<label class="control-label" for="input-about">{{ entry_about }}</label>#}
+								{#			<textarea name="about" rows="5" placeholder="{{ entry_about }}" id="input-about" class="form-control">{{ about }}</textarea>#}
+								{#		</div>#}
+								{#	</div>#}
+
+								{#	<div class="form-group col-sm-2">#}
+								{#		<div>#}
+								{#			<label class="control-label" for="input-logo">{{ entry_image }}</label>#}
+								{#			<div class="imagebox">#}
+								{#				<span id="thumb-image"><img src="{{ thumb }}" alt="" title="" class="thumbnail"/></span>#}
+								{#			</div>#}
+								{#			<br/>#}
+								{#			<button type="button" id="button-upload1" data-loading-text="{{ text_loading }}" class="btn btn-default">#}
+								{#				<i class="fa fa-upload"></i>#}
+								{#				{{ button_upload }}</button>#}
+								{#			<input type="hidden" name="image" value="{{ image }}" id="input-image"/>#}
+								{#		</div>#}
+								{#	</div>#}
+									{# addded on 08-04-2025 regarding to signature upload-----------#}
+								{#	<div class="form-group col-sm-2">#}
+
+								{#		<div class="signecher">#}
+
+								{#			<label class="control-label-tow" for="input-logo">{{ entry_image_sign }}</label>#}
+
+								{#			<span id="thumb-sing"><img src="{{ thumb_sign }}" alt"" class="thumbnail"/></span>#}
+      
+								{#			<br>#}
+
+								{#			<button type="button" id="button-sing" class="btn btn-default">#}
+								{#				<i class="fa fa-upload"></i>#}
+								{#				Upload Signature#}
+								{#			</button>#}
+
+								{#		</div>#}
+
+								{#		<input type="hidden" name="sign_image" value="{{ sign_image }}" id="input-sing"/>#}
+								{#	</div>#}
+									{#---------------------------------------------------------------------------#}
+								{#</div>#}
+								<div class="row">
+    								<!-- About -->
+    								<div class="form-group col-sm-8">
+    									<label class="control-label" for="input-about">{{ entry_about }}</label>
+    									<textarea name="about" rows="2" class="form-control" style="min-height:34px;max-height:60px;" placeholder="{{ entry_about }}" id="input-about">{{ about }}</textarea>
+    								</div>
+
+    								<!-- Upload Logo & Signature Side-by-Side -->
+    								<div class="form-group col-sm-4">
+    									<div class="row" style="display: flex; gap: 40px;">
+    										<!-- Upload Logo -->
+    										{#<div class="col-xs-6 text-center">#}
+    										{#	<label class="control-label">{{ entry_image }}</label>#}
+    										{#	<div class="imagebox">#}
+    										{#		<span id="thumb-image">#}
+    										{#			<img src="{{ thumb }}" alt="" title="" class="thumbnail" />#}
+    										{#		</span>#}
+    										{#	</div>#}
+    										{#	<br />#}
+    										{#	<button type="button" id="button-upload1" data-loading-text="{{ text_loading }}" class="btn btn-default btn-block">#}
+    										{#		<i class="fa fa-upload"></i> {{ button_upload }}#}
+    										{#	</button>#}
+    										{#	<input type="hidden" name="image" value="{{ image }}" id="input-image" />#}
+    										{#</div>#}
+    
+    										<!-- Upload Signature -->
+    										<div class="col-xs-6 text-center">
+    											<label class="control-label">{{ entry_image_sign }}</label>
+    											<div class="imagebox">
+    												<span id="thumb-sing">
+    													<img src="{{ thumb_sign }}" alt="" class="thumbnail" />
+    												</span>
+    											</div>
+    											<br />
+    											<button type="button" id="button-sing" class="btn btn-default btn-block">
+    												<i class="fa fa-upload"></i> Upload Signature
+    											</button>
+    											<input type="hidden" name="sign_image" value="{{ sign_image }}" id="input-sing" />
+    										</div>
+    									</div>
+    
+    									<!-- Hidden custom alert box -->
+    									<div id="image-alert-box" style="display:none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%);
+    									background-color: #fff; padding: 15px; border: 2px solid #333; z-index: 1000; text-align: center; box-shadow: 0px 0px 10px rgba(0,0,0,0.5);">
+    										<p style="margin: 0 0 10px;"><strong>Signature Image Preview:</strong></p>
+    										<img src="/image/Updated_Sign.png" alt="Signature" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;" />
+    										<br><br>
+    										<button type="button" onclick="hideImageAlert();" class="btn btn-danger">Close</button>
+    									</div>
+    
+    									<!-- Optional overlay -->
+    									<div id="image-alert-overlay" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+    
+    									<!-- Validation Message -->
+    									<div class="text-end" style="margin-top: 10px;">
+    										<p style="color: red; font-size: 12px; margin: 0;">
+    											• Only JPG, JPEG, PNG image files are accepted.
+    										</p>
+    										<p style="color: red; font-size: 12px; margin: 0;">
+    											• File size should be 100 KB or less.
+    											<a href="#" class="signature-link" onclick="showImageAlert(); return false;">SIGNATURE EXAMPLE</a>
+    									    </p>
+    									</div>
+    								</div>
+    							</div>
+							</div>
+
+							<div class="tab-pane" id="tab-generalstore">
+
+								<ul class="nav nav-tabs" id="language">
+									{% for language in languages %}
+										<li>
+											<a href="#language{{ language.language_id }}" data-toggle="tab"><img src="catalog/language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/>
+												{{ language.name }}</a>
+										</li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane col-sm-12" id="language{{ language.language_id }}">
+											<div class="row">
+												<div class="form-group col-sm-6">
+													<div>
+														<label class="control-label" for="input-name{{ language.language_id }}">{{ entry_storename }}</label>
+
+														<input type="text" name="store_description[{{ language.language_id }}][name]" value="{{ store_description[language.language_id] ? store_description[language.language_id].name }}" placeholder="{{ entry_storename }}" id="input-name{{ language.language_id }}" class="form-control"/>
+														{% if error_name[language.language_id] %}
+															<div class="text-danger">{{ error_name[language.language_id] }}</div>
+														{% endif %}
+													</div>
+												</div>
+
+												<div class="form-group col-sm-6">
+													<div>
+														<label class="control-label" for="input-meta_description{{ language.language_id }}">{{ entry_metadescription }}</label>
+														<textarea name="store_description[{{ language.language_id }}][meta_description]" value="" rows="3" placeholder="{{ entry_metadescription }}" id="input-meta_description{{ language.language_id }}" class="form-control ">{{ store_description[language.language_id] ? store_description[language.language_id].meta_description }}</textarea>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+
+												<div class="form-group col-sm-6">
+													<div>
+														<label class="control-label" for="input-description{{ language.language_id }}">{{ entry_description }}</label>
+
+														<textarea name="store_description[{{ language.language_id }}][description]" placeholder="{{ entry_description }}" id="input-description{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].description }}</textarea>
+													</div>
+												</div>
+												<div class="form-group col-sm-6">
+													<label class="control-label" for="input-shipping_policy{{ language.language_id }}">{{ entry_shippingpolicy }}</label>
+
+													<textarea name="store_description[{{ language.language_id }}][shipping_policy]" placeholder="{{ entry_shippingpolicy }}" id="input-shipping_policy{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].shipping_policy }}</textarea>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="form-group col-sm-6">
+													<div>
+														<label class="control-label" for="input-return_policy{{ language.language_id }}">{{ entry_returnpolicy }}</label>
+
+														<textarea name="store_description[{{ language.language_id }}][return_policy]" value="" placeholder="{{ entry_returnpolicy }}" id="input-return_policy{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].return_policy }}</textarea>
+													</div>
+												</div>
+
+												<div class="form-group col-sm-6">
+													<div>
+														<label class="control-label" for="input-meta_keyword{{ language.language_id }}">{{ entry_metakeyword }}</label>
+														<textarea name="store_description[{{ language.language_id }}][meta_keyword]" value="" placeholder="{{ entry_metakeyword }}" id="input-meta_keyword{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].meta_keyword }}</textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+
+
+							<div class="tab-pane col-sm-12" id="tab-datastore">
+								<div class="row">
+									<div class="form-group col-sm-6">
+										<div>
+											<label class="control-label" for="input-charges">{{ entry_charges }}</label>
+											<input type="text" name="shipping_charge" value="{{ shipping_charge }}" placeholder="{{ entry_charges }}" id="input-charges" class="form-control"/>
+										</div>
+
+									</div>
+									<div class="form-group col-sm-6">
+										<div>
+											<label class="control-label" for="input-tax">{{ entry_tax }}</label>
+											<input type="text" name="tax_number" value="{{ tax_number }}" placeholder="{{ entry_tax }}" id="input-tax" class="form-control"/>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-sm-6">
+										<div>
+											<label class="control-label" for="input-store_about">{{ entry_store_about }}</label>
+											<textarea name="store_about" rows="5" value="" placeholder="{{ entry_store_about }}" id="input-store_about" class="form-control">{{ store_about }}</textarea>
+										</div>
+									</div>
+									<div class="form-group col-sm-6">
+										<div>
+											<label class="control-label" for="input-map_url">{{ entry_mapurl }}
+												<a href="https://maps.google.com" target="_blank" data-toggle="tooltip" title="{{ help_mapfindcode }}">
+													<i class="fa fa-globe" aria-hidden="true"></i>
+												</a>
+											</label>
+
+											<textarea name="map_url" placeholder="{{ entry_mapurl }}" id="input-about" class="form-control" rows="5">{{ map_url }}</textarea>
+										</div>
+									</div>
+								</div>
+								<!--05 02 2021 Start-->
+								{#<div class="row">#}
+								{#	<div class="form-group col-sm-6">#}
+								{#		<div>#}
+								{#			<label class="control-label" for="input-bank_detail">{{ entry_bank_detail }}</label>#}
+								{#			<textarea name="bank_detail" rows="5" value="" placeholder="{{ entry_bank_detail }}" id="input-bank_detail" class="form-control">{{ bank_detail }}</textarea>#}
+								{#		</div>#}
+								{#	</div>#}
+								{#	<div class="form-group col-sm-6"></div>#}
+								{#</div>#}
+								<!--05 02 2021 END-->
+								<div class="row">
+									<div class="form-group col-sm-6">
+										<div>
+											<label class="control-label" for="input-facebook_url">{{ entry_facebookurl }}</label>
+											<input type="text" name="facebook_url" value="{{ facebook_url }}" placeholder="{{ entry_facebookurl }}" id="input-facebook_url" class="form-control"/>
+										</div>
+
+									</div>
+									<div class="form-group col-sm-6">
+										<div>
+											<label class="control-label" for="input-google_url">{{ entry_googleurl }}</label>
+
+											<input type="text" name="google_url" value="{{ google_url }}" placeholder="{{ entry_googleurl }}" id="input-google_url" class="form-control"/>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-sm-6 padd0">
+										<div class="col-sm-4">
+											<label class="control-label" for="input-logo">{{ entry_logo }}</label>
+											<div class="imagebox">
+												<span id="thumb-logo"><img src="{{ thumb_logo }}" alt="" title="" class="thumbnail"/></span>
+											</div>
+											<button type="button" id="button-logo" data-loading-text="{{ text_loading }}" class="btn btn-default">
+												<i class="fa fa-upload"></i>
+												{{ button_upload }}</button>
+											<input type="hidden" name="logo" value="{{ logo }}" id="input-logo"/>
+
+										</div>
+										<div class="col-sm-8">
+											<label class="control-label text-center" for="input-logo">
+												{{ entry_logowidth }}
+												<i class="fa fa-arrows-h" aria-hidden="true"></i>
+											</label>
+											<input type="text" name="store_logowidth" value="{{ store_logowidth }}" placeholder="{{ entry_logowidth }}" id="input-store_logowidth" class="form-control"/>
+
+											<label class="control-label" for="input-logo">
+												{{ entry_logoheight }}
+												<i class="fa fa-arrows-v" aria-hidden="true"></i>
+											</label>
+											<input type="text" name="store_logoheight" value="{{ store_logoheight }}" placeholder="{{ entry_logoheight }}" id="input-store_logoheight" class="form-control"/>
+										</div>
+
+									</div>
+
+
+									<div class="form-group col-sm-6 padd0">
+
+										<div class="col-sm-4">
+											<label class="control-label" for="input-logo">{{ entry_banner }}</label>
+											<div class="imagebox">
+												<span id="thumb-banner"><img src="{{ thumb_banner }}" alt="" title="" class="thumbnail"/></span>
+											</div>
+											<button type="button" id="upload-banner" data-loading-text="{{ text_loading }}" class="btn btn-default">
+												<i class="fa fa-upload"></i>
+												{{ button_banner }}</button>
+											<input type="hidden" name="banner" value="{{ banner }}" id="input-banner"/>
+										</div>
+										<div class="col-sm-8">
+											<label class="control-label text-center" for="input-logo">
+												{{ entry_bannerwidth }}
+												<i class="fa fa-arrows-h" aria-hidden="true"></i>
+											</label>
+
+											<input type="text" name="store_bannerwidth" value="{{ store_bannerwidth }}" placeholder="{{ entry_bannerwidth }}" id="input-store_bannerwidth" class="form-control"/>
+
+											<label class="control-label text-center" for="input-logo">
+												{{ entry_bannerheight }}
+												<i class="fa fa-arrows-h" aria-hidden="true"></i>
+											</label>
+											<input type="text" name="store_bannerheight" value="{{ store_bannerheight }}" placeholder="{{ entry_bannerheight }}" id="input-store_bannerheight" class="form-control"/>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane col-sm-12" id="tab-payment">
+								<div class="row">
+									<div class="form-group col-sm-4">
+										<label class="control-label">{{ entry_method }}</label>
+										<div class="col-sm-12">
+											{#<div class="radio col-sm-6 padd0">#}
+											{#	<label>#}
+											{#		{% if payment_method == 'paypal' %}#}
+											{#			<input type="radio" name="payment_method" value="paypal" checked="checked"/>#}
+											{#		{% else %}#}
+											{#			<input type="radio" name="payment_method" value="paypal"/>#}
+											{#		{% endif %}#}
+											{#		{{ text_paypal }}</label>#}
+											{#</div>#}
+											<div class="radio col-sm-6 padd0">
+												<label>
+    												{% if payment_method == 'banktransfer' %}
+    													<input type="radio" name="payment_method" value="banktransfer" checked="checked"/>
+    												{% else %}
+    													<input type="radio" name="payment_method" value="banktransfer"/>
+    												{% endif %}
+    												{{ text_bank }}
+    											</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								{#<div class="row">#}
+								{#	<div class="payment col-sm-6" id="payment-paypal">#}
+								{#		<div class="form-group" id="paypal">#}
+								{#			<div>#}
+								{#				<label class="control-label" for="input-paypal">{{ entry_Emailid }}</label>#}
+								{#				<input type="text" name="paypal" value="{{ paypal }}" placeholder="{{ entry_Emailid }}" id="input-paypal" class="form-control"/>#}
+								{#				{% if error_paypal %}#}
+								{#					<div class="text-danger">{{ error_paypal }}</div>#}
+								{#				{% endif %}#}
+								{#			</div>#}
+								{#		</div>#}
+								{#	</div>#}
+								{#</div>#}
+								<div class="clearfix"></div>
+								<div class="payment" id="payment-banktransfer">
+									<div class="row">
+									    <div class="form-group col-sm-4">
+											<div>
+												<label class=" control-label" for="input-package-title">{{ entry_aname }}</label>
+												<input type="text" name="bank_account_name" value="{{ bank_account_name }}" placeholder="{{ entry_aname }}" id="input-package-titl" class="form-control" minlength="3" maxlength="150" oninput="
+                                                  this.value = this.value
+                                                    // Allow only letters and spaces
+                                                    .replace(/[^A-Za-z ]/g, '') 
+                                                    // Remove leading spaces
+                                                    .replace(/^\s+/g, '') 
+                                                    // Replace multiple spaces with a single space
+                                                    .replace(/\s{2,}/g, ' ')"
+                                                />
+												{% if error_bank_account_name %}
+													<div class="text-danger">{{ error_bank_account_name }}</div>
+												{% endif %}
+											</div>
+										</div>
+										<div class="form-group col-sm-4">
+											<div>
+												<label class="control-label" for="input-bankname">{{ entry_bankname }}</label>
+												<input type="text" name="bank_name" value="{{ bank_name }}" placeholder="{{ entry_bankname }}" id="input-bankname" class="form-control" minlength="3" maxlength="50" oninput="
+                                                  this.value = this.value
+                                                  .replace(/[^A-Za-z ]/g, '')       
+                                                  .replace(/^\s+/g, '')             
+                                                  .replace(/\s{2,}/g, ' ')"          
+                                                />
+											</div>
+										</div>
+										<div class="form-group col-sm-4">
+											<div>
+												<label class="control-label" for="input-account_number">{{ entry_anumber }}</label>
+												<input type="text" name="bank_account_number" value="{{ bank_account_number }}" placeholder="{{ entry_anumber }}" id="input-account_number" class="form-control" minlength="3" maxlength="20" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+												{% if error_bank_account_number %}
+													<div class="text-danger">{{ error_bank_account_number }}</div>
+												{% endif %}
+											</div>
+										</div>
+										
+										{#<div class="form-group required col-sm-4">#}
+										{#	<div>#}
+										{#		<label class=" control-label" for="input-branch_number">{{ entry_bnumber }}</label>#}
+										{#		<input type="text" name="bank_branch_number" value="{{ bank_branch_number }}" placeholder="{{ entry_bnumber }}" id="input-branch_number" class="form-control"/>#}
+										{#	</div>#}
+										{#</div>#}
+									</div>
+									<div class="row">
+										<div class="form-group col-sm-4">
+											<div>
+												<label class="control-label" for="input-swift_code">{{ entry_swiftcode }}</label>
+												<input type="text" name="bank_swift_code" value="{{ bank_swift_code }}" placeholder="{{ entry_swiftcode }}" id="input-swift_code" class="form-control"/>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-seo">
+								<div class="alert alert-info">
+									<i class="fa fa-info-circle"></i>
+									{{ text_keyword }}</div>
+								<div class="table-responsive">
+									<table class="table table-bordered table-hover">
+										<thead>
+											<tr>
+												<td class="text-left">{{ entry_store }}</td>
+												<td class="text-left">{{ entry_keyword }}</td>
+											</tr>
+										</thead>
+										<tbody>
+											{% for store in stores %}
+												<tr>
+													<td class="text-left">{{ store.name }}</td>
+													<td class="text-left">
+														{% for language in languages %}
+															<div class="input-group">
+																<span class="input-group-addon"><img src="catalog/language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/></span>
+																{# added id in the following input field 01-04-2025 ---#}
+																<input type="text" id="seoUrlInput" name="vendor_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{% if vendor_seo_url[store.store_id][language.language_id] %}{{ vendor_seo_url[store.store_id][language.language_id] }}{% endif %}" placeholder="{{ entry_keyword }}" class="form-control"/>
+															</div>
+															 {# added following line 01-04-2025 ------#}
+                                                            <small id="seoUrlError" style="color: red; display: none;">Spaces are not allowed in the SEO URL!</small>
+                                                        
+															{% if error_keyword[store.store_id][language.language_id] %}
+																<div class="text-danger">{{ error_keyword[store.store_id][language.language_id] }}</div>
+															{% endif %}
+														{% endfor %}
+													</td>
+												</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							<div class="tab-pane col-sm-12" id="tab-chat">
+								<div class="msgsend row">
+									<div class="form-group col-sm-6">
+										<div>
+											<label class="control-label" for="input-package-title">
+												{{ entry_status }}</label>
+
+											<select name="chatstatus" id="statuss" class="form-control">
+												{% if chatstatus %}
+													<option value="1" selected="selected">{{ text_yes }}</option>
+													<option value="0">{{ text_no }}</option>
+												{% else %}
+													<option value="1">
+														{{ text_yes }}</option>
+													<option value="0" selected="selected">{{ text_no }}</option>
+													{% endif%}
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group col-sm-6">
+											<label class="control-label" for="input-package-title"><br/></label>
+											<div class="chatsystem">
+												<input type="text" name="message" value="{{ message }}" placeholder="Add Here Twak Id" id="responsetext" class="form-control"/>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="buttons col-sm-12" style="margin-top:20px;">
+								<div class="pull-right">
+									<input type="submit" value="{{ button_submit }}" class="btn btn-primary"/>
+									{#<button type="button" id="fetchVendorData">Fetch Vendor Data</button>#}
+									<button type="button" id="sendToShipway" class="btn btn-primary">{{create_warehouse}}</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<link href="catalog/view/javascript/vendor/codemirror/lib/codemirror.css" rel="stylesheet"/>
+		<link href="catalog/view/javascript/vendor/codemirror/theme/monokai.css" rel="stylesheet"/>
+		<link href="catalog/view/javascript/vendor/summernote/summernote.css" rel="stylesheet"/>
+
+		<script type="text/javascript" src="catalog/view/javascript/vendor/codemirror/lib/codemirror.js"></script>
+		<script type="text/javascript" src="catalog/view/javascript/vendor/codemirror/lib/xml.js"></script>
+		<script type="text/javascript" src="catalog/view/javascript/vendor/codemirror/lib/formatting.js"></script>
+		<script type="text/javascript" src="catalog/view/javascript/vendor/summernote/summernote.js"></script>
+
+		<script type="text/javascript" src="catalog/view/javascript/vendor/summernote/summernote-image-attributes.js"></script>
+		<script type="text/javascript" src="catalog/view/javascript/vendor/summernote/opencart.js"></script>
+
+
+
+
+		<script
+			type="text/javascript">
+			<!--
+			$('input[name=\'payment_method\']').on('change', function () {
+$('.payment').hide();
+
+$('#payment-' + this.value).show();
+});
+
+$('input[name=\'payment_method\']:checked').trigger('change');
+//
+			-->
+		</script>
+
+		<!--06 03 2019-->
+		<script type="text/javascript">
+			$(document).ready(function () {
+$flag = $('#statuss').val();
+if ($flag == 1) {
+$(".chatsystem").show();
+} else {
+$(".chatsystem").hide();
+}
+$("select[name='chatstatus']").on('change', function () {
+$flagg = $(this).val();
+if ($flagg == 1) {
+$(".chatsystem").show();
+} else {
+$(".chatsystem").hide();
+}
+$(".chatsystem").toggle(flag);
+})
+
+})
+		</script>
+		<!--06 03 2019-->
+
+
+		<script
+			type="text/javascript">
+			<!--
+			$('#language a:first').tab('show');
+//
+			-->
+		</script>
+		<script
+			type="text/javascript">
+			<!--
+			$('.date').datetimepicker({pickTime: false});
+
+$('.time').datetimepicker({pickDate: false});
+
+$('.datetime').datetimepicker({pickDate: true, pickTime: true});
+//
+			-->
+		</script>
+		<script
+			type="text/javascript">
+			<!--
+			$('select[name=\'country_id\']').on('change', function () {
+$.ajax({
+url: 'index.php?route=account/account/country&country_id=' + this.value,
+dataType: 'json',
+beforeSend: function () {
+$('select[name=\'country_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+},
+complete: function () {
+$('.fa-spin').remove();
+},
+success: function (json) {
+if (json['postcode_required'] == '1') {
+$('input[name=\'postcode\']').parent().parent().addClass('required');
+} else {
+$('input[name=\'postcode\']').parent().parent().removeClass('required');
+}
+
+html = '<option value="">                 {{ text_select }}</option>';
+
+if (json['zone'] && json['zone'] != '') {
+for (i = 0; i < json['zone'].length; i ++) {
+html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+
+if (json['zone'][i]['zone_id'] == '{{ zone_id }}') {
+html += ' selected="selected"';
+}
+
+html += '>' + json['zone'][i]['name'] + '</option>';
+}
+} else {
+html += '<option value="0" selected="selected">                 {{ text_none }}</option>';
+}
+
+$('select[name=\'zone_id\']').html(html);
+},
+error: function (xhr, ajaxOptions, thrownError) {
+alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+}
+});
+});
+
+$('select[name=\'country_id\']').trigger('change');
+//
+			-->
+		</script>
+
+{#<script#}
+{#	type="text/javascript">#}
+{#	<!--#}
+{#	$('button[id^=\'button-upload1\']').on('click', function () {#}
+{#var node = this;#}
+
+{#$('#form-upload').remove();#}
+
+{#$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');#}
+
+{#$('#form-upload input[name=\'file\']').trigger('click');#}
+
+{#if (typeof timer != 'undefined') {#}
+{#clearInterval(timer);#}
+{#}#}
+
+{#timer = setInterval(function () {#}
+{#if ($('#form-upload input[name=\'file\']').val() != '') {#}
+{#clearInterval(timer);#}
+{#$.ajax({#}
+{#url: 'index.php?route=vendor/edit/upload',#}
+{#type: 'post',#}
+{#dataType: 'json',#}
+{#data: new FormData($('#form-upload')[0]),#}
+{#cache: false,#}
+{#contentType: false,#}
+{#processData: false,#}
+{#beforeSend: function () {#}
+{#$(node).button('loading');#}
+{#},#}
+
+{#complete: function () {#}
+{#$(node).button('reset');#}
+{#},#}
+{#success: function (json) {#}
+{#$('.text-danger').remove();#}
+
+{#if (json['error']) {#}
+{#$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');#}
+{#}#}
+
+{#if (json['success']) {#}
+{#var imageurl ="{{ imageurls }}";#}
+{#$("#thumb-image").html('<img src="' + imageurl + "image/" + json['location1'] + '" alt="" title="" width="130" class="thumbnail"/>');#}
+{#$("#input-image").val(json['location1']);#}
+{#}#}
+{#},#}
+{#error: function (xhr, ajaxOptions, thrownError) {#}
+{#alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);#}
+{#}#}
+{#});#}
+
+
+{#}#}
+{#}, 500);#}
+{#});#}
+//
+{#	-->#}
+{#</script>#}
+
+<script
+type="text/javascript">
+<!--
+$('button[id^=\'button-logo\']').on('click', function () {
+var node = this;
+
+$('#form-upload').remove();
+
+$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+var $fileInput = $('#form-upload input[name="file"]');
+$fileInput.trigger('click');
+
+$fileInput.off('change').on('change', function () {
+    var file = this.files[0];
+    if (!file) return;
+
+    // Validate file type
+    var validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (validTypes.indexOf(file.type) === -1) {
+        alert('Only JPG, JPEG, PNG image files are accepted.');
+        $('#form-upload').remove();
+        return;
+    }
+
+    // Validate file size (<= 100 KB)
+    if (file.size > 102400) {
+        alert('File size should be 100 KB or less.');
+        $('#form-upload').remove();
+        return;
+    }
+
+    // Proceed with upload if valid
+    var formData = new FormData($('#form-upload')[0]);
+    $.ajax({
+        url: 'index.php?route=vendor/vendor/upload',
+        type: 'post',
+        dataType: 'json',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            $(node).button('loading');
+        },
+        complete: function () {
+            $(node).button('reset');
+        },
+        success: function (json) {
+            $('.text-danger').remove();
+            if (json['error']) {
+                $(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+            }
+            if (json['success']) {
+                var imageurl = "{{ imageurls }}";
+                $("#thumb-logo").html('<img src="' + imageurl + "image/" + json['location1'] + '" alt="" title="" width="130" class="thumbnail"/>');
+                $("#input-logo").val(json['location1']);
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+    });
+});
+});
+//
+--></script>
+
+<script>
+type="text/javascript">
+<!--
+$('button[id^=\'upload-banner\']').on('click', function () {
+var node = this;
+
+$('#form-upload').remove();
+
+$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+var $fileInput = $('#form-upload input[name="file"]');
+$fileInput.trigger('click');
+
+$fileInput.off('change').on('change', function () {
+    var file = this.files[0];
+    if (!file) return;
+
+    // Validate file type
+    var validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (validTypes.indexOf(file.type) === -1) {
+        alert('Only JPG, JPEG, PNG image files are accepted.');
+        $('#form-upload').remove();
+        return;
+    }
+
+    // Validate file size (<= 100 KB)
+    if (file.size > 102400) {
+        alert('File size should be 100 KB or less.');
+        $('#form-upload').remove();
+        return;
+    }
+
+    // Proceed with upload if valid
+    var formData = new FormData($('#form-upload')[0]);
+    $.ajax({
+        url: 'index.php?route=vendor/vendor/upload',
+        type: 'post',
+        dataType: 'json',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            $(node).button('loading');
+        },
+
+        complete: function () {
+            $(node).button('reset');
+        },
+        success: function (json) {
+            $('.text-danger').remove();
+
+            if (json['error']) {
+                $(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+            }
+
+            if (json['success']) {
+                var imageurl ="{{ imageurls }}";
+                $("#thumb-banner").html('<img src="' + imageurl + "image/" + json['location1'] + '" alt="" title="" width="130" class="thumbnail"/>');
+                $("#input-banner").val(json['location1']);
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+    });
+});
+});
+//
+--></script>
+
+
+{#		<script>#}
+{#			document.addEventListener('DOMContentLoaded', function () {#}
+{#document.getElementById('fetchVendorData').addEventListener('click', function () {#}
+{#fetch('index.php?route=vendor/getVendorData').then(response => response.json()).then(data => {#}
+{#console.log('Received Vendor Data:', data);#}
+
+{#const setValue = (id, value) => {#}
+{#const element = document.getElementById(`input-${id}`);#}
+{#if (element) {#}
+{#if (element.tagName.toLowerCase() === 'select') {#}
+{#for (let option of element.options) {#}
+{#if (option.value == value) {#}
+{#option.selected = true;#}
+{#break;#}
+{#}#}
+{#}#}
+{#} else {#}
+{#element.value = value && value.trim() ? value : element.value;#}
+{#}#}
+{#} else {#}
+{#console.warn(`Element with ID 'input-${id}' not found.`);#}
+{#}#}
+{#};#}
+
+{#if (data.error) {#}
+{#alert(data.error);#}
+{#} else {#}
+{#setValue('display_name', data.display_name);#}
+{#setValue('firstname', data.firstname);#}
+{#setValue('lastname', data.lastname);#}
+{#setValue('email', data.email);#}
+{#setValue('telephone', data.telephone);#}
+{#setValue('gstin', data.gstin);#}
+{#setValue('company', data.company);#}
+{#setValue('address-1', data.address_1);#}
+{#setValue('address-2', data.address_2);#}
+{#setValue('city', data.city);#}
+{#setValue('postcode', data.postcode);#}
+
+{#// Set selected country and zone based on IDs#}
+{#document.getElementById('input-country').value = data.country_id;#}
+{#loadZones(data.country_id, data.zone_id);#}
+{#}#}
+{#}).catch(error => console.error('Error fetching vendor data:', error));#}
+{#});#}
+
+{#// Function to load zones based on selected country#}
+{#function loadZones(countryId, selectedZoneId) {#}
+{#fetch(`index.php?route=account/account/country&country_id=${countryId}`).then(response => response.json()).then(json => {#}
+{#let zoneSelect = document.getElementById('input-zone');#}
+{#zoneSelect.innerHTML = '<option value="">Please Select</option>';#}
+
+{#if (json.zone && json.zone.length) {#}
+{#for (let zone of json.zone) {#}
+{#let option = document.createElement('option');#}
+{#option.value = zone.zone_id;#}
+{#option.textContent = zone.name;#}
+{#if (zone.zone_id == selectedZoneId) {#}
+{#option.selected = true;#}
+{#}#}
+{#zoneSelect.appendChild(option);#}
+{#}#}
+{#}#}
+{#}).catch(error => console.error('Error loading zones:', error));#}
+{#}#}
+{#});#}
+{#		</script>#}
+
+
+{# for sending warehouse data to shipway #}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('sendToShipway').addEventListener('click', function () {
+            fetch('index.php?route=vendor/getVendorData')
+                .then(response => response.json())
+                .then(vendorData => {
+                    if (vendorData.error) {
+                        alert('Error: ' + vendorData.error);
+                        return;
+                    }
+    
+                    const shipwayPayload = {
+                        title: vendorData.display_name,
+                        company: vendorData.company,
+                        contact_person_name: vendorData.firstname + ' ' + vendorData.lastname,
+                        email: vendorData.email,
+                        phone: '+91-' + vendorData.telephone.replace(/[^0-9]/g, ''),
+                        phone_print: "",
+                        address_1: vendorData.address_1,
+                        address_2: vendorData.address_2,
+                        city: vendorData.city,
+                        state: vendorData.zone,
+                        country: 'IN',
+                        pincode: vendorData.postcode,
+                        longitude: "",
+                        latitude: "",
+                        gst_no: vendorData.gstin,
+                        fssai_code: ""
+                    };
+    
+                    fetch('index.php?route=vendor/edit/warehouseSendDataToShipway', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(shipwayPayload)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Shipway Response:', data);
+                        if (data.error) {
+                            if (data.error.toLowerCase().includes('already exists')) {
+                                alert('Warehouse already exists in Shipway.');
+                            } else {
+                                alert('Error: ' + data.error);
+                            }
+                        } else if (data.warehouse_id) {
+                            alert('Success: Warehouse ' + data.warehouse_id + ' created successfully.');
+                        } else {
+                            alert('Success: ' + data.success);
+                        }
+                    })
+                    .catch(error => console.error('Error sending vendor data:', error));
+                });
+        });
+    });
+</script>
+
+{#added on 01-04-2025 ---------------------#}
+    <script>
+		document.getElementById("seoUrlInput").addEventListener("input", function() {
+		    let inputField = this;
+		    let errorText = document.getElementById("seoUrlError");
+		
+		    if (/\s/.test(inputField.value)) { 
+		        errorText.style.display = "block";
+		        inputField.value = inputField.value.replace(/\s/g, ''); 
+		    } else {
+		        errorText.style.display = "none";
+		    }
+		});
+		</script>
+	{#---------------------------------------------------#}
+
+		<style>
+			{% if error_showorderwarning %}
+				.warningorder {}
+				.warningorder a {
+					color: #FD003D !important;
+					border: solid 1px #FD003D !important;
+					border-bottom: none !important;
+				}
+			{% endif %}
+		</style>
+
+{#----- added on 08-04-2025--- regarding to signature -------------#}
+{#<script type="text/javascript">#}
+{#	    $('button[id^="button-sing"]').on('click', function () {#}
+{#	        var node = this;#}
+	
+{#	        $('#form-upload').remove();#}
+{#	        $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');#}
+{#	        $('#form-upload input[name="file"]').trigger('click');#}
+	
+	        {#// Clear existing timer if it's running#}
+{#	        if (typeof timer !== 'undefined') {#}
+{#	            clearInterval(timer);#}
+{#	        }#}
+	
+{#	        var timer = setInterval(function () {#}
+{#	            if ($('#form-upload input[name="file"]').val() !== '') {#}
+{#	                clearInterval(timer);  // Stop the timer after file selection#}
+	
+{#	                $.ajax({#}
+{#	                    url: 'index.php?route=vendor/edit/upload',#}
+{#	                    type: 'post',#}
+{#	                    dataType: 'json',#}
+{#	                    data: new FormData($('#form-upload')[0]),#}
+{#	                    cache: false,#}
+{#	                    contentType: false,#}
+{#	                    processData: false,#}
+{#	                    beforeSend: function () {#}
+{#	                        $(node).button('loading');#}
+{#	                    },#}
+{#	                    complete: function () {#}
+{#	                        $(node).button('reset');#}
+{#	                    },#}
+{#	                    success: function (json) {#}
+{#	                        $('.text-danger').remove();  // Remove previous error messages#}
+	
+{#	                        if (json['error']) {#}
+{#	                            $(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');#}
+{#	                        }#}
+{#	                        if (json['success']) {#}
+{#	                            var imageurl = json['image_url'] || '';  // Use a proper value, dynamically passed#}
+{#	                            $("#thumb-sing").html('<img src="' + imageurl + "image/" + json['location1'] + '" alt="" title="" width="130" class="thumbnail"/>');#}
+{#	                            $("#input-sing").val(json['location1']);#}
+{#	                        }#}
+{#	                    },#}
+{#	                    error: function (xhr, ajaxOptions, thrownError) {#}
+{#	                        console.error("AJAX Error:", thrownError, xhr.responseText);#}
+{#	                        alert("An error occurred: " + thrownError);#}
+{#	                    }#}
+{#	                });#}
+{#	            }#}
+{#	        }, 500);  #}
+{#			console.log("Image URL:", json['image_url']);#}
+{#	console.log("Image Location:", json['location1']);#}
+	
+{#	    });#}
+
+{#	</script>#}
+	{#-----------------------------------------------------------------------------#}
+
+{#Ashwini Madam Changes - 28/05/2025#}
+<script>
+  document.getElementById('input-swift_code').addEventListener('input', function (e) {
+    // Force uppercase and remove invalid characters
+    this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  });
+</script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function () {
+  // Listen for changes to payment method selection
+  document.querySelectorAll("input[name='payment_method']").forEach(function (input) {
+    input.addEventListener("change", function () {
+      // Hide all payment sections
+      document.querySelectorAll(".payment").forEach(function (section) {
+        section.style.display = "none";
+      });
+
+      // Show the selected payment section
+      const selected = document.getElementById("payment-" + this.value);
+      if (selected) {
+        selected.style.display = "block";
+      }
+    });
+  });
+
+  // Trigger change on page load to show the selected payment method's section
+  const checked = document.querySelector("input[name='payment_method']:checked");
+  if (checked) {
+    checked.dispatchEvent(new Event('change'));
+  }
+});
+</script>
+
+{# Ashwini changes code 25-06-2025#}
+<script
+type="text/javascript">
+<!--
+$('button[id^=\'button-upload1\']').on('click', function () {
+var node = this;
+
+$('#form-upload').remove();
+
+$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+var $fileInput = $('#form-upload input[name="file"]');
+$fileInput.trigger('click');
+
+
+$fileInput.off('change').on('change', function () {
+        var file = this.files[0];
+        if (!file) return;
+
+        // Validate file type
+        var validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        if (validTypes.indexOf(file.type) === -1) {
+            alert('Only JPG, JPEG, PNG image files are accepted.');
+            $('#form-upload').remove();
+            return;
+        }
+
+        // Validate file size (<= 100 KB)
+        if (file.size > 102400) {
+            alert('File size should be 100 KB or less.');
+            $('#form-upload').remove();
+            return;
+        }
+
+        // Proceed with upload if valid
+        var formData = new FormData($('#form-upload')[0]);
+        $.ajax({
+            url: 'index.php?route=vendor/edit/upload',
+            type: 'post',
+            dataType: 'json',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $(node).button('loading');
+            },
+            complete: function () {
+                $(node).button('reset');
+            },
+            success: function (json) {
+                $('.text-danger').remove();
+                if (json['error']) {
+                    $(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+                }
+                if (json['success']) {
+                    var imageurl = "{{ imageurls }}";
+                    $("#thumb-image").html('<img src="' + imageurl + "image/" + json['location1'] + '" alt="" title="" width="130" class="thumbnail"/>');
+                    $("#input-image").val(json['location1']);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+});
+</script>
+
+<script type="text/javascript">
+    // Signature file validation and upload
+    function validateFile(fileInput) {
+        var file = fileInput.files[0];
+        if (!file) return false;
+        var validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        if (validTypes.indexOf(file.type) === -1) {
+            alert('Only JPG, JPEG, and PNG files are accepted.');
+            return false;
+        }
+        if (file.size > 100 * 1024) {
+            alert('File size should not exceed 100 KB.');
+            return false;
+        }
+        return true;
+    }
+
+    $('button[id^="button-sing"]').on('click', function () {
+        var node = this;
+
+        $('#form-upload').remove();
+        $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+        var fileInput = $('#form-upload input[name="file"]')[0];
+
+        $(fileInput).on('change', function() {
+            if (!validateFile(this)) {
+                this.value = '';
+                return;
+            }
+
+            var formData = new FormData($('#form-upload')[0]);
+
+            $.ajax({
+                url: 'index.php?route=vendor/edit/upload',
+                type: 'post',
+                dataType: 'json',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $(node).button('loading');
+                },
+                complete: function () {
+                    $(node).button('reset');
+                },
+                success: function (json) {
+                    $('.text-danger').remove();
+
+                    if (json['error']) {
+                        $(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+                    }
+                    if (json['success']) {
+                        var imageurl = json['image_url'] || '';
+                        $("#thumb-sing").html('<img src="' + imageurl + "image/" + json['location1'] + '" alt="" title="" width="130" class="thumbnail"/>');
+                        $("#input-sing").val(json['location1']);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.error("AJAX Error:", thrownError, xhr.responseText);
+                    alert("An error occurred: " + thrownError);
+                }
+            });
+        });
+
+        $(fileInput).trigger('click');
+    });
+</script>
+
+<script>
+function showImageAlert() {
+    document.getElementById('image-alert-box').style.display = 'block';
+    document.getElementById('image-alert-overlay').style.display = 'block';
+}
+
+function hideImageAlert() {
+    document.getElementById('image-alert-box').style.display = 'none';
+    document.getElementById('image-alert-overlay').style.display = 'none';
+    // No redirect here!
+}
+</script>
+
+  
+{{ footer }}

@@ -1,0 +1,1093 @@
+
+{{ header }}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  .terms_container {
+    display: flex;
+    padding-top:0px;
+  }
+  .term_sidebar {
+    width: 250px;
+    background: #f4f4f4;
+    /* padding: 20px; */
+    height: 100vh;
+    position: sticky;
+    top: 20px;
+  }
+  
+  .terms_condition{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 5px 0;
+  }
+  
+  .term_sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  .term_sidebar ul li {
+    padding: 6px 20px;
+  }
+  .term_sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+  }
+  .term_sidebar ul li:hover {
+    background-color: rgba(128, 0, 128, 0.183);
+  }
+  .term_sidebar ul li a.active {
+    color: white;
+  }
+  li:has(a.active) {
+    background-color: purple;
+    color: #fff;
+    border-radius: 5px;
+  }
+
+  .term_content {
+    flex: 1;
+    padding-left: 40px;
+  }
+  h1 {
+    font-size: 24px;
+    text-align: center;
+  }
+  h2 {
+    color: purple;
+    font-size: 20px;
+  }
+  p {
+    color: #555;
+    line-height: 24px;
+    text-align: justify;
+  }
+  .term_modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow: scroll;
+  }
+  .term_modal-content {
+    background-color: white;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+    padding-inline: 40px;
+  }
+  .term_close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  @media (max-width:1024px) {
+    .term_sidebar{
+      width: 200px;
+    }
+  }
+  @media (max-width:786px) {
+    .term_sidebar{
+      display: none;
+    }
+    .term_content{
+      padding-left: 0px ;
+    }
+  }
+  .password-wrapper {
+    position: relative;
+  }
+
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+  }
+</style>
+<div id="account-register" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  {% if error_warning %}
+  <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+  {% endif %}
+  <div class="row" style='margin-inline:0px'>
+  {# {{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %} #}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      
+  
+      <div class="container">
+  <div class="row" style='position:relative'>
+    <!-- Left side image -->
+    <div class="col-md-6 col-lg-7 d-none d-md-block p-0 image_wrapper" style='padding:0; position: absolute; top: 0; left: 0; right: 0; bottom: 0;'>
+      <img src="image/customer/registration_img.png" alt="Left Side Image" class="img-fluid h-100 w-100 object-fit-cover" style="object-fit: cover; aspect-ratio:5/4; height: 100%;
+    width: 100%;">
+    </div>
+
+    <!-- Right side form -->
+    <div class="col-md-6 col-lg-5 p-4 right_section">
+        <div class='right_wrapper'>
+            
+        
+        <h1>{{ heading_title }}</h1>
+      <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+        <fieldset id="account">
+          {#<legend>{{ text_your_details }}</legend>#}
+          <div class="form-group required" style="display: {% if customer_groups|length > 1 %} block {% else %} none {% endif %};">
+            <label class="col-sm-2 control-label">{{ entry_customer_group }}</label>
+            <div class="col-sm-10">{% for customer_group in customer_groups %}
+              {% if customer_group.customer_group_id == customer_group_id %}
+              <div class="radio">
+                <label>
+                  <input type="radio" name="customer_group_id" value="{{ customer_group.customer_group_id }}" checked="checked" />
+                  {{ customer_group.name }}</label>
+              </div>
+              {% else %}
+              <div class="radio">
+                <label>
+                  <input type="radio" name="customer_group_id" value="{{ customer_group.customer_group_id }}" />
+                  {{ customer_group.name }}</label>
+              </div>
+              {% endif %}
+              {% endfor %}</div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-firstname">{{ entry_firstname }}</label>
+            <div class="col-sm-12">
+              <input type="text" name="firstname" value="{{ firstname }}" placeholder="{{ entry_firstname }}" id="input-firstname" class="form-control" />
+              {% if error_firstname %}
+              <div class="text-danger">{{ error_firstname }}</div>
+              {% endif %} </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-lastname">{{ entry_lastname }}</label>
+            <div class="col-sm-12">
+              <input type="text" name="lastname" value="{{ lastname }}" placeholder="{{ entry_lastname }}" id="input-lastname" class="form-control"/>
+              {% if error_lastname %}
+              <div class="text-danger">{{ error_lastname }}</div>
+              {% endif %} </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-email">{{ entry_email }}</label>
+            <div class="col-sm-12">
+              <input type="email" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
+              {% if error_email %}
+              <div class="text-danger">{{ error_email }}</div>
+              {% endif %} </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-telephone">{{ entry_telephone }}</label>
+            <div class="col-sm-12">
+              <input type="number" name="telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control"/>
+              {% if error_telephone %}
+              <div class="text-danger">{{ error_telephone }}</div>
+              {% endif %} </div>
+          </div>
+          {% for custom_field in custom_fields %}
+          {% if custom_field.type == 'select' %}
+          <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+            <label class="col-sm-2 control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+            <div class="col-sm-10">
+              <select name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control">
+                <option value="">{{ text_select }}</option>
+                
+                
+                
+                
+                
+                {% for custom_field_value in custom_field.custom_field_value %}
+                {% if register_custom_field[custom_field.location][custom_field.custom_field_id] and custom_field_value.custom_field_value_id == register_custom_field[custom_field.custom_field_id] %}
+                
+                
+                
+                
+                <option value="{{ custom_field_value.custom_field_value_id }}" selected="selected">{{ custom_field_value.name }}</option>
+                
+                
+                
+                
+                
+                {% else %}
+                
+                
+                
+                
+                
+                <option value="{{ custom_field_value.custom_field_value_id }}">{{ custom_field_value.name }}</option>
+                
+                
+                
+                
+                
+                {% endif %}
+                {% endfor %}
+              
+              
+              
+              
+              
+              </select>
+              {% if error_custom_field[custom_field.custom_field_id] %}
+              <div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
+              {% endif %}</div>
+          </div>
+          {% endif %}
+          {% if custom_field.type == 'radio' %}
+          <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+            <label class="col-sm-2 control-label">{{ custom_field.name }}</label>
+            <div class="col-sm-10">
+              <div> {% for custom_field_value in custom_field.custom_field_value %}
+                <div class="radio">{% if register_custom_field[custom_field.custom_field_id] and custom_field_value.custom_field_value_id == register_custom_field[custom_field.custom_field_id] %}
+                  <label>
+                    <input type="radio" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ custom_field_value.custom_field_value_id }}" checked="checked" />
+                    {{ custom_field_value.name }}</label>
+                  {% else %}
+                  <label>
+                    <input type="radio" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ custom_field_value.custom_field_value_id }}" />
+                    {{ custom_field_value.name }}</label>
+                  {% endif %} </div>
+                {% endfor %}</div>
+              {% if error_custom_field[custom_field.custom_field_id] %}
+              <div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
+              {% endif %}</div>
+          </div>
+          {% endif %}
+          {% if custom_field.type == 'checkbox' %}
+          <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+            <label class="col-sm-2 control-label">{{ custom_field.name }}</label>
+            <div class="col-sm-10">
+              <div> {% for custom_field_value in custom_field.custom_field_value %}
+                <div class="checkbox">{% if register_custom_field[custom_field.custom_field_id] and custom_field_value.custom_field_value_id in register_custom_field[custom_field.custom_field_id] %}
+                  <label>
+                    <input type="checkbox" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}][]" value="{{ custom_field_value.custom_field_value_id }}" checked="checked" />
+                    {{ custom_field_value.name }}</label>
+                  {% else %}
+                  <label>
+                    <input type="checkbox" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}][]" value="{{ custom_field_value.custom_field_value_id }}" />
+                    {{ custom_field_value.name }}</label>
+                  {% endif %} </div>
+                {% endfor %} </div>
+              {% if error_custom_field[custom_field.custom_field_id] %}
+              <div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
+              {% endif %} </div>
+          </div>
+          {% endif %}
+          {% if custom_field.type == 'text' %}
+          <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+            <label class="col-sm-2 control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{% if register_custom_field[custom_field.custom_field_id] %}{{ register_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}" placeholder="{{ custom_field.name }}" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+              {% if error_custom_field[custom_field.custom_field_id] %}
+              <div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
+              {% endif %} </div>
+          </div>
+          {% endif %}
+          {% if custom_field.type == 'textarea' %}
+          <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+            <label class="col-sm-2 control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+            <div class="col-sm-10">
+              <textarea name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" rows="5" placeholder="{{ custom_field.name }}" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control">{% if register_custom_field[custom_field.custom_field_id] %}{{ register_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}</textarea>
+              {% if error_custom_field[custom_field.custom_field_id] %}
+              <div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
+              {% endif %} </div>
+          </div>
+          {% endif %}
+          {% if custom_field.type == 'file' %}
+          <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+            <label class="col-sm-2 control-label">{{ custom_field.name }}</label>
+            <div class="col-sm-10">
+              <button type="button" id="button-custom-field{{ custom_field.custom_field_id }}" data-loading-text="{{ text_loading }}" class="btn btn-default"><i class="fa fa-upload"></i> {{ button_upload }}</button>
+              <input type="hidden" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{% if register_custom_field[custom_field.custom_field_id] %}  {{ register_custom_field[custom_field.custom_field_id] }} {% endif %}" />
+              {% if error_custom_field[custom_field.custom_field_id] %}
+              <div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
+              {% endif %}</div>
+          </div>
+          {% endif %}
+          {% if custom_field.type == 'date' %}
+          <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+            <label class="col-sm-2 control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+            <div class="col-sm-10">
+              <div class="input-group date">
+                <input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{% if register_custom_field[custom_field.custom_field_id] %}{{ register_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}" placeholder="{{ custom_field.name }}" data-date-format="YYYY-MM-DD" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span></div>
+              {% if error_custom_field[custom_field.custom_field_id] %}
+              <div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
+              {% endif %} </div>
+          </div>
+          {% endif %}
+          {% if custom_field.type == 'time' %}
+          <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+            <label class="col-sm-2 control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+            <div class="col-sm-10">
+              <div class="input-group time">
+                <input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{% if register_custom_field[custom_field.custom_field_id] %}{{ register_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}" placeholder="{{ custom_field.name }}" data-date-format="HH:mm" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span></div>
+              {% if error_custom_field[custom_field.custom_field_id] %}
+              <div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
+              {% endif %} </div>
+          </div>
+          {% endif %}
+          {% if custom_field.type == 'time' %}
+          <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field" data-sort="{{ custom_field.sort_order }}">
+            <label class="col-sm-2 control-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+            <div class="col-sm-10">
+              <div class="input-group datetime">
+                <input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{% if register_custom_field[custom_field.custom_field_id] %}{{ register_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}" placeholder="{{ custom_field.name }}" data-date-format="YYYY-MM-DD HH:mm" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span></div>
+              {% if error_custom_field[custom_field.custom_field_id] %}
+              <div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
+              {% endif %} </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </fieldset>
+        <fieldset>
+          {# <legend>{{ text_your_password }}</legend> #}
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-password">{{ entry_password }}</label>
+            <div class="col-sm-10">
+              <input type="password" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" minlength="8" maxlength="20" oninput="this.value = this.value.replace(/\s/g, '')"/>
+                <span toggle="#input-password" id="toggle-password-icon" class="fa fa-fw fa-eye toggle-password" onclick="togglePasswordVisibility('input-password')" style="cursor: pointer;"></span>
+    {#          <span class="input-group-addon"  onclick="togglePasswordVisibility('input-password')" style="cursor: pointer;">#}
+				{#<i class="fa fa-eye" id="toggle-password-icon"></i>#}
+			 {# </span>#}
+              {% if error_password %}
+              <div class="text-danger">{{ error_password }}</div>
+              {% endif %} </div>
+          </div>
+          <div id="password-requirements" class="text-info" style="font-size: 12px; margin-top: 5px; line-height: 1.2; display: none; color: gray; padding-left: 10px;">
+			Password requirements:
+			<ul style="margin: 0; padding-left: 15px; line-height: 1.3; list-style-type: disc;">
+				<li id="length-check" style="margin: 2px 0;">Must be at least 8 characters long</li>
+				<li id="uppercase-check" style="margin: 2px 0;">Must include at least one uppercase letter (A-Z)</li>
+				<li id="number-check" style="margin: 2px 0;">Must include at least one number (0-9)</li>
+				<li id="symbol-check" style="margin: 2px 0;">Must include at least one symbol (!@#$%^&*)</li>
+			</ul>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-confirm">{{ entry_confirm }}</label>
+            <div class="col-sm-10">
+              <input type="password" name="confirm" value="{{ confirm }}" placeholder="{{ entry_confirm }}" id="input-confirm" class="form-control" />
+              <span toggle="#input-confirm" id="toggle-confirm-icon" class="fa fa-fw fa-eye toggle-password" onclick="togglePasswordVisibility('input-confirm')" style="cursor: pointer;"></span>
+              {% if error_confirm %}
+              <div class="text-danger">{{ error_confirm }}</div>
+              {% endif %} </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          {# <legend>{{ text_newsletter }}</legend> #}
+          <div class="form-group"style='display: flex; align-items: center;'>
+            <label class="col-sm-2 control-label" style='margin:0; display:block'>{{ entry_newsletter }}</label>
+            <div class="col-sm-10"> {% if newsletter %}
+              <label class="radio-inline">
+                <input type="radio" name="newsletter" value="1" checked="checked" />
+                {{ text_yes }}</label>
+              <label class="radio-inline">
+                <input type="radio" name="newsletter" value="0" />
+                {{ text_no }}</label>
+              {% else %}
+              <label class="radio-inline">
+                <input type="radio" name="newsletter" value="1" />
+                {{ text_yes }}</label>
+              <label class="radio-inline">
+                <input type="radio" name="newsletter" value="0" checked="checked" />
+                {{ text_no }}</label>
+              {% endif %} </div>
+          </div>
+        </fieldset>
+        {{ captcha }}
+        {% if text_agree %}
+        <div class="buttons" style='display:block;'>
+          <div class="pull-right terms_condition">
+          {#<div class="">#}
+          {#  <label style='display:block; text-align:left;'>  #}
+            {% if agree %}
+            <input type="checkbox" name="agree" value="1" checked="checked" />
+            {% else %}
+            <input type="checkbox" name="agree" value="1" />
+            
+            {#{{ text_agree }}#}
+            I have read and agree to the <span onclick='openModal()' style='cursor: pointer; font-weight: bolder; color: black;'>Terms & Conditions</span>
+            {#</label>#}
+            {% endif %}
+            {#&nbsp;#}
+            
+          </div>
+          <input type="submit" value="CONTINUE" class="btn btn-primary register_submit_btn" />
+        </div>
+        {% else %}
+         {#<div class="buttons">#}
+        {#  <div class="pull-right">#}
+        {#    <input type="submit" value="{{ button_continue }}" class="btn btn-primary" />#}
+        {#  </div>#}
+        {#</div> #}#}
+        {% endif %}
+      </form>    
+          <p class='register_login'>{{ text_account_already }}</p>
+    </div>
+    </div>
+  </div>
+</div>
+
+      {{ content_bottom }}</div>
+    {# {{ column_right }}</div> #}
+</div>
+<div id="myModal" class="term_modal">
+    <div class="term_modal-content">
+        <span class="term_close" onclick="closeModal()">&times;</span>
+        <h1>Terms and Conditions</h1>
+        <div class="terms_container">
+          <div class="term_sidebar">
+          <ul>
+            <li><a href="#welcome" class="btn-scroll-target">Welcome to ipshopy</a></li>
+            <li><a href="#Introduction" class="btn-scroll-target">License</a></li>
+            <li><a href="#privacy" class="btn-scroll-target">You Must Not</a></li>
+            <li><a href="#Acceptance" class="btn-scroll-target">User Comments</a></li>
+            <li><a href="#user_account" class="btn-scroll-target"> Hyperlinking To Our Content</a></li>
+            <li><a href="#Electronic_Communications" class="btn-scroll-target">Approved Organizations </a></li>
+            <li><a href="#Access_to_Website" class="btn-scroll-target">iFrames</a></li>
+            <li><a href="#Copyright_and_Intellectual_Property" class="btn-scroll-target"> Content Liability</a></li>
+            <li><a href="#Trademarks" class="btn-scroll-target"> Reservation Of Rights</a></li>
+            <li><a href="#License_and_Site_Access" class="btn-scroll-target"> Removal of Links From Our Website</a></li>
+            <li><a href="#Your_Responsibilities_and_Conduct" class="btn-scroll-target">Disclaimer</a></li>
+            {# <li><a href="#Product_Information" class="btn-scroll-target">Product Information</a></li>
+            <li><a href="#Third_Party_Links" class="btn-scroll-target">Third-Party Links</a></li>
+            <li><a href="#Disclaimer_of_Warranties" class="btn-scroll-target">Disclaimer of Warranties</a></li>
+            <li><a href="#Limitation_of_Liability" class="btn-scroll-target">Limitation of Liability</a></li>
+            <li><a href="#Indemnification" class="btn-scroll-target">Indemnification</a></li>
+            <li><a href="#Governing_Law" class="btn-scroll-target">Governing Law and Jurisdiction</a></li>
+            <li><a href="#Changes_to_the_Terms" class="btn-scroll-target">Changes to the Terms</a></li>
+            <li><a href="#Contact_Information" class="btn-scroll-target">Contact Information</a></li> #}
+          </ul>
+      </div>
+      <div class="term_content">
+        {# <h2 id="welcome">Welcome to www.ipshopy.com!</h2> #}
+        <h2 id="welcome">Welcome to ipshopy</h2>
+        <p>These terms and conditions outline the rules and regulations for the use of ipshopy's Website, located at www.ipshopy.com<br>
+
+              By accessing this website, we assume you accept these terms and conditions. Do not continue to use ipshopy if you do not agree to take all of the terms and conditions stated on this page.<br>
+
+             The following terminology applies to these Terms and Conditions, Privacy Statement, Disclaimer Notice, and all Agreements: "Client", "You" and "Your" refers to you, the person logging on this website and compliant to the Company’s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or "Us", refers to both the Client and ourselves.</p>
+        
+        <h2 id="Introduction" >1.  License</h2>
+        <p> Unless otherwise stated, ipshopy and/or its licensors own the intellectual property rights for all material on ipshopy. All intellectual property rights are reserved. You may access this from IPhopy for your own personal use subjected to restrictions set in these terms and conditions.</p>
+        
+        <h2 id="privacy" >2. You Must Not</h2>
+        <p>1. Republish material from ipshopy<br>
+           2. Sell, rent or sub-license material from ipshopy<br>
+           3. Reproduce, duplicate, or copy material from ipshopy<br>
+           4. Redistribute content from ipshopy</p>
+        
+        <h2 id="Acceptance" >3.User Comments</h2>
+        <p> Parts of this website offer an opportunity for users to post and exchange opinions and information in certain areas of the website. ipshopy does not filter, edit, publish, or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of ipshopy, its agents, and/or affiliates. Comments reflect the views and opinions of the person who posts their views and opinions. To the extent permitted by applicable laws, ipshopy shall not be liable for the Comments or for any liability, damages, or expenses caused and/or suffered as a result of any use of and/or posting of and/or appearance of the Comments on this website.<br>
+
+        ipshopy reserves the right to monitor all Comments and to remove any Comments which can be considered inappropriate, offensive, or causes breach of these Terms and Conditions.<br>
+
+        You are entitled to post the Comments on our website and have all necessary licenses and consents to do so;<br>
+
+          1. The Comments do not invade any intellectual property right, including without limitation copyright, patent, or trademark of any third party;<br>
+          2. The Comments do not contain any defamatory, libelous, offensive, indecent, or otherwise unlawful material which is an invasion of privacy;<br>
+          3. The Comments will not be used to solicit or promote business or custom or present commercial activities or unlawful activity.<br>
+          You hereby grant ipshopy a non-exclusive license to use, reproduce, edit, and authorize others to use, reproduce, and edit any of your Comments in any and all forms, formats, or media.</p>
+        
+        <h2 id="user_account" >4.  Hyperlinking To Our Content</h2>
+        <p>The following organizations may link to our Website without prior written approval:<br>
+
+        1. Government agencies;<br>
+        2. Search engines;<br>
+        3. News organizations;<br>
+        4. Online directory distributors may link to our Website in the same manner as they hyperlink to the Websites of other listed businesses; and<br>
+        5. System-wide Accredited Businesses except soliciting non-profit organizations, charity shopping malls, and charity fundraising groups which may not hyperlink to our Web site.<br>
+        These organizations may link to our home page, to publications, or to other Website information so long as the link: (a) is not in any way deceptive; (b) does not falsely imply sponsorship, endorsement, or approval of the linking party and its products and/or services; and (c) fits within the context of the linking party’s site.<br>
+ 
+        We may consider and approve other link requests from the following types of organizations:<br>
+
+        1. commonly-known consumer and/or business information sources;<br>
+        2. dot.com community sites;<br>
+        3. associations or other groups representing charities;<br>
+        4. online directory distributors;<br>
+        5. internet portals;<br>
+        6. accounting, law, and consulting firms; and<br>
+        7. educational institutions and trade associations.<br>
+                           We will approve link requests from these organizations if we decide that: (a) the link would not make us look unfavorably to ourselves or to our accredited businesses; (b) the organization does not have any negative records with us; (c) the benefit to us from the visibility of the hyperlink compensates the absence of ipshopy; and (d) the link is in the context of general resource information.<br>
+
+                These organizations may link to our home page so long as the link: (a) is not in any way deceptive; (b) does not falsely imply sponsorship, endorsement, or approval of the linking party and its products or services; and (c) fits within the context of the linking party’s site.<br>
+
+               If you are one of the organizations listed in paragraph 2 above and are interested in linking to our website, you must inform us by sending an e-mail to ipshopy. Please include your name, your organization name, contact information as well as the URL of your site, a list of any URLs from which you intend to link to our Website, and a list of the URLs on our site to which you would like to link. Wait 2-3 weeks for a response.</p>
+        
+        <h2 id="Electronic_Communications" >5.Approved Organizations May Hyperlink<br> To Our Website As Follows</h2>
+        <p>1. By use of our corporate name<br>
+           2. By use of the uniform resource locator being linked to;<br>
+           3. By use of any other description of our Website being linked to that makes sense within the context and format of content on the linking party’s site.<br>
+           4. Redistribute content from ipshopy<br>
+           No use of ipshopy's logo or other artwork will be allowed for linking absent a trademark license a</p>
+        
+        <h2 id="Access_to_Website" >6.iFrames</h2>
+        <p> Without prior approval and written permission, you may not create frames around our Webpages that alter in any way the visual presentation or appearance of our Website.</p>
+        
+        <h2 id="Copyright_and_Intellectual_Property" >7. Content Liability</h2>
+        <p> We shall not be held responsible for any content that appears on your Website. You agree to protect and defend us against all claims that are rising on your Website. No link(s) should appear on any Website that may be interpreted as libelous, obscene, or criminal, or which infringes, otherwise violates, or advocates the infringement or other violation of, any third party rights.</p>
+        
+        <h2 id="Trademarks" >8.  Reservation Of Rights</h2>
+        <p>We reserve the right to request that you remove all links or any particular link to our Website. You approve to immediately remove all links to our Website upon request. We also reserve the right to amen these terms and conditions and it’s linking policy at any time. By continuously linking to our Website, you agree to be bound to and follow these linking terms and conditions.</p>
+        
+        <h2 id="License_and_Site_Access" >9. Removal of Links From Our Website</h2>
+        <p> If you find any link on our Website that is offensive for any reason, you are free to contact and inform us any moment. We will consider requests to remove links but we are not obligated to or so or to respond to you directly. We do not ensure that the information on this website is correct, we do not warrant its completeness or accuracy; nor do we promise to ensure that the website remains available or that the material on the website is kept up to d</p>
+        
+        <h2 id="Your_Responsibilities_and_Conduct" >10. Disclaimer</h2>
+        <p>To the maximum extent permitted by applicable law, we exclude all representations, warranties, and conditions relating to our website and the use of this website. Nothing in this disclaimer will:
+
+             1. limit or exclude our or your liability for death or personal injury;<br>
+             2. limit or exclude our or your liability for fraud or fraudulent misrepresentation;<br>
+             3. limit any of our or your liabilities in any way that is not permitted under applicable law; or<br>
+             exclude any of our or your liabilities that may not be excluded under applicable law.<br>
+
+             The limitations and prohibitions of liability set in this Section and elsewhere in this disclaimer: (a) are subject to the preceding paragraph; and (b) govern all liabilities arising under the disclaimer, including liabilities arising in contract, in tort, and for breach of statutory duty.
+
+             As long as the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.<br>
+
+             If you have any questions about these Terms and Conditions, you can contact us at ipshopy2020.help@gmail.com<br>
+
+             These terms and conditions were last updated on 01 January 2024</p>
+        
+        {# <h2 id="Product_Information" >11. Product Information</h2>
+        <p>We make every effort to ensure that product information, pricing, and availability on our website are accurate. However, we do not warrant the accuracy, completeness, or reliability of the information on the site.</p>
+        
+        <h2 id="Third_Party_Links" >12. Third-Party Links</h2>
+        <p>Our website may contain links to third-party websites. These links are provided for your convenience, and we do not endorse or assume any responsibility for the content, products, or services on these external sites.</p>
+        
+        <h2 id="Disclaimer_of_Warranties" >13. Disclaimer of Warranties</h2>
+        <p>Our website and services are provided on an "as is" and "as available" basis. We make no representations or warranties regarding the operation, availability, or functionality of the website.</p>
+        
+        <h2 id="Limitation_of_Liability" >14. Limitation of Liability</h2>
+        <p>In no event shall we be liable for any direct, indirect, incidental, consequential, or punitive damages arising out of your use of this website.</p>
+        
+        <h2 id="Indemnification"  >15. Indemnification</h2>
+        <p>You agree to indemnify, defend, and hold harmless IP SUPER SHOPPEE PVT. LTD., its officers, directors, employees, agents, and affiliates, from and against any claims arising out of your breach of these Terms.</p>
+        
+        <h2 id="Governing_Law" >16. Governing Law and Jurisdiction</h2>
+        <p>These Terms are governed by and construed in accordance with the laws of India. You agree to submit to the exclusive jurisdiction of the courts located in Aurangabad, Maharashtra, India.</p>
+        
+        <h2 id="Changes_to_the_Terms" >17. Changes to the Terms</h2>
+        <p>We reserve the right to amend these Terms at any time. Any changes will be posted on this page, and the updated Terms will take effect immediately upon posting.</p>
+        
+        <h2 id="Contact_Information" >18. Contact Information</h2>
+        <p>If you have any questions or concerns about these Terms, please contact us at:</p>
+        <p><strong>IP SUPER SHOPPEE PVT. LTD.</strong><br>
+        ipshopy, Dnyanpeeth Campus T-18, Opp. Garrware Stadium STPI,<br>
+        Naregaon Road, Chhatrapati Sambhaji Nagar, Aurangabad 431001,<br>
+        Maharashtra, India<br>
+        <strong>Email:</strong> info@ipshopy.com<br>
+        <strong>Phone:</strong> 9342525252</p> #}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function openModal() {
+    document.getElementById("myModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("myModal").style.display = "none";
+}
+
+window.onclick = function(event) {
+    var modal = document.getElementById("myModal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    var links = document.querySelectorAll(".btn-scroll-target");
+
+    links.forEach(function(link) {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            links.forEach(l => l.classList.remove("active"));
+            link.classList.add("active");
+
+            var targetId = link.getAttribute("href").substring(1);
+            var targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+    });
+});
+</script>
+<script type="text/javascript"><!--
+// Sort the custom fields
+$('#account .form-group[data-sort]').detach().each(function() {
+	if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#account .form-group').length) {
+		$('#account .form-group').eq($(this).attr('data-sort')).before(this);
+	}
+
+	if ($(this).attr('data-sort') > $('#account .form-group').length) {
+		$('#account .form-group:last').after(this);
+	}
+
+	if ($(this).attr('data-sort') == $('#account .form-group').length) {
+		$('#account .form-group:last').after(this);
+	}
+
+	if ($(this).attr('data-sort') < -$('#account .form-group').length) {
+		$('#account .form-group:first').before(this);
+	}
+});
+
+$('input[name=\'customer_group_id\']').on('change', function() {
+	$.ajax({
+		url: 'index.php?route=account/register/customfield&customer_group_id=' + this.value,
+		dataType: 'json',
+		success: function(json) {
+			$('.custom-field').hide();
+			$('.custom-field').removeClass('required');
+
+			for (i = 0; i < json.length; i++) {
+				custom_field = json[i];
+
+				$('#custom-field' + custom_field['custom_field_id']).show();
+
+				if (custom_field['required']) {
+					$('#custom-field' + custom_field['custom_field_id']).addClass('required');
+				}
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+
+$('input[name=\'customer_group_id\']:checked').trigger('change');
+//--></script> 
+<script type="text/javascript"><!--
+$('button[id^=\'button-custom-field\']').on('click', function() {
+	var element = this;
+
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			$.ajax({
+				url: 'index.php?route=tool/upload',
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(element).button('loading');
+				},
+				complete: function() {
+					$(element).button('reset');
+				},
+				success: function(json) {
+					$(element).parent().find('.text-danger').remove();
+
+					if (json['error']) {
+						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+
+					if (json['success']) {
+						alert(json['success']);
+
+						$(element).parent().find('input').val(json['code']);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+//--></script> 
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+
+$('.time').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: false
+});
+
+$('.datetime').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+//--></script> 
+<style>
+
+legend{
+    text-align: center;
+    font-size: 14px;
+    border-bottom:none;
+}
+h1{
+    text-align:center;
+}
+.buttons{
+        text-align: center;
+    margin-bottom: 8px;
+}
+.right_wrapper{
+    padding:20px 40px 20px 20px;
+}
+#account-register{
+    width:100%;
+}
+#account-register .container{
+    width:80%;
+    border-radius:10px;
+    box-shadow:0px 0px 5px #953A9373;
+}
+.register_submit_btn{
+    width:90%;
+    border-radius:5px;
+}
+.btn{
+    background:#953A93;
+    color:white;
+}
+.btn:hover{
+    background:#732c71 !important;
+    
+}
+.registration_section {
+    padding-inline: 60px;
+}
+.right_section{
+    float:right !important;
+}
+@media (max-width: 992px) {
+    #account-register img{
+        display:none;
+    }
+    .right_section{
+        width:100%;
+    }
+    
+#account-register .container{
+        width: 60% !important;
+}
+}
+
+@media (max-width: 768px) {
+    /*padding-inline: 40px;*/
+    #logintelephonechk{
+        width:80%;
+        
+    }
+    #account-register .container{
+        width: 70% !important;
+        margin-block:40px
+}
+}
+#account-register .container{
+    width:90% !important;
+    overflow:hidden;
+}
+
+@media (max-width: 568px) {
+    /*padding-inline: 20px;*/
+    #account-register .container{
+        width: 90% !important;
+}
+h1{
+    font-size:26px;
+}
+.right_wrapper{
+    padding-inline:10px;
+}
+#logintelephonechk{
+        width:65%;
+    }
+}
+h1{
+    color:black;
+}
+#account legend{
+    font-size:16px;
+}
+.register_login{
+    text-align:center;
+}
+.register_login a{
+    font-weight:bold;
+    border-bottom: 1px solid
+    
+}
+.otp-main .waotpboxaccountregister {
+    flex-direction:column;
+    margin-bottom:10px;
+}
+.otp-main .waotpboxaccountregister button{
+    height:41px;
+    width: 90px;
+    padding: 0;
+}
+.otp-main .waotpboxaccountregister > :nth-child(1),
+.otp-main .waotpboxaccountregister > :nth-child(2){
+  padding: 0;
+}
+.form-horizontal .control-label {
+    margin-bottom: 0px;
+    margin-top: 10px;
+}
+@media (min-width: 768px) {
+    .col-sm-10 {
+        width: 92.333333%;
+    }
+}
+@media (min-width: 768px) {
+    .col-sm-2 {
+         width: initial; 
+    }
+}
+legend {
+    display: block;
+    width: 91%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: inherit;
+    color: #333;
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.form-group {
+    margin-bottom: 0px;
+}
+.form-control {
+    height: auto;
+}
+
+
+#account-register textarea, input[type="text"],#account-register input[type="password"],#account-register input[type="datetime"],#account-register input[type="datetime-local"],#account-register input[type="date"],#account-register input[type="month"],#account-register input[type="time"],#account-register input[type="week"],#account-register input[type="number"],#account-register input[type="email"],#account-register input[type="url"],#account-register input[type="search"],#account-register input[type="tel"],#account-register input[type="color"],#account-register .uneditable-input,#account-register .form-control,#account-register select {
+    background-color: #ffffff;
+    border: none;
+    color: #3d3d3d;
+    padding: 10px;
+    margin-bottom:15px;
+    font-size: 14px;
+    /* font-size: 1.2rem; */
+    box-shadow: none !important;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid lightgray;
+}
+.pull-right {
+    float: left !important;
+}
+label{
+    display:none;
+}
+</style>
+
+<script>
+function updateIndicator(elementId, isValid) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.style.color = isValid ? '#28a745' : '#dc3545';
+        const prefix = isValid ? '▼ ' : '► ';
+        element.innerHTML = prefix + element.innerHTML.substring(1);
+    }
+}
+
+function validatePassword() {
+    const password = document.getElementById('input-password').value;
+
+    const hasLength = password.length >= 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSymbol = /[!@#$%^&*]/.test(password);
+
+    updateIndicator('length-check', hasLength);
+    updateIndicator('uppercase-check', hasUppercase);
+    updateIndicator('lowercase-check', hasLowercase);
+    updateIndicator('number-check', hasNumber);
+    updateIndicator('symbol-check', hasSymbol);
+
+    return hasLength && hasUppercase && hasLowercase && hasNumber && hasSymbol;
+}
+
+function validateLoginForm() {
+    const password = document.getElementById('input-password').value;
+    const confirmPassword = document.getElementById('input-confirm-password');
+    const warningElement = document.getElementById('warning-password');
+    const nextButton = document.getElementById('button-next-3');
+
+    const isPasswordValid = validatePassword();
+
+    if (confirmPassword && confirmPassword.value !== '') {
+        if (password !== confirmPassword.value) {
+            warningElement.style.display = 'block';
+            warningElement.innerHTML = 'Passwords do not match';
+            if (nextButton) nextButton.disabled = true;
+            return false;
+        }
+    }
+
+    warningElement.style.display = isPasswordValid ? 'none' : 'block';
+    warningElement.innerHTML = isPasswordValid ? '' : 'Please meet all password requirements';
+    
+    if (isPasswordValid) {
+        const requirementsBox = document.getElementById('password-requirements');
+        if (requirementsBox) requirementsBox.style.display = 'none';
+	}
+	
+    if (nextButton) nextButton.disabled = !isPasswordValid;
+    return isPasswordValid;
+    
+    if (isPasswordValid && confirmPassword && password === confirmPassword.value) {
+		const requirementsBox = document.getElementById('password-requirements');
+		if (requirementsBox) requirementsBox.style.display = 'none';
+	}
+}
+
+function togglePasswordVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    const iconId = (inputId === 'input-password') ? 'toggle-password-icon' : 'toggle-confirm-icon';
+    const icon = document.getElementById(iconId);
+
+    if (input && icon) {
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const passwordInput = document.getElementById('input-password');
+    const confirmInput = document.getElementById('input-confirm-password');
+
+    if (passwordInput) passwordInput.addEventListener('input', validateLoginForm);
+    if (confirmInput) confirmInput.addEventListener('input', validateLoginForm);
+
+    // Show password requirements on focus
+    if (passwordInput) {
+    	passwordInput.addEventListener('focus', function () {
+			const isValid = validatePassword();
+			if (!isValid) {
+				document.getElementById('password-requirements').style.display = 'block';
+			}
+    	});
+	}
+});
+</script>
+
+<script>
+	// Function to prevent leading spaces in input fields
+	function preventSpaces(input) {
+		// Remove leading spaces from the input value
+		input.value = input.value.replace(/^\s+/, '');
+		
+		// Prevent consecutive spaces
+		input.value = input.value.replace(/\s{2,}/g, ' ');
+	}
+
+	// Function to validate text fields (prevent leading spaces, allow spaces after initials)
+	function validatedtext(input) {
+		// Remove leading spaces from the input value
+		input.value = input.value.replace(/^\s+/, '');
+		
+		// Prevent consecutive spaces
+		input.value = input.value.replace(/\s{2,}/g, ' ');
+	}
+
+	document.addEventListener("DOMContentLoaded", function () {
+		// Add event listeners to all input fields to prevent spaces
+		const inputFields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="number"], input[type="password"]');
+		
+		inputFields.forEach(function(input) {
+			input.addEventListener('input', function() {
+				preventSpaces(this);
+			});
+			
+			// Also trim on blur to catch any spaces that might have been added
+			input.addEventListener('blur', function() {
+				this.value = this.value.trim();
+			});
+		});
+	});
+</script>
+
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+       const submitBtn=document.getElementsByClassName('btnverifyaccountregister')[0];
+    document.getElementById("logintelephonechk").addEventListener("input", function () {
+        // Remove non-numeric characters
+        
+        this.value = this.value.replace(/[^0-9]/g, "");
+
+        // Prevent number from starting with 0
+        if (this.value.startsWith("0")) {
+            this.value = this.value.replace(/^0+/, ""); // Remove leading zeros
+        }
+
+        // Enforce max length of 10 digits
+        this.value = this.value.slice(0, 10);
+        
+        if (submitBtn) {
+            submitBtn.disabled = this.value.length !== 10;
+        }
+        
+    });
+});
+</script>
+
+
+{{ footer }} 
+

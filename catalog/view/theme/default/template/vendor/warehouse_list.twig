@@ -1,0 +1,264 @@
+{#<!-- Bootstrap 3 CSS -->#}
+{#  <link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" />#}
+{#  <!-- FontAwesome -->#}
+{#  <link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" />#}
+
+{#  <style>#}
+{#    body {#}
+{#      background-color: #f9f9f9;#}
+{#    }#}
+{#    .container-fluid {#}
+{#      padding: 15px;#}
+{#    }#}
+{#    .panel {#}
+{#      margin-top: 20px;#}
+{#      box-shadow: 0 0 10px rgba(15, 101, 229, 0.05);#}
+{#    }#}
+{#    .btn-skyblue {#}
+{#      background-color: #2970b6;(10, 118, 161);#}
+{#      color: white;#}
+{#      border-color: #2970b6;(11, 129, 176);#}
+{#      padding: 8px 15px;#}
+{#      font-weight: 600;#}
+{#      font-size: 14px;#}
+{#      border-radius: 4px;#}
+{#      transition: background-color 0.3s ease;#}
+{#      margin-left: 5px;#}
+{#    }#}
+{#    .btn-skyblue:hover, .btn-skyblue:focus {#}
+{#      background-color: #00BFFF;#}
+{#      border-color: #00BFFF;#}
+{#      color: white;#}
+{#      text-decoration: none;#}
+{#    }#}
+{#    .panel-heading > .panel-title {#}
+{#      font-size: 30px !important;#}
+{#      font-weight: 400 !important;#}
+{#      color: #222 !important;#}
+{#    }#}
+{#    .alert-info strong {#}
+{#      display: inline-block;#}
+{#      margin-right: 8px;#}
+{#    }#}
+{#    .text-center th,#}
+{#    .text-center td {#}
+{#      text-align: center !important;#}
+{#      vertical-align: middle !important;#}
+{#    }#}
+{#  </style>#}
+
+{#{{ header }}#}
+{#{{ column_left }}#}
+
+{#<div id="content" class="container-fluid">#}
+{#  <div class="panel panel-default">#}
+{#    <div class="panel-heading">#}
+{#      <h1 class="panel-title">Warehouse details</h1>#}
+{#    </div>#}
+{#    <div class="panel-body">#}
+
+{#      <div class="alert alert-info">#}
+{#        <strong><i class="fa fa-info-circle"></i> Note:</strong>#}
+{#        You can add up to <strong>2 warehouse addresses</strong> maximum.#}
+{#      </div>#}
+
+{#      <div class="text-right" style="margin-bottom: 15px;">#}
+{#        {% if not max_reached %}#}
+{#          <a href="{{ add_url }}" class="btn btn-skyblue" title="Add Warehouse">#}
+{#            <i class="fa fa-plus"></i>#}
+{#          </a>#}
+{#        {% else %}#}
+{#          <button class="btn btn-skyblue" disabled title="Maximum 2 warehouses allowed">#}
+{#            <i class="fa fa-plus"></i>#}
+{#          </button>#}
+{#        {% endif %}#}
+
+{#        <a href="index.php?route=vendor/dashboard" class="btn btn-skyblue" title="Cancel and go back">#}
+{#          <i class="fa fa-reply"></i>#}
+{#        </a>#}
+{#      </div>#}
+
+{#      <div class="table-responsive">#}
+{#        <table class="table table-bordered table-hover text-center">#}
+{#          <thead>#}
+{#            <tr>#}
+{#              <th style="width: 40px;">Sr.No</th>#}
+{#              <th>Name</th>#}
+{#              <th>Email</th>#}
+{#              <th>Telephone</th>#}
+{#              <th>Address</th>#}
+{#            </tr>#}
+{#          </thead>#}
+{#          <tbody>#}
+{#            {% if warehouses %}#}
+{#              {% for warehouse in warehouses %}#}
+{#              <tr>#}
+{#                <td>{{ loop.index }}</td>#}
+{#                <td>{{ warehouse.firstname }} {{ warehouse.lastname }}</td>#}
+{#                <td>{{ warehouse.email }}</td>#}
+{#                <td>{{ warehouse.telephone }}</td>#}
+{#                <td>#}
+{#                  {{ warehouse.address_1 }}{% if warehouse.address_2 %}, {{ warehouse.address_2 }}{% endif %}<br>#}
+{#                  {{ warehouse.city }}, {{ warehouse.zone_name }}, {{ warehouse.country_name }}<br>#}
+{#                  {{ warehouse.postcode }}#}
+{#                </td>#}
+{#              </tr>#}
+{#              {% endfor %}#}
+{#            {% else %}#}
+{#              <tr><td colspan="5" class="text-center">No warehouses found.</td></tr>#}
+{#            {% endif %}#}
+{#          </tbody>#}
+{#        </table>#}
+{#      </div>#}
+
+{#    </div>#}
+{#  </div>#}
+{#</div>#}
+
+{#{{ footer }}#}
+
+{#<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>#}
+{#<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>#}
+
+{#Priyanka Madam - 26/06/2025#}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Warehouses</title>
+  
+  <!-- Bootstrap 3 CSS -->
+  <link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- FontAwesome -->
+  <link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+  <style>
+    body {
+      background-color: #f9f9f9;
+    }
+    .container-fluid {
+      padding: 15px;
+    }
+    .panel {
+      margin-top: 20px;
+      box-shadow: 0 0 10px rgba(15, 101, 229, 0.05);
+    }
+    .btn-skyblue {
+      background-color: #2970b6;
+      color: white;
+      border-color: #2970b6;
+      padding: 8px 15px;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+      margin-left: 5px;
+    }
+    .btn-skyblue:hover, .btn-skyblue:focus {
+      background-color: #00BFFF;
+      border-color: #00BFFF;
+      color: white;
+      text-decoration: none;
+    }
+    .panel-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+    }
+    .panel-heading > .panel-title {
+      font-size: 30px;
+      font-weight: 400;
+      color: #222;
+      margin: 0;
+    }
+    .alert-info strong {
+      display: inline-block;
+      margin-right: 8px;
+    }
+    .text-center th,
+    .text-center td {
+      text-align: center !important;
+      vertical-align: middle !important;
+    }
+  </style>
+</head>
+<body>
+
+{{ header }}
+{{ column_left }}
+
+<div id="content" class="container-fluid">
+  <div class="panel panel-default">
+    
+    <div class="panel-heading">
+      <h1 class="panel-title">Warehouse Details</h1>
+      <div class="text-right">
+        {% if not max_reached %}
+          <a href="{{ add_url }}" class="btn btn-skyblue" title="Add Warehouse">
+            <i class="fa fa-plus"></i>
+          </a>
+        {% else %}
+          <button class="btn btn-skyblue" disabled title="Maximum 2 warehouses allowed">
+            <i class="fa fa-plus"></i>
+          </button>
+        {% endif %}
+
+        <a href="index.php?route=vendor/dashboard" class="btn btn-skyblue" title="Cancel and go back">
+          <i class="fa fa-reply"></i>
+        </a>
+      </div>
+    </div>
+<div class="panel-body">
+
+  <div class="alert alert-info" style="background-color: #ffe6e6; color: #a94442; border: 1px solid #f5c6cb;">
+    <strong><i class="fa fa-info-circle"></i> Note:</strong>You can add up to <strong>2 warehouse addresses</strong>maximum, and once a warehouse address is created, it cannot be edited or deleted
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover text-center">
+      <thead>
+        <tr>
+          <th style="width: 40px;">Sr.No</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Telephone</th>
+          <th>Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if warehouses %}
+          {% for warehouse in warehouses %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ warehouse.firstname }} {{ warehouse.lastname }}</td>
+            <td>{{ warehouse.email }}</td>
+            <td>{{ warehouse.telephone }}</td>
+            <td>
+              {{ warehouse.address_1 }}{% if warehouse.address_2 %}, {{ warehouse.address_2 }}{% endif %}<br>
+              {{ warehouse.city }}, {{ warehouse.zone_name }}, {{ warehouse.country_name }}<br>
+              {{ warehouse.postcode }}
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr><td colspan="5" class="text-center">No warehouses found.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+  </div>
+</div>
+
+{{ footer }}
+
+<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
+<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+

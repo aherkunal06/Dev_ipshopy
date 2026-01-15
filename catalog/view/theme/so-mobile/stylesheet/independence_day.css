@@ -1,0 +1,364 @@
+  .category-scroll-wrapper {
+    overflow-x: auto;
+    white-space: nowrap;
+    /* padding-bottom: 5px; */
+    padding:15px;
+}
+.category-scroll-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.category-list {
+    display: flex;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.category-list li {
+    flex: 0 0 auto;
+}
+
+/* Common styles for both links and All span */
+.category-list a,
+.category-list .all-category {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background-color: #f5f5f5;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Hover only for clickable links */
+.category-list a:hover {
+    background-color: #e0e0e0;
+}
+
+/* Active state */
+.category-list a.active,
+.category-list .all-category.active {
+    background-color: orange;
+    color: white;
+}
+
+/* Disable pointer for All */
+.category-list .all-category {
+    cursor: default;
+    background-color: #FF9933;
+}
+
+
+
+
+
+
+
+
+
+/* First section */
+
+.first-tittle {
+		margin: 10px 15px;
+		font-weight: 600;
+		font-size: 18px;
+		color: #000;
+	}
+	.second-category-block {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 10px;
+		padding: 10px;
+	}
+
+	.subcategory-card {
+		background: linear-gradient(to bottom, rgba(255, 193, 68, 1.6), rgba(255, 193, 68, 1.6), rgb(255 255 255 / 18%), rgba(19, 136, 8, 1.6), rgba(19, 136, 8, 1.6));
+		padding: 3px;
+		border-radius: 15px;
+	}
+
+	.subcategory-card a {
+		display: block;
+		background: #fff;
+		border-radius: 12px;
+		overflow: hidden;
+		text-decoration: none;
+		color: inherit;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.subcategory-card a:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+	}
+
+	.subcategory-card img {
+		width: 100%;
+		height: 140px;
+		object-fit: cover;
+	}
+
+	.product-info {
+		padding: 8px;
+		text-align: center;
+	}
+
+	.product-name {
+		font-size: 13px;
+		font-weight: 500;
+		color: #000;
+		margin-bottom: 4px;
+	}
+
+	.price-row {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.new-price {
+		font-size: 14px;
+		font-weight: bold;
+		color: #ff6600;
+	}
+
+	.old-price {
+		font-size: 12px;
+		color: #888;
+		text-decoration: line-through;
+	}
+
+	.discount-badge {
+		margin-top: 5px;
+		background: #96049c;
+		color: #fff;
+		font-size: 11px;
+		padding: 3px 6px;
+		border-radius: 15px;
+		display: inline-block;
+	}
+    
+
+    /* second section */
+
+    .category-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 10px;
+}
+    .second-tittle {
+		color: black;
+		font-size: 18px;
+		font-weight: 600;
+		margin: 10px 15px;
+	}
+    
+.view-all-btn {
+	font-size: 14px;
+	color: #ff6a00;
+	text-decoration: none;
+	font-weight: 500;
+}
+
+.view-all-btn:hover {
+	text-decoration: underline;
+}
+	.category-scroller-container {
+		position: relative;
+		display: flex;
+		align-items: center;
+		padding: 20px 0;
+	}
+
+
+	.scroll-btn {
+		background: rgba(0, 0, 0, 0.5);
+		border: none;
+		color: white;
+		font-size: 24px;
+		padding: 10px;
+		cursor: pointer;
+		z-index: 2;
+		border-radius: 50%;
+		transition: background 0.3s;
+	}
+	.scroll-btn:hover {
+		background: rgba(0, 0, 0, 0.8);
+	}
+
+	.category-scroller {
+		display: flex;
+		overflow-x: auto;
+		gap: 12px;
+		scroll-behavior: smooth;
+		padding: 0 10px;
+	}
+	.category-scroller::-webkit-scrollbar {
+		display: none;
+	}
+
+	.category-card {
+		flex: 0 0 auto;
+		width: 140px;
+		background: transparent;
+		border-radius: 12px;
+		text-align: center;
+		padding: 0;
+		box-shadow: none;
+		transition: transform 0.2s ease;
+	}
+
+	.category-card img {
+		width: 100%;
+		height: 180px;
+		border-radius: 12px;
+		border: 2px solid #ddd;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+	}
+
+	.category-card h4 {
+		font-size: 14px;
+		font-weight: 500;
+		margin-top: 6px;
+		text-transform: none;
+		color: #000;
+		white-space: normal;
+	}
+	.category-card:hover {
+		transform: translateY(-5px);
+	}
+
+	/* Mobile view adjustments for 2.5 cards */
+	@media(max-width: 768px) {
+		.category-card {
+			flex: 0 0 calc(100% / 2.5);
+			width: calc(100% / 2.5);
+		}
+		.scroll-btn {
+			display: none;
+		}
+	}
+
+    /* third section */
+
+    .category-tittle-third {
+		color: black;
+		font-size: 18px;
+		font-weight: 600;
+		margin: 10px 15px;
+	}
+	.price {
+		color: orange;
+		font-weight: bold;
+		text-align: center;
+	}
+
+
+    /*fourth section */
+
+    .tech-deals-title {
+		font-size: 18px;
+		font-weight: bold;
+		margin-bottom: 10px;
+		color: black;
+		padding: 10px;
+	}
+
+	.tech-deals-container {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding-right: 10px;
+		padding-left: 10px;
+	}
+
+	.tech-deal-card {
+    display: flex;
+    align-items: center;
+    border-radius: 14px;
+    background: 
+        linear-gradient(#fff, #fff) padding-box,
+        linear-gradient(to bottom, 
+            rgba(255, 193, 68, 1.6), 
+            rgba(255, 193, 68, 1.6), 
+            rgb(255 255 255 / 18%), 
+            rgba(19, 136, 8, 1.6), 
+            rgba(19, 136, 8, 1.6)
+        ) border-box;
+    padding: 12px;
+    gap: 14px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 3px solid transparent; /* border जागा */
+}
+
+	.tech-deal-card:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+	}
+
+	.tech-deal-image img {
+		width: 110px;
+		height: 90px;
+		object-fit: cover;
+		border-radius: 10px;
+	}
+
+	.tech-deal-details {
+		flex: 1;
+	}
+
+	.tech-deal-name {
+		font-size: 16px;
+		font-weight: 600;
+		margin-bottom: 6px;
+		color: #000;
+	}
+
+	.tech-deal-pricing {
+		display: flex;
+		gap: 8px;
+		align-items: baseline;
+		margin-bottom: 8px;
+	}
+
+	.tech-deal-price {
+		font-size: 20px;
+		font-weight: bold;
+		color: #ff6a00;
+	}
+
+	.tech-deal-old-price {
+		font-size: 16px;
+		text-decoration: line-through;
+		color: #179900;
+		font-weight: 500;
+	}
+
+	.tech-deal-offer {
+		background: #96049c;
+		color: #fff;
+		font-size: 13px;
+		padding: 4px 12px;
+		border-radius: 20px;
+		display: inline-block;
+		font-weight: 500;
+	}
+
+	.tech-deal-card a {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		text-decoration: none;
+		color: inherit;
+		width: 100%;
+	}

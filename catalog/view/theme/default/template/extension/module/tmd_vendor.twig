@@ -1,0 +1,53 @@
+<!--- seller information -->
+{% if vendor_ids %}
+<div class="seller-info"> 
+  <h2>{{ text_sellerinformation }}</h2>
+  <div class="seller-details">
+   <div class="row">    
+	  <div class="col-sm-12">
+		<img class="img-responsive {{ imgeborder }}" src="{{ sellerimage }}" title="{{ dname }}" alt="{{ dname }}">
+		 {% if vendor_hidevname %}
+		<h3> {{ text_seller }}: {{ dname }}</h3>
+		 {% endif %}
+		 <!--new code 07 10 2021-->
+		 <div class="rating">
+			{% for i in 1..5 %}
+				{% if reviewvalue < i %}
+					<span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+				{% else %}
+					<span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+				{% endif %}
+			{% endfor %}
+			<br/><a href="{{ href }}">{{ tab_review }} ({{ sellertotal }})</a>
+		</div>
+		{% if vendor_hidevsocialicon %}
+			<ul class="list-unstyled btn-social">
+				<li>
+					{% if facebookurl %}
+					<a href="{{ facebookurl }}" target="new"><i class="fa fa-facebook"></i></a>
+					{% endif %}
+					{% if googleurl %}
+					<a href="{{ googleurl }}" target="new"><i class="fa fa-google"></i></a>
+					{% endif %}
+					
+				</li>
+			</ul>
+		{% endif %}
+		 <!--new code 07 10 2021-->
+		<p>{{ text_from }} <i class="fa fa-home"></i> <b>{{ countryname }}</b></p>
+		<p>{{ text_totalproducts }}  <b>{{ totalproducts }}</b></p>
+		<div class="btn btn-primary contacbtn">
+		<a href="{{ href }}"> {{ text_contactseller }}</a> 
+	    </div>
+	  </div>
+	</div>           
+ </div>   
+</div> 
+<style>
+.seller-info h2{background:{{ headingbg }}!important;color:{{ textcolor }}!important; }
+.seller-info .seller-details .contacbtn{background:{{ headingbg }}!important;}
+.seller-info .seller-details .contacbtn a{color:{{ textcolor }}!important;}
+.seller-info .seller-details .contacbtn a{color:{{ textcolor }}!important;}
+</style>
+{% endif %}
+<!--- seller information -->

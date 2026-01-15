@@ -1,0 +1,184 @@
+<link rel="stylesheet" href="catalog\view\theme\default\stylesheet\customer\ganesh_festival_des.css" />
+
+{{ header }}
+
+<div class="gf-page">
+
+	<!-- Top Banner -->
+	<div class="gf-top-banner">
+  		<img src="{{ top_banner }}" alt="Ganesh Festival" class="img-fluid w-100" loading="eager">
+	</div>
+
+	<!-- Categories -->
+	<div class="gf-categories">
+  {% for category in categories %}
+    <a href="{{ category.href }}" class="gf-category-card">
+      <div class="gf-img-wrapper">
+        <img src="{{ category.thumb }}" alt="{{ category.name }}" loading="lazy" decoding="async">
+      </div>
+      <div class="gf-title">{{ category.name }}</div>
+    </a>
+  {% endfor %}
+</div>
+
+
+	<!-- Second Banner -->
+	<div class="gf-second-banner my-3">
+		<img src="{{ second_banner }}" alt="Festival Offer" class="img-fluid w-100">
+	</div>
+
+	<!-- Women's Dresses Subcategories -->
+	<div class="gf-subcategory-section">
+		<div class="gf-section-title">Women's - Dresses</div>
+		<div class="gf-subcategory-list">
+			{% for sub in subcategories %}
+				<div class="gf-subcategory-card">
+					<div class="gf-modak-badge">
+  						<img src="image\catalog\product\fashion\modak.png" alt="Modak" loading="lazy" decoding="async">
+					</div>
+					<a href="{{ sub.href }}" style="text-decoration:none; color:inherit;">
+						<img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+						<h6>{{ sub.name }}</h6>
+						{% if sub.special_price %}
+							<p class="gf-price">
+								<span class="gf-new-price">From {{ sub.special_price }}</span>
+							</p>
+						{% elseif sub.original_price %}
+							<p class="gf-price">
+								<span class="gf-new-price">From {{ sub.original_price }}</span>
+							</p>
+						{% endif %}
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<!-- Third Banner -->
+	<div class="gf-third-banner my-3">
+		<img src="{{ third_banner }}" alt="Ganesh Festival Offer" class="img-fluid w-100">
+	</div>
+
+	<!-- New Categories Section -->
+	<h3 class="gf-festival-title">Categories</h3>
+	<div class="gf-festival-categories">
+	  <div class="gf-festival-cards">
+	    {% for category in festival_cards %}
+	      <div class="gf-festival-card">
+	        <a href="{{ category.href }}">
+	          <div class="gf-festival-card-img">
+	            <img src="{{ category.thumb }}" alt="{{ category.name }}">
+	          </div>
+	          <div class="gf-festival-card-text">
+	            {{ category.name }}
+	          </div>
+	        </a>
+	      </div>
+	    {% endfor %}
+	  </div>
+	</div>
+
+	<!-- Men's Dresses Subcategories -->
+	<div class="gf-subcategory-section">
+		<div class="gf-section-title">Men's - Dresses</div>
+		<div class="gf-subcategory-list">
+			{% for sub in men_subcategories %}
+				<div class="gf-subcategory-card">
+				<div class="gf-modak-badge">
+  						<img src="image\catalog\product\fashion\modak.png" alt="Modak">
+					</div>
+					<a href="{{ sub.href }}" style="text-decoration:none; color:inherit;">
+						<img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+						<h6 class="gf-product-title">{{ sub.name }}</h6>
+						{% if sub.special_price %}
+							<p class="gf-price">
+								<span class="gf-new-price">From {{ sub.special_price }}</span>
+							</p>
+						{% endif %}
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<!-- Extra Categories Section -->
+	<div class="gf-extra-categories">
+		<h3 class="gf-extra-title">Let Your Home Glow</h3>
+		<div class="gf-extra-cards">
+			{% for category in festival_extra_cards %}
+				<div class="gf-extra-card">
+				<div class="gf-modak-badge">
+  						<img src="image\catalog\product\fashion\modak.png" alt="Modak">
+					</div>
+					<a href="{{ category.href }}">
+						<img src="{{ category.thumb }}" alt="{{ category.name }}">
+						<div class="gf-extra-card-overlay">
+							<span>{{ category.name }}</span>
+						</div>
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<!-- Today's Deals -->
+	<div class="gf-subcategory-section">
+		<div class="gf-section-title">Today's Deals</div>
+		<div class="gf-subcategory-list">
+			{% for sub in electronics %}
+				<div class="gf-subcategory-card">
+				<div class="gf-modak-badge">
+  						<img src="image\catalog\product\fashion\modak.png" alt="Modak">
+					</div>
+					<a href="{{ sub.href }}" style="text-decoration:none; color:inherit;">
+						<img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+						<h6 class="gf-product-title">
+							{{ sub.name|slice(0,20) }}
+							{% if sub.name|length > 30 %}...{% endif %}
+						</h6>
+						{% if sub.special_price %}
+							<p class="gf-price">
+								<span class="gf-new-price">From {{ sub.special_price }}</span>
+							</p>
+						{% endif %}
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<!-- Fourth Banner -->
+	<div class="gf-fourth-banner my-3">
+		<img src="{{ fourth_banner }}" alt="Ganesh Festival Offer" class="img-fluid w-100">
+	</div>
+
+	<!-- Kids Dresses -->
+	<div class="gf-subcategory-section">
+		<div class="gf-section-title">Kids</div>
+		<div class="gf-subcategory-list">
+			{% for sub in kids %}
+				<div class="gf-subcategory-card">
+				<div class="gf-modak-badge">
+  						<img src="image\catalog\product\fashion\modak.png" alt="Modak">
+					</div>
+					<a href="{{ sub.href }}" style="text-decoration:none; color:inherit;">
+						<img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+						<h6>{{ sub.name }}</h6>
+						{% if sub.special_price %}
+							<p class="gf-price">
+								<span class="gf-new-price">From {{ sub.special_price }}</span>
+							</p>
+						{% elseif sub.original_price %}
+							<p class="gf-price">
+								<span class="gf-current-price">{{ sub.original_price }}</span>
+							</p>
+						{% endif %}
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+</div>
+
+

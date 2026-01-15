@@ -1,0 +1,351 @@
+{{ header }}
+<style>
+   
+ p{
+     text-align:justify;
+ }
+         .cookies-policy-section {
+                display: flex;
+                  gap: 40px;
+                 color:#000;
+         }
+ 
+         .cookies-container {
+             display: flex;
+             background-color: #fff;
+             border-radius: 5px;
+             overflow: hidden;
+             padding-top:10px;
+             flex-direction: column;
+         }
+ 
+         .sidebar-container {
+             background-color: #f0f0f0;
+             padding: 20px;
+             width: 250px;
+             border-right: 1px solid #ddd;
+             transition: transform 0.3s ease-in-out;
+             position: fixed;
+             top: 0px;
+             left: 0;
+             height: fit-content;
+             overflow-y: auto;
+             position:relative;
+         }
+ 
+         .sidebar-container.closed {
+             transform: translateX(-250px);
+         }
+ 
+         .sidebar-menu {
+             list-style: none;
+             padding: 0;
+             margin: 0;
+         }
+ 
+         .sidebar-menu li {
+             margin-bottom: 10px;
+         }
+ 
+         .sidebar-menu a {
+             display: block;
+             text-decoration: none;
+             color: #333;
+             padding: 5px 10px;
+             border-radius: 3px;
+             transition: background-color 0.2s ease;
+            font-weight:600;
+         }
+ 
+         .sidebar-menu a:hover {
+             background-color: #ddd;
+         }
+         h3{
+      font-size: 20px;}
+         .content-area {
+             padding: 20px;
+             flex: 1;
+             overflow-y:auto;
+ max-height: calc(220vh - 40px);
+             scrollbar-width:none;
+             position: relative;
+      margin-top: 10px;
+         }
+
+         .content-area h2 {
+             color: purple;
+             margin-top: 10px;
+             padding-bottom: 10px;
+             border-bottom: 1px solid #eee;
+             margin-bottom: 15px;
+         }
+ 
+         .content-area p {
+             line-height: 1.6;
+             margin-bottom: 15px;
+         }
+ 
+         .close-menu-button {
+             position: absolute;
+             top: 10px;
+             right: 10px;
+             font-size: 20px;
+             color: #777;
+             cursor: pointer;
+             display: none;
+         }
+        .cookies-heading{
+            text-align: center;
+        }
+ .content-area ul{
+list-style:disc;
+      padding-left: 20px;}
+         @media (max-width: 768px) {
+             .container {
+                 flex-direction: column;
+             }
+ 
+             .sidebar-container {
+                 width: 100%;
+                 transform: translateX(0);
+                 z-index: 10;
+                 position: fixed;
+                 top: 0;
+                 left: 0;
+                 height: 100%;
+                 overflow-y: auto;
+                 box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+                 display:none;
+             }
+ 
+             .sidebar-container.closed {
+                 transform: translateX(-100%);
+             }
+ 
+             .content-area {
+                 padding-top: 60px;
+             }
+ 
+             .close-menu-button {
+                 display: block;
+                 background-color: #f0f0f0;
+                 padding: 10px;
+                 border-bottom: 1px solid #ddd;
+                 text-align: right;
+             }
+         }
+         .cookie_table tbody td{
+padding:5px;
+         }
+
+
+.cookies-policy-section table th {
+ border:1px solid #000000 !important;
+    color: #000000;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+    text-transform: uppercase;
+    background-color:none !important;
+
+}
+
+
+</style>
+
+
+<div class="container">
+  
+    <div class="cookies-heading">  <h1>Cookies Policy for ipshopy.com</h1></div>
+   <div class="cookies-policy-section" style="display: flex; gap: 20px; padding: 20px;">
+        <!-- Sidebar -->
+        <aside class="sidebar-container" style="width: 250px; flex-shrink: 0; position: sticky; top: 20px;">
+        <ul class="sidebar-menu" >
+            <li><a href="#cookies-policy">Cookies Policy Overview</a></li>
+            <li><a href="#what-are-cookies">What Are Cookies?</a></li>
+            <li><a href="#how-does-ipshopy-use-cookies">How Does ipshopy Use Cookies?</a></li>
+            <li><a href="#types-of-cookies-we-use">Types of Cookies We Use</a></li>
+            <li><a href="#third-party-cookies">Third-Party Cookies</a></li>
+            <li><a href="#managing-cookies">Managing Cookies</a></li>
+            <li><a href="#consequences-of-disabling-cookies">Consequences of Disabling Cookies</a></li>
+            <li><a href="#changes-to-this-cookies-policy">Changes to This Cookies Policy</a></li>
+            <li><a href="#cookies-policy-reference">Privacy Policy Reference</a></li>
+            <li><a href="#contact-us">Contact Us</a></li>
+        </ul>
+     </aside>
+
+    <!-- Main Content -->
+    <main class="content-area" style="max-width: 800px;">
+        <section id="cookies-policy">
+            <p><strong>Last updated:</strong> April 25, 2025</p>
+            <p>At ipshopy, we use cookies, pixels, and similar technologies (collectively referred to as "cookies") to recognize your browser or device, understand your interests, improve your browsing experience and deliver essential features and services. This Cookies Policy explains how we use cookies and your choices regarding their use.</p>
+            <p>By using ipshopy.com you agree to the use of cookies in accordance with this policy.</p>
+
+            <h2 id="what-are-cookies">What Are Cookies?</h2>
+            <p>Cookies are small text files stored on your device when you visit a website. They help websites recognize your device on subsequent visits, enabling features such as remembering your preferences, keeping you logged in or showing relevant content and ads.</p>
+            <p>Cookies may be set by ipshopy ("first-party cookies") or by third parties like advertising partners or analytics providers ("third-party cookies").</p>
+
+            <h2 id="how-does-ipshopy-use-cookies">How Does ipshopy Use Cookies?</h2>
+            <h3>1. Essential Operations</h3>
+            <ul>
+                <li>Recognizing you when you sign in to use our services</li>
+                <li>Enabling basic functions like navigation, login, cart management, and secure checkout</li>
+                <li>Ensuring site security and fraud prevention</li>
+                <li>Managing user sessions effectively</li>
+            </ul>
+
+            <h3>2. Personalization</h3>
+            <ul>
+                <li>Remembering your preferences (language, currency, display settings)</li>
+                <li>Showing personalized product recommendations</li>
+                <li>Offering a customized browsing experience</li>
+            </ul>
+
+            <h3>3. Analytics and Performance</h3>
+            <ul>
+                <li>Analyzing visitor interactions</li>
+                <li>Measuring page, feature, and campaign performance</li>
+                <li>Improving site structure and design</li>   
+            </ul>
+            <p>We use analytics tools like Google Analytics to collect aggregated statistics about site usage.</p>
+
+            <h3>4. Advertising and Marketing</h3>
+            <ul>
+                <li>Delivering relevant ads</li>
+                <li>Measuring advertising effectiveness</li>
+                <li>Limiting repetitive ads</li> 
+            </ul>
+             <p>Cookies help us show you more relevant ads and avoid repetition.</p>
+
+            <h3>5. Fraud Prevention and Security</h3>
+            <ul>
+                <li>Monitoring suspicious activities</li>
+                <li>Protecting users and the platform</li>
+                <li>Ensuring safe shopping</li>
+            </ul>
+
+            <h2 id="types-of-cookies-we-use">Types of Cookies We Use</h2>
+            <table class="cookie_table" border="1" cellpadding="10" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Type of Cookie</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Essential Cookies</td>
+                        <td>Necessary for website functionality and cannot be switched off</td>
+                    </tr>
+                    <tr>
+                        <td>Performance Cookies</td>
+                        <td>Help us understand how visitors use our site</td>
+                    </tr>
+                    <tr>
+                        <td>Functional Cookies</td>
+                        <td>Remember user choices and provide enhanced features</td>
+                    </tr>
+                    <tr>
+                        <td>Targeting/Advertising Cookies</td>
+                        <td>Deliver relevant ads and measure advertising campaign effectiveness</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 id="third-party-cookies">Third-Party Cookies</h2>
+            <p>Approved third-party partners may also set cookies when you interact with ipshopy services. These may include:</p>
+            <ul>
+                <li>Search engines like Google, Bing, Yahoo</li>
+                <li>Advertising networks</li>
+                <li>Social media platforms like Facebook and Instagram</li>
+                <li>Analytics providers</li>   
+            </ul>
+            <p>These third parties use cookies to deliver content, serve ads relevant to your interests, measure the effectiveness of their services, and provide reporting.</p>
+
+            <h2 id="managing-cookies">Managing Cookies</h2>
+            <p>You have the ability to control and manage cookies in several ways:</p>
+            <h3>a. Browser Settings</h3>
+            <p>Most web browsers allow you to control cookies through their settings. You can:</p>
+            <ul>
+                <li>Accept or reject cookies</li>
+                <li>Delete existing cookies</li>
+                <li>Set browser alerts for incoming cookies</li>
+            </ul>
+            <p>Refer to your browser's 'Help' section for specific instructions.</p>
+
+            <div class="important" style="background: #fff3cd; padding: 10px; border: 1px solid #ffeeba; margin: 15px 0;">
+                <strong>Important:</strong> Blocking or deleting cookies may affect your ability to use certain features on ipshopy, such as adding items to your cart or completing a purchase.
+            </div>
+
+            <h3>b. Mobile Settings</h3>
+            <p>Some mobile devices and operating systems allow you to control cookies and tracking technologies through device settings.</p>
+
+            <h2 id="consequences-of-disabling-cookies">Consequences of Disabling Cookies</h2>
+            <p>If you choose to block cookies:</p>
+            <ul>
+                <li>You may not be able to log in or use certain personalized features</li>
+                <li>Items in your cart may not be saved</li>
+                <li>Content and ads may be less relevant</li>
+                <li>Site performance may be negatively impacted</li>
+            </ul>
+            <p>We recommend keeping cookies enabled for an optimal experience.</p>
+
+            <h2 id="changes-to-this-cookies-policy">Changes to This Cookies Policy</h2>
+            <p>We may update this Cookies Policy from time to time to reflect changes in law or changes to our practices regarding cookies. </P>
+            <p>Any changes will be posted on this page with an updated effective date.</p>
+
+            <p>We encourage you to review this policy regularly to stay informed about how we use cookies.</p>
+
+            <h2 id="cookies-policy-reference">Privacy Policy Reference</h2>
+            <p>This Cookies Policy is part of our broader commitment to your privacy. For more information on how we collect, use, and protect your data, please read our Privacy Policy.</p>
+
+            <h2 id="contact-us">Contact Us</h2>
+            <p>If you have any questions or concerns regarding this Cookies Policy, you may contact us at:</p>
+            <p><strong>Company:</strong> IP SUPER SHOPPEE PVT. LTD.</p>
+            <p><strong>Website:</strong> <a href="https://www.ipshopy.com" target="_blank">www.ipshopy.com</a></p>
+            <p><strong>Email:</strong> info@ipshopy.com</p>
+            <p><strong>Phone:</strong> 9342525252</p>
+            <p><strong>Address:</strong> 'Dnyanpeeth Campus', T-18, Opp. Garrware Stadium, STPI, Naregaon Road, Chhatrapati Sambhaji Nagar (Aurangabad), Maharashtra, India 431007</p>
+        </section>
+    </main>
+</div>
+</div>
+
+ <script>
+     document.addEventListener('DOMContentLoaded', function() {
+         const closeButton = document.querySelector('.close-menu-button');
+         const sidebar = document.querySelector('.sidebar-container');
+         const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+         const contentArea = document.querySelector('.content-area');
+ 
+         if (closeButton && sidebar) {
+             closeButton.addEventListener('click', function() {
+                 sidebar.classList.toggle('closed');
+             });
+         }
+ 
+         sidebarLinks.forEach(link => {
+             link.addEventListener('click', function(event) {
+                 event.preventDefault();
+                 const targetId = this.getAttribute('href').substring(1);
+                 const targetElement = document.getElementById(targetId);
+ 
+                 if (targetElement) {
+                     const offsetTop = targetElement.offsetTop;
+                      contentArea.scrollTo({
+                         top: offsetTop,
+                         behavior: 'smooth'
+                     });
+ 
+                     if (window.innerWidth <= 768) {
+                         sidebar.classList.add('closed');
+                     }
+                 }
+             });
+         });
+     });
+ </script>
+
+{{ footer }}

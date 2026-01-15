@@ -1,0 +1,165 @@
+<?php
+namespace Cache;
+
+class File {
+    private $expire;
+
+    public function __construct($expire = 3600) {
+        $this->expire = $expire;
+
+        $files = glob(DIR_CACHE . 'cache.*');
+
+        if ($files) {
+            foreach ($files as $file) {
+                $time = substr(strrchr($file, '.'), 1);
+
+                if ($time < time()) {
+                    if (file_exists($file)) { // Ensure file exists
+                        @unlink($file); // Suppress warnings if unlink fails
+                    }
+                }
+            }
+        }
+    }
+
+    public function get($key) {
+        $files = glob(DIR_CACHE . 'cache.' . preg_replace('/[^A-Z0-9\._-]/i', '', $key) . '.*');
+
+        if ($files) {
+            $handle = fopen($files[0], 'r');
+
+            flock($handle, LOCK_SH);
+
+            $data = fread($handle, filesize($files[0]));
+
+            flock($handle, LOCK_UN);
+
+            fclose($handle);
+
+            return json_decode($data, true);
+        }
+
+        return false;
+    }
+
+    public function set($key, $value) {
+        $this->delete($key);
+
+        $file = DIR_CACHE . 'cache.' . preg_replace('/[^A-Z0-9\._-]/i', '', $key) . '.' . (time() + $this->expire);
+
+        $handle = fopen($file, 'w');
+
+        flock($handle, LOCK_EX);
+
+        fwrite($handle, json_encode($value));
+
+        fflush($handle);
+
+        flock($handle, LOCK_UN);
+
+        fclose($handle);
+    }
+
+    public function delete($key) {
+        $files = glob(DIR_CACHE . 'cache.' . preg_replace('/[^A-Z0-9\._-]/i', '', $key) . '.*');
+
+        if ($files) {
+            foreach ($files as $file) {
+                if (file_exists($file)) { // Ensure file exists
+                    @unlink($file); // Suppress warnings if unlink fails
+                }
+            }
+        }
+    }
+}
+
+
+
+// --------------------------------------- added and commented by sagar for shipping error (not working)--------------------------------------------------------------------------
+
+// <?php
+// namespace Cache;
+
+// class File {
+//     private $expire;
+
+//     public function __construct($expire = 3600) {
+//         $this->expire = $expire;
+
+//         $files = glob(DIR_CACHE . 'cache.*');
+
+//         if ($files) {
+//             foreach ($files as $file) {
+//                 $time = substr(strrchr($file, '.'), 1);
+
+//                 if ($time < time()) {
+//                     if (file_exists($file)) {
+//                         @unlink($file);  // Suppress warnings and handle errors properly
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+//     public function get($key) {
+//         $files = glob(DIR_CACHE . 'cache.' . preg_replace('/[^A-Z0-9\._-]/i', '', $key) . '.*');
+
+//         if ($files && file_exists($files[0])) {
+//             $handle = fopen($files[0], 'r');
+
+//             if ($handle) {
+//                 flock($handle, LOCK_SH);
+
+//                 $data = fread($handle, filesize($files[0]));
+
+//                 flock($handle, LOCK_UN);
+
+//                 fclose($handle);
+
+//                 // Check if the data is valid JSON
+//                 $json_data = json_decode($data, true);
+//                 if (json_last_error() === JSON_ERROR_NONE) {
+//                     return $json_data;
+//                 } else {
+//                     // Log the JSON error or return false
+//                     // error_log('Cache file contains invalid JSON: ' . $files[0]);
+//                     return false;
+//                 }
+//             }
+//         }
+
+//         return false;
+//     }
+
+//     public function set($key, $value) {
+//         $this->delete($key);
+
+//         $file = DIR_CACHE . 'cache.' . preg_replace('/[^A-Z0-9\._-]/i', '', $key) . '.' . (time() + $this->expire);
+
+//         $handle = fopen($file, 'w');
+
+//         if ($handle) {
+//             flock($handle, LOCK_EX);
+
+//             fwrite($handle, json_encode($value));
+
+//             fflush($handle);
+
+//             flock($handle, LOCK_UN);
+
+//             fclose($handle);
+//         }
+//     }
+
+//     public function delete($key) {
+//         $files = glob(DIR_CACHE . 'cache.' . preg_replace('/[^A-Z0-9\._-]/i', '', $key) . '.*');
+
+//         if ($files) {
+//             foreach ($files as $file) {
+//                 if (file_exists($file)) {
+//                     @unlink($file);  // Suppress warnings and handle errors properly
+//                 }
+//             }
+//         }
+//     }
+// }

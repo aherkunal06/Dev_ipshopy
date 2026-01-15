@@ -1,0 +1,79 @@
+<div class="tab-pane" id="settings">
+    <div class="row">
+        <div class="col-sm-12 col-md-8">
+
+            <!-- Main plugin settigs -->
+            <div class="panel panel-default">
+                <div class="panel-heading"><strong>{{ settings_heading }}</strong></div>
+                <div class="panel-body">
+
+                    <input type="hidden" name="{{ extension_fullname }}_install_date" id="{{ extension_fullname }}_install_date" value="{{ _context[extension_fullname ~ "_install_date"] is null or _context[extension_fullname ~ "_install_date"] is empty ? "now" | date('U')  : _context[extension_fullname ~ "_install_date"] }}" class="form-control">
+                    <input type="hidden" name="{{ extension_fullname }}_version" id="{{ extension_fullname }}_version" value="{{ _context[extension_fullname ~ "_version"] }}" class="form-control">
+                    <input type="hidden" name="{{ extension_fullname }}_already_rated" id="{{ extension_fullname }}_already_rated" value="{{ _context[extension_fullname ~ "_already_rated"] }}" class="form-control">
+                    <input type="hidden" name="{{ extension_fullname }}_rating_widget_showed" id="{{ extension_fullname }}_rating_widget_showed" value="{{ _context[extension_fullname ~ "_rating_widget_showed"] }}" class="form-control">
+
+                        <!-- Enable/Disable plugin: -->
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="{{ extension_fullname }}_status">{{ entry_status }}</label>
+                            <div class="col-sm-3">
+                                <input type="hidden" name="{{ extension_fullname }}_status" value="off">
+                                <input type="checkbox" name="{{ extension_fullname }}_status" id="{{ extension_fullname }}_status" class="toggle-btn" data-on="{{ btn_on }}" data-off="{{ btn_off }}" data-width="100" {{ _context[extension_fullname ~ "_status"] == "on" or _context[extension_fullname ~ "_status"] == "1" ? 'checked' : '' }}>
+                            </div>
+                        </div>
+                        <!-- Enable/Disable plugin: -->
+
+                </div>
+            </div>
+
+            <!-- Product feed settigs -->
+            <div class="panel panel-default">
+                <div class="panel-heading"><strong>{{ product_feed_heading }}</strong></div>
+                <div class="panel-body">
+
+                    <p>{{ product_feed_text }}</p>
+
+                    <!-- Product feed limit -->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="{{ extension_fullname }}_product_feed_limit">{{ product_feed_limit }}</label>
+                        <div class="col-sm-3">
+                            <input type="number" name="{{ extension_fullname }}_product_feed_limit" id="{{ extension_fullname }}_product_feed_limit" min="1" value="{{ _context[extension_fullname ~ "_product_feed_limit"] ? _context[extension_fullname ~ "_product_feed_limit"] : '' }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="help-block">
+                        <div class="col-sm-offset-2 col-sm-10"><span class="label label-info2">{{ help }}</span>&nbsp;{{ product_feed_limit_help }}</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Category feed settigs -->
+            <div class="panel panel-default">
+                <div class="panel-heading"><strong>{{ category_feed_heading }}</strong></div>
+                <div class="panel-body">
+
+                    <p>{{ category_feed_text }}</p>
+
+                    <!-- Product feed limit -->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="{{ extension_fullname }}_category_feed_limit">{{ category_feed_limit }}</label>
+                        <div class="col-sm-3">
+                            <input type="number" name="{{ extension_fullname }}_category_feed_limit" id="{{ extension_fullname }}_category_feed_limit" min="1" value="{{ _context[extension_fullname ~ "_category_feed_limit"] ? _context[extension_fullname ~ "_category_feed_limit"] : '' }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="help-block">
+                        <div class="col-sm-offset-2 col-sm-10"><span class="label label-info2">{{ help }}</span>&nbsp;{{ category_feed_limit_help }}</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- sidebar -->
+        {{ sidebar_view }}
+        <!-- ./sidebar -->
+
+    </div>
+</div>

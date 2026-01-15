@@ -1,0 +1,302 @@
+{{ header }}
+<div class="container dashboard2" id="accountdashboard">
+	<div class="row">
+		<div id="content" class="col-sm-12 col-xs-12">
+			{{ content_top }}
+			<div class="accountmenu-box row">
+				<div class="col-sm-3">
+					{% if logged %}
+					<div class="profile-detail">
+						<div class="image" id="image">
+							<input type="hidden" name="image" id="image" value=""/>
+							{% if prodileimage %}
+							<a class="profileimage" data-toggle="tooltip" title="{{ text_addprofileimg }}"><img src="{{ prodileimage }}" class="img-responsive" alt="{{ firstname }}{{ lastname }}" title="{{ firstname }}{{ lastname }}" /></a>
+							{% elseif defaulpic %}
+							<a class="profileimage" data-toggle="tooltip" title="{{ text_addprofileimg }}"><img src="{{ defaulpic }}" class="img-responsive" alt="{{ firstname }}{{ lastname }}" title="{{ firstname }}{{ lastname }}" /></a>
+							{% else %}
+							<a class="profileimage" data-toggle="tooltip" title="{{ text_addprofileimg }}"><img src="{{ placeholder1 }}" class="img-responsive img-thumbnail" alt="{{ firstname }}{{ lastname }}" title="{{ firstname }}{{ lastname }}" /></a>
+							{% endif %}
+							<div id="errors"></div>
+						</div>
+						<h3>{{ firstname }}{{ lastname }}</h3>
+						<p>{{ email }}</p>
+					</div>
+					{% endif %}
+				</div>
+
+				<div class="col-sm-9">
+					<div class="menu_bg">
+						<div class="row allicon">
+							{% if total_order %}
+							<div class="col-md-3 col-sm-3 col-xs-6">
+								<div class="totalorder">
+									<a href="{{ order }}">
+									<div class="icon-box">
+										<div class="iconnew"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+										</div>
+										<div class="box-detail">
+										  <h5><b>{{ order_total }}</b> <br/>{{ text_total_order }}</h5>
+										</div>
+									</div></a>
+								</div>
+							</div>
+							{% endif %}
+							{% if total_wishlist %}
+							<div class="col-md-3 col-sm-3 col-xs-6">
+								<div class="totalwishlist">
+									<a href="{{ wishlist }}"><div class="icon-box">
+										<div class="iconnew"><i class="fa fa-heart" aria-hidden="true"></i></div>
+										<div class="box-detail">
+										<h5><b>{{ wishlist_total }}</b><br/>{{ text_total_wishlist }} </h5>
+										</div>
+									</div>
+									</a>
+								</div>
+							</div>
+							{% endif %}
+							{% if total_reward %}
+							<div class="col-md-3 col-sm-3 col-xs-6">
+								<div class="totalreward">
+									<a href="{{ reward }}"><div class="icon-box">
+										<div class="iconnew"><i class="fa fa-gift" aria-hidden="true"></i></div>
+										<div class="box-detail">
+										<h5> <b>{{ points }}</b><br/>{{ text_reward_points }}</h5>
+										</div>
+									</div></a>
+								</div>
+							</div>
+							{% endif %}
+							{% if total_download %}
+							<div class="col-md-3 col-sm-3 col-xs-6">
+								<div class="totaldownloads">
+									<a href="{{ downloads }}"><div class="icon-box">
+										<div class="iconnew"><i class="fa fa-download" aria-hidden="true"></i></div>
+										<div class="box-detail">
+										<h5> <b>{{ totaldownload }}</b><br/>{{ text_downloads }}</h5>
+										</div>
+									</div></a>
+								</div>
+							</div>
+							{% endif %}
+						</div>
+						<div class="row allicon">
+							{% if total_transaction %}
+							<div class="col-md-3 col-sm-3 col-xs-6">
+								<div class="totaltransactions">
+									<a href="{{ transactions }}"><div class="icon-box">
+										<div class="iconnew"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
+										<div class="box-detail">
+										<h5> <b>{{ totaltransaction }}</b><br/>{{ text_transations }}</h5>
+										 </div>
+									</div></a>
+								</div>
+							</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+		
+				<div class="clearfix"></div>
+				<div class="col-sm-12">
+					<div class="icons">
+						<ul class="list-inline efect-border">
+							{% if link_editaccount %}
+							<li class="libox">
+								<a href="{{ edit }}">
+									<div class="icon">
+										<i class="fa fa-user" aria-hidden="true"></i>
+										<h4>{{ text_edit_account }}</h4>
+									</div>
+								</a>
+							</li>
+							{% endif %}
+							{% if link_password %}
+							<li class="libox">
+								<a href="{{ password }}">
+									<div class="icon">
+										<i class="fa fa-unlock-alt" aria-hidden="true"></i>
+										<h4>{{ text_change_password }}</h4>
+									</div>
+								</a>
+							</li>
+							{% endif %}
+							{% if link_address_book %}
+							<li class="libox">
+								<a href="{{ address }}"><div class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i>
+								<h4>{{ text_address_book }}</h4></div></a>
+							</li>
+							{% endif %}
+							{% if link_returns %}
+							<li class="libox">
+								<a href="{{ return }}"><div class="icon"><i class="fa fa-retweet" aria-hidden="true"></i>
+								<h4>{{ text_returnrequest }}</h4></div></a>
+							</li>
+							{% endif %}
+							{% if link_reward %}
+							<li class="libox">
+								<a href="{{ reward }}"><div class="icon"><i class="fa fa-gift" aria-hidden="true"></i>
+								<h4>{{ text_reward_point }}</h4></div></a>
+							</li>
+							{% endif %}
+							{% if link_payments %}
+							<li class="libox">
+								<a href="{{ recurring }}"><div class="icon"><i class="fa fa-money" aria-hidden="true"></i>
+								<h4>{{ text_recurringpayments }}</h4></div></a>
+							</li>
+							{% endif %}
+
+							{% if link_newsletter %}
+							<li class="libox">
+								<a href="{{ newsletter }}"><div class="icon"><i class="fa fa-envelope" aria-hidden="true"></i>
+								<h4>{{ text_newsletter }}</h4></div></a>
+							</li>
+							{% endif %}
+
+							{% if link_affilate %}
+							<li class="libox">
+								<a href="{{ affilate }}"><div class="icon"><i class="fa fa-users" aria-hidden="true"></i>
+								<h4>{{ text_affilate }}</h4></div></a>
+							</li>
+							{% endif %}
+							<li class="libox">
+								<a href="{{ logout }}"><div class="icon"><i class="fa fa-sign-out" aria-hidden="true"></i>
+								<h4>{{ text_logout }}</h4></div></a>
+							</li>
+						 </ul>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					{% if latest_order %}
+					<div class="table1">
+						<h3>{{ text_latest }}
+						<span class="viewall"><a href="{{ viewalorders }}"><i class="fa fa-eye" aria-hidden="true"></i> {{ text_viewall }}</a></span>
+						</h3>
+						<div class="table-responsive">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+									  <td class="text-center">{{ column_order_id }}</td>
+									  <td class="text-center">{{ column_product }}</td>
+									  <td class="text-center">{{ column_status }}</td>
+									  <td class="text-center">{{ column_total }}</td>
+									  <td class="text-center">{{ column_date_added }}</td>
+									  <td class="text-center">{{ column_action }}</td>
+									</tr>
+								</thead>
+								<tbody>
+									{% if orders %}
+									{% for order in orders %}
+									 <tr>
+										<td class="text-center">{{ order.order_id }}</td>
+										<td class="text-center">{{ order.noof_product }}</td>
+										<td class="text-center">{{ order.status }}</td>
+										<td class="text-center">{{ order.total }}</td>
+										<td class="text-center">{{ order.date_added }}</td>
+										<td class="text-center"><span class="viewtext"><a href="{{ order.href }}" data-toggle="tooltip" title="{{ button_view }}" ><i class="fa fa-eye" style="color:#303942; font-size:18px;"></i></a></span></td>
+									</tr>
+									{% endfor %}
+									{% else %}
+									<tr>
+										<td class="text-center" colspan="6">{{ text_no_results }}</td>
+									</tr>
+									{% endif %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+				
+			</div>
+			{% if tmdaccount_latestorder == 1%}
+			<div class="row">
+				<div class="col-sm-6 text-left">{{ pagination }}</div>
+				<div class="col-sm-6 text-right">{{ results }}</div>
+			</div>
+			{% endif %}
+		{{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+
+<!-- Css code start here -->
+<style type="text/css">
+{{ tmdaccount_customcss }}
+</style>
+
+<!-- Js code start here -->
+<script type="text/javascript">
+$('.profileimage').on('click', function() {
+	var node = this;
+
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+		clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			$.ajax({
+				url: 'index.php?route=extension/tmdaccount/uploadprofileimage',
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');
+				},
+				success: function(json) {
+					$('.text-danger').remove();
+
+					if (json['error']) {
+						$('#image').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+
+					if (json['success']) {
+
+						$.ajax({
+							url: 'index.php?route=extension/tmdaccount/saveimage',
+							type: 'post',
+							dataType: 'json',
+							data: 'image='+json['file'],
+							beforeSend: function() {
+								// $(node).button('loading');
+							},
+							complete: function() {
+								// $(node).button('reset');
+							},
+							success: function(json) {
+								$("#errors").html("Successfully Inserted!");
+								$('.profileimage').load(' .profileimage');
+
+							}
+						}); 
+						
+						$('#image').attr('value', json['file']);
+						$('#imagesrc').attr('src', json['file1'] );
+						$('#imagesrc').css({ display: "block", padding: "0px" });
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+
+</script>
+
+{{ footer }}

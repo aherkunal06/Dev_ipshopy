@@ -1,0 +1,27 @@
+<!-- CSS for marquee scroll -->
+<link rel="stylesheet" href="catalog\view\theme\default\stylesheet\variables.css">
+
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/customer/common/popular_brands.css">
+<!-- HTML -->
+<div class='popular_brands_container'>
+    
+<div class="popular-brands-header">
+    <h3 class="section-title">Popular Brands</h3>
+    {#<a href="{{ view_all_url }}" class="view-all-link">View All</a>#}
+  </div>
+<div class="popular-brands-section">
+
+  <div class="brand-slider-wrapper">
+    <!-- scrolling content -->
+    <div class="marquee-container">
+      {% for i in 1..2 %} {# repeat twice for infinite look #}
+        {% for brand in brands %}
+          <div class="brand-card">
+            <img src="{{ brand.image }}" alt="{{ brand.name }}">
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,1958 @@
+{{ header }}{{ column_left }}
+
+<style>
+.blink_me {
+  animation: blinker 1s linear infinite;
+  color: red;
+}
+@keyframes blinker {
+  50% { opacity: 0; }
+}
+</style>
+
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<!--19 02 2020-->
+			<div class="pull-right hide">
+				<button type="submit" id="button-shipping" form="form-report" formaction="{{ shipping }}" formtarget="_blank" data-toggle="tooltip" title="{{ button_shipping_print }}" class="btn btn-info">
+					<i class="fa fa-truck"></i>
+				</button>
+
+				<button type="submit" id="button-invoice" form="form-report" formaction="{{ invoice }}" formtarget="_blank" data-toggle="tooltip" title="{{ button_invoice_print }}" class="btn btn-info">
+					<i class="fa fa-print"></i>
+				</button>
+			</div>
+			<!--19 02 2020-->
+			<div class="pull-right">
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-info">
+				    <i class="fa fa-reply"></i>
+			    </a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li>
+						<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger alert-dismissible">
+				<i class="fa fa-exclamation-circle"></i>
+				{{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		{% if success %}
+			<div class="alert alert-success alert-dismissible">
+				<i class="fa fa-check-circle"></i>
+				{{ success }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				{#<h3 class="panel-title">#}
+				{#	<i class="fa fa-list"></i>#}
+				{#	{{ text_list }}</h3>#}
+				<div>
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#tab-new_orders" data-toggle="tab">New Orders</a>
+						</li>
+						<li>
+							<a href="#tab-rtd" data-toggle="tab">RTD</a>
+						</li>
+						<li>
+							<a href="#tab-manifest" data-toggle="tab">Manifest</a>
+						</li>
+						<li>
+							<a href="#tab-track" data-toggle="tab">Track</a>
+						</li>
+							<li>
+							<a href="#tab-breach" data-toggle="tab">Breached</a>
+						</li>
+						<li>
+							<a href="#tab-cancel" data-toggle="tab">Cancel</a>
+						</li>
+					
+					</ul>
+				</div>
+			</div>
+
+			{# ---------------------------------------------------- #}
+
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab-new_orders">
+					<div class="pending-label-header">
+						<h4>Label Generation Pending</h4>
+						{# <button id="fetchOrderData" class='btn btn-primary'>fetchdata label</button> #}
+						{#<button id="generateLable" class='btn btn-primary'>Generate label</button>#}
+						<div class='label-warehouse-section'>
+						    	{#<button id="generateLable" class='btn btn-primary' onclick="handleLabelGeneration()">Generate Label</button>#}
+    						<button type="button" id="generate-label" class='btn btn-primary' onclick="generateClickpostLabels('generate-label')">Generate Label</button>
+    						{#<div class="form-group">#}
+    							{#<label for="warehouse_id">Select Warehouse Address</label>#}
+    						{#	<select name="warehouse_id" id="warehouse_id" class="form-control" required>#}
+    						{#		<option value="">-- Select Warehouse --</option>#}
+    						{#		{% if warehouses %}#}
+    						{#			{% for warehouse in warehouses %}#}
+    						{#				<option value="{{ warehouse.warehouse_id }}">#}
+    						{#					{{ warehouse.address_1 }},#}
+    						{#					{{ warehouse.city }}#}
+    						{#				</option>#}
+    						{#			{% endfor %}#}
+    						{#		{% else %}#}
+    						{#			<option disabled>No warehouses available</option>#}
+    						{#		{% endif %}#}
+    						{#	</select>#}
+    						{#</div>#}
+						</div>
+
+					</div>
+					<div class="well">
+					    {# added id into the foloowing div------#}
+						{#<div class="row" id="tab-pending"> #}
+						{#	<div class="col-sm-4">#}
+						{#		<div class="form-group">#}
+						{#			<label class="control-label" for="input-order-id">{{ entry_order_id }}</label>#}
+						{#			<input type="text" name="filter_order_id" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id" class="form-control"/>#}
+						{#		</div>#}
+						{#	</div>#}
+
+						{#	<div class="col-sm-4">#}
+						{#		<button type="button" id="button-filter" style="margin-top:12%;" class="btn btn-primary col-sm-12">#}
+						{#			<i class="fa fa-filter"></i>#}
+						{#			{{ button_filter }}</button>#}
+						{#	</div>#}
+						{#</div>#}
+						<div class="row" id="tab-pending">
+							<div class="col-sm-4">
+								<div class="form-group">
+									<label class="control-label" for="input-order-id-pending">{{ entry_order_id }}</label>
+									<input type="text" name="input-order-id-pending" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id-pending" class="form-control"/>
+								</div>
+							</div>
+
+							<div class="col-sm-4">
+								<button type="button" id="button-filter-pending" style="margin-top:12%;" class="btn btn-primary col-sm-12">
+									<i class="fa fa-filter"></i> {{ button_filter }}
+								</button>
+							</div>
+					    </div>
+					    {#-------------------------------------------------------------#}
+					</div>
+					<form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-report">
+						<div class="table-responsive">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);"/></td>
+										<td class="text-left">
+											{% if sort == 'o.order_id' %}
+												<a href="{{ sort_order_id }}" class="{{ order|lower }}">{{ column_order_id }}</a>
+											{% else %}
+												<a href="{{ sort_order_id }}">{{ column_order_id }}</a>
+											{% endif %}
+										</td>
+										<td>Image</td>
+										<!--03 10 2019-->
+										<td class="text-center">{{ column_noofproduct }}</td>
+										<!--03 10 2019-->
+
+										<td class="text-left">
+											{% if sort == 'o.customer' %}
+												<a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a>
+											{% else %}
+												<a href="{{ sort_customer }}">{{ column_customer }}</a>
+											{% endif %}
+										</td>
+
+										<td class="text-left">
+											{% if sort == 'o.status' %}
+												<a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+											{% else %}
+												<a href="{{ sort_status }}">{{ column_status }}</a>
+											{% endif %}
+										</td>
+
+										<td class="text-left">
+											{% if sort == 'vop.date' %}
+												<a href="{{ sort_date }}" class="{{ order|lower }}">{{ text_date }}</a>
+											{% else %}
+												<a href="{{ sort_date }}">{{ text_date }}</a>
+											{% endif %}
+										</td>
+										<td class="text-left">{{ column_total }}</td>
+										{#-- added code to show the estimated courier charges ----- 22-04-2025 -----#}
+										<td class="text-left">{{ column_estimated_courier_charges }}</td>
+                                        <td class="text-left">{{ column_net_settlement }}</td>
+                                        {#--------------------------------------------------------------------------#}
+										<td class="text-center">{{ column_action }}</td>
+
+									</tr>
+								</thead>
+								<tbody>
+									{% if reports %}
+										{% for report in reports if report.order_status_id == '1' or report.order_status_id == '2' %}
+											<tr>
+												<!--19 02 2020-->
+												<td class="text-center">
+													{% if report.order_id in selected %}
+														<input type="checkbox" name="selected[]" value="{{ report.order_id }}" checked="checked"/>
+													{% else %}
+														<input type="checkbox" name="selected[]" value="{{ report.order_id }}"/>
+													{% endif %}
+													<input type="hidden" name="shipping_code[]" value="{{ report.shipping_code }}"/></td>
+
+												<!--19 02 2020-->
+												<td class="text-left">{{ report.order_id }}</td>
+										    	<td><img src={{report.product_image}}></td>
+												<td class="text-center">
+													{% if report.noofproduct == 1  %}
+														<span class="label label-info">{{ report.noofproduct }}</span>
+													{% else %}
+														<span class="label label-success">{{ report.noofproduct }}</span>
+													{% endif %}
+												</td>
+
+												<td class="text-left">{{ report.firstname }}</td>
+												<!--27 04 2020 update order_status_id-->
+												<td class="text-left">
+													<span class="label{% if report.order_status_id=='1' %} label-danger {% elseif report.order_status_id=='5' %} label-success {% else %} label-warning {% endif %}">{{ report.statusname }}</span>
+												</td>
+												<td class="text-left">
+													<span style="font-size:12px;" class="label btn-info">
+														<i class="fa fa-clock-o" aria-hidden="true"></i>
+														{{ report.date_added }}</span>
+												</td>
+												<td class="text-left">{{ report.total }}</td>
+												{#-- added code to show the estimated courier charges -- on 22-04-2025----------------#}
+                                                <td id="estimated-{{ report.order_id }}"> 
+                                                      {% if report.estimated_courier_charges %}
+                                                            ₹{{ report.estimated_courier_charges}}
+                                                      {% else %}
+                                                        N/A
+                                                      {% endif %}
+                                                </td>
+                                            
+                                                <td id="net_settlement-{{ report.order_id }}">
+                                                  {% if report.net_settlement %}
+                                                    ₹{{ report.net_settlement}}
+                                                  {% else %}
+                                                    N/A
+                                                  {% endif %}
+                                                </td>
+                                                {#-------------------------------------------------------------------------------------------------#}
+												<td class="text-center">
+													<a href="{{ report.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-primary">
+														<i class="fa fa-eye"></i>
+													</a>
+												</td>
+											</tr>
+										{% endfor %}
+									{% else %}
+										<tr>
+											<td class="text-center" colspan="9">{{ text_no_results }}</td>
+										</tr>
+									{% endif %}
+								</tbody>
+							</table>
+						</div>
+					</form>
+
+                    {# added changes on 19-05-2025 ----#}
+					<div class="row">
+						<div class="col-sm-6 text-left">{{ pagination_pending}}</div>
+						<div class="col-sm-6 text-right">{{ results_pending }}</div>
+					</div>
+					{#--------------------------------------#}
+				</div>
+
+				<div class="tab-pane" id="tab-rtd">
+					<div class="pending-label-header">
+						<h4>Pending Manifest</h4> 
+						<span style='flex-grow: 1; text-align: right; margin-right: 20px;'>
+						    
+						{{manifest_video}}
+						</span>
+						<button id="createManifest" class='btn btn-primary'>Create Manifest</button>
+						{#<button id="createClickpostManifest" class='btn btn-primary'>Create Manifest</button>#}
+				    </div>
+
+					<div class="well">
+					    {#--commented and added new changes on 19-05-2025----#}
+						{#<div class="row">#}
+						{#	<div class="col-sm-4">#}
+						{#		<div class="form-group">#}
+						{#			<label class="control-label" for="input-order-id">{{ entry_order_id }}</label>#}
+						{#			<input type="text" name="filter_order_id" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id" class="form-control"/>#}
+						{#		</div>#}
+						{#	</div>#}
+
+						{#	<div class="col-sm-4">#}
+						{#		<button type="button" id="button-filter" style="margin-top:12%;" class="btn btn-primary col-sm-12">#}
+						{#			<i class="fa fa-filter"></i>#}
+						{#			{{ button_filter }}</button>#}
+						{#	</div>#}
+						{#</div>#}
+						<div class="row" id="tab-rtd">
+							<div class="col-sm-4">
+								<div class="form-group">
+									<label class="control-label" for="input-order-id-rtd">{{ entry_order_id }}</label>
+									<input type="text" name="filter_order_id_rtd" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id-rtd" class="form-control"/>
+								</div>
+							</div>
+
+							<div class="col-sm-4">
+								<button type="button" id="button-filter-rtd" style="margin-top:12%;" class="btn btn-primary col-sm-12">
+									<i class="fa fa-filter"></i> {{ button_filter }}
+								</button>
+							</div>
+						</div>
+						{#--------------------------------------------------------#}
+					</div>
+					<form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-report">
+						<div class="table-responsive">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);"/></td>
+										<td class="text-left">
+											{% if sort == 'o.order_id' %}
+												<a href="{{ sort_order_id }}" class="{{ order|lower }}">{{ column_order_id }}</a>
+											{% else %}
+												<a href="{{ sort_order_id }}">{{ column_order_id }}</a>
+											{% endif %}
+										</td>
+										<td>Image</td>
+										<!--03 10 2019-->
+										<td class="text-center">{{ column_noofproduct }}</td>
+										<!--03 10 2019-->
+
+										<td class="text-left">
+											{% if sort == 'o.customer' %}
+												<a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a>
+											{% else %}
+												<a href="{{ sort_customer }}">{{ column_customer }}</a>
+											{% endif %}
+										</td>
+
+										<td class="text-left">
+											{% if sort == 'o.status' %}
+												<a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+											{% else %}
+												<a href="{{ sort_status }}">{{ column_status }}</a>
+											{% endif %}
+										</td>
+
+										<td class="text-left">
+											{% if sort == 'vop.date' %}
+												<a href="{{ sort_date }}" class="{{ order|lower }}">{{ text_date }}</a>
+											{% else %}
+												<a href="{{ sort_date }}">{{ text_date }}</a>
+											{% endif %}
+										</td>
+										<td class="text-left">{{ column_total }}</td>
+										<td class="text-center">{{ column_action }}</td>
+										<td class="text-center">{{column_label}}</td>
+
+									</tr>
+								</thead>
+								<tbody>
+									{% if reports %}
+										{% for report in reports if report.order_status_id == 8 or report.order_status_id == 56 %}
+											<tr>
+												<!--19 02 2020-->
+												<td class="text-center">
+													{% if report.order_id in selected %}
+														<input type="checkbox" name="selected[]" value="{{ report.order_id }}" checked="checked"/>
+													{% else %}
+														<input type="checkbox" name="selected[]" value="{{ report.order_id }}"/>
+													{% endif %}
+													<input type="hidden" name="shipping_code[]" value="{{ report.shipping_code }}"/></td>
+
+												<!--19 02 2020-->
+												<td class="text-left">{{ report.order_id }}</td>
+												<td><img src={{report.product_image}} alt='product image' ></td>
+												<td class="text-center">
+													{% if report.noofproduct == 1  %}
+														<span class="label label-info">{{ report.noofproduct }}</span>
+													{% else %}
+														<span class="label label-success">{{ report.noofproduct }}</span>
+													{% endif %}
+												</td>
+
+												<td class="text-left">{{ report.firstname }}</td>
+												<!--27 04 2020 update order_status_id-->
+												<td class="text-left">
+													<span class="label{% if report.order_status_id=='1' %} label-danger {% elseif report.order_status_id=='5' %} label-success {% else %} label-warning {% endif %}"> {{ report.statusname }}</span>
+												</td>
+												<td class="text-left">
+													<span style="font-size:12px;" class="label btn-info">
+														<i class="fa fa-clock-o" aria-hidden="true"></i>
+														{{ report.date_added }}</span>
+												</td>
+												<td class="text-left">{{ report.total }}</td>
+
+												<td class="text-center">
+													<a href="{{ report.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-primary">
+														<i class="fa fa-eye"></i>
+													</a>
+												</td>
+												<td class="text-center">
+													{# <button class="btn btn-link fetch-label" data-order-id="{{ report.order_id }}"> #}
+														<a href="{{report.shipping_label}}" target="_blank"
+														><svg width="30" height="35" class="bi bi-upc-scan" viewBox ="0 0 16 16">
+														<path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5zM3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"></path></svg></a>
+													{# </button> #}
+												</td>
+											</tr>
+										{% endfor %}
+									{% else %}
+										<tr>
+											<td class="text-center" colspan="9">{{ text_no_results }}</td>
+										</tr>
+									{% endif %}
+								</tbody>
+							</table>
+						</div>
+					</form>
+
+
+					<div class="row">
+						<div class="col-sm-6 text-left">{{ paginationRtd}}</div>
+						<div class="col-sm-6 text-right">{{ resultsRtd }}</div>
+					</div>
+
+				</div>
+
+				<div class="tab-pane" id="tab-manifest">
+					<div class="pending-label-header">
+						<h4>Manifest List</h4>
+						<button id="fetchOrderData" class='btn btn-primary'>Get Manifest</button>
+					</div>
+					<form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-report">
+						<div class="table-responsive">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+									    <td class="text-left">Date</td>
+										<!--03 10 2019-->
+										<td class="text-center">{{ column_noofproduct }}</td>
+										<!--03 10 2019-->
+										<td class='text-center'>Manifest</td>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</form>
+
+
+					<div class="row">
+						<div class="col-sm-6 text-left">{{ pagination }}</div>
+						<div class="col-sm-6 text-right">{{ results }}</div>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="tab-track">
+					<div class="pending-label-header">
+						<h4>Track Orders</h4>
+					</div>
+					<div class="well">
+					    {#----  added changes on the 19-05-2025 ---- #}
+						{#<div class="row">#}
+						{#	<div class="col-sm-4">#}
+						{#		<div class="form-group">#}
+						{#			<label class="control-label" for="input-order-id">{{ entry_order_id }}</label>#}
+						{#			<input type="text" name="filter_order_id" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id" class="form-control"/>#}
+						{#		</div>#}
+						{#	</div>#}
+
+						{#	<div class="col-sm-4">#}
+						{#		<button type="button" id="button-filter" style="margin-top:12%;" class="btn btn-primary col-sm-12">#}
+						{#			<i class="fa fa-filter"></i>#}
+						{#			{{ button_filter }}</button>#}
+						{#	</div>#}
+						{#</div>#}
+						<div class="row" id="tab-track">
+							<div class="col-sm-4">
+								<div class="form-group">
+									<label class="control-label" for="input-order-id-track">{{ entry_order_id }}</label>
+									<input type="text" name="filter_order_id_track" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id-track" class="form-control"/>
+								</div>
+							</div>
+
+							<div class="col-sm-4">
+								<button type="button" id="button-filter-track" style="margin-top:12%;" class="btn btn-primary col-sm-12">
+									<i class="fa fa-filter"></i> {{ button_filter }}
+								</button>
+							</div>
+						</div>
+						{#----------------------------------------------#}
+					</div>
+					<form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-report">
+						<div class="table-responsive">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);"/></td>
+										<td class="text-left">
+											{% if sort == 'o.order_id' %}
+												<a href="{{ sort_order_id }}" class="{{ order|lower }}">{{ column_order_id }}</a>
+											{% else %}
+												<a href="{{ sort_order_id }}">{{ column_order_id }}</a>
+											{% endif %}
+										</td>
+										<td>Image</td>
+										<!--03 10 2019-->
+										<td class="text-center">{{ column_noofproduct }}</td>
+										<!--03 10 2019-->
+
+										<td class="text-left">
+											{% if sort == 'o.customer' %}
+												<a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a>
+											{% else %}
+												<a href="{{ sort_customer }}">{{ column_customer }}</a>
+											{% endif %}
+										</td>
+
+										<td class="text-left">
+											{% if sort == 'o.status' %}
+												<a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+											{% else %}
+												<a href="{{ sort_status }}">{{ column_status }}</a>
+											{% endif %}
+										</td>
+
+										<td class="text-left">
+											{% if sort == 'vop.date' %}
+												<a href="{{ sort_date }}" class="{{ order|lower }}">{{ text_date }}</a>
+											{% else %}
+												<a href="{{ sort_date }}">{{ text_date }}</a>
+											{% endif %}
+										</td>
+										<td class="text-left">{{ column_total }}</td>
+										<td class="text-center">{{ column_action }}</td>
+										<td class="text-center">{{column_label}}</td>
+										<td class="text-center">{{column_manifest}}</td>
+
+									</tr>
+								</thead>
+								<tbody>
+									{% if reports_track %}
+										{% for report in reports_track if report.order_status_id not in [2,7,8,17] %}
+											<tr>
+												<!--19 02 2020-->
+												<td class="text-center">
+													{% if report.order_id in selected %}
+														<input type="checkbox" name="selected[]" value="{{ report.order_id }}" checked="checked"/>
+													{% else %}
+														<input type="checkbox" name="selected[]" value="{{ report.order_id }}"/>
+													{% endif %}
+													<input type="hidden" name="shipping_code[]" value="{{ report.shipping_code }}"/></td>
+
+												<!--19 02 2020-->
+												<td class="text-left">{{ report.order_id }}</td>
+												<td><img src={{report.product_image}} alt='product image' ></td>
+												<td class="text-center">
+													{% if report.noofproduct == 1  %}
+														<span class="label label-info">{{ report.noofproduct }}</span>
+													{% else %}
+														<span class="label label-success">{{ report.noofproduct }}</span>
+													{% endif %}
+												</td>
+
+												<td class="text-left">{{ report.firstname }}</td>
+												<!--27 04 2020 update order_status_id-->
+												<td class="text-left">
+													<span class="label{% if report.order_status_id=='1' %} label-danger {% elseif report.order_status_id=='5' %} label-success {% else %} label-warning {% endif %}">{{ report.statusname }}</span>
+												</td>
+												<td class="text-left">
+													<span style="font-size:12px;" class="label btn-info">
+														<i class="fa fa-clock-o" aria-hidden="true"></i>
+														{{ report.date_added }}</span>
+												</td>
+												<td class="text-left">{{ report.total }}</td>
+
+												<td class="text-center">
+													<a href="{{ report.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-primary">
+														<i class="fa fa-eye"></i>
+													</a>
+												</td>
+												{#--- added the changes on the 15-05-2025 ------------#}
+												<td class="text-center">
+												    {% if report.shipping_label %}
+    													<a href="{{report.shipping_label}}" target="_blank"
+														><svg width="30" height="35" class="bi bi-upc-scan" viewBox ="0 0 16 16">
+														<path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5zM3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"></path></svg></a>
+													
+													{% endif %}
+												</td>
+												{#-------------------------------------------------------------#}
+												
+												{#-- added changes for showing the manifest on 27/06/2025#}
+												<td class="text-center">
+            										{% if report.shipping_manifest %}
+            											<a href="{{ report.shipping_manifest}}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-primary">
+            													<i class="fa fa-eye"></i>
+            											</a>
+            										{% endif %}
+												</td>
+												{#-------------------------------------------------------#}
+											</tr>
+										{% endfor %}
+									{% else %}
+										<tr>
+											<td class="text-center" colspan="9">{{ text_no_results }}</td>
+										</tr>
+									{% endif %}
+								</tbody>
+							</table>
+						</div>
+					</form>
+
+
+					<div class="row">
+						<div class="col-sm-6 text-left">{{ paginationTrack }}</div>
+						<div class="col-sm-6 text-right">{{ resultsTrack }}</div>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="tab-cancel">
+					<div class="pending-label-header">
+						<h4>Cancel Orders</h4>
+					</div>
+					<div class="well">
+					    {#--- added changes on 19-05-2025 ------#}
+						{#<div class="row">#}
+						{#	<div class="col-sm-4">#}
+						{#		<div class="form-group">#}
+						{#			<label class="control-label" for="input-order-id">{{ entry_order_id }}</label>#}
+						{#			<input type="text" name="filter_order_id" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id" class="form-control"/>#}
+						{#		</div>#}
+						{#	</div>#}
+
+						{#	<div class="col-sm-4">#}
+						{#		<button type="button" id="button-filter" style="margin-top:12%;" class="btn btn-primary col-sm-12">#}
+						{#			<i class="fa fa-filter"></i>#}
+						{#			{{ button_filter }}</button>#}
+						{#	</div>#}
+						{#</div>#}
+						<div class="row" id="tab-cancel">
+							<div class="col-sm-4">
+								<div class="form-group">
+									<label class="control-label" for="input-order-id-cancel">{{ entry_order_id }}</label>
+									<input type="text" name="filter_order_id_cancel" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id-cancel" class="form-control"/>
+								</div>
+							</div>
+
+							<div class="col-sm-4">
+								<button type="button" id="button-filter-cancel" style="margin-top:12%;" class="btn btn-primary col-sm-12">
+									<i class="fa fa-filter"></i> {{ button_filter }}
+								</button>
+							</div>
+						</div>
+						{#-----------------------------------#}
+					</div>
+					<form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-report">
+						<div class="table-responsive">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);"/></td>
+										<td class="text-left">
+											{% if sort == 'o.order_id' %}
+												<a href="{{ sort_order_id }}" class="{{ order|lower }}">{{ column_order_id }}</a>
+											{% else %}
+												<a href="{{ sort_order_id }}">{{ column_order_id }}</a>
+											{% endif %}
+										</td>
+										<td>Image</td>
+										<!--03 10 2019-->
+										<td class="text-center">{{ column_noofproduct }}</td>
+										<!--03 10 2019-->
+
+										<td class="text-left">
+											{% if sort == 'o.customer' %}
+												<a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a>
+											{% else %}
+												<a href="{{ sort_customer }}">{{ column_customer }}</a>
+											{% endif %}
+										</td>
+
+										<td class="text-left">
+											{% if sort == 'o.status' %}
+												<a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+											{% else %}
+												<a href="{{ sort_status }}">{{ column_status }}</a>
+											{% endif %}
+										</td>
+
+										<td class="text-left">
+											{% if sort == 'vop.date' %}
+												<a href="{{ sort_date }}" class="{{ order|lower }}">{{ text_date }}</a>
+											{% else %}
+												<a href="{{ sort_date }}">{{ text_date }}</a>
+											{% endif %}
+										</td>
+										<td class="text-left">{{ column_total }}</td>
+										<td class="text-center">{{ column_action }}</td>
+
+									</tr>
+								</thead>
+								<tbody>
+									{% if reports %}
+										{% for report in reports if report.order_status_id == '7' %}
+											<tr>
+												<!--19 02 2020-->
+												<td class="text-center">
+													{% if report.order_id in selected %}
+														<input type="checkbox" name="selected[]" value="{{ report.order_id }}" checked="checked"/>
+													{% else %}
+														<input type="checkbox" name="selected[]" value="{{ report.order_id }}"/>
+													{% endif %}
+													<input type="hidden" name="shipping_code[]" value="{{ report.shipping_code }}"/></td>
+
+												<!--19 02 2020-->
+												<td class="text-left">{{ report.order_id }}</td>
+												<td><img src={{report.product_image}} alt='product image' ></td>
+												<td class="text-center">
+													{% if report.noofproduct == 1  %}
+														<span class="label label-info">{{ report.noofproduct }}</span>
+													{% else %}
+														<span class="label label-success">{{ report.noofproduct }}</span>
+													{% endif %}
+												</td>
+
+												<td class="text-left">{{ report.firstname }}</td>
+												<!--27 04 2020 update order_status_id-->
+												<td class="text-left">
+													<span class="label{% if report.order_status_id=='1' %} label-danger {% elseif report.order_status_id=='5' %} label-success {% else %} label-warning {% endif %}">{{ report.statusname }}</span>
+												</td>
+												<td class="text-left">
+													<span style="font-size:12px;" class="label btn-info">
+														<i class="fa fa-clock-o" aria-hidden="true"></i>
+														{{ report.date_added }}</span>
+												</td>
+												<td class="text-left">{{ report.total }}</td>
+
+												<td class="text-center">
+													<a href="{{ report.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-primary">
+														<i class="fa fa-eye"></i>
+													</a>
+												</td>
+											</tr>
+										{% endfor %}
+									{% else %}
+										<tr>
+											<td class="text-center" colspan="9">{{ text_no_results }}</td>
+										</tr>
+									{% endif %}
+								</tbody>
+							</table>
+						</div>
+					</form>
+
+
+					<div class="row">
+						<div class="col-sm-6 text-left">{{ paginationCancel  }}</div>
+						<div class="col-sm-6 text-right">{{ resultsCancel }}</div>
+					</div>
+
+					
+				</div>
+
+				{# Breach Tab #}
+				<div class="tab-pane" id="tab-breach">
+					
+					<div class="pending-label-header">
+						<h4>Breached Orders</h4>
+						
+						{% set reports_exists = false %}
+						{% for report in reports %}
+						{% if report.order_status_id == '17' %}
+						{% set reports_exists = true %}
+						{% endif %}
+						{% endfor %}
+						
+						{% if reports_exists %}
+						    <div class="blink_me"><h4>🚨 ⚠️ Attention: You have breached orders that require immediate action.! 🚨</h4></div>
+						{% endif %} 
+						<div>
+						    <button id="generateLable" class='btn btn-primary' onclick="generateClickpostLabels('generate-label')">Generate Label</button>
+						    {#<button type="button" id="generate-label" class="btn btn-success" onclick="generateClickpostLabels('generate-label')">Generate Label</button>#}
+						</div>
+					</div>
+					<div class="well">
+					    {#--commented the code and update new one on 19-05-2025 --- #}
+						{#<div class="row">#}
+						{#	<div class="col-sm-4">#}
+						{#		<div class="form-group">#}
+						{#			<label class="control-label" for="input-order-id">{{ entry_order_id }}</label>#}
+						{#			<input type="text" name="filter_order_id" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id" class="form-control"/>#}
+						{#		</div>#}
+						{#	</div>#}
+
+						{#	<div class="col-sm-4">#}
+						{#		<button type="button" id="button-filter" style="margin-top:12%;" class="btn btn-primary col-sm-12">#}
+						{#			<i class="fa fa-filter"></i>#}
+						{#			{{ button_filter }}</button>#}
+						{#	</div>#}
+						{#</div>#}
+						<div class="row" id="tab-breach">
+							<div class="col-sm-4">
+								<div class="form-group">
+									<label class="control-label" for="input-order-id-breach">{{ entry_order_id }}</label>
+									<input type="text" name="filter_order_id_breach" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id-breach" class="form-control"/>
+								</div>
+							</div>
+
+							<div class="col-sm-4">
+								<button type="button" id="button-filter-breach" style="margin-top:12%;" class="btn btn-primary col-sm-12">
+									<i class="fa fa-filter"></i>
+									{{ button_filter }}
+								</button>
+							</div>
+						</div>
+						{#------------------------------------------------------------#}
+					</div>
+					<form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-report">
+						<div class="table-responsive">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);"/></td>
+										<td class="text-left">
+											{% if sort == 'o.order_id' %}
+												<a href="{{ sort_order_id }}" class="{{ order|lower }}">{{ column_order_id }}</a>
+											{% else %}
+												<a href="{{ sort_order_id }}">{{ column_order_id }}</a>
+											{% endif %}
+										</td>
+										<td>Image</td>
+										<!--03 10 2019-->
+										<td class="text-center">{{ column_noofproduct }}</td>
+										<!--03 10 2019-->
+
+										<td class="text-left">
+											{% if sort == 'o.customer' %}
+												<a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a>
+											{% else %}
+												<a href="{{ sort_customer }}">{{ column_customer }}</a>
+											{% endif %}
+										</td>
+
+										<td class="text-left">
+											{% if sort == 'o.status' %}
+												<a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+											{% else %}
+												<a href="{{ sort_status }}">{{ column_status }}</a>
+											{% endif %}
+										</td>
+
+										<td class="text-left">
+											{% if sort == 'vop.date' %}
+												<a href="{{ sort_date }}" class="{{ order|lower }}">{{ text_date }}</a>
+											{% else %}
+												<a href="{{ sort_date }}">{{ text_date }}</a>
+											{% endif %}
+										</td>
+										<td class="text-left">{{ column_total }}</td>
+										<td class="text-center">{{ column_action }}</td>
+
+									</tr>
+								</thead>
+								<tbody>
+									{% if reports %}
+										{% for report in reports if report.order_status_id == '17' %}
+											<tr>
+												<!--19 02 2020-->
+												<td class="text-center">
+													{% if report.order_id in selected %}
+														<input type="checkbox" name="selected[]" value="{{ report.order_id }}" checked="checked"/>
+													{% else %}
+														<input type="checkbox" name="selected[]" value="{{ report.order_id }}"/>
+													{% endif %}
+													<input type="hidden" name="shipping_code[]" value="{{ report.shipping_code }}"/></td>
+
+												<!--19 02 2020-->
+												<td class="text-left">{{ report.order_id }}</td>
+												<td><img src={{report.product_image}} alt='product image' ></td>
+												<td class="text-center">
+													{% if report.noofproduct == 1  %}
+														<span class="label label-info">{{ report.noofproduct }}</span>
+													{% else %}
+														<span class="label label-success">{{ report.noofproduct }}</span>
+													{% endif %}
+												</td>
+
+												<td class="text-left">{{ report.firstname }}</td>
+												<!--27 04 2020 update order_status_id-->
+												<td class="text-left">
+													<span class="label{% if report.order_status_id=='1' %} label-danger {% elseif report.order_status_id=='5' %} label-success {% else %} label-warning {% endif %}">{{ report.statusname }}</span>
+												</td>
+												<td class="text-left">
+													<span style="font-size:12px;" class="label btn-info">
+														<i class="fa fa-clock-o" aria-hidden="true"></i>
+														{{ report.date_added }}</span>
+												</td>
+												<td class="text-left">{{ report.total }}</td>
+
+												<td class="text-center">
+													<a href="{{ report.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-primary">
+														<i class="fa fa-eye"></i>
+													</a>
+												</td>
+											</tr>
+										{% endfor %}
+									{% else %}
+										<tr>
+											<td class="text-center" colspan="9">{{ text_no_results }}</td>
+										</tr>
+									{% endif %}
+								</tbody>
+							</table>
+						</div>
+					</form>
+
+
+					<div class="row">
+						<div class="col-sm-6 text-left">{{paginationBreached }}</div>
+						<div class="col-sm-6 text-right">{{ resultsBreached }}</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+{#pickup date pop model #}
+{#<div id="pickupTimePopup" style="display:none; position:fixed; top:30%; left:35%; background:white; padding:20px; border:1px solid #ccc; z-index:9999;">#}
+{#    <label><b>Select Pickup Date & Time:</b></label><br>#}
+{#    <input type="datetime-local" id="pickup_time_input" class="form-control" /><br><br>#}
+{#    <button class="btn btn-primary" onclick="confirmPickupTime()">Confirm</button>#}
+{#    <button class="btn btn-danger" onclick="closePickupTimePopup()">Cancel</button>#}
+{#</div>#}
+
+{#added the logic to diplay the processing during label generation - 17-05-2025#}
+<div id="processing-overlay" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  padding-top: 20%;
+  z-index: 9999;">
+  🔄 Generating Label... Please wait.
+</div>
+{#--- end here---------------------------------------#}
+{# for switching tabs  #}
+<script>
+	$(document).ready(function () {
+        $('.nav-tabs a').on('click', function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    });
+</script>
+{# -------------------------------------- #}
+
+<!-- date- 17/05/2025   label generate reload logic for rtd orders-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabToActivate = sessionStorage.getItem("activateTab");
+        if (tabToActivate) {
+            const tabElement = document.querySelector(`.nav-tabs a[href="#${tabToActivate}"]`);
+            if (tabElement) {
+                tabElement.click(); // Activate the tab
+            }
+            sessionStorage.removeItem("activateTab"); // Remove flag after use
+        }
+    });
+</script>
+
+{#-end here------------------------------------------------------------#}
+{#commented on the 19-05-2025 and added new code#}
+{#<script type="text/javascript">#}
+{#	$('#button-filter').on('click', function () {#}
+{#    var url = 'index.php?route=vendor/order_report';#}
+    
+{#    var filter_order_id = $('input[name=\'filter_order_id\']').val();#}
+    
+{#    if (filter_order_id) {#}
+{#    url += '&filter_order_id=' + encodeURIComponent(filter_order_id);#}
+{#    }#}
+    
+{#    location = url;#}
+{#    });#}
+{#</script>#}
+
+<script type="text/javascript">
+	<!--
+	$('.date').datetimepicker({pickTime: false});
+    $('.time').datetimepicker({pickDate: false});
+    $('.datetime').datetimepicker({pickDate: true, pickTime: true});
+    //
+	-->
+</script>
+<!--19 02 2020-->
+<script	type="text/javascript">
+	<!--
+	$('input[name^=\'selected\']').on('change', function () {
+        $('#button-shipping, #button-invoice').prop('disabled', true);
+
+        var selected = $('input[name^=\'selected\']:checked');
+
+        if (selected.length) {
+            $('#button-invoice').prop('disabled', false);
+        }
+
+        for (i = 0; i < selected.length; i ++) {
+            if ($(selected[i]).parent().find('input[name^=\'shipping_code\']').val()) {
+                $('#button-shipping').prop('disabled', false);
+
+                break;
+            }
+        }
+    });
+
+    $('#button-shipping, #button-invoice').prop('disabled', true);
+
+    $('input[name^=\'selected\']:first').trigger('change');
+
+    // IE and Edge fix!
+    $('#button-shipping, #button-invoice').on('click', function (e) {
+        $('#form-report').attr('action', this.getAttribute('formAction'));
+    });
+    //
+	-->
+</script>
+<!--19 02 2020-->
+
+
+{# for fetch data only  #}
+<script>
+    // 	document.getElementById('fetchOrderData').addEventListener('click', function () {
+    // let selectedOrder = document.querySelector('input[name="selected[]"]:checked');
+    // if (! selectedOrder) {
+    // alert("Please select at least one order.");
+    // return;
+    // }
+    
+    // let orderId = selectedOrder.value;
+    
+    // // Fetch order data from backend
+    // fetch(`index.php?route=vendor/order_report/fetchOrderData&order_id=${orderId}`).then(response => {
+    // if (!response.ok) {
+    // throw new Error('Failed to fetch order data.');
+    // }
+    // return response.json();
+    // }).then(orderData => {
+    // console.log("Order Data fetched from database:", orderData);
+    
+    // // Process the fetched order data (if needed)
+    // alert("Order data fetched successfully. Check the console for details.");
+    // }).catch(error => {
+    // console.error('An error occurred:', error);
+    // alert("An error occurred: " + error.message);
+    // });
+    // });
+</script>
+
+
+{# for label generation  #}
+{#<script>#}
+{#function refreshOrders() {#}
+{#	fetch('index.php?route=vendor/order_report/getUpdatedOrders')#}
+		{#.then(response => response.text()) // Change from .json() to .text() to inspect the raw response#}
+{#		.then(text => {#}
+{#			console.log("Raw response from getUpdatedOrders:", text);#}
+
+{#		try {#}
+{#			let data = JSON.parse(text);#}
+{#			console.log("Parsed Order Data:", data);#}
+{#			} catch (error) {#}
+{#			console.error("Error parsing JSON:", error);#}
+{#			}#}
+{#		})#}
+{#		.catch(error => console.error("Error refreshing orders:", error));#}
+{#
+
+{#</script>#}
+
+
+
+
+	{# Manifest new #}
+
+<script>
+    document.getElementById("createManifest").addEventListener("click", function() {
+        let selectedOrders = document.querySelectorAll('input[name="selected[]"]:checked');
+
+        if (selectedOrders.length === 0) {
+            alert("Please select at least one order.");
+            return;
+        }
+
+        let button = document.getElementById("createManifest");
+        button.disabled = true;
+        button.innerText = "Processing...";
+
+        let orderIds = Array.from(selectedOrders).map(order => order.value);
+
+        fetch('index.php?route=vendor/order_report/createManifest', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ order_ids: orderIds })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status && data.manifest_id) {
+                alert("Manifest Created Successfully.");
+
+                // ✅ Fetch the Secure Download URL
+                fetch(`index.php?route=vendor/order_report/downloadManifest&manifest_id=${data.manifest_id}`)
+                .then(response => response.json())
+                .then(downloadData => {
+                    if (downloadData.status && downloadData.file_url) {
+                        // ✅ Trigger Automatic Download
+                        window.location.href = downloadData.file_url;
+                    } else {
+                        alert("Error fetching manifest file.");
+                    }
+                });
+            } else {
+                alert("Error: " + (data.error ? data.error : "Unknown error"));
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("An error occurred while creating the manifest.");
+        })
+        .finally(() => {
+            button.disabled = false;
+            button.innerText = "Create Manifest";
+        });
+    });
+</script>
+
+{# for Breach Orders #}
+<script>
+    document.getElementById('fetchBreachorders').addEventListener('click', function () {
+        fetch('index.php?route=vendor/order_report/updateBreachedOrders')
+        .then(response => response.json())
+        .then(data => {
+            console.log("Breached Orders Updated:", data);
+            fetchBreachedOrders(); // Refresh the table with breached orders
+        })
+        .catch(error => console.error("Error updating breached orders:", error));
+    });
+
+    function fetchBreachedOrders() {
+        let tableBody = document.querySelector('#tab-breach tbody'); // ✅ Fixed Selector
+
+        if (!tableBody) {
+            console.error("Table body not found for breach orders.");
+            return;
+        }
+		refreshOrders();
+        fetch('index.php?route=vendor/order_report/getBreachedOrders')
+        .then(response => response.json())
+        .then(data => {
+            // If table is already populated, avoid unnecessary updates
+            if (tableBody.children.length > 0) {
+                console.log("Table is already populated. Skipping refresh.");
+                return;
+            }
+
+            // tableBody.innerHTML = ''; // Uncomment if you want to clear old rows before inserting new ones
+
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td class="text-center" colspan="9">No breached orders found.</td></tr>';
+                return;
+            }
+
+            // Example: Loop through data and append rows
+            
+        })
+        .catch(error => console.error("Error fetching breached orders:", error));
+    }
+</script>
+
+{# List of manifest for the manifest tabe #}
+{# update the following function on 08-04-2025 change datemodifed to manifest_date--------------------------------------#}
+<script type="text/javascript">
+    document.getElementById('fetchOrderData').addEventListener('click', function () {
+        fetch('index.php?route=vendor/order_report/getManifestData')
+        .then(response => response.json())
+        .then(data => {
+            let tableBody = '';
+			// <td class="text-center"><input type="checkbox" name="selected[]" value="${manifest.manifest_id}"></td>
+			//<td class="text-left">${manifest.date_modified}</td>
+            if (data.length > 0) {
+                data.forEach(function(manifest) {
+                    tableBody += `
+                        <tr>
+                           <td class="text-left">
+								<span style="font-size:12px;" class="label btn-info">
+									<i class="fa fa-clock-o" aria-hidden="true"></i>
+									${manifest.manifest_date}</span> 
+							</td>
+                            
+                            <td class="text-center">${manifest.order_count}</td>
+                            <td class="text-center">
+                                <a href="${manifest.manifest_url}" target="_blank" class="btn btn-info">View Manifest</a>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } else {
+                tableBody = '<tr><td class="text-center" colspan="4">No Manifests Found</td></tr>';
+            }
+
+            // Populate the Manifest Tab's table
+            document.querySelector('#tab-manifest tbody').innerHTML = tableBody;
+        })
+        .catch(error => console.error('Error fetching manifest data:', error));
+    });
+</script>
+
+{# ---------- Script to Generate the label from breached and new orders tab 17-05-2025---#}
+<script>
+  async function handleLabelGeneration() {
+
+    const selectedOrders = document.querySelectorAll(
+      'input[name="selected[]"]:checked'
+    );
+    if (selectedOrders.length === 0) {
+      alert("Please select at least one order.");
+      return;
+    }
+    
+    const overlay = document.getElementById("processing-overlay");
+    overlay.style.display = "block";
+
+    // Force the DOM to render the overlay BEFORE continuing
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    await new Promise(resolve => setTimeout(resolve, 50));
+    
+    const button = document.getElementById("generateLable");
+    button.disabled = true;
+    button.innerText = "Processing...";
+
+
+    const orderIds = Array.from(selectedOrders).map((order) => order.value);
+    const generatedLabels = [];
+    const generatedAwbs = [];
+    const generatedCarriers = [];
+
+    for (let orderId of orderIds) {
+      try {
+        // Step 1: Fetch order data
+        const orderResponse = await fetch(
+          `index.php?route=vendor/order_report/fetchOrderData&order_id=${encodeURIComponent(
+            orderId
+          )}`
+        );
+        const orderData = await orderResponse.json();
+
+        const shipwayResponse = await fetch(
+          "index.php?route=vendor/order_report/sendToShipway",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(orderData),
+          }
+        );
+
+        const shipwayResult = await shipwayResponse.json();
+        const orderTotal = parseFloat(orderData.order_total) || 0;
+
+        if (shipwayResult.label_url) {
+          generatedLabels.push(shipwayResult.label_url);
+          generatedAwbs.push(shipwayResult.awb_no);
+          generatedCarriers.push(shipwayResult.carrier_id);
+
+          // Step 3: Store label
+          const saveLabelResponse = await fetch(
+            "index.php?route=vendor/order_report/updateShippingLabel",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `order_id=${encodeURIComponent(
+                orderId
+              )}&label_url=${encodeURIComponent(
+                shipwayResult.label_url
+              )}&awbno=${encodeURIComponent(
+                shipwayResult.awb_no
+              )}&carrier_id=${encodeURIComponent(shipwayResult.carrier_id)}`,
+            }
+          );
+          const saveLabelData = await saveLabelResponse.json();
+
+          if (saveLabelData.success) {
+            // Step 4: Update order status
+            const updateStatusResponse = await fetch(
+              "index.php?route=vendor/order_report/updateOrderStatusAndSwitch",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `order_id=${encodeURIComponent(orderId)}`,
+              }
+            );
+            const statusData = await updateStatusResponse.json();
+
+            if (!statusData.success) {
+              console.error(
+                `Order ${orderId} status update error:`,
+                statusData.error
+              );
+            }
+          } else {
+            console.error(
+              `Label save error for Order ${orderId}:`,
+              saveLabelData.error
+            );
+          }
+        }
+
+        // Get courier ID and rates
+        const courierIdResponse = await fetch(
+          `index.php?route=vendor/order_report/getCourierId&order_id=${orderId}`
+        );
+        const courierData = await courierIdResponse.json();
+
+        if (courierData.courier_id !== undefined) {
+          const courierRatesResponse = await fetch(
+            `index.php?route=vendor/order_report/getCourierRates&order_id=${orderId}`
+          );
+          const rateData = await courierRatesResponse.json();
+
+          if (
+            rateData.success &&
+            Array.isArray(rateData.courier_rates?.rate_card)
+          ) {
+            const matchedCarrier = rateData.courier_rates.rate_card.find(
+              (rate) => rate.carrier_id == courierData.courier_id
+            );
+
+            if (matchedCarrier) {
+              const codCharges = parseFloat(matchedCarrier.cod_charges);
+              const deliveryCharge = parseFloat(matchedCarrier.delivery_charge);
+              const rtoCharge = parseFloat(matchedCarrier.rto_charge);
+              const fowardCharge =
+                codCharges +
+                deliveryCharge +
+                0.18 * (codCharges + deliveryCharge) +
+                (orderTotal * 1.18) / 100;
+
+              const rowElement = document.querySelector(
+                `tr[data-order-id="${orderId}"]`
+              );
+              if (rowElement) {
+                const fowardChargeTd =
+                  rowElement.querySelector(".total-charge");
+                if (fowardChargeTd) {
+                  fowardChargeTd.textContent = fowardCharge.toFixed(2);
+                }
+              }
+            } else {
+              console.warn(`⚠️ No matching carrier found for Order ${orderId}`);
+            }
+          }
+        }
+      } catch (error) {
+        console.error(`Error processing order ${orderId}:`, error);
+      }
+    }
+
+    // Handle result after all orders processed
+    if (generatedLabels.length > 0) {
+      alert(`Label generated for orders: ${orderIds.join(", ")}`);
+      try {
+        sessionStorage.setItem("activateTab", "tab-rtd");
+        <!-- // Set the flag in sessionStorage to indicate that the tab click should happen after reload -->
+      
+        document.getElementById("processing-overlay").style.display = "none"; // hide overlay before reload
+
+        window.location.reload();
+        
+      } catch (err) {
+        console.error("RTD fetch error:", err);
+      }
+  } else {
+      alert("Orders updated but no labels generated.");
+        document.getElementById("processing-overlay").style.display = "none"; // hide overlay
+
+    }
+    button.disabled = false;
+    button.innerText = "Generate Label";
+
+
+  }
+
+//   //  Attach the function to button
+//   document
+//     .getElementById("generateLable")
+//     .addEventListener("click", handleLabelGeneration);
+</script>
+{#-----end here---------------------------------------------------------------------------#}
+
+
+<!-- filter code on 19-05-2025 -->
+ <script>
+	const tabFilters = {
+		'tab-pending': {
+			pageParam: 'page',
+			inputs: {
+				orderId: 'input-order-id-pending',
+				customer: 'input-customer-pending'
+			},
+			buttonId: 'button-filter-pending'
+		},
+		'tab-rtd': {
+			pageParam: 'page_rtd',
+			inputs: {
+				orderId: 'input-order-id-rtd',
+				customer: 'input-customer-rtd'
+			},
+			buttonId: 'button-filter-rtd'
+		},
+		'tab-cancel': {
+			pageParam: 'page_cancel',
+			inputs: {
+				orderId: 'input-order-id-cancel',
+				customer: 'input-customer-cancel'
+			},
+			buttonId: 'button-filter-cancel'
+		},
+		'tab-track': {
+			pageParam: 'page_track',
+			inputs: {
+			orderId: 'input-order-id-track',
+			customer: 'input-customer-track'
+			},
+			buttonId: 'button-filter-track'
+		},
+		'tab-manifest': {
+			pageParam: 'page_manifest',
+			inputs: {
+			orderId: 'input-order-id-manifest',
+			customer: 'input-customer-manifest'
+			},
+			buttonId: 'button-filter-manifest'
+		},
+		'tab-breach': {
+			pageParam: 'page_breached',
+			inputs: {
+			orderId: 'input-order-id-breach',
+			customer: 'input-customer-breach'
+			},
+			buttonId: 'button-filter-breach'
+		}
+		// Add more tabs as needed
+	};
+
+	Object.keys(tabFilters).forEach(tabId => {
+		const config = tabFilters[tabId];
+		const button = document.getElementById(config.buttonId);
+
+		if (button) {
+			button.addEventListener('click', () => {
+				const url = new URL(window.location.href);
+				const params = url.searchParams;
+
+				// Clear all tab page keys
+				const allPageKeys = ['page', 'page_rtd', 'page_cancel', 'page_breached', 'page_manifest', 'page_track'];
+				allPageKeys.forEach(key => params.delete(key));
+				params.set(config.pageParam, '1');
+
+				// Collect and set filters
+				const orderId = document.getElementById(config.inputs.orderId)?.value || '';
+				const customer = document.getElementById(config.inputs.customer)?.value || '';
+
+				orderId ? params.set('filter_order_id', orderId) : params.delete('filter_order_id');
+				customer ? params.set('filter_customer', customer) : params.delete('filter_customer');
+
+				// Redirect to URL with correct tab hash
+				window.location.href = `${url.origin}${url.pathname}?${params.toString()}#${tabId}`;
+			});
+		}
+	});
+</script>
+
+
+
+
+<!-- --------===========------ ------------------------------>
+
+<!-- this code added for active tab url pagination --updated on 19-05-2025---->
+
+
+// <script>
+// 	document.addEventListener("DOMContentLoaded", function () {
+// 		// If there's a hash in the URL, activate that tab
+// 		if (window.location.hash) {
+// 			const tab = document.querySelector('a[href="' + window.location.hash + '"]');
+// 			if (tab) {
+// 				tab.click(); // Activate tab
+// 			}
+// 		}
+
+// 		// When a tab is clicked, update the hash in the URL (for pagination)
+// 		document.querySelectorAll('.nav-tabs a').forEach(function (tabLink) {
+// 			tabLink.addEventListener('shown.bs.tab', function (e) {
+// 				history.replaceState(null, null, e.target.getAttribute('href'));
+// 			});
+// 		});
+// 	});
+// </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	// === TAB CONFIGURATION ===
+	const tabFilters = {
+		'tab-pending': {
+			pageParam: 'page',
+			inputs: {
+				orderId: 'input-order-id-pending',
+				customer: 'input-customer-pending'
+			},
+			buttonId: 'button-filter-pending'
+		},
+		'tab-rtd': {
+			pageParam: 'page_rtd',
+			inputs: {
+				orderId: 'input-order-id-rtd',
+				customer: 'input-customer-rtd'
+			},
+			buttonId: 'button-filter-rtd'
+		},
+		'tab-cancel': {
+			pageParam: 'page_cancel',
+			inputs: {
+				orderId: 'input-order-id-cancel',
+				customer: 'input-customer-cancel'
+			},
+			buttonId: 'button-filter-cancel'
+		},
+		'tab-track': {
+			pageParam: 'page_track',
+			inputs: {
+				orderId: 'input-order-id-track',
+				customer: 'input-customer-track'
+			},
+			buttonId: 'button-filter-track'
+		},
+		'tab-manifest': {
+			pageParam: 'page_manifest',
+			inputs: {
+				orderId: 'input-order-id-manifest',
+				customer: 'input-customer-manifest'
+			},
+			buttonId: 'button-filter-manifest'
+		},
+		'tab-breach': {
+			pageParam: 'page_breached',
+			inputs: {
+				orderId: 'input-order-id-breach',
+				customer: 'input-customer-breach'
+			},
+			buttonId: 'button-filter-breach'
+		}
+	};
+
+	// === FILTER BUTTON HANDLER ===
+	Object.entries(tabFilters).forEach(([tabId, config]) => {
+		const button = document.getElementById(config.buttonId);
+		if (!button) return;
+
+		button.addEventListener('click', () => {
+			const url = new URL(window.location.href);
+			const params = url.searchParams;
+
+			// Clear all page params and filters
+			Object.values(tabFilters).forEach(cfg => {
+				params.delete(cfg.pageParam);
+			});
+			params.delete('filter_order_id');
+			params.delete('filter_customer');
+
+			// Set only current tab's page param
+			params.set(config.pageParam, '1');
+
+			// Get input values for current tab
+			const orderId = document.getElementById(config.inputs.orderId)?.value.trim() || '';
+			const customer = document.getElementById(config.inputs.customer)?.value.trim() || '';
+
+			// Set filter values if not empty
+			if (orderId !== '') {
+				params.set('filter_order_id', orderId);
+			}
+			if (customer !== '') {
+				params.set('filter_customer', customer);
+			}
+
+			// Final URL with current tab hash
+			window.location.href = `${url.origin}${url.pathname}?${params.toString()}#${tabId}`;
+		});
+	});
+
+	// === ACTIVATE CORRECT TAB AFTER RELOAD ===
+	if (window.location.hash) {
+		const activeTab = document.querySelector('a[href="' + window.location.hash + '"]');
+		if (activeTab) activeTab.click();
+	}
+
+	// === TAB SWITCH HANDLER ===
+	document.querySelectorAll('.nav-tabs a').forEach(tabLink => {
+		tabLink.addEventListener('click', function (e) {
+			const newHash = e.target.getAttribute('href');
+			const url = new URL(window.location.href);
+			url.hash = newHash;
+
+			// Clear filters and page params before reload
+			Object.values(tabFilters).forEach(cfg => {
+				url.searchParams.delete(cfg.pageParam);
+			});
+			url.searchParams.delete('filter_order_id');
+			url.searchParams.delete('filter_customer');
+
+			// Reload with clean state and tab hash
+			window.location.href = url.toString();
+		});
+	});
+});
+</script>
+
+
+
+
+
+{#clickpost #}
+<script>
+//     let selectedOrderIds = [];
+// 	let generateButton = null;
+
+// 	function generateClickpostLabels(buttonId) {
+// 		// Get all checked checkboxes
+// 		generateButton = document.getElementById(buttonId);
+// 		generateButton.disabled = true;
+// 		generateButton.innerText = "Please wait...";
+
+// 		const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+// 		selectedOrderIds = Array.from(checkboxes).map(cb => cb.value);
+
+// 		// Validate selection
+// 		if (selectedOrderIds.length === 0) {
+// 			alert("Please select at least one order.");
+// 			generateButton.disabled = false;
+// 			generateButton.innerText = "Generate Labels";
+// 			return;
+// 		}
+
+// 		// Show pickup time popup
+// 		document.getElementById('pickupTimePopup').style.display = 'block';
+// 		generateButton.disabled = false;
+// 		generateButton.innerText = "Generate Labels";
+// 	}
+
+// 	function confirmPickupTime() {
+// 		const pickupTime = document.getElementById('pickup_time_input').value;
+		
+// 		if (!pickupTime) {
+// 			alert("Please select pickup date and time");
+// 			return;
+// 		}
+
+// 		// Close popup
+// 		document.getElementById('pickupTimePopup').style.display = 'none';
+		
+// 		// Disable button again and show generating
+// 		generateButton.disabled = true;
+// 		generateButton.innerText = "Generating...";
+		
+// 		// Make API request to generate labels with pickup time
+// 		fetch('index.php?route=clickpost/label_generation/generateLabels&user_token={{ user_token }}', {
+// 			method: 'POST',
+// 			headers: {
+// 				'Content-Type': 'application/json'
+// 			},
+// 			body: JSON.stringify({
+// 				order_ids: selectedOrderIds,
+// 				pickup_time: pickupTime
+// 			})
+// 		})
+// 		.then(res => res.json())
+// 		.then(data => {
+// 			console.log(data);
+// 			// Show success/error message
+// 			if (data.success) {
+// 				alert("Labels generated successfully!");
+// 			} else {
+// 				alert("Label generation failed: " + (data.error || "Unknown error"));
+// 			}
+// 		})
+// 		.catch(err => {
+// 			alert("Something went wrong!");
+// 			console.error(err);
+// 		})
+// 		.finally(() => {
+// 			generateButton.disabled = false;
+// 			generateButton.innerText = "Generate Labels";
+// 		});
+// 	}
+
+// 	function closePickupTimePopup() {
+// 		document.getElementById('pickupTimePopup').style.display = 'none';
+// 		// Reset the pickup time input
+// 		document.getElementById('pickup_time_input').value = '';
+// 	}
+
+
+
+    // function generateClickpostLabels(buttonId) {
+    //     const button = document.getElementById(buttonId);
+    //     button.disabled = true;
+    //     button.innerText = "Generating...";
+
+    //     // Get selected orders
+    //     const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+    //     const orderIds = Array.from(checkboxes).map(cb => cb.value);
+
+    //     // Check if any orders are selected
+    //     if (orderIds.length === 0) {
+    //         alert("Please select at least one order.");
+    //         button.disabled = false;
+    //         button.innerText = "Generate Labels";
+    //         return;
+    //     }
+
+    //     // API request to generate labels
+    //     fetch('index.php?route=clickpost/label_generation/generateLabels&user_token={{ user_token }}', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({ order_ids: orderIds })
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         if (data.success) {
+    //             alert("Labels generated successfully!");
+                
+                
+    //         } else {
+    //             alert("Label generation failed: " + (data.error || "Unknown error"));
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Error:', error);
+    //         alert("Something went wrong!");
+    //     })
+    //     .finally(() => {
+    //         // Reset button state after operation
+    //         button.disabled = false;
+    //         button.innerText = "Generate Labels";
+    //     });
+    // }
+    
+    // function generateClickpostLabels(buttonId) {
+    //     const button = document.getElementById(buttonId);
+    //     button.disabled = true;
+    //     button.innerText = "Generating...";
+    
+    //     // Get selected orders
+    //     const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+    //     const orderIds = Array.from(checkboxes).map(cb => cb.value);
+    
+    //     // Check if any orders are selected
+    //     if (orderIds.length === 0) {
+    //         alert("Please select at least one order.");
+    //         button.disabled = false;
+    //         button.innerText = "Generate Labels";
+    //         return;
+    //     }
+    
+    //     // API request to generate labels
+    //     fetch('index.php?route=clickpost/label_generation/generateLabels&user_token={{ user_token }}', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({ order_ids: orderIds })
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         if (data.success) {
+    //             console.log(data.success);
+    //             alert("Labels generated successfully!");
+    //             // Update order status
+                
+    //             const updateStatusResponse = await fetch("index.php?route=vendor/order_report/updateOrderStatusAndSwitch", {
+    //                 method: "POST",
+    //                 headers: { 
+    //                     "Content-Type": "application/x-www-form-urlencoded",
+    //                 },
+    //                  body: `order_id=${encodeURIComponent(orderId)}`,
+    //             }
+    //         );
+    //         const statusData = await updateStatusResponse.json();
+
+    //         if (!statusData.success) {
+    //           console.error(
+    //             `Order ${orderId} status update error:`,
+    //             statusData.error
+    //           );
+    //         }
+    //       } else {
+    //             alert("Label generation failed: " + (data.error || "Unknown error"));
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Error:', error);
+    //         alert("Something went wrong!");
+    //     })
+    //     .finally(() => {
+    //         // Reset button state after operation
+    //         button.disabled = false;
+    //         button.innerText = "Generate Labels";
+    //     });
+    // }
+    
+async function generateClickpostLabels(buttonId) {
+    const button = document.getElementById(buttonId);
+    button.disabled = true;
+    button.innerText = "Generating...";
+
+    const checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+    const orderIds = Array.from(checkboxes).map(cb => cb.value);
+
+    if (orderIds.length === 0) {
+        alert("Please select at least one order.");
+        button.disabled = false;
+        button.innerText = "Generate Labels";
+        return;
+    }
+    
+    const overlay = document.getElementById("processing-overlay");
+    overlay.style.display = "block";
+
+    try {
+        const response = await fetch('index.php?route=clickpost/label_generation/generateLabels&user_token={{ user_token|e("js") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ order_ids: orderIds })
+        });
+
+        const data = await response.json();
+
+        if (data.success && Array.isArray(data.results)) {
+            console.log("Full Label API Response:", data);
+
+            const updatedOrders = [];
+
+            for (const result of data.results) {
+                console.log("Label Generated for Order ID:", result.order_id, result);
+
+                // Call status update for each order ID
+                const updateRes = await fetch('index.php?route=vendor/order_report/updateOrderStatusAndSwitch&user_token={{ user_token|e("js") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `order_id=${encodeURIComponent(result.order_id)}`
+                });
+
+                const statusData = await updateRes.json();
+                if (statusData.success) {
+                    updatedOrders.push(result.order_id);
+                } else {
+                    console.error(`Failed to update status for Order ${result.order_id}:`, statusData.error);
+                }
+            }
+
+            // ✅ Show alert with updated order IDs
+            alert("Labels generated successfully for Order IDs: " + updatedOrders.join(", "));
+
+            try {
+                sessionStorage.setItem("activateTab", "#tab-rtd");
+              
+                document.getElementById("processing-overlay").style.display = "none"; // hide overlay before reload
+        
+                window.location.reload();
+                
+              } catch (err) {
+                console.error("RTD fetch error:", err);
+            } 
+      
+        } else {
+            alert("Label generation failed: " + (data.error || "Unknown error"));
+        }
+
+    } catch (err) {
+        console.error("Error:", err);
+        alert("Something went wrong!");
+    } finally {
+        button.disabled = false;
+        button.innerText = "Generate Labels";
+    }
+}
+
+    
+    
+
+</script>
+
+{#multiwarehouse 19-06-2025#}
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+	document.querySelectorAll(".confirm-warehouse-btn").forEach(function (btn) {
+		btn.addEventListener("click", function () {
+		const orderId = this.dataset.orderId;
+		const select = document.querySelector(`select[data-order-id='${orderId}']`);
+		const warehouseId = select.value;
+
+		if (!warehouseId) {
+			alert("Please select a warehouse first.");
+			return;
+		}
+
+		fetch('index.php?route=vendor/order_report/confirmWarehouse&order_id=' + orderId + '&warehouse_id=' + warehouseId)
+			.then(response => response.json())
+			.then(data => {
+			if (data.success) {
+				this.textContent = "Confirmed";
+				this.disabled = true;
+				select.disabled = true;
+			} else {
+				alert(data.error || "Failed to confirm warehouse.");
+			}
+			});
+		});
+	});
+	});
+</script>
+
+<!-- ------===========-----------= -->
+
+{{ footer }}
+
+
+

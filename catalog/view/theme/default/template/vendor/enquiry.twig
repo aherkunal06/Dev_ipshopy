@@ -1,0 +1,246 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="well">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-author">{{ entry_name }}</label>
+				<!-- /* 12 02 2020 */ change name filter_enqname-->
+                <input type="text" name="filter_enqname" value="{{ filter_enqname }}" placeholder="{{ entry_name }}" id="input-author" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-name">{{ entry_product }}</label>
+                <input type="text" name="filter_product" value="{{ filter_product }}" placeholder="{{ entry_product }}" id="input-name" class="form-control" />
+                <input type="hidden" name="product_id" value="{{ filter_productvalue }}" />
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group hide">
+                <label class="control-label" for="input-filter_status">{{ entry_status }}</label>
+               <select name="filter_status" id="input-status" class="form-control">
+                <option value=""></option>             
+
+                {% if filter_status == '1' %}            
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                  {% else %}        
+                <option value="1">{{ text_enabled }}</option>
+                  {% endif %}
+                  {% if filter_status == '0' %}    
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                 {% else %}
+				 <option value="0">{{ text_disabled }}</option>
+                  {% endif %}
+              </select>
+              </div>
+			  
+              <div class="form-group">
+                <label class="control-label" for="input-date-added">{{ entry_date_added }}</label>
+                <div class="input-group date">
+                  <input type="text" name="filter_date_added" value="{{ filter_date_added }}" placeholder="{{ entry_date_added }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" />
+                  <span class="input-group-btn">
+                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                  </span></div>
+              </div>
+              <button style="margin-top:8%;" type="button" id="button-filter" class="btn btn-primary pull-right col-sm-12" ><i class="fa fa-search"></i> {{ button_filter }}</button>
+            </div>
+          </div>
+        </div>
+        <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-review">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                  <td class="text-left">{% if sort == 'name' %}
+                    <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+                    {% else %}
+                    <a href="{{ sort_name }}">{{ column_name }}</a>
+                    {% endif %}</td>
+                  <td class="text-left">{% if sort == 'email' %}
+                    <a href="{{ sort_email }}" class="{{ order|lower }}">{{ column_email }}</a>
+                    {% else %}
+                    <a href="{{ sort_email }}">{{ column_email }}</a>
+                    {% endif %}</td>
+                  <td class="text-left">{% if sort == 'product' %}
+                    <a href="{{ sort_product }}" class="{{ order|lower }}">{{ column_product }}</a>
+                    {% else %}
+                    <a href="{{ sort_product }}">{{ column_product }}</a>
+                    {% endif %}</td>
+                  <!--  tmd vendor2 customer condtion  -->
+				{% if vendor2customer==1 %}
+                  <td class="text-left">{% if sort == 'customer' %}
+                    <a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a>
+                    {% else %}
+                    <a href="{{ sort_customer }}">{{ column_customer }}</a>
+                    {% endif %}</td>
+				{% endif %}
+					<!--  tmd vendor2 customer condtion  -->
+                  <td class="text-left hide">{% if sort == 'status' %}
+                    <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+                    {% else %}
+                    <a href="{{ sort_status }}">{{ column_status }}</a>
+                    {% endif %}</td>
+					<td class="text-left">{{ column_description }} </td>
+                  <td class="text-left">{% if sort == 'date_added' %}
+                    <a href="{{ sort_date_added }}" class="{{ order|lower }}">{{ column_date_added }}</a>
+                    {% else %}
+                    <a href="{{ sort_date_added }}">{{ column_date_added }}</a>
+                    {% endif %}</td>
+                </tr>
+              </thead>
+              <tbody>
+                {% if enquires %}
+                {% for enquiry in enquires %}
+                <tr>
+                  <td class="text-center">{% if enquiry.inquiry_id in selected %}
+                    <input type="checkbox" name="selected[]" value="{{ enquiry.inquiry_id }}" checked="checked" />
+                    {% else %}
+                    <input type="checkbox" name="selected[]" value="{{ enquiry.inquiry_id }}" />
+                    {% endif %}</td>
+                  <td class="text-left">{{ enquiry.name }}</td>
+                  <td class="text-left">{{ enquiry.email }}</td>
+				  <!--07-03-2019 update-->
+                  <td class="text-left"><a href="{{ enquiry.producturl }}" target="_blank">{{ enquiry.pname }}</a></td>
+				  <!--07-03-2019 update-->
+				  {% if vendor2customer==1 %}
+                  <td class="text-left">{{ enquiry.cname }}</td>
+				  {% endif %}
+                  <td class="text-left hide">{{ enquiry.status }}</td>
+				  <td class="text-left">{{ enquiry.description }}</td>
+                  <td class="text-left"><span style="font-size:12px;" class="label btn-info"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ enquiry.date_added }}</span></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td class="text-center" colspan="8">{{ text_no_results }}</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </form>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	url = 'index.php?route=vendor/enquiry';
+	/* 12 02 2020 */
+	var filter_product = $('input[name=\'filter_product\']').val();
+	
+	if (filter_product) {
+		url += '&filter_product=' + encodeURIComponent(filter_product);
+	}
+	
+	
+	var filter_productvalue = $('input[name=\'product_id\']').val();
+	
+	if (filter_productvalue) {
+		url += '&filter_productvalue=' + encodeURIComponent(filter_productvalue);
+	}
+
+	
+	var filter_enqname = $('input[name=\'filter_enqname\']').val();
+	
+	if (filter_enqname) {
+		url += '&filter_enqname=' + encodeURIComponent(filter_enqname);
+	}
+	
+	var filter_status = $('select[name=\'filter_status\']').val();
+
+	if (filter_status !== '') {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+	/* 12 02 2020 */		
+	var filter_date_added = $('input[name=\'filter_date_added\']').val();
+	
+	if (filter_date_added) {
+		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
+	}
+
+	location = url;
+});
+//--></script> 
+  <script type="text/javascript"><!--
+$('.date').datetimepicker({
+	pickTime: false
+});
+//--></script>
+ <script type="text/javascript"><!--
+$('input[name=\'filter_product\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=vendor/product/autocomplete&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_product\']').val(item['label']);
+    $('input[name=\'product_id\']').val(item['value']);
+  }
+});
+/* add new function 12 02 2020 */
+//Enquirer Name
+$('input[name=\'filter_enqname\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=vendor/enquiry/autocomplete&filter_enqname=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['inquiry_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_enqname\']').val(item['label']);
+    $('input[name=\'inquiry_id\']').val(item['value']);
+  }
+});
+/* add new function 12 02 2020 */
+</script></div>
+{{ footer }}

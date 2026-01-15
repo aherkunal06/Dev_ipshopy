@@ -1,0 +1,185 @@
+.hero-section {
+	background: linear-gradient(135deg, #953A93, #FFFFFF);
+	height: auto;
+	color: white;
+	padding: 90px 28px;
+	line-height: 55px;
+}
+
+
+.hero-section .btn-primary {
+	background-color: #ffffff;
+	border: none;
+	color: #953A93;
+	border-radius: 10px;
+	border: 2px solid #953A93;
+	padding: 6px 20px;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.hero-section .btn-primary:hover {
+	background-color: #953A93;
+	color: #ffffff;
+
+}
+
+.hero-footer .btn-primary {
+
+	background-color: #953A93;
+	border: none;
+	color: #ffffff;
+	border-radius: 10px;
+	border: 2px solid #953A93;
+	padding: 6px 20px;
+	font-size: 16px;
+	font-weight: 600;
+
+}
+
+.hero-footer .btn-primary:hover {
+
+	background-color: #ffffff;
+	color: #953A93;
+
+}
+
+
+/* Buttons */
+.selling .btn-primary {
+	background-color: #ffffff;
+	border: none;
+	color: #953A93;
+	border-radius: 10px;
+	border: 2px solid #953A93;
+	padding: 6px 20px;
+	font-size: 16px;
+	font-weight: 600;
+	position: absolute;
+	bottom: 30px;
+}
+
+.selling .btn-primary:hover {
+	background-color: #953A93;
+	border: 2px solid #953A93;
+	color: #ffffff;
+}
+
+/* Cards */
+.selling .card {
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 1px 1px 14px -8px;
+	border: none;
+	margin: 15px 8px;
+}
+
+
+.selling .card h5 {
+	font-weight: 700;
+	font-size: 20px;
+	line-height: 28px;
+	color: #111827;
+}
+
+
+.selling .card-img-top {
+	height: 200px;
+	object-fit: cover;
+}
+
+.selling .card-body {
+	text-align: left;
+	padding: 20px 30px;
+	height: 260px;
+}
+
+.selling .card-body .card-text {
+	white-space: break-spaces;
+	width: 100%;
+	overflow: hidden;
+	text-overflow: "----";
+	/* border: 1px solid #000000; */
+	height: 100px;
+}
+
+
+
+.selling h2 {
+	padding-bottom: 50px;
+	font-size: 36px;
+	font-weight: 700;
+	color: #111827;
+}
+
+
+.hero-footer h1 {
+	color: #111827;
+}
+
+.hero-footer p {
+	color: #4B5563;
+	font-size: 16px;
+	font-weight: 400;
+}
+
+.hero-footer {
+	background: #F3EBFF;
+	height: auto;
+	color: white;
+	padding: 65px 28px;
+	line-height: 28px;
+	margin-bottom: 20px;
+}
+
+
+@media(max-width: 768px) {
+
+	.hero-section {
+
+		line-height: 28px;
+	}
+
+	.selling .card-body {
+		text-align: left;
+		padding: 20px 18px;
+		height: 250px;
+	}
+
+	
+
+}
+
+@media(max-width: 1000px) {
+
+	.selling .card-body {
+		text-align: left;
+		padding: 20px 30px;
+		height: 270px;
+	}
+
+}
+
+
+
+
+@media (min-width: 576px) {
+
+	.container,
+	.container-sm {
+		max-width: 100%;
+	}
+}
+
+
+
+
+
+@media(max-width: 1005px) {
+
+	.selling .card-body {
+		text-align: left;
+		padding: 20px 20px !important;
+		height: 263px;
+	}
+}

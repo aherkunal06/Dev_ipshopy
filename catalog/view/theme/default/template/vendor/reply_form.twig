@@ -1,0 +1,332 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+{% block content %}
+	<div class="container-fluid vendor-reply-form">
+		<div class="page-header">
+			<h1 class="page-title">Reply to Admin Comments
+			</h1>
+		</div>
+
+		<!-- {% if success %}
+		  <div class="alert alert-success">{{ success_comments }}</div>
+		{% endif %}
+		  {% if error_warning %}
+		  <div class="alert alert-danger">
+		    {{ error_warning }}
+		  </div>
+		{% endif %} -->
+
+
+		{% if error_warning and error_warning != '' %}
+			<!-- <div class="alert alert-danger">
+			  {{ error_warning }}
+			</div> -->
+			{% else %}
+		<!-- {% if success %} -->
+			<!-- <div class="alert alert-success">{{ success_comments }}</div> -->
+		{% endif %}
+	{% endif %}
+
+	<div class="container">
+
+		<div
+			class="card">
+			<!-- Header -->
+<div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+    <h3 class="card-title mb-0">Comment Thread</h3>
+    <a href="{{ cancel }}">
+        <button type="button" id="close-btn" class="btn btn-lg close-reply p-0" aria-label="Close" style="background:none; border:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 011 0L8 6.293l2.354-2.647a.5.5 0 11.707.707L8.707 7l2.647 2.354a.5.5 0 01-.707.707L8 7.707l-2.354 2.647a.5.5 0 01-.707-.707L7.293 7 4.646 4.646a.5.5 0 010-.707z"/>
+            </svg>
+        </button>
+    </a>
+</div>
+
+
+
+			<!-- Comments Section -->
+			<div class="card-body comment-thread">
+				{% if comments %}
+					{% for comment in comments %}
+						<div class="comment-block">
+							<div class="comment-meta d-flex justify-content-between">
+								<strong>
+									{% if comment.comment_by == 'vendor' %}
+										Your Comment
+									{% else %}
+										Admin
+									{% endif %}
+								</strong>
+								<span class="comment-date">{{ comment.date_added }}</span>
+							</div>
+							<div class="comment-text">{{ comment.comment }}</div>
+
+							{% if comment.media %}
+								<div class="comment-media mt-2">
+									{% for file in comment.media %}
+										{% if file ends with '.jpg' or file ends with '.jpeg' or file ends with '.png' %}
+											<img src="image/{{ file }}" class="img-preview">
+										{% elseif file ends with '.mp4' %}
+											<video controls class="video-preview">
+												<source src="image/{{ file }}">
+											</video>
+										{% else %}
+											<a href="image/{{ file }}" target="_blank" class="file-link">Download
+												{{ file }}</a>
+										{% endif %}
+									{% endfor %}
+								</div>
+							{% endif %}
+						</div>
+					{% endfor %}
+				{% else %}
+					<p class="text-muted">No comments yet.</p>
+				{% endif %}
+			</div>
+
+			<!-- Reply Section inside same card -->
+			<div class="card-body border-top bg-light">
+				<h5 class="mb-3">Your Reply</h5>
+				<form method="post" enctype="multipart/form-data" action="{{ action }}">
+					<div class="form-group mb-3">
+						<textarea name="reply" class="form-control" rows="4" required placeholder="Type your reply..."></textarea>
+					</div>
+
+					<div class="form-group mb-3">
+						<label class="form-label">Attach Files</label>
+						<input type="file" name="media[]" multiple class="form-control-file">
+						<small class="form-text text-muted">
+							Allowed: jpg, png, jpeg, mp4, pdf, zip, doc • Max size: 10MB each
+						</small>
+					</div>
+
+					<div class="d-flex gap-2">
+						<button type="submit" class="btn btn-success">Submit Reply</button>
+						<a href="{{ cancel }}" class="btn btn-secondary">Cancel</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.comment-block {
+			padding: 10px 0;
+			border-bottom: 1px solid #eee;
+		}
+
+		.comment-text {
+			margin-top: 4px;
+		}
+
+		.img-preview {
+			max-width: 100px;
+			border-radius: 6px;
+			border: 1px solid #ddd;
+		}
+
+		.video-preview {
+			width: 200px;
+			border-radius: 6px;
+		}
+	</style>
+
+	<!-- <strong>{{ comment.comment_by|capitalize }}</strong> -->
+	<strong>
+		<!-- {% if comment.comment_by == 'vendor' %}
+		                  {{ comment.vendor_username ?: 'Vendor' }}
+		                {% else %}
+		                  Admin
+		                {% endif %}
+		              </strong> -->
+
+
+		<!-- <div class="row">
+		  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex justify-content-center">
+		    <a href={{cancel}}>
+		    <button type="button" id="close-btn" class="btn btn-lg close-reply">Close</button>
+		  </a>
+		    
+		    </div>
+		</div> -->
+
+			<style>
+/* Page Title */
+.vendor-reply-form .page-title {
+	margin-top: 10px;
+	font-size: 22px;
+	font-weight: 600;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+/* Warning message */
+.alert-danger {
+	background-color: #fff4f4;
+	border: 1px solid #f5c2c7;
+	color: #d93025;
+	font-weight: 500;
+	padding: 12px 15px;
+	border-radius: 6px;
+}
+
+/* Card Header for Comment Thread */
+.card-header.bg-info {
+	background-color: #802f83 !important;
+	border-radius: 8px 8px 0 0;
+	padding: 12px 15px;
+}
+
+.card-header.bg-info .card-title {
+	font-size: 16px;
+	font-weight: 600;
+	margin: 0;
+}
+
+/* Comment Thread Container */
+.comment-thread {
+	max-height: none;
+	background: #fff;
+	padding: 0;
+	border: none;
+}
+
+/* Comment Block Layout */
+.comment-block {
+	padding: 15px;
+	border-bottom: 1px solid #eee;
+}
+
+/* Meta info: Admin/Your Comment + Date on same line */
+.comment-meta {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 5px;
+}
+
+.comment-meta strong {
+	font-size: 14px;
+	font-weight: 600;
+	color: #000;
+}
+
+.comment-date {
+	font-size: 12px;
+	color: #777;
+	white-space: nowrap;
+}
+
+/* Comment text */
+.comment-text {
+	font-size: 14px;
+	color: #444;
+	margin: 0;
+}
+
+
+/* Reply Card */
+.card-header.bg-secondary {
+	background-color: #f8f9fa !important;
+	border-bottom: 1px solid #ddd;
+}
+
+.card-header.bg-secondary .card-title {
+	font-size: 16px;
+	font-weight: 600;
+	color: #000;
+}
+
+textarea.form-control {
+	border-radius: 8px;
+	border: 1px solid #ccc;
+	font-size: 14px;
+	padding: 10px;
+}
+
+textarea.form-control:focus {
+	border-color: #802f83;
+	box-shadow: 0 0 0 2px rgba(128, 47, 131, 0.2);
+}
+
+/* File Upload */
+.form-control-file,
+input[type="file"] {
+	display: block;
+	margin-top: 10px;
+	font-size: 14px;
+}
+
+.form-text.text-muted {
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+/* Buttons */
+.btn-success {
+	background-color: #802f83;
+	border-color: #802f83;
+	border-radius: 6px;
+	padding: 8px 16px;
+}
+
+.btn-success:hover {
+	background-color: #6c256e;
+	border-color: #6c256e;
+}
+
+.btn-warning {
+	background-color: #f1f1f1;
+	border-color: #ddd;
+	border-radius: 6px;
+	padding: 8px 16px;
+}
+
+.btn-warning a {
+	color: #000 !important;
+}
+
+.btn-warning:hover {
+	background-color: #e2e2e2;
+}
+
+/* Image and Video Preview */
+.img-preview {
+	max-width: 100px;
+	border-radius: 6px;
+	border: 1px solid #ddd;
+}
+
+.video-preview {
+	width: 200px;
+	border-radius: 6px;
+}
+		</style>
+			<script>
+document.addEventListener('DOMContentLoaded', function () {
+const closeBtn = document.getElementById('close-btn1');
+if (closeBtn) {
+closeBtn.addEventListener('click', function (e) {
+e.preventDefault(); // prevent default anchor behavior
+const userToken = '{{ user_token }}'; // Twig variable
+window.location.href = 'index.php?route=vendor/product&user_token=' + userToken;
+});
+}
+});
+		</script>
+			<script>
+document.addEventListener('DOMContentLoaded', function () {
+const closeBtn = document.getElementById('close-btn');
+
+if (closeBtn) {
+closeBtn.addEventListener('click', function (e) {
+e.preventDefault(); // Prevent default anchor behavior
+const userToken = '{{ user_token }}'; // Twig variable
+window.location.href = 'index.php?route=vendor/product&user_token=' + userToken;
+});
+}
+});
+	</script>
+
+
+	{% endblock %}<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"> </script>

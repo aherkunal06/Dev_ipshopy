@@ -1,0 +1,25 @@
+catalog/
+├── controller/
+│   └── extension/
+│       └── module/
+│           └── google_content_api.php
+├── model/
+│   └── extension/
+│       └── module/
+│           └── google_content_api.php
+├── view/
+│   └── template/
+│       └── extension/
+│           └── module/
+│               └── google_content_api.tpl
+├── language/
+│   └── en-gb/
+│       └── extension/
+│           └── module/
+│               └── google_content_api.php
+└── system/
+    └── library/
+        └── google/
+            └── apiclient/
+                └── vendor/
+                    └── autoload.php

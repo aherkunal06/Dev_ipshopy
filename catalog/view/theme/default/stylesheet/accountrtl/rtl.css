@@ -1,0 +1,30 @@
+body{
+	 direction: rtl !important ;
+	 line-height:20px;
+}
+#container {
+	text-align: right;
+}
+ul{
+	direction: rtl !important ;
+}
+.viewall {
+    float: left !important;
+}
+.pull-left {
+    float: right !important;
+}
+.pull-right,.button_search1{
+    float: left !important;
+}
+.text-right{
+	 text-align:left !important;
+}
+.profileimg{
+	float: right !important;
+}
+.dashboard .profile .btnedit + .btnedit {
+    border-left: none !important;
+		margin-left: 0;
+    margin-right: -2px;
+}

@@ -1,0 +1,154 @@
+{{ header }}
+<div class="container">
+  <div class="recent-box">
+    <div class="recent-title">Most Viewed Products</div>
+    <div id="most-view" class="product-slider"></div>
+  </div>
+</div>
+
+<script>
+  fetch('index.php?route=common/most_view/mostView')
+    .then(res => res.json())
+    .then(data => {
+      let container = document.getElementById("most-view"); 
+      container.innerHTML = "";
+
+      data.products.forEach(p => {
+        let card = document.createElement("div");
+        card.classList.add("product-card"); 
+
+        // ✅ Slice product name (max 30 chars)
+        let shortName = p.name.length > 30 ? p.name.substring(0, 30) + "..." : p.name;
+
+       card.innerHTML = `
+  <div class="discount-badge" style="${p.discount > 0 ? '' : 'display:none'}">
+    -${p.discount}%
+  </div>
+  <a href="${p.href}">
+    <img src="${p.image}" alt="${p.name}" />
+    <div class="product-title-name">${shortName}</div>
+  </a>
+  <p class="price">
+    ${p.special 
+      ? `<span class="price-old">${p.price}</span> 
+         <span class="price-new">${p.special}</span>` 
+      : `<span class="price-normal">${p.price}</span>`}
+  </p>
+`;
+
+
+        container.appendChild(card);
+      });
+    });
+</script>
+
+<style>
+.recent-box {
+   background: #953A93;
+   border-radius: 10px;
+   padding: 15px;
+}
+
+.recent-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 14px;
+  color: #ffffff;
+}
+
+.product-slider {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+}
+
+.product-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.product-card {
+  flex: 0 0 calc(50% - 14px);
+  max-width: calc(50% - 14px);
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  scroll-snap-align: start;
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+}
+
+.product-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.product-title-name {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 4px 0;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.price .price-new {
+  color: #953a93 !important;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.price-old {
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 5px;
+  font-size: 12px;
+}
+
+.price-new {
+  color: #953a93;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.price-normal {
+  color: #111;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #953a93;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 6px;
+  border-radius: 6px;
+  z-index: 2;
+}
+
+.product-card {
+  position: relative;
+}
+
+</style>

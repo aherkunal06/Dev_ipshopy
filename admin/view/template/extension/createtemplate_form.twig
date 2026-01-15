@@ -1,0 +1,203 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+		  <div class="pull-right">
+			<button type="submit" form="form-createtemplate" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+			<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Shortcut</button>
+			</div>
+		  
+		  <h1>{{ heading_title }}</h1>
+		  <ul class="breadcrumb">
+			{% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+		  </ul>
+		  </div>
+	</div>
+
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+ 
+    <div class="panel panel-default">
+       <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+   
+	 <!-- Popup -->
+
+
+		<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		
+		  <div class="modal-dialog modal-lg">
+			<div class="modal-content">
+			  <div id="inline1">
+				<ul>
+				<h1>Account Register</h1>
+				<li>{store}     = Your Store Name<li/>
+				<li>{firstname} = Customer First Name<li/>
+				<li>{lastname}  = Customer Last Name<li/>
+				<li>{link}      = Login Page Link<li/>
+				
+				
+				<li>{store} = Your Store Name<li/>
+				<li>{logo}  = Logo Image<li/>
+				<li>{link}  = Your Last Name<li/>
+						
+				<h1>Affiliate Program</h1>
+				<li>{store}	    = Your Store Name<li/>
+				<li>{link}      = This Link Login to Affilate Login Page<li/>
+				<li>{firstname} = Customer First Name<li/>
+				<li>{lastname}  = Customer Last Name<li/>
+				<li>{email}     = Customer Email<li/>
+				
+				<h1>Forgotten Password</h1>
+				<li>{store}	    = Your Store Name<li/>
+				<li>{password}     = Provied New Password<li/>
+				
+				<h1>Order Status</h1>
+				<li>{logo}	    = Logo Image<li/>
+				<li>{order_id}     = Your Order Id<li/>
+				<li>{order_date}     = Your Order Date<li/>
+				<li>{order_status}     = Your Order Status<li/>
+				<li>{order_comment}     = Order Comment<li/>
+				<li>{link}        	= This Link Login to Affilate Login Page<li/>
+				<li>{store}        	= Your Store Name<li/>
+			
+				<h1>Product Order</h1>
+				<li>{logo}	                = Logo Image<li/>
+				<li>{product_info}          = Product Related Information<br>
+				    {sku}                   = Product sku<br>
+				    {ip}                   = IP<br>
+					{upc}			        = Product upc<br>
+					{ean}                   = Product EAN<br>
+				    {jan}                   = Product JAN<br>	
+					{isbn}                  = Product ISBN<br>
+					{mpn}                   = Product MPN<br>
+					{location}              = Product Location<br>
+					{manufacturer}          = Product Manufacturer<br>
+					{categories}            = Product Categories<li/>
+				<li>{store}              	= Your Store Name
+				    {customer_name}         = Your Customer Name<br>
+					{customer_group}        = Your Customer Group<br>
+				    {customer_email}        = Your Customer Email<br>
+					{customer_telephone}    = Your Customer Telephone<br>
+					{order_date}            = Your Order Date<br>
+					{order_payment_method}  = Your Order Payment Method<br>
+					{order_shipping_method} = Your Order Shipping Method<br>
+					{order_invoice}         = Your Order Invoice<br>
+					{order_payment_address} = Your Order Payment Address<br>
+					{order_shipping_address}= Your Order Shipping Address<br>
+					{order_status}          = Your Order Status<li/>
+				
+				</ul>
+				</div>
+			<div class="tmd">TMD</div>
+			</div>
+		  </div>
+		 
+		</div>
+		<!-- popup -->
+     <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-createtemplate" class="form-horizontal">
+    <div class="panel-body">
+	 
+			<ul class="nav nav-tabs" id="language">
+                {% for language in languages %}
+                <li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+            </ul>
+		<div class="tab-content">
+        {% for language in languages %}
+           <div class="tab-pane" id="language{{ language.language_id }}">
+           
+			    <div class="form-group required">
+					 <label class="col-sm-2 control-label" for="input-title">{{ entry_template }}</label>
+					 
+					<div class="col-sm-10">
+					<input type="text" name="createtemplate[{{ language.language_id }}][name]"  class="form-control " value="{{ createtemplate[language.language_id] ? createtemplate[language.language_id].name }}" />
+					 {% if error_name[language.language_id] %}
+					 <div class="text-danger">{{ error_name[language.language_id] }}</div>
+					  {% endif %}
+					</div>
+				</div>
+				
+              <div class="form-group required">
+			   <label class="col-sm-2 control-label" for="input-title">{{ entry_subject }}</label>
+			   
+                <div class="col-sm-10">
+				<input type="text" name="createtemplate[{{ language.language_id }}][subject]" class="form-control" value="{{ createtemplate[language.language_id] ? createtemplate[language.language_id].subject }}" />
+				 {% if error_subject[language.language_id] %}
+                  <div class="text-danger">{{ error_subject[language.language_id] }}</div>
+                  {% endif %}
+                </div>
+			  </div>
+			  
+			
+			   <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-description{{ language.language_id }}">{{ entry_message }}</label>
+                    <div class="col-sm-10">
+					   <textarea name="createtemplate[{{ language.language_id }}][message]" placeholder="{{ entry_description }}" id="input-description{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ createtemplate[language.language_id] ? createtemplate[language.language_id].message }}</textarea>
+						{% if error_message[language.language_id] %}
+							<div class="text-danger">{{ error_message[language.language_id] }}</div>
+						{% endif %}
+                    </div>
+                  </div>
+				  
+			</div>
+			 
+		  {% endfor %}
+		</div>
+		 
+		    <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+				<div class="col-sm-10">
+					<select name="status" id="input-status"  class="form-control">
+						  {% if status %}
+						  <option value="1" selected="selected">{{ text_enabled }}</option>
+						  <option value="0">{{ text_disabled }}</option>
+						  {% else %}
+						  <option value="1">{{ text_enabled }}</option>
+						  <option value="0" selected="selected">{{ text_disabled }}</option>
+						 {% endif %}
+					  </select>
+			  </div>
+			</div>
+		
+	</div>
+	</form>
+  </div>
+</div>
+</div>
+ <script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+  <link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/summernote/opencart.js"></script> 
+<script type="text/javascript"><!--
+$('#language a:first').tab('show');
+//--></script>
+<style>
+#inline1{margin:0px;}
+#inline1 ul{margin:0px;}
+#inline1 ul li{ line-height: 25px;
+    list-style: outside none none;
+}
+.modal.in .modal-dialog{width: 500px}
+.modal-content{height: 378px;padding-top:18px;
+    overflow: auto;
+    width: 500px}
+.tmd{font-size: 15px;
+    left: 430px;
+    margin-bottom: 21px;
+    position: fixed;    
+    top: 5px;}	
+</style>
+{{ footer }}

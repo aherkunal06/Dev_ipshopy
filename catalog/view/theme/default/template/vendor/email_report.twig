@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ subject }}</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      font-size: 14px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #ddd;
+    }
+    .header {
+      background: #953a93;
+      text-align: center;
+      padding: 20px;
+    }
+    .header img {
+      max-width: 120px;
+      border-radius: 6px;
+      background-color: white;
+    }
+    .content {
+      padding: 30px;
+    }
+    .content h3 {
+      color: #953a93;
+      margin-bottom: 0;
+      margin-top: 30px;
+    }
+    .content p {
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .order-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .order-table th, .order-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .order-table th {
+      background-color: #f5f5f5;
+      color: #333;
+      font-weight: bold;
+    }
+    .footer {
+      background: #f9f9f9;
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #777;
+    }
+    .footer a {
+      color: #777;
+      text-decoration: underline;
+    }
+    .footer p {
+      margin: 5px 0;
+    }
+    .footer .copyright {
+      font-size: 10px;
+    }
+    .unsubscribe {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #777;
+      text-decoration: underline;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="https://www.ipshopy.com">
+        <img src="https://www.ipshopy.com/image/catalog/A-Satyashil/Logo%20props.png" alt="{{ store }}">
+      </a>
+    </div>
+
+    <div class="content">
+      <p style="font-size: 16px; color: #953a93;"><strong>{{ text_greeting }}</strong></p>
+      <p>{{ text_start }}</p>
+      <p>{{ text_conversation }}<strong style="color:black;"> {{ "now"|date("d-m-Y") }}</strong>.</p>
+      <p>{{ text_info }}</p>
+
+      <h3>Forward Order Counts:</h3>
+      
+      <table class="order-table">
+        <tr>
+          <th>Status</th>
+          <th>Order Count</th>
+        </tr>
+        <tr>
+          <td>New Orders (Pending Label Generation)</td>
+          <td>{{ order_counts['Processing'] }}</td>
+        </tr>
+        <tr>
+          <td>Delivered</td>
+          <td>{{ order_counts['Delivered'] }}</td>
+        </tr>
+        <tr>
+          <td>Complete</td>
+          <td>{{ order_counts['Complete'] }}</td>
+        </tr>
+        <tr>
+          <td>Label Generated</td>
+          <td>{{ order_counts['Label Generated'] }}</td>
+        </tr>
+        <tr>
+          <td>Breached</td>
+          <td>{{ order_counts['Breached'] }}</td>
+        </tr>
+        <tr>
+          <td>Canceled</td>
+          <td>{{ order_counts['Canceled'] }}</td>
+        </tr>
+      </table>
+
+      <h3>Backward Order Counts:</h3>
+
+      <table class="order-table">
+        <tr>
+          <th>Status</th>
+          <th>Order Count</th>
+        </tr>
+        <tr>
+          <td>Return Orders</td>
+          <td>{{ order_counts['Reversed'] }}</td>
+        </tr>
+        <tr>
+          <td>Return In Transit</td>
+          <td>{{ order_counts['Return In Transit'] }}</td>
+        </tr>
+        <tr>
+          <td>Return Delivered</td>
+          <td>{{ order_counts['Return Delivered'] }}</td>
+        </tr>
+      </table>
+
+      <h3>RTO Order Counts:</h3>
+
+      <table class="order-table">
+        <tr>
+          <th>Status</th>
+          <th>Order Count</th>
+        </tr>
+        <tr>
+          <td>RTO</td>
+          <td>{{ order_counts['RTO'] }}</td>
+        </tr>
+        <tr>
+          <td>RTO In Transit</td>
+          <td>{{ order_counts['RTO In Transit'] }}</td>
+        </tr>
+        <tr>
+          <td>RTO Delivered</td>
+          <td>{{ order_counts['RTO Delivered'] }}</td>
+        </tr>
+      </table>
+
+      <p>{{ text_review }}</p>
+      <p>{{ text_encourage }}</p>
+
+      <p>{{ text_valued }}</p>
+
+      <p style="font-size: 14px; color: black;"><strong>{{ text_thanks }}</strong></p>
+
+      <p class="unsubscribe">
+        If you did not request this email, please ignore it or <a href="{{ unsubscribe_url }}">unsubscribe</a>.
+      </p>
+
+      <p class="footer">
+        &copy; {{ "now"|date("Y") }} ipshopy.com. All rights reserved.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

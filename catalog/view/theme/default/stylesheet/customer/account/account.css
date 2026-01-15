@@ -1,0 +1,300 @@
+@media(max-width:1024px) {
+    .col-sm-9,
+    .container {
+        width: 100%;
+    }
+}
+
+@media (max-width:768px) {
+    .container {
+        width: 100%;
+    }
+
+    h3 {
+        font-size: 22px;
+    }
+}
+
+@media(max-width:576px) {
+     
+    #account-info-container {
+        flex-direction: column;
+        display: flex;
+    }
+}
+
+/* ============================= */
+/* === Profile Image Section === */
+/* ============================= */
+
+.profile-photo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    gap: 10px;
+}
+
+.profile-photo-wrapper {
+    position: relative;
+    width: 116px;
+    height: 116px;
+}
+
+.profile-photo-wrapper img {
+    width: 116px;
+    height: 116px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profile-placeholder {
+    width: 116px;
+    height: 116px;
+    border-radius: 999px;
+    background: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-placeholder i {
+    font-size: 60px;
+    color: white;
+}
+
+.input-profile-photo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.input-profile-photo i {
+    color: #953A93;
+}
+
+/* ============================ */
+/* === Profile Info Section === */
+/* ============================ */
+
+.profile-info {
+    text-align: center;
+}
+
+.profile-info .head-fullname {
+    font-size: 24px;
+    color: #111827;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.profile-info .head-email {
+    color: #6B7280;
+    font-size: 16px;
+}
+
+/* ============================ */
+/* === Account Info Section === */
+/* ============================ */
+
+.Account-information {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px 15px;
+}
+
+.Account-information h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.Account-information .Account-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.edit-icon {
+    cursor: pointer;
+    color: #953A93;
+    margin-right: auto;
+}
+
+.edit-button {
+    font-size: 20px;
+    color: #111827;
+    padding: 6px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.edit-button[data-state="view"] {
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.edit-button[data-state="edit"] {
+    background-color: #953A93;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.Account-information i {
+    color: #9CA3AF;
+    font-size: 20px;
+    width: 20px;
+}
+
+.Account-information input:hover {
+    background-color: #fff;
+}
+
+.account-section {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #f3f4f6;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.account-section label {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 4px;
+}
+
+.account-section input {
+    width: 100% !important;
+    background: none;
+    color: #111827;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px !important;
+}
+
+.input-field-sections {
+    width: 100%;
+}
+
+.input-field-sections .iti--allow-dropdown {
+    width: 100%;
+}
+
+.iti__selected-flag {
+    display: none !important;
+}
+
+.iti--allow-dropdown input,
+.iti--allow-dropdown input[type=tel] {
+    padding-left: 10px !important;
+}
+
+/* ====================== */
+/* === Editable States === */
+/* ====================== */
+
+.editable-field {
+    border: none;
+    background-color: transparent;
+    pointer-events: none;
+}
+
+.editable-field.editing {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    pointer-events: auto;
+}
+
+.editable-field:enabled {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: none;
+}
+
+.editable-field:disabled {
+    cursor: not-allowed;
+}
+
+/* ==================== */
+/* === Button Block === */
+/* ==================== */
+
+.clearfix {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: right;
+}
+
+.clearfix button {
+    border-radius: 8px;
+    padding: 6px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+#continue-button {
+    background-color: #953A93;
+    color: #fff;
+    border: none;
+}
+
+/* ===================== */
+/* === Media Queries === */
+/* ===================== */
+
+@media(max-width:768px) {
+    .profile-info .head-fullname {
+        font-size: 20px;
+    }
+
+    .profile-info .head-email {
+        font-size: 14px;
+    }
+
+    .Account-information h3 {
+        font-size: 20px;
+    }
+
+    .clearfix {
+        text-align: center;
+    }
+}
+
+@media(max-width:576px) {
+    .profile-photo-section {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #account-info-container {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .Account-information i {
+        font-size: 15px;
+    }
+}

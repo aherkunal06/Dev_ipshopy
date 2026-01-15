@@ -1,0 +1,357 @@
+{{ header }}
+{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right float-end">
+				<button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary">
+					<i class="fa fa-save"></i>
+				</button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+					<i class="fa fa-reply"></i>
+				</a>
+			</div>
+			<h1>
+				{{ heading_title }}
+			</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+				<li class="breadcrumb-item">
+					<a href="{{ breadcrumb.href }}">
+						{{ breadcrumb.text }}
+					</a>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="container-fluid " id="alert">
+
+		{% if validate %}
+		<div class="alert alert-danger alert-dismissible">
+			<i class="fa fa-exclamation-circle"></i>
+			{{ validate }}
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+
+		{% endif %}
+
+		{% if error_warning %}
+		<div class="alert alert-danger alert-dismissible">
+			<i class="fa fa-exclamation-circle"></i>
+			{{ error_warning }}
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+		{% endif %}
+
+		<div class="panel panel-default ">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<i class="fa fa-pencil"></i>
+					{{ text_settings }}
+				</h3>
+			</div>
+			<div class="panel-body">
+
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal ">
+
+					<div class="form-group ">
+						<label class="col-sm-3 control-label" for="">{{entry_content_language}}
+						</label>
+						<div class="col-sm-9">
+							<select name="languages" id="" class="form-control">
+								{% for language in languages %}
+								<option value="{{language.code}}" {% if language_selected==language.code %} selected="selected" {% endif %}>{{language.name}}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<div class="form-group ">
+						<label class="col-sm-3 control-label" for="">{{entry_currency}}
+						</label>
+						<div class="col-sm-9">
+							<select name="currencies" id="" class="form-control">
+								{% for currency in currencies %}
+								<option value="{{currency.code}}" {% if currency_selected==currency.code %} selected="selected" {% endif %}>{{currency.title}}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group ">
+						<label class="col-sm-3 control-label" for="">{{entry_target_country}}
+						</label>
+						<div class="col-sm-9">
+							<select name="countries" id="" class="form-control" required>
+								<option value="-1">{{entry_select_country}}</option>
+								{% for country in countries %}
+								<option value="{{country.iso_code_2}}" {% if country_selected==country.iso_code_2 %} selected="selected" {% endif %}>{{country.name}}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group ">
+						<label class="col-sm-3 control-label" for="">{{entry_merchant_id}}
+						</label>
+						<div class="col-sm-9">
+							<input type="text" name="merchant_id" class="form-control" value="{{merchant_id}}">
+						</div>
+					</div>
+
+					<div class="form-group ">
+						<label class="col-sm-3 control-label" for="">{{entry_category_status}}
+
+						</label>
+
+						<div class="col-sm-9">
+
+							<div class="">
+								<input type="checkbox" name="category_status" value="1" id="" class="form-check-input" {% if category_status==1 %} {% if category_status==1 %} checked="" {% endif %} {% endif %}>
+							</div>
+
+							<div class="form-text">{{entry_category_status_info}}
+							</div>
+
+
+						</div>
+					</div>
+
+
+					<div class="form-group ">
+						<label class="col-sm-3 control-label" for="">{{entry_taxes}}
+
+						</label>
+
+						<div class="col-sm-9">
+
+
+							<div class="">
+								<input type="checkbox" name="taxex_status" value="1" id="" class="form-check-input" {% if taxex_status==1 %} checked="" {% endif %}>
+							</div>
+
+							<div class="form-text">{{entry_taxes_info}}</div>
+
+						</div>
+
+					</div>
+
+					<div class="form-group ">
+						<label class="col-sm-3 control-label" for="">{{entry_prefix_offerId}}
+						</label>
+
+
+						<div class="col-sm-9">
+							<input type="text" name="prefixOfferId" class="form-control" value="{{prefixOfferId}}" placeholder="opencart3.pixy.pro_">
+							<div class="form-text">{{entry_prefix_offerId_info}}
+							</div>
+						</div>
+					</div>
+
+
+					<div class="form-group ">
+
+						<label class="col-sm-3 control-label" for="">{{ text_access_token }}
+						</label>
+
+						<div class="col-sm-9">
+							<textarea rows="4" type="text" class=" noselect form-control" disabled>{{ access_token }}
+							</textarea>
+						</div>
+
+					</div>
+
+					<div class="form-group ">
+
+						<label class="col-sm-3 control-label" for="">
+							{{ text_access_code }}
+						</label>
+
+						<div class="col-sm-9">
+							<input type="text" class="noselect form-control" value="{{ access_code }}" disabled>
+						</div>
+					</div>
+
+					<div class="form-group ">
+
+						<label class="col-sm-3 control-label" for="button-upload">
+							<span data-toggle="tooltip" style="color: #545454;" data-container="#tab-general" title="" data-original-title="{{entry_json_file_info}}">{{entry_upload_json_file}}</span>
+						</label>
+
+						<div class="col-sm-9">
+							<button type="button" id="button-upload" data-url="{{ loadJson }}" data-toggle="tooltip" title="{{entry_upload_json_file}}" class="btn btn-primary" data-original-title="{{entry_upload_json_file}}" aria-label="{{entry_upload_json_file}}" aria-describedby="tooltip915207">
+								<i class="fa fa-upload"></i>
+							</button>
+
+							{% if client_secret==1 %}
+
+							<span class="text-success">
+								{{entry_success_upload_json_file}}
+							</span>
+							{%  else %}
+							<span class="text-danger">
+								{{entry_not_upload_json_file}}
+							</span>
+							{% endif %}
+
+							<br>
+							<br>
+							Your redirect url :<br>
+							{{redirect_url}}
+							<div class="copy" id="copy" style="display: inline;cursor:pointer">
+								<i class="fa  fa-copy" style="margin-left: 10px; color: blue;font-size: 18px;"></i>
+							</div>
+							<script>
+								document.getElementById("copy").onclick = function() {
+									var copyTextarea = document.createElement("textarea");
+									copyTextarea.style.position = "fixed";
+									copyTextarea.style.opacity = "0";
+									copyTextarea.textContent = "{{redirect_url}}"
+									console.log(copyTextarea);
+									document.body.appendChild(copyTextarea);
+									copyTextarea.select();
+									document.execCommand("copy");
+									document.body.removeChild(copyTextarea);
+								}
+							</script>
+						</div>
+					</div>
+
+
+					<div class="text-center form-group" id="no-line">
+
+						<a id="login_auth2" data-url="{{ login }}" href="#" data-toggle="tooltip" title="{{entry_login}}" class="btn btn-primary ">
+							{{entry_login}}
+						</a>
+
+					</div>
+
+					<div class="form-group ">
+
+						<label class="col-sm-3 control-label" for="">
+							{{entry_addproduct_status}}
+						</label>
+
+						<div class="col-sm-9">
+							<select name="addproduct_status" id="" class="form-control">
+
+								<option value="1" {% if addproduct_status==1 %} selected="selected" {% endif %}>{{entry_enabled}}</option>
+								<option value="0" {% if addproduct_status==0 %} selected="selected" {% endif %}>{{entry_disabled}}</option>
+							</select>
+						</div>
+
+					</div>
+					<div class="form-group ">
+
+						<label class="col-sm-3 control-label" for="">
+							{{entry_editproduct_status}}
+						</label>
+
+						<div class="col-sm-9">
+
+							<select name="editproduct_status" id="" class="form-control">
+
+								<option value="1" {% if editproduct_status==1 %} selected="selected" {% endif %}>{{entry_enabled}}</option>
+								<option value="0" {% if editproduct_status==0 %} selected="selected" {% endif %}>{{entry_disabled}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group ">
+
+						<label class="col-sm-3 control-label" for="">
+							{{entry_deleteproduct_status}}
+						</label>
+
+						<div class="col-sm-9">
+
+							<select name="deleteproduct_status" id="" class="form-control">
+
+								<option value="1" {% if deleteproduct_status==1 %} selected="selected" {% endif %}>{{entry_enabled}}</option>
+								<option value="0" {% if deleteproduct_status==0 %} selected="selected" {% endif %}>{{entry_disabled}}</option>
+
+							</select>
+						</div>
+					</div>
+
+					<div class="text-center form-group">
+						<a id="load_products" data-url="{{ loadProducts }}" href="#" data-toggle="tooltip" title="{{entry_load_products}}" class="btn btn-primary ">
+							{{entry_load_products}}
+							<i class="fa fa-spinner"></i>
+						</a>
+
+					</div>
+
+					<div class="text-center  ">
+						<a id="delete_products" data-url="{{ deleteAllProducts }}" href="#" data-toggle="tooltip" title="{{entry_delete_products}}" class="btn btn-danger ">
+							{{entry_delete_products}}
+							<i class="fa fa-spinner"></i>
+						</a>
+
+					</div>
+
+					<a id="clear_logs" data-url="{{ clearlogs }}" href="#" data-toggle="tooltip" title="{{entry_clear_logs}}" class="btn btn-danger  " style="margin-bottom:5px;">
+						{{entry_clear_logs}}
+						<i class="fa fa-spinner"></i>
+					</a>
+
+
+					<div class="panel-group" id="accordion">
+						<div class="panel panel-default">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" id="accordion-button">
+
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										{{entry_logs}}
+									</h4>
+								</div>
+							</a>
+							<div id="collapseOne" class="panel-collapse collapse">
+								<div id="accordion-body" class="panel-body  " style="font-family: monospace; overflow:auto; max-height:400px">
+									{% if logs %}
+									{% for log in logs %}
+									<p>{{log}}</p>
+									{% endfor %}
+									{%  else %}
+									<p>{{entry_no_logs}}</p>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+
+			<script>
+				$('.noselect').bind("cut copy paste", function(e) {
+					e.preventDefault();
+					element = $(this)
+					element.parent().prepend('<div class="alert alert-warning alert-dismissible"><i class="fa fa-exclamation-circle"></i> Cant copy this <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				});
+			</script>
+			<!-- end container -->
+
+			<style>
+				p {
+					margin-bottom: 0;
+					font-size: 12px;
+				}
+
+				div#no-line {
+					border-top: 0;
+				}
+
+				a>.fa-spinner {
+					display: none;
+				}
+
+				a.loading>.fa-spinner {
+					display: block;
+				}
+			</style>
+
+		</div>
+	</div>
+	<script></script>
+	{{ footer }}

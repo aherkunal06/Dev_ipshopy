@@ -1,0 +1,138 @@
+/* .bar-navhome .navbar-bar{
+	    margin-inline:10px;
+	}
+	
+	.header-buttons .header_image_wrapper img{
+	    max-width:140px;
+	    width:140px;
+	}
+    .bar-navhome ~ .content {
+        margin-top:65px;
+    }
+
+	.bar-navhome .input-group {
+    background: #ffffff !important;
+    margin-top: 10px;
+}
+.extension-mobile-home .typeheader-1.bar-navhome {
+    box-shadow: none;
+    height: 85px;
+       background: linear-gradient(to bottom, #F4C6FF, #feebff 100%);
+}
+
+	.search-bar-wrapper {
+	width: 100%;
+	padding: 5px 15px;
+}
+
+
+.header-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.placeholder-button {
+       width: 80px;
+    height: 32px;
+    border-radius: 7px;
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    color: #000;
+}
+
+
+.placeholder-button:hover {
+    background-color: #f3e5f5;
+    cursor: pointer;
+}
+.search-bar-mobile-header {
+	width: 100%;
+	margin-top: 8px;
+}
+
+.search-container {
+	display: flex;
+	align-items: center;
+	background: white;
+	border: 1px solid #c276b2;
+	border-radius: 999px;
+	padding: 0 10px;
+	height: 32px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.search-icon {
+	color: #aaa;
+	font-size: 14px;
+	margin-right: 8px;
+}
+
+.search-input-mobile-header input {
+	border: none;
+	outline: none;
+	width: 100%;
+	font-size: 14px;
+	padding: 5px 0;
+	color: #333;
+	background-color: #ffffff;
+}
+
+
+.search-input-mobile-header input::placeholder {
+	color: #aaa;
+}
+
+.search-icons {
+	display: flex;
+	gap: 10px;
+	margin-left: 8px;
+	align-items: center;
+}
+
+.search-icons i {
+	color: #999;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+
+
+
+.bar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, #F4C6FF, #FFFFFF);
+    padding: 8px 15px;
+    height: 56px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.bar-nav .btn-nav {
+    font-size: 20px;
+    color: #333;
+}
+
+.bar-nav .search-input {
+    flex-grow: 1;
+    margin: 0 10px;
+    height: 32px;
+    border: 1px solid #c276b2;
+    border-radius: 999px;
+    padding: 0 12px;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    outline: none;
+}
+
+.bar-nav .icon-btn {
+    color: #666;
+    font-size: 18px;
+}
+
+.bar-nav .icon-btn i {
+    color: #999;
+} */

@@ -1,0 +1,3645 @@
+<link type="text/css" href="catalog/view/javascript/bootstrap-5.3.3/css/bootstrap.min.css" />
+{#<link type="text/css" href="catalog/view/theme/default/stylesheet/styleVariables.css" rel="stylesheet" media="screen"/>#}
+<link type="text/css" href="catalog/view/theme/default/stylesheet/vendor/seller_registration.css" rel="stylesheet"/>
+
+{{ header }}
+<style>
+    header{
+        display:none !important;
+    }
+    #sellerRegistration{
+        display: flex;
+        /*justify-content: center;*/
+        align-items: center;
+        min-height: 100vh;
+        /*gap:20px;*/
+        justify-content: space-between;
+        width:100%;
+    }
+    #sellerRegistration > img{
+        border-radius:10px;
+    }
+    #sellerRegistration .panel-body{
+        padding-bottom:0px;
+    }
+    #sellerRegistration #content{
+        margin-bottom:0px;
+    } 
+    @media (max-width: 1180px) {
+    .left-image,.right-image {
+        display: none;
+    }
+}
+    #step-img-left, #step-img-right{
+        border-radius:10px;
+    }
+    #sellerRegistration .alert{
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+ 
+</style>
+<div class="container" id='sellerRegistration'>
+	{#<ul class="breadcrumb">#}
+	{#	{% for breadcrumb in breadcrumbs %}#}
+	{#		<li>#}
+	{#			<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>#}
+	{#		</li>#}
+	{#	{% endfor %}#}
+	{#</ul>#}
+	{#<img src='{{ banner_images[0].src }}' />#}
+	<div class="left-image">
+		<img id="step-img-left" src="{{ banner_images['tab-user'].left }}" alt="Left Step Image" >
+	</div>
+	<div class="row" id="vendor-signup">
+	    {% if filedwarning %}
+		<div class="alert alert-danger">
+			<i class="fa fa-exclamation-circle"></i>
+			{{ filedwarning }}
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div><br/>
+	{% endif %}
+
+	{% if error_warning %}
+		<div class="alert alert-danger">
+			<i class="fa fa-exclamation-circle"></i>
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+	{% endif %}
+		<div class='ragistration_heading'>
+		    <a href='https://www.ipshopy.com'><img src="https://www.ipshopy.com/image/catalog/A-Satyashil/Logo%20props.png" alt="Logo" style='width:150px; height:30px'></a>
+		{#<h1 class='r_heading'>{{ heading_title }}</h1>#}
+		
+		</div>
+		<div class="panel-body">
+			<div class='form-design progress_section'>
+				<div class='signup_header'>
+					<div></div>
+					<div>Step
+						<span id='page_no'>0</span>
+						of 5</div>
+				</div>
+				<!-- Progress Bar -->
+
+				<div class="signup_progress">
+					<div id="signup_progress-bar" class="progress-bar bg-primary" style="width: 0%;"></div>
+				</div>
+				{# progress bar ends  #}
+			</div>
+			<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-product" class="form-horizontal form-design">
+
+
+				<ul class="nav nav-tabs" style="display:none;">
+					<li class="active">
+						<a href="#tab-user" data-toggle="tab">{{ tab_user }}</a>
+					</li>
+					<li>
+						<a href="#tab-address" data-toggle="tab">{{ tab_address }}</a>
+					</li>
+					<li>
+						<a href="#tab-login" data-toggle="tab">{{tab_login}}</a>
+					</li>
+					<li>
+						<a href="#tab-company" data-toggle="tab">{{tab_company}}</a>
+					</li>
+					<li>
+						<a href="#tab-business" data-toggle="tab">{{tab_business}}</a>
+					</li>
+					<li>
+						<a href="#tab-bank" data-toggle="tab">{{tab_bank}}</a>
+					</li>
+				</ul>
+
+							{#<form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">#}
+				<div class="tab-content" style='position:relative;'>
+						<h1 class='r_heading' style='position:absolute; top:18px; color:white; left:50%; transform:translateX(-50%); z-index:99;' >{{ heading_title }} </h1> 
+						<div style='position:absolute; top:70px; right:20px; color:black; z-index:10; '> {{registration_video}}</div>
+					<div class="tab-pane active" id="tab-user">
+						{% if column_right %}
+							{% set class = 'col-sm-6' %}
+						{% elseif column_right %}
+							{% set class = 'col-sm-9' %}
+						{% else %}
+							{% set class = 'col-sm-12' %}
+						{% endif %}
+						<div id="content" class="{{ class }} bordered" style="position:relative;">{{ content_top }}
+								<legend>
+									<i class="fa fa-user" aria-hidden="true"></i>
+									{{ tab_seller }}</legend>
+
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group required">
+											<label for="input-firstname" class="col-sm-12 control-label">{{ entry_firstname }}<i class="mandatory">*</i>
+											</label>
+											<div class="col-sm-12">
+												<input
+												type="text" name="firstname" value="{{ firstname }}" placeholder="{{ entry_firstname }}" id="input-firstname" class="form-control" maxlength="30" oninput="validatetext(this)"/>
+												{# {% if firstname is empty %} #}
+												<div id="warning-firstname" class="text-warning" style="display: none;">
+													{{warning_firstname}}
+												</div>
+												{# {% endif %} #}
+												{#{% if error_firstname %}#}
+												{#	<div class="text-danger">{{ error_firstname }}</div>#}
+												{#{% endif %}#}
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6 lastname">
+										<div class="form-group">
+											<label for="input-lastname" class="col-sm-12 control-label">{{ entry_lastname }}</label>
+											<div class="col-sm-12">
+												<input
+												type="text" name="lastname" value="{{ lastname }}" placeholder="{{ entry_lastname }}" id="input-lastname" class="form-control" oninput="validatetext(this)"/>
+												 {#{% if lastname is empty %}#}
+												{#<div id="warning-lastname" class="text-warning"> {{warning_lastname}} </div>#}
+												{#{% endif %} #}
+												{#{% if error_lastname %}#}
+												{#	<div class="text-danger">{{ error_lastname }}</div>#}
+												{#{% endif %}#}
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group required">
+											<label for="input-email" type="email" class="col-sm-12 control-label">{{ entry_email }}<i class="mandatory">*</i>
+											</label>
+											<div class="col-sm-12">
+												<input
+												type="email" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control"/>
+												{# {% if email is empty %} #}
+												<div id="warning-email" class="text-warning" style="display: none;">
+													{{warning_email}}
+												</div>
+												{# {% endif %} #}
+												{#{% if error_email %}#}
+												{#	<div class="text-danger">{{ error_email }}</div>#}
+												{#{% endif %}#}
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group {% if required_telephone %} required {% endif %}">
+											<label for="input-telephone" class="col-sm-12 control-label">{{ entry_telephone }}<i class="mandatory">*</i>
+											</label>
+											<div class="col-sm-12">
+												<input
+												type="text" name="telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control"/>
+												{# {% if telephone is empty %} #}
+												<div id="warning-telephone" class="text-warning" style="display: none;">
+													{{warning_telephone}}
+												</div>
+												{# {% endif %} #}
+												{#{% if error_telephone %}#}
+												{#	<div class="text-danger">{{ error_telephone }}</div>#}
+												{#{% endif %}#}
+											</div>
+
+										</div>
+									</div>
+								</div>
+								<div class='row'>
+									<div class='col-sm-12'>
+										<button type="button" id="button-next-1" class="btn btn-primary custom_button next_buttons">
+											{{RandP}}</button>
+									</div>
+								</div>
+								<div class='row'>
+									<p class="signup">{{ text_account_already }}</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane bordered" id="tab-address">
+							<legend>
+								<i class="fa fa-user" aria-hidden="true"></i>
+								{{ tab_address }}</legend>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group {% if required_address_1 %} required {% endif %}">
+										<label for="input-address-1" class="col-sm-12 control-label">{{ entry_address_1 }}<i class="mandatory">*</i>
+										</label>
+										<div class="col-sm-12">
+											<input
+											type="text" name="address_1" value="{{ address_1 }}" placeholder="{{ entry_address_1 }}" id="input-address-1" class="form-control" oninput="validateAddress()"/>
+											{# {% if address_1 is empty %} #}
+											<div id="warning-address" class="text-warning" style="display: none;">
+												{{warning_address_1}}
+											</div>
+											{# {% endif %} #}
+
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group">
+										<label for="input-address-2" class="col-sm-12 control-label">{{ entry_address_2 }}</label>
+										<div class="col-sm-12">
+											<input
+											type="text" name="address_2" value="{{ address_2 }}" placeholder="{{ entry_address_2 }}" id="input-address-2" class="form-control"/>
+											 {#{% if address_2 is empty %}#}
+											{#{% endif %} #}
+											{#{% if error_address_2 %}#}
+											{#	<div class="text-danger">{{ error_address_2 }}</div>#}
+											{#{% endif %}#}
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="row">
+							
+								<div class="col-sm-6">
+									<div class="form-group {% if chkpostcode==1 %} required {% endif %}">
+										<label for="input-postcode" class="col-sm-12 control-label">{{ entry_postcode }}<i class="mandatory">*</i>
+										</label>
+										<div class="col-sm-12">
+											<input
+											type="text" name="postcode" value="{{ postcode }}" placeholder="{{ entry_postcode }}" id="input-postcode" class="form-control" oninput="validateAddress()" maxlength="6" pattern="[0-9]{6}" onkeypress="return event.charCode >= 48 && event.charCode <= 57" inputmode="numeric"/>
+											{# {% if postcode is empty %} #}
+											<div id="warning-postcode" class="text-warning" style="display: none;">
+												{{warning_postcode}}
+											</div>
+											{# {% endif %} #}
+
+										</div>
+									</div>
+								</div>
+									<div class="col-sm-6">
+									<div class="form-group">
+										<label for="input-city" class="col-sm-12 control-label">City<i class="mandatory">*</i></label>
+										<div class="col-sm-12">
+											<input type="text" name="city" placeholder="City" value="{{entry_city}}" id="input-city" class="form-control" readonly/>
+											{#value property changed to value="{{entry_city}}" also add readonly#}
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-6">
+								    	<div class="form-group">
+										<label for="input-zone" class="col-sm-12 control-label">State<i class="mandatory">*</i></label>
+										<div class="col-sm-12">
+											<input type="text" name="zone" placeholder="State" value="{{entry_state}}" id="input-zone" class="form-control" readonly/>
+											{#value property changed to value="{{entry_state}}" also add readonly#}
+										</div>
+									</div>
+								
+								</div>
+
+								<div class="col-sm-6">
+									
+									
+									{#contury #}
+									<div class="form-group">
+										<label for="input-country" class="col-sm-12 control-label">Country</label>
+										<div class="col-sm-12">
+											<select name="country" id="input-country" class="form-control county">
+												<option value="">{{ text_select }}</option>
+												{% for country in countries %}
+													{% if country.country_id == 99 %}
+														<!-- ✅ Ensure India is pre-selected -->
+														<option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
+													{% else %}
+														<option value="{{ country.country_id }}">{{ country.name }}</option>
+													{% endif %}
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									{#ends#}
+								</div>
+							</div>
+							<div class=" row">
+								<div class='col-sm-12 btns'>
+									<a href="#tab-user" data-toggle="tab">
+										<button type="button" id="button-prev-1" class="btn btn-primary custom_button prev_buttons">Previous</button>
+									</a>
+									<button type="button" id="button-next-2" class="btn btn-primary  custom_button next_buttons">Next</button>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="tab-pane bordered wellow" id="tab-login">
+							<legend class="log">
+								<i class="fa fa-user" aria-hidden="true"></i>
+								Login Credential's</legend>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group {% if required_displayname %} required {% endif %} ">
+										<label for="input-display_name" class="col-sm-12 control-label">{{ entry_display_name }}<i class="mandatory">*</i>
+										</label>
+										<div class="col-sm-12">
+											<input
+											type="text" name="display_name" value="{{ display_name }}" placeholder="{{ entry_display_name }}" id="input-display_name" class="form-control" maxlength="32"/>
+											{# {% if display_name is empty %} #}
+											<div id="warning-display-name" class="text-warning" style="display: none;">
+												{{warning_display_name}}
+											</div>
+											{# {% endif %} #}
+											{#{% if error_display_name %}#}
+											{#	<div class="text-danger">{{ error_display_name }}</div>#}
+											{#{% endif %}#}
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group required">
+										<label for="input-password" class="col-sm-12 control-label">{{ entry_password }}<i class="mandatory">*</i>
+										</label>
+										<div class="col-sm-12">
+										    <div class="input-group">
+    											<input
+    											type="password" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" oninput="validateLoginForm()" minlength="8" maxlength="20"/>
+    											<span class="input-group-addon" onclick="togglePasswordVisibility('input-password')" style="cursor: pointer;">
+													<i class="fa fa-eye" id="toggle-password-icon"></i>
+												</span>
+    										</div>
+    										<div id="password-requirements" class="text-info" style="font-size: 12px; margin-top: 10px; line-height: 1.2; display: none; color: gray;">
+												Password requirements:
+												<ul style="margin: 0; padding-left: 15px; line-height: 1.3; list-style-type: disc;">
+													<li id="length-check" style="margin: 2px 0;"> Must be at least 8 characters long</li>
+													<li id="uppercase-check" style="margin: 2px 0;"> Must include at least one uppercase letter (A-Z)</li>
+													<li id="number-check" style="margin: 2px 0;"> Must include at least one number (0-9)</li>
+													<li id="symbol-check" style="margin: 2px 0;"> Must include at least one symbol (!@#$%^&*)</li>
+												</ul>
+											</div>
+											{# {% if password is empty %} #}
+											<div id="warning-password" class="text-warning" style="display: none;">
+												{{warning_password}}
+											</div>
+											{# {% endif %} #}
+											{#{% if error_password %}#}
+											{#	<div class="text-danger">{{ error_password }}</div>#}
+											{#{% endif %}#}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group required">
+										<label for="input-confirm" class="col-sm-12  control-label">{{ entry_confirm }}<i class="mandatory">*</i>
+										</label>
+										<div class="col-sm-12">
+										    <div class="input-group">
+										   	    <input
+											    type="password" name="confirm" value="{{ confirm }}" placeholder="{{ entry_confirm }}" id="input-confirm" class="form-control" oninput="validateLoginForm()"/>
+											    <span class="input-group-addon" onclick="togglePasswordVisibility('input-confirm')" style="cursor: pointer;">
+													<i class="fa fa-eye" id="toggle-confirm-icon"></i>
+												</span>
+											</div>
+											{# {% if confirm is empty %} #}
+											<div id="warning-confirm" class="text-warning" style="display: none;">
+												{{warning_confirm}}
+											</div>
+											{# {% endif %} #}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class='row'>
+								<div class="btns col-sm-12">
+									<a href="#tab-address" data-toggle="tab">
+										<button type="button" id="button-prev-2" class="btn btn-primary custom_button prev_buttons">Previous</button>
+									</a>
+									<button type="button" id="button-next-3" class="btn btn-primary custom_button next_buttons">Next</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane bordered" id="tab-company">
+							<legend>
+								<i class="fa fa-user" aria-hidden="true"></i>
+								{{tab_company}}</legend>
+								
+					{#04-04-25 start umar#}
+						<div id="gst_container">
+						<div class="row">
+										<label for="input-fax" class="col-sm-12 control-label">{{ entry_gstin }}
+										    {#<i class="mandatory">*</i>#}
+										</label> {#change the position 01-04-2025#}
+								<div class="col-sm-12">
+									<div class="form-group">
+										<div class="verified">
+											<div class="col-sm-8">
+												<input
+												type="text" name="fax" value="{{ fax }}" placeholder="{{ pattern_gstin }}" id="input-fax" class="form-control" maxlength="15" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')"
+    											onkeydown="if(event.key === '.' || event.key === 'e' || event.key === '-' ) event.preventDefault()"/>
+											</div>
+											{#<button type="button" id="gstin-verify" class = "btn btn-primary custom_button" onclick="fetchGSTINDetails()">Verify</button>#}
+										</div>
+									</div>
+								</div>
+							</div>
+							{# {% if fax is empty %} #}
+								{#<div id="warning-fax" class="text-warning" style="display: none; padding-left: 15px;">#}
+								{#	{{warning_fax}}#}
+								{#</div>#}
+							{# {% endif %} #}
+							<div id="gstin_details">
+								{#{% if gstin_info %}#}
+								{#	{% if gstin_info.error %}#}
+								{#		<p>{{ gstin_info.error }}</p>#}
+								{#	{% else %}#}
+										{# <p><strong>Status:</strong> {{ gstin_info.status.value or 'N/A' }}</p> #}
+								{#	{% endif %}#}
+								{#{% endif %}#}
+							</div>
+							{#<div class='row'>#}
+							{#	<div class="col-sm-12 gst-check" id="gst-hidden">#}
+							{#		<input type="checkbox" name="check" value="GSTIN" id="gst-checkbox"/><p>I sell non-GST products.</p>#}
+							{#	</div>#}
+							{#</div>#}
+							</div>
+							
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group required">
+										<label for="input-pan" class="col-sm-12 control-label">PAN Number<i class="mandatory">*</i></label>
+										<div class="col-sm-12">
+											<input type="text" name="pan" value="{{ pan }}" placeholder="Enter PAN Number" id="input-pan" class="form-control" minlength="10" maxlength="10"/>
+											{% if pan is empty %}
+												<div id="warning-pan" class="text-warning" style="display: none;">
+													{{warning_pan}}
+												</div>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							{#uin container starts #}
+							{#<div id="uin_container">#}
+							{#	<div class="row">#}
+							{#		<div class="col-sm-12">#}
+							{#			<div class="form-group" id='uin-row'>#}
+							{#				<label for="input-uin" class="col-sm-12 control-label">UIN<i class="mandatory">*</i>#}
+							{#				</label>#}
+							{#				<div class="verified">#}
+							{#					<div class="col-sm-12">#}
+    			{#									<input type="text" name="uin" value="" placeholder="Unique Identification Number (UIN)" id="input-uin" class="form-control" maxlength="15" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')"#}
+    			{#								    onkeydown="if(event.key === '.' || event.key === 'e' || event.key === '-' ) event.preventDefault()"/>#}
+							{#					</div>#}
+							{#					<div#}
+							{#						id="warning-uin" class="text-warning" style="display: none;">#}
+													{# {{warning_uin}} #}
+							{#						UIN number is required#}
+							{#					</div>#}
+							{#				</div>#}
+
+							{#			</div>#}
+							{#		</div>#}
+							{#	</div>#}
+							{#	<div class='row'>#}
+							{#		<div class="col col-md-6 " id="uin-hidden">#}
+							{#			<label class='gst-check'>#}
+							{#				<input type="checkbox" name="check" value="" id="uin-checkbox"/><p>I don't have UIN.</p>#}
+							{#			</label>#}
+							{#		</div>#}
+							{#		<div class="col col-md-6 " id="new_gst-hidden">#}
+							{#			<label class='gst-check'>#}
+							{#				<input type="checkbox" name="newgstCheckbox" value="" id="newgstCheckbox"/><p>have a GSTIN.</p>#}
+							{#			</label>#}
+							{#		</div>#}
+							{#	</div>#}
+							{#</div>#}
+					{#04-04-25 end umar#}
+					        
+							
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group {% if required_company %} required {% endif %} ">
+										<label for="input-company" class="col-sm-12 control-label">{{ entry_company }}<i class="mandatory">*</i>
+										</label>
+										<div class="col-sm-12">
+											<input
+											type="text" name="company" value="{{ company }}" placeholder="{{ entry_company }}" id="input-company" class="form-control" /> 
+											{# {% if company is empty %} #}
+											<div id="warning-company" class="text-warning" style="display: none;">
+												{{warning_company}}
+											</div>
+											{# {% endif %} #}
+											{% if error_company %}
+												<div class="text-danger">{{ error_company }}</div>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class='row'>
+								<div class="btns col-sm-12">
+									<a href="#tab-login" data-toggle="tab">
+										<button type="button" id="button-prev-3" class="btn btn-primary custom_button prev_buttons">Previous</button>
+									</a>
+									<button type="button" id="button-next-4" class="btn btn-primary custom_button next_buttons">Next</button>
+								</div>
+							</div>
+						</div>
+
+
+						{# <div class="row">{#<div class="col-sm-12 {% if not status_about %} hide {% endif %}">#}
+						{#<div class="form-group {% if required_about %} required {% endif %}">#}
+						{#<label for="input-about" class="col-sm-12 control-label">{{ entry_about }}</label>#}
+						{#<div class="col-sm-12">#}
+						{#<textarea type="text" rows="6" name="about" placeholder="{{ entry_about }}" id="input-about" class="form-control">{{ about }}</textarea>#}
+						{#{% if error_about %}#}
+						{#<div class="text-danger">{{ error_about }}</div>#}
+						{#{% endif %}#}
+						{#</div>#}
+						{#</div>#}
+						{#</div>#}
+						{#</div>#}
+						{#</div> #}
+
+
+						<div
+							class="tab-pane bordered" id="tab-business">
+							{# <div class="tab-content"> #}
+							<legend>
+								<i class="fa fa-building" aria-hidden="true" style="margin-top: 20px;"></i>
+								{{ tab_generalstore }}</legend>
+							 {#<ul class="tab-pane" id="language">{% for language in languages %}#}
+							{#<li>#}
+							{#<a href="#language{{ language.language_id }}" data-toggle="tab">#}
+							{#{{ language.name }}</a>#}
+							{#</li>#}
+							{#{% endfor %}#}
+							{#</ul> #}
+							{% for language in languages %}
+								<div class="tab-pane" id="language{{ language.language_id }}">
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="form-group">
+												<label class="col-sm-12 control-label" for="input-name{{ language.language_id }}">{{ entry_storename }}<i class="mandatory">*</i></label>
+												<div class="col-sm-12">
+													<input
+														type="text" 
+														name="store_description[{{ language.language_id }}][name]" 
+														value="{{ store_description[language.language_id] ? store_description[language.language_id].name }}" 
+														placeholder="{{ entry_storename }}" 
+														id="input-name{{ language.language_id }}" 
+														class="form-control req-store"
+														pattern="^[A-Za-z]+(?: [A-Za-z]+)*$"
+														title="Only letters and single spaces are allowed (no numbers or special characters)"
+														oninput="this.value = this.value.replace(/[^A-Za-z ]/g, '').replace(/^\s+/, '').replace(/\s{2,}/g, ' ');"
+													/>
+														<div id="warning-store" class="text-warning" style="display: none;">
+															{{warning_store}}
+														</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6 {% if not status_metadesc %} hide {% endif %}">
+											<div class="form-group {% if required_metadesc %} required {% endif %}">
+												<label class="col-sm-12 control-label" for="input-meta_description{{ language.language_id }}">{{ entry_metadescription }}</label>
+												<div class="col-sm-12">
+													<textarea type="text" name="store_description[{{ language.language_id }}][meta_description]" value="" rows="3" placeholder="{{ entry_metadescription }}" id="input-meta_description{{ language.language_id }}" class="form-control ">{{ store_description[language.language_id] ? store_description[language.language_id].meta_description }}</textarea>
+
+													{#{% if error_meta_description[language.language_id] %}#}
+													{#	<div class="text-danger">{{ error_meta_description[language.language_id] }}</div>#}
+													{#{% endif %}#}
+												</div>
+											</div>
+										</div>
+
+										<div class="col-sm-6 {% if not status_description %} hide {% endif %}">
+											<div class="form-group {% if required_description %} required {% endif %}">
+
+												<label for="input-description{{ language.language_id }}" class="col-sm-12 control-label">{{ entry_description }}</label>
+												<div class="col-sm-12">
+													<textarea type="text" name="store_description[{{ language.language_id }}][description]" value="" placeholder="" id="input-description{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].description }}</textarea>
+
+													{#{% if error_description[language.language_id] %}#}
+													{#	<div class="text-danger">{{ error_description[language.language_id] }}</div>#}
+													{#{% endif %}#}
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6 {% if not status_shipping_policy %} hide {% endif %}">
+											<div class="form-group {% if required_shipping_policy %} required {% endif %} ">
+												<label class="col-sm-12 control-label" for="input-shipping_policy{{ language.language_id }}">{{ entry_shippingpolicy }}</label>
+												<div class="col-sm-12">
+													<textarea type="text" name="store_description[{{ language.language_id }}][shipping_policy]" value="" placeholder="{{ entry_shippingpolicy }}" id="input-shipping_policy{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].shipping_policy }}</textarea>
+
+													{#{% if error_shipping_policy[language.language_id] %}#}
+													{#	<div class="text-danger">{{ error_shipping_policy[language.language_id] }}</div>#}
+													{#{% endif %}#}
+												</div>
+											</div>
+										</div>
+
+										<div class="col-sm-6 {% if not status_return_policy %} hide {% endif %}">
+											<div class="form-group {% if required_return_policy %} required {% endif %} ">
+												<label class="col-sm-12 control-label" for="input-return_policy{{ language.language_id }}">{{ entry_returnpolicy }}</label>
+												<div class="col-sm-12">
+													<textarea type="text" name="store_description[{{ language.language_id }}][return_policy]" value="" placeholder="{{ entry_returnpolicy }}" id="input-return_policy{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].return_policy }}</textarea>
+
+													{#{% if error_return_policy[language.language_id] %}#}
+													{#	<div class="text-danger">{{ error_return_policy[language.language_id] }}</div>#}
+													{#{% endif %}#}
+												</div>
+											</div>
+										</div>
+
+										<div class="col-sm-6 {% if not status_meta_keyword %} hide {% endif %}">
+											<div class="form-group {% if required_meta_keyword %} required {% endif %} ">
+												<label class="col-sm-12 control-label" for="input-meta_keyword{{ language.language_id }}">{{ entry_metakeyword }}</label>
+												<div class="col-sm-12">
+													<textarea type="text" name="store_description[{{ language.language_id }}][meta_keyword]" value="" rows="3" placeholder="{{ entry_metakeyword }}" id="input-meta_keyword{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].meta_keyword }}</textarea>
+
+													{% if error_meta_keyword[language.language_id] %}
+														<div class="text-danger">{{ error_meta_keyword[language.language_id] }}</div>
+													{% endif %}
+												</div>
+											</div>
+										</div>
+									</div>
+									{# </div> #}
+								{% endfor %}
+							</div>
+							
+							{#nikita google ads auto create checkbox start#}
+						{#<div class="row" style="margin-top: 15px;">#}
+						{#		<div class="col-sm-12">#}
+						{#			<div class="form-group">#}
+						{#				<div class="google-ads-section col-sm-12" style="border: 1px solid #ddd; padding: 5px; left:5px; border-radius: 5px; background-color: #f9f9f9; height:120px; width:420px;">#}
+						{#					<h6 style="color: #4285f4; margin-bottom: 15px;">#}
+						{#						<i class="fa fa-google" aria-hidden="true"></i> Enable ipshopy Ads Manager<span><label style="font-weight: normal;">#}
+						{#							<input type="checkbox" name="enable_google_ads" id="enable-google-ads" value="1" checked style="margin-left: 10px; position: relative; top: 3px;">#}
+													
+						{#						</label></span>#}
+						{#					</h5>#}
+                        
+                                            {# --------------------------------------------- #}
+											
+						{#					<!-- Auto-Connect Info (New) -->#}
+						{#					<div id="google-ads-autoconnect-info" style="display: none; margin-top: 10px; padding: 10px; background-color: #e8f5e8; border-radius: 3px; border-left: 4px solid #4caf50;">#}
+						{#						<p style="margin: 0; color: #2e7d32; font-size: 14px;">#}
+						{#							<i class="fa fa-link" style="color: #4caf50;"></i>#}
+						{#							<strong>Existing ipshopy Ads Account Detected</strong>#}
+						{#							<br>#}
+						{#							<small>We'll automatically connect your existing account and send you an invitation to link it to our platform.</small>#}
+						{#						</p>#}
+						{#					</div>#}
+											
+						{#					<!-- Google Ads Progress Container (Hidden by default) -->#}
+						{#					<div id="google-ads-progress-container" style="display: none; margin-top: 15px;">#}
+						{#						<div class="progress-info">#}
+						{#							<p style="margin-bottom: 10px; color: #333;">#}
+						{#								<i class="fa fa-cog fa-spin" style="color: #4285f4;"></i>#}
+						{#								<strong>Setting up your ipshopy Ads account...</strong>#}
+						{#							</p>#}
+						{#							<div class="progress" style="height: 20px;">#}
+						{#								<div id="google-ads-progress-bar" class="progress-bar progress-bar-striped active" #}
+						{#									 style="width: 0%; background-color: #4285f4; transition: width 0.3s ease;">#}
+						{#									<span id="google-ads-progress-text">0%</span>#}
+						{#								</div>#}
+						{#							</div>#}
+						{#							<div id="google-ads-status-message" style="margin-top: 10px; font-size: 14px; color: #666;">#}
+						{#								Initializing ipshopy Ads setup...#}
+						{#							</div>#}
+						{#						</div>#}
+						{#					</div>#}
+											
+						{#					<!-- Google Ads Success Message (Hidden by default) -->#}
+						{#					<div id="google-ads-success" style="display: none; margin-top: 15px;">#}
+						{#						<div class="alert alert-success">#}
+						{#							<i class="fa fa-check-circle"></i>#}
+						{#							<strong>ipshopy Ads account successfully connected!</strong>#}
+						{#							<br>#}
+						{#							<small>Advertiser ID: <span id="google-ads-customer-id"></span></small>#}
+						{#						</div>#}
+						{#					</div>#}
+											
+						{#					<!-- Google Ads Error Message (Hidden by default) -->#}
+						{#					<div id="google-ads-error" style="display: none; margin-top: 15px;">#}
+						{#						<div class="alert alert-warning">#}
+						{#							<i class="fa fa-exclamation-triangle"></i>#}
+						{#							<strong>ipshopy Ads setup encountered an issue</strong>#}
+						{#							<br>#}
+						{#							<small>Don't worry, you can set this up later from your dashboard.</small>#}
+						{#						</div>#}
+						{#					</div>#}
+						{#				</div>#}
+						{#			</div>#}
+						{#		</div>#}
+						{#	</div>#}
+							{#nikita google ads auto create checkbox end#}
+							
+							<div class='row'>
+								<div class="btns col-sm-12">
+									<a href="#tab-company" data-toggle="tab">
+										<button type="button" id="button-prev-4" class="btn btn-primary custom_button prev_buttons">Previous</button>
+									</a>
+										<button type="button" id="button-next-5" class="btn btn-primary custom_button next_buttons">Next</button>
+								</div>
+							</div>
+							
+						</div>
+
+
+						<div class="tab-pane bordered" id="tab-bank">
+
+							<legend>
+								<i class="fa fa-money" aria-hidden="true"></i>
+								{{ tab_payment }}</legend>
+							<div class="row">
+								<div class="col-sm-6">
+									{% if status_paypal==1 or status_bank==1 %}
+										{#<label>{{ entry_method }}</label>#}
+									{% endif %}
+									<div>
+
+										{# Bank detail radio button added #}
+										<label class="radio-inline">
+											{#{% if payment_method == 'banktransfer' %}#}
+												<input type="radio" class="bank-radio" name="payment_method" value="banktransfer"/>
+											  {#{% else %}#}
+												{#<input type="radio" class="bank-radio" name="payment_method" value="paypal"/>#}
+											{#{% endif %}#}
+											<span>{{ text_bank_detail }}</span>
+										</label>
+									</div>
+								</div>
+
+								 {#<div class="payment {% if not status_paypal %} hide {% endif %}" id="payment-paypal"><div id="paypal">#}
+								{#<div class="form-group required">#}
+								{#<div class="col-sm-4">#}
+								{#<label for="input-paypal" class="col-sm-12 control-label">{{ entry_Emailid }}</label>#}
+								{#<input type="text" name="paypal" value="{{ paypal }}" placeholder="{{ entry_Emailid }}" id="input-paypal" class="form-control"/>#}
+								{#{% if error_paypal %}#}
+								{#<div class="text-danger">{{ error_paypal }}</div>#}
+								{#{% endif %}#}
+								{#</div>#}
+								{#</div>#}
+								{#</div>#}
+								{#</div> #}
+							</div>
+
+							<div class="payment">
+
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<label for="input-package-titl" class="col-sm-12 control-label">{{ entry_aname }}
+											</label>
+											<div class="col-sm-12">
+												<input
+												type="text" name="bank_account_name" value="{{ bank_account_name }}" placeholder="{{ entry_aname }}" id="input-package-titl" class="form-control" oninput="validatetext(this)" minlength="3" maxlength="150"/>
+												{# {% if bank_account_name is empty %} #}
+												<div id="warning-bank-account-name" class="text-warning" style="display: none;">
+													{{warning_bank_account_name}}
+												</div>
+												{# {% endif %} #}
+												{#{% if error_bank_account_name %}#}
+												{#	<div class="text-danger">{{ error_bank_account_name }}</div>#}
+												{#{% endif %}#}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<label for="input-account_number" class="col-sm-12 control-label">{{ entry_anumber }}
+											</label>
+											<div class="col-sm-12">
+												<input
+												type="text" name="bank_account_number" value="{{ bank_account_number }}" placeholder="{{ entry_anumber }}" id="input-account_number" class="form-control" minlength="8" maxlength="20"
+  												onkeydown="if(event.key === '.' || event.key === 'e' || event.key === '-' ) event.preventDefault()"/>
+												{# {% if bank_account_number is empty %} #}
+												<div id="warning-bank-account-number" class="text-warning" style="display: none;">
+													{{warning_bank_account_number}}
+												</div>
+												{# {% endif %} #}
+												{#{% if error_bank_account_number %}#}
+												{#	<div class="text-danger">{{ error_bank_account_number }}</div>#}
+												{#{% endif %}#}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<label for="input-bankname" class="col-sm-12 control-label">{{ entry_bankname }}
+											</label>
+											<div class="col-sm-12">
+												<input
+												type="text" name="bank_name" value="{{ bank_name }}" placeholder="{{ entry_bankname }}" id="input-bankname" class="form-control" oninput="validatetext(this)" minlength="3" maxlength="50"/>
+												{# {% if bank_name is empty %} #}
+												<div id="warning-bank-name" class="text-warning" style="display: none;">
+													{{warning_bank_name}}
+												</div>
+												{# {% endif %} #}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row"> {# added code hidden 04-02-2025#}
+									<div class="col-sm-12 {% if not status_bank_detail %} hide {% endif %}">
+										<div class="form-group">
+											<label for="input-branch_number" class="col-sm-12 control-label">{{ entry_bnumber }}
+											</label>
+											<div class="col-sm-12">
+												<input
+												type="number" name="bank_branch_number" value="{{ bank_branch_number }}" placeholder="{{ entry_bnumber }}" id="input-branch_number" class="form-control"/>
+												 {% if bank_branch_number is empty %} 
+												<div id="warning-bank-branch-number" class="text-warning" style="display: none;">
+													{{warning_bank_branch_number}}
+												</div>
+												 {% endif %} 
+											</div>
+										</div>
+									</div>
+								</div> 
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<label for="input-swift_code" class="col-sm-12 control-label">{{ entry_swiftcode }}
+											</label>
+											<div class="col-sm-12">
+												<input
+												type="text" name="bank_swift_code" value="{{ bank_swift_code }}" placeholder="{{ entry_swiftcode }}" id="input-swift_code" class="form-control"  minlength="11" maxlength="20" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')"
+    											onkeydown="if(event.key === '.' || event.key === '-' ) event.preventDefault()"/>
+												{# {% if bank_swift_code is empty %} #}
+												<div id="warning-bank-swift-code" class="text-warning" style="display: none;">
+													{{warning_bank_swift_code}}
+												</div>
+												{# {% endif %} #}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!--10-04-2020-->
+							{% if vendor_vprivacy != 0 %}
+								{% if text_agree %}
+									<div class="buttons" style='display:block;'>
+										<div class="pull-right terms_condition">
+										    {#{{ text_agree }}#}
+										    I have read and agree to the <span onclick='openModal()' style='cursor: pointer; font-weight: bolder; color: black;'>
+										        
+Terms & Conditions
+										    </span>
+											{% if agree %}
+												<input type="checkbox" name="agree" value="1" checked="checked"/>
+											{% else %}
+												<input type="checkbox" name="agree" value="1"/>
+											{% endif %}
+											{# &nbsp; #}
+
+										</div>
+									</div>
+									
+									{#nikita added 12/10/2025 start#}
+{#									<div class="row">#}
+{#  <div class="col-sm-12">#}
+{#    <div>#}
+{#      <div class="col-sm-12" id="ads_integration">#}
+{#        <div style="cursor: pointer; font-weight: bolder; color: black;">#}
+{#          Enable ipshopy Adds Manager#}
+{#          <span>#}
+{#            <input type="checkbox" class="google_integration" name="enable_google_ads" value="1" checked style="margin-left:4px;" />#}
+{#          </span>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+{#  </div>#}
+{#</div>#}
+									{#nikita added 12/10/2025 end#}
+
+									{# privacy  end #}
+									<div class="buttons row">
+										<div class="preview_row">
+											<div class='preview_section'>
+												<a href="#tab-business" data-toggle="tab">
+													<button type="button" id="button-prev-5" class="btn-submit btn btn-primary custom_button prev_buttons">previous</button>
+												</a>
+												<a href="javascript:void(0);" onclick="showPopup()">
+													<h2 class="preview-page">Preview</h2>
+												</a>
+											</div>
+											<div class="pull-right preview">
+
+												<input type="submit" value="{{ button_continue }}" class="btn-submit btn btn-primary custom_button"/>
+											</div>
+										</div>
+									</div>
+								{% else %}
+
+									<div class="buttons row">
+										<div class="pull-right">
+											<input type="submit" value="{{ button_continue }}" class="btn-submit btn btn-primary"/>
+										</div>
+									</div>
+								{% endif %}
+								{% else %}
+
+							{% endif %}
+							<!--10-04-2020-->
+						<div id="preview-modal" class="modal">
+							<div class="modal-content">
+								<span class="close" onclick="closePopup()">&times;</span>
+								<div class='preview_header'>
+									<h3 class="pre-head">Preview Details</h3>
+									<p>Please review your information before submitting</p>
+								</div>
+								<hr>
+								<div class='preview_container'>
+									<div class='details personal_info'>
+										<h4>{{tab_user}}</h4>
+
+										<p>
+											<strong>First Name:</strong>
+											<span id="preview-firstname"></span>
+										</p>
+										<p>
+											<strong>Last Name:</strong>
+											<span id="preview-lastname"></span>
+										</p>
+										<p>
+											<strong>Email:</strong>
+											<span id="preview-email"></span>
+										</p>
+										<p>
+											<strong>Contact Number:</strong>
+											<span id="preview-telephone"></span>
+										</p>
+									</div>
+									<div class='details address_info'>
+										<h4>{{tab_address}}</h4>
+										<p>
+											<strong>Address 1:</strong>
+											<span id="preview-address1"></span>
+										</p>
+										<p>
+											<strong>Address 2:</strong>
+											<span id="preview-address2"></span>
+										</p>
+										<p>
+											<strong>Country:</strong>
+											<span id="preview-country"></span>
+										</p>
+										<p>
+											<strong>Postcode:</strong>
+											<span id="preview-postcode"></span>
+										</p>
+										<p>
+											<strong>City:</strong>
+											<span id="preview-city"></span>
+										</p>
+										<p>
+											<strong>State:</strong>
+											<span id="preview-state"></span>
+										</p>
+									</div>
+									<div class='details login_info'>
+										<h4>{{tab_login}}</h4>
+										<p>
+											<strong>Display Name:</strong>
+											<span id="preview-displayname"></span>
+										</p>
+									</div>
+									<div class='details company_info'>
+										<h4>{{tab_company}}</h4>
+										<p>
+											<strong>Company:</strong>
+											<span id="preview-company"></span>
+										</p>
+										<!-- Added -->
+										<p>
+											<strong>GSTIN:</strong>
+											<span id="preview-gstin"></span>
+										</p>
+									</div>
+									<div class='details bank_info'>
+										<h4>{{tab_bank}}</h4>
+										<p>
+											<strong>Account Name:</strong>
+											<span id="preview-account-name"></span>
+										</p>
+										<p>
+											<strong>Account Number:</strong>
+											<span id="preview-account-number"></span>
+										</p>
+										<p>
+											<strong>Bank Name:</strong>
+											<span id="preview-bank-name"></span>
+										</p>
+										<p>
+											<strong>IFSC Code:</strong>
+											<span id="preview-swift-code"></span>
+										</p>
+									</div>
+								</div>
+								<div class='model_close_button'>
+									<button id="closeModal" class="btn btn-danger" type="button">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					{{ content_bottom }}
+				</div>
+						</form>
+				{{ column_right }}
+			</div>
+		</div>
+	{#<img src='{{ banner_images[1].src }}' />#}
+	<div class="right-image">
+	<img id="step-img-right" src="{{ banner_images['tab-user'].right }}" alt="Right Step Image">
+</div>
+	</div>
+	
+	{#27/03/25#}
+	 <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+          }
+          .terms_container{
+          display: flex;
+          
+          /* padding: 20px; */
+            padding-top:0px;
+        }
+        .term_sidebar {
+            width: 250px;
+            background: #f4f4f4;
+            /* padding: 20px; */
+            height: 100vh;
+            position: sticky;
+            top: 20px;
+        }
+       
+        .term_sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .term_sidebar ul li {
+            padding: 6px 20px;
+        }
+        .term_sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+        }
+         .term_sidebar ul li:hover {
+          background-color: rgba(128, 0, 128, 0.183);
+        }
+        .term_sidebar ul li a.active {
+          color: white;
+        }
+        li:has(a.active)  {
+            background-color: purple;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        .term_content {
+            flex: 1;
+            padding-left: 40px;
+         
+        }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+        }
+        h2 {
+            color: purple;
+            font-size: 20px;
+        }
+        p {
+            color: #555;
+            line-height: 24px;
+            text-align: justify;
+        }
+        .term_modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            overflow: scroll;
+        }
+        .term_modal-content {
+            background-color: white;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%;
+            padding-inline: 40px;
+        }
+        .term_close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        @media (max-width:1024px) {
+        .term_sidebar{
+          width: 200px;
+        }
+        }
+        @media (max-width:786px) {
+          .term_sidebar{
+            display: none;
+          }
+          .term_content{
+            padding-left: 0px ;
+          }
+        }
+    </style>
+	 <div id="myModal" class="term_modal">
+    <div class="term_modal-content">
+        <span class="term_close" onclick="closeModal()">&times;</span>
+        <h1>Terms and Conditions</h1>
+        <div class="terms_container">
+          <div class="term_sidebar">
+              <ul>
+                <li><a href="#welcome" class="btn-scroll-target">Welcome</a></li>
+                <li><a href="#Introduction" class="btn-scroll-target">Introduction</a></li>
+                <li><a href="#privacy" class="btn-scroll-target">Privacy Policy</a></li>
+                <li><a href="#Acceptance" class="btn-scroll-target">Acceptance of Terms</a></li>
+                <li><a href="#user_account" class="btn-scroll-target">User Account</a></li>
+                <li><a href="#Electronic_Communications" class="btn-scroll-target">Electronic Communications</a></li>
+                <li><a href="#Access_to_Website" class="btn-scroll-target">Access to Website</a></li>
+                <li><a href="#Copyright_and_Intellectual_Property" class="btn-scroll-target">Copyright and Intellectual Property</a></li>
+                <li><a href="#Trademarks" class="btn-scroll-target">Trademarks</a></li>
+                <li><a href="#License_and_Site_Access" class="btn-scroll-target">License and Site Access</a></li>
+                <li><a href="#Your_Responsibilities_and_Conduct" class="btn-scroll-target">Your Responsibilities and Conduct</a></li>
+                <li><a href="#Product_Information" class="btn-scroll-target">Product Information</a></li>
+                <li><a href="#Third_Party_Links" class="btn-scroll-target">Third-Party Links</a></li>
+                <li><a href="#Disclaimer_of_Warranties" class="btn-scroll-target">Disclaimer of Warranties</a></li>
+                <li><a href="#Limitation_of_Liability" class="btn-scroll-target">Limitation of Liability</a></li>
+                <li><a href="#Indemnification" class="btn-scroll-target">Indemnification</a></li>
+                <li><a href="#Governing_Law" class="btn-scroll-target">Governing Law and Jurisdiction</a></li>
+                <li><a href="#Changes_to_the_Terms" class="btn-scroll-target">Changes to the Terms</a></li>
+                <li><a href="#Contact_Information" class="btn-scroll-target">Contact Information</a></li>
+            
+              </ul>
+          </div>
+          <div class="term_content">
+            <h2 id="welcome">Welcome to www.ipshopy.com!</h2>
+            <p>These Terms and Conditions ("Terms") govern your use of our website and services. By accessing and using this website, you agree to be bound by these Terms. If you do not agree with these Terms, please do not use the website.</p>
+            
+            <h2 id="Introduction">1. Introduction</h2>
+            <p>www.ipshopy.com ("we", "us", "our" or "the Company") operates this e-commerce website, offering a wide range of products and services to customers. Our registered office is located at IP SUPER SHOPPEE PVT. LTD., ipshopy, Dnyanpeeth Campus T-18, Opp. Garrware Stadium STPI, Naregaon Road, Chhatrapati Sambhaji Nagar (Aurangabad) 431001, Maharashtra, India, and we are governed by the laws of India.</p>
+            
+            <h2 id="privacy">2. Privacy Policy</h2>
+            <p>Your privacy is important to us. By using our website, you consent to the collection, use, and sharing of your personal information in accordance with our Privacy Policy. Please review our Privacy Policy for detailed information on how we protect and manage your personal data.</p>
+            
+            <h2 id="Acceptance">3. Acceptance of Terms</h2>
+            <p>By accessing and using www.ipshopy.com, you agree to comply with these Terms, including all relevant policies, procedures, and rules. We reserve the right to amend these Terms at any time, and you are responsible for reviewing these Terms periodically. Continued use of the site constitutes your acceptance of any changes.</p>
+            
+            <h2 id="user_account">4. User Account</h2>
+            <p>To make use of certain features on our website, you may be required to create an account. When registering, you agree to provide accurate and complete information and to keep your account details up-to-date. You are responsible for maintaining the confidentiality of your account information and password.</p>
+            
+            <h2 id="Electronic_Communications">5. Electronic Communications</h2>
+            <p>By using our website, you consent to receive communications from us electronically. This may include newsletters, promotions, product updates, and other notifications. You agree that these electronic communications satisfy any legal requirements for written communications.</p>
+            
+            <h2 id="Access_to_Website">6. Access to Website</h2>
+            <p>While we strive to ensure that our website is available at all times, we cannot guarantee uninterrupted access due to the nature of the internet. We may, from time to time, suspend or restrict access to our website for repairs, maintenance, or updates.</p>
+            
+            <h2 id="Copyright_and_Intellectual_Property">7. Copyright and Intellectual Property</h2>
+            <p>All content available on www.ipshopy.com, including but not limited to text, graphics, logos, images, software, and trademarks, is the property of IP SUPER SHOPPEE PVT. LTD. or its licensors and is protected by copyright, trademark, and other intellectual property laws.</p>
+            
+            <h2 id="Trademarks">8. Trademarks</h2>
+            <p>Our trademarks, including the name "ipshopy" and associated logos, are protected under intellectual property law. You are prohibited from using our trademarks without prior written permission.</p>
+            
+            <h2 id="License_and_Site_Access">9. License and Site Access</h2>
+            <p>We grant you a limited, non-transferable, non-exclusive license to access and use our website for personal, non-commercial purposes, in accordance with these Terms.</p>
+            
+            <h2 id="Your_Responsibilities_and_Conduct">10. Your Responsibilities and Conduct</h2>
+            <p>You agree not to use the website for any unlawful purposes or in any manner that could damage, disable, or impair the operation of the site or interfere with other users.</p>
+            
+            <h2 id="Product_Information">11. Product Information</h2>
+            <p>We make every effort to ensure that product information, pricing, and availability on our website are accurate. However, we do not warrant the accuracy, completeness, or reliability of the information on the site.</p>
+            
+            <h2 id="Third_Party_Links">12. Third-Party Links</h2>
+            <p>Our website may contain links to third-party websites. These links are provided for your convenience, and we do not endorse or assume any responsibility for the content, products, or services on these external sites.</p>
+            
+            <h2 id="Disclaimer_of_Warranties">13. Disclaimer of Warranties</h2>
+            <p>Our website and services are provided on an "as is" and "as available" basis. We make no representations or warranties regarding the operation, availability, or functionality of the website.</p>
+            
+            <h2 id="Limitation_of_Liability">14. Limitation of Liability</h2>
+            <p>In no event shall we be liable for any direct, indirect, incidental, consequential, or punitive damages arising out of your use of this website.</p>
+            
+            <h2 id="Indemnification">15. Indemnification</h2>
+            <p>You agree to indemnify, defend, and hold harmless IP SUPER SHOPPEE PVT. LTD., its officers, directors, employees, agents, and affiliates, from and against any claims arising out of your breach of these Terms.</p>
+            
+            <h2 id="Governing_Law">16. Governing Law and Jurisdiction</h2>
+            <p>These Terms are governed by and construed in accordance with the laws of India. You agree to submit to the exclusive jurisdiction of the courts located in Aurangabad, Maharashtra, India.</p>
+            
+            <h2 id="Changes_to_the_Terms">17. Changes to the Terms</h2>
+            <p>We reserve the right to amend these Terms at any time. Any changes will be posted on this page, and the updated Terms will take effect immediately upon posting.</p>
+            
+            <h2 id="Contact_Information">18. Contact Information</h2>
+            <p>If you have any questions or concerns about these Terms, please contact us at:</p>
+            <p><strong>IP SUPER SHOPPEE PVT. LTD.</strong><br>
+            ipshopy, Dnyanpeeth Campus T-18, Opp. Garrware Stadium STPI,<br>
+            Naregaon Road, Chhatrapati Sambhaji Nagar, Aurangabad 431001,<br>
+            Maharashtra, India<br>
+            <strong>Email:</strong> info@ipshopy.com<br>
+            <strong>Phone:</strong> 9342525252</p>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  function openModal() {
+      document.getElementById("myModal").style.display = "block";
+  }
+
+  function closeModal() {
+      document.getElementById("myModal").style.display = "none";
+  }
+
+  window.onclick = function(event) {
+      var modal = document.getElementById("myModal");
+      if (event.target === modal) {
+          modal.style.display = "none";
+      }
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+      var links = document.querySelectorAll(".btn-scroll-target");
+
+      links.forEach(function(link) {
+          link.addEventListener("click", function(event) {
+              event.preventDefault();
+
+              links.forEach(l => l.classList.remove("active"));
+              link.classList.add("active");
+
+              var targetId = link.getAttribute("href").substring(1);
+              var targetElement = document.getElementById(targetId);
+
+              if (targetElement) {
+                  targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+          });
+      });
+  });
+</script>  
+
+{#end#}
+
+	<script type="text/javascript" src="catalog/view/javascript/vendor/summernote/summernote.js"></script><link href="catalog/view/javascript/vendor/summernote/summernote.css" rel="stylesheet"/><script type="text/javascript" src="catalog/view/javascript/vendor/summernote/summernote-image-attributes.js"></script>
+	<script type="text/javascript" src="catalog/view/javascript/vendor/summernote/opencartvendor.js"></script>
+	<style>
+		button.note-btn.btn.btn-default.btn-sm:nth-child(2) {
+			display: none;
+		}
+	</style>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+setupPaymentToggle();
+});
+
+function setupPaymentToggle() {
+let paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+let paymentSection = document.querySelector(".payment");
+
+// Initially hide the payment input fields
+if (paymentSection) {
+paymentSection.style.display = "none";
+}
+
+paymentRadios.forEach((radio) => {
+radio.addEventListener("change", function () {
+if (this.checked) {
+paymentSection.style.display = "block"; // Show payment fields when a radio is selected
+}
+});
+});
+}
+	</script>
+
+
+	<script
+		type="text/javascript">
+		<!--
+		$('input[name=\'payment_method\']').on('change', function () {
+$('.payment').hide();
+
+$('#payment-' + this.value).show();
+});
+
+$('input[name=\'payment_method\']:checked').trigger('change');
+//
+		-->
+	</script>
+	<script
+		type="text/javascript">
+		<!--
+		$('#language a:first').tab('show');
+//
+		-->
+	</script>
+
+
+	<script
+		type="text/javascript">
+		<!--
+		$('select[name=\'country_id\']').on('change', function () {
+$.ajax({
+url: 'index.php?route=account/account/country&country_id=' + this.value,
+dataType: 'json',
+beforeSend: function () {
+$('select[name=\'country_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+},
+complete: function () {
+$('.fa-spin').remove();
+},
+success: function (json) {
+html = '<option value="">                                                                                                                                     {{ text_select }}</option>';
+
+if (json['zone'] && json['zone'] != '') {
+for (i = 0; i < json['zone'].length; i ++) {
+html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+
+if (json['zone'][i]['zone_id'] == '{{ zone_id }}') {
+html += ' selected="selected"';
+}
+
+html += '>' + json['zone'][i]['name'] + '</option>';
+}
+} else {
+html += '<option value="0" selected="selected">                                                                                                                                     {{ text_none }}</option>';
+}
+
+$('select[name=\'zone_id\']').html(html);
+},
+error: function (xhr, ajaxOptions, thrownError) {
+alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+}
+});
+});
+
+$('select[name=\'country_id\']').trigger('change');
+//
+		-->
+	</script>
+	<script
+		type="text/javascript">
+		<!--
+		$('button[id^=\'button-upload\']').on('click', function () {
+var node = this;
+
+$('#form-upload').remove();
+
+$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+$('#form-upload input[name=\'file\']').trigger('click');
+
+if (typeof timer != 'undefined') {
+clearInterval(timer);
+}
+
+timer = setInterval(function () {
+if ($('#form-upload input[name=\'file\']').val() != '') {
+clearInterval(timer);
+$.ajax({
+url: 'index.php?route=vendor/vendor/upload',
+type: 'post',
+dataType: 'json',
+data: new FormData($('#form-upload')[0]),
+cache: false,
+contentType: false,
+processData: false,
+beforeSend: function () {
+$(node).button('loading');
+},
+
+complete: function () {
+$(node).button('reset');
+},
+success: function (json) {
+$('.text-danger').remove();
+
+if (json['error']) {
+$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+}
+
+if (json['success']) {
+$("#thumb-image").html('<img src="' + json['location2'] + '" alt="" title="" width="100" class="thumb"/>');
+$("#input-image").val(json['location1']);
+
+}
+},
+error: function (xhr, ajaxOptions, thrownError) {
+alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+}
+});
+
+
+}
+}, 500);
+});
+//
+		-->
+	</script>
+	<script
+		type="text/javascript">
+		<!--
+		$('button[id^=\'button-logo\']').on('click', function () {
+var node = this;
+
+$('#form-upload').remove();
+
+$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+$('#form-upload input[name=\'file\']').trigger('click');
+
+if (typeof timer != 'undefined') {
+clearInterval(timer);
+}
+
+timer = setInterval(function () {
+if ($('#form-upload input[name=\'file\']').val() != '') {
+clearInterval(timer);
+$.ajax({
+url: 'index.php?route=vendor/vendor/upload',
+type: 'post',
+dataType: 'json',
+data: new FormData($('#form-upload')[0]),
+cache: false,
+contentType: false,
+processData: false,
+beforeSend: function () {
+$(node).button('loading');
+},
+
+complete: function () {
+$(node).button('reset');
+},
+success: function (json) {
+$('.text-danger').remove();
+
+if (json['error']) {
+$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+}
+
+if (json['success']) {
+$("#thumb-logo").html('<img src="' + json['location2'] + '" alt="" title="" width="100" class="thumb"/>');
+$("#input-logo").val(json['location1']);
+
+}
+},
+error: function (xhr, ajaxOptions, thrownError) {
+alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+}
+});
+
+
+}
+}, 500);
+});
+//
+		-->
+	</script>
+	<script
+		type="text/javascript">
+		<!--
+		$('button[id^=\'upload-banner\']').on('click', function () {
+var node = this;
+
+$('#form-upload').remove();
+
+$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+$('#form-upload input[name=\'file\']').trigger('click');
+
+if (typeof timer != 'undefined') {
+clearInterval(timer);
+}
+
+timer = setInterval(function () {
+if ($('#form-upload input[name=\'file\']').val() != '') {
+clearInterval(timer);
+$.ajax({
+url: 'index.php?route=vendor/vendor/upload',
+type: 'post',
+dataType: 'json',
+data: new FormData($('#form-upload')[0]),
+cache: false,
+contentType: false,
+processData: false,
+beforeSend: function () {
+$(node).button('loading');
+},
+
+complete: function () {
+$(node).button('reset');
+},
+success: function (json) {
+$('.text-danger').remove();
+
+if (json['error']) {
+$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+}
+
+if (json['success']) {
+$("#thumb-banner").html('<img src="' + json['location2'] + '" alt="" title="" width="100" class="thumb"/>');
+$("#input-banner").val(json['location1']);
+
+}
+},
+error: function (xhr, ajaxOptions, thrownError) {
+alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+}
+});
+}
+}, 500);
+});
+//
+		-->
+	</script>
+	<style>
+		.btn-submit {
+			padding: 10px 25px;
+			font-size: 16px;
+			text-transform: uppercase;
+		}
+		.imagebox .thumb {
+			border: solid 2px #62CBF2;
+			padding: 5px;
+		}
+	</style>
+	<script
+		type="text/javascript">
+		<!--
+		$('#language a:first').tab('show');
+//
+		-->
+	</script>
+	<script type="text/javascript"><!--
+var $sorted_items,
+getSorted = function(selector, attrName) {
+    return $(
+      $(selector).toArray().sort(function(a, b){
+          var aVal = parseInt(a.getAttribute(attrName)),
+              bVal = parseInt(b.getAttribute(attrName));
+          return aVal - bVal;
+      })
+    );
+};
+
+$sorted_items = getSorted('.signupsort .form-group', 'data-sort').clone();
+$('.signupsort').html($sorted_items);</script>
+{#{{ footer }}#}
+{# input number validation  #}<script>
+	document.getElementById('sixDigitNumber').addEventListener('input', function (e) {
+if (this.value.length > 10) {
+this.value = this.value.slice(0, 10); // Truncate input to 6 digits
+}
+});
+</script>
+
+<script>
+//     document.addEventListener("DOMContentLoaded", function () {
+//     function setupAddressHandlers() {
+//     const pincodeInput = document.querySelector(`#input-postcode`);
+//     const cityInput = document.querySelector(`#input-city`);
+//     const stateSelect = document.querySelector(`#input-zone`); // Ensure this is the state <select> element
+//     const countrySelect = document.querySelector(`#input-country`);
+    
+//     // ✅ Set country to India (ID: 99) by default
+//     function setDefaultCountry() {
+//     if (countrySelect) {
+//     countrySelect.value = "99"; // Directly set the country value to India (99)
+//     }
+//     }
+//     setDefaultCountry();
+//     // Set country on page load
+    
+//     // ✅ Fetch city and state when pincode is entered
+//     pincodeInput.addEventListener("blur", function () {
+//     let pincode = pincodeInput.value.trim();
+    
+//     if (/^\d{6}$/.test(pincode)) { // Ensures valid 6-digit pincode (India)
+//     fetch(`https://api.postalpincode.in/pincode/${pincode}`).then(response => response.json()).then(data => {
+//     if (data[0].Status === "Success") {
+//     let postOffice = data[0].PostOffice[0];
+//     let city = postOffice.District;
+//     let state = postOffice.State;
+    
+//     // ✅ Set city (readonly input field)
+//     if (cityInput) 
+//     cityInput.value = city;
+    
+    
+    
+//     // ✅ Set state value (without enabling the dropdown, just set the value)
+//     if (stateSelect) {
+//     stateSelect.value = state;
+//     // Set the state based on API response
+    
+//     // Optionally, you could update the placeholder or option text
+//     // to match the selected state, but the dropdown will remain disabled.
+//     }
+//     } else {
+//     // Show alert and clear fields when user clicks OK
+//     let alertDialog = alert("Invalid Pincode. Please check and enter again.");
+//     // Clear the pincode, city and state fields
+//     pincodeInput.value = "";
+//     if (cityInput) cityInput.value = "";
+//     if (stateSelect) stateSelect.value = "";
+//     }
+//     }).catch(error => {
+//     console.error("Error fetching pincode data:", error);
+//     // Show alert and clear fields when user clicks OK
+//     let alertDialog = alert("Error fetching pincode details. Please try again later.");
+//     // Clear the pincode, city and state fields
+//     pincodeInput.value = "";
+//     if (cityInput) cityInput.value = "";
+//     if (stateSelect) stateSelect.value = "";
+//     });
+//     }
+//     });
+//     }
+    
+//     // Initialize the address handlers
+//     setupAddressHandlers();
+//     });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  function setupAddressHandlers() {
+    const pincodeInput = document.querySelector(`#input-postcode`);
+    const cityInput = document.querySelector(`#input-city`);
+    const stateSelect = document.querySelector(`#input-zone`);
+    const countrySelect = document.querySelector(`#input-country`);
+
+    // ✅ Set default country to India
+    function setDefaultCountry() {
+      if (countrySelect) {
+        countrySelect.value = "99";
+      }
+    }
+    setDefaultCountry();
+
+    // ✅ Fetch city and state when valid pincode is entered
+    pincodeInput.addEventListener("blur", function () {
+      let pincode = pincodeInput.value.trim();
+
+      if (/^\d{6}$/.test(pincode)) {
+        fetch(`https://api.postalpincode.in/pincode/${pincode}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data[0].Status === "Success") {
+              let postOffice = data[0].PostOffice[0];
+              let city = postOffice.District;
+              let state = postOffice.State;
+
+              if (cityInput) cityInput.value = city;
+              if (stateSelect) stateSelect.value = state;
+            } else {
+              fallbackToLocalDB(pincode);
+            }
+          })
+          .catch(error => {
+            console.error("API error:", error);
+            fallbackToLocalDB(pincode);
+          });
+      }
+    });
+
+    // ✅ Local fallback
+    function fallbackToLocalDB(pincode) {
+      fetch(`index.php?route=vendor/vendor/fetchInfo&pincode=${pincode}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            if (cityInput) cityInput.value = data.city;
+            if (stateSelect) stateSelect.value = data.state;
+          } else {
+            alert("City and State not found for this pincode");
+            pincodeInput.value = "";
+            if (cityInput) cityInput.value = "";
+            if (stateSelect) stateSelect.value = "";
+          }
+        })
+        .catch(err => {
+          console.error("Local DB error:", err);
+          alert("Error checking pincode locally. Try again.");
+        });
+    }
+  }
+
+  setupAddressHandlers();
+});
+</script>
+
+<script>
+	function validatetext(input) {
+input.value = input.value.replace(/[^A-Za-z\s]/g, ''); // Allow only letters & spaces
+}
+</script>
+
+<script>
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && event.target.tagName === "INPUT") {
+        event.preventDefault(); // Stop the default form submission
+    }
+});
+</script>
+
+{# User-details page #}
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+    const progressBar = document.getElementById("signup_progress-bar");
+    setupNextButton1();
+    setupPreviousButton1(); // ✅ Ensure this runs on page load
+});
+
+function setupNextButton1() {
+    const progressBar = document.getElementById("signup_progress-bar");
+    const page_no = document.getElementById("page_no");
+    const nextButton = document.getElementById("button-next-1");
+
+    if (!nextButton) {
+        console.error("button-next-1 not found in the DOM.");
+        return;
+    }
+
+    nextButton.addEventListener("click", function (event) {
+        const firstname = document.getElementById("input-firstname")?.value.trim();
+        const email = document.getElementById("input-email")?.value.trim();
+        const telephone = document.getElementById("input-telephone")?.value.trim();
+
+        let isValid = true;
+
+        // Validate fields
+        isValid &= validateField("firstname", firstname, 2, 30);
+        isValid &= validateEmail(email); // Email validation
+        isValid &= validateTelephone(telephone);
+
+        if (!isValid) {
+            event.preventDefault();
+        } else {
+            const progress = (1 / 5) * 100;
+            progressBar.style.width = `${progress}%`;
+            page_no.innerHTML = 1;
+            document.querySelector('[data-toggle="tab"][href="#tab-address"]')?.click();
+        }
+    });
+}
+
+// Validate a text field and show/hide warnings
+function validateField(fieldName, fieldValue, minLength = 0, maxLength = Infinity) {
+    const warningElement = document.getElementById(`warning-${fieldName}`);
+    let isValid = true;
+
+    if (!fieldValue || fieldValue.length < minLength || fieldValue.length > maxLength) {
+        if (warningElement) {
+            warningElement.classList.add("text-warning");
+            warningElement.style.display = "block";
+        }
+        isValid = false;
+    } else {
+        if (warningElement) {
+            warningElement.style.display = "none";
+            warningElement.classList.remove("text-warning");
+        }
+    }
+
+    return isValid;
+}
+
+
+function validateEmail(email) {
+    const warningEmail = document.getElementById("warning-email");
+    let isValid = true;
+
+    // Trim whitespace from the input
+    email = email.trim();
+
+    // Regular expression to validate general email format
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    // Initially, remove the warning if email is empty or invalid
+    if (warningEmail) {
+        warningEmail.classList.remove("text-warning");
+        warningEmail.style.display = "none";
+    }
+
+    // Check if the email is empty or doesn't match the regex pattern
+    if (!email || !emailRegex.test(email)) {
+        if (warningEmail) {
+            showWarning();  // Trigger the warning for invalid email
+        }
+        isValid = false;
+    } else {
+        // Check for consecutive periods in the email or domain
+        if (email.includes('..') || email.split('@')[1].includes('..')) {
+            if (warningEmail) {
+                showWarning();  // Trigger the warning for invalid email with consecutive periods
+            }
+            isValid = false;
+        }
+
+        // Further domain validation: Ensure that domain part ends with a valid TLD
+        const domain = email.split('@')[1];
+        const domainParts = domain.split('.');
+        const tld = domainParts[domainParts.length - 1];
+
+        // Ensure the TLD is at least 2 characters (and exclude special cases like .a, .b, etc.)
+        if (tld.length < 2 || !/^[a-zA-Z]{2,}$/.test(tld)) {
+            if (warningEmail) {
+                showWarning();  // Trigger the warning for invalid TLD
+            }
+            isValid = false;
+        }
+    }
+
+    // If the email is valid, remove the warning and any applied warning class
+    if (isValid && warningEmail) {
+        hideWarning();
+    }
+
+    return isValid;
+}
+
+// Function to show warning message
+function showWarning() {
+    const warningEmail = document.getElementById("warning-email");
+    if (warningEmail) {
+        warningEmail.classList.add("text-warning");
+        warningEmail.style.display = "block";
+    }
+}
+
+// Function to hide warning message
+function hideWarning() {
+    const warningEmail = document.getElementById("warning-email");
+    if (warningEmail) {
+        warningEmail.style.display = "none";
+        warningEmail.classList.remove("text-warning");
+    }
+}
+
+
+// Validate the telephone field
+function validateTelephone(telephone) {
+    const warningTelephone = document.getElementById("warning-telephone");
+    let isValid = true;
+
+    if (!telephone || telephone.length < 10 || !/^\d+$/.test(telephone)) {
+        if (warningTelephone) {
+            warningTelephone.classList.add("text-warning");
+            warningTelephone.style.display = "block";
+        }
+        isValid = false;
+    } else {
+        if (warningTelephone) {
+            warningTelephone.style.display = "none";
+            warningTelephone.classList.remove("text-warning");
+        }
+    }
+
+    return isValid;
+}
+
+// Reinitialize the button
+function setupPreviousButton1() {
+    const progressBar = document.getElementById("signup_progress-bar");
+    const page_no = document.getElementById("page_no");
+    const prevButton = document.getElementById("button-prev-1");
+
+    if (prevButton) {
+        prevButton.addEventListener("click", function () {
+            setupNextButton1(); // ✅ Reinitialize the event listener for 'button-next-1'
+            document.querySelector('[data-toggle="tab"][href="#tab-user"]')?.click();
+            const progress = 0;
+            progressBar.style.width = `${progress}%`;
+            page_no.innerHTML = 0;
+        });
+    }
+}
+</script>
+
+
+<script>
+    document.getElementById("input-telephone").addEventListener("input", function () {
+        // Remove non-numeric characters
+        this.value = this.value.replace(/[^0-9]/g, "");
+
+        // Prevent number from starting with 0
+        if (this.value.startsWith("0")) {
+            this.value = this.value.replace(/^0+/, ""); // Remove leading zeros
+        }
+
+        // Enforce max length of 10 digits
+        this.value = this.value.slice(0, 10);
+    });
+</script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+	setupNextButton2();
+	setupPreviousButton2();
+	});
+
+	function setupNextButton2() {
+	const progressBar = document.getElementById("signup_progress-bar");
+	const page_no = document.getElementById("page_no");
+	let nextButton = document.getElementById("button-next-2");
+
+	if (! nextButton) {
+	console.error("button-next-2 not found in the DOM.");
+	return;
+	}
+
+	function validateAddress() {
+	let address = document.getElementById("input-address-1") ?. value.trim();
+
+	let postcode = document.getElementById("input-postcode") ?. value.trim();
+	let button = document.getElementById("button-next-2");
+
+	button.disabled = !(address && postcode);
+	}
+
+	nextButton.addEventListener("click", function (event) {
+	let address = document.getElementById("input-address-1") ?. value.trim();
+	let postcode = document.getElementById("input-postcode") ?. value.trim();
+
+	let warningAddress = document.getElementById("warning-address");
+	let warningPostcode = document.getElementById("warning-postcode");
+
+	let isValid = true;
+
+	if (! address || address.length < 4 || address.length > 255) {
+
+	if (warningAddress) {
+	warningAddress.classList.add("text-warning");
+	warningAddress.style.display = "block";
+	}
+	isValid = false;
+	} else {
+	if (warningAddress) {
+	warningAddress.style.display = "none";
+	warningAddress.classList.remove("text-warning");
+	}
+	}
+
+	if (! postcode) {
+	if (warningPostcode) {
+
+	warningPostcode.classList.add("text-warning");
+	warningPostcode.style.display = "block";
+	}
+	isValid = false;
+	} else {
+	if (warningPostcode) {
+	warningPostcode.style.display = "none";
+	warningPostcode.classList.remove("text-warning");
+	}
+	}
+
+	if (! isValid) {
+	event.preventDefault();
+	} else {
+	document.querySelector('[data-toggle="tab"][href="#tab-login"]') ?. click();
+	const progress = (2 / 5) * 100;
+	progressBar.style.width = `${progress}%`;
+	page_no.innerHTML = 2;
+	}
+	});
+	}
+
+	function setupPreviousButton2() {
+	const progressBar = document.getElementById("signup_progress-bar");
+	const page_no = document.getElementById("page_no");
+	let prevButton = document.getElementById("button-prev-2"); // Adjust ID as per your button
+
+	if (prevButton) {
+	prevButton.addEventListener("click", function () {
+	setupNextButton2();
+	// ✅ Reinitialize the event listener for 'button-next-2'
+	document.querySelector('[data-toggle="tab"][href="#tab-address"]') ?. click();
+	const progress = (1 / 5) * 100;
+	progressBar.style.width = `${progress}%`;
+	page_no.innerHTML = 1;
+	});
+	}
+	}
+</script>
+
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+    setupNextButton3();
+    setupPreviousButton3();
+});
+
+function setupNextButton3() {
+    const progressBar = document.getElementById("signup_progress-bar");
+    const page_no = document.getElementById("page_no");
+    let nextButton = document.getElementById("button-next-3");
+
+    if (!nextButton) {
+        console.error("button-next-3 not found in the DOM.");
+        return;
+    }
+	
+
+    nextButton.addEventListener("click", function (event) {
+        let displayName = document.getElementById("input-display_name")?.value.trim();
+        let password = document.getElementById("input-password")?.value.trim();
+        let confirmPassword = document.getElementById("input-confirm")?.value.trim();
+
+        let warningDisplayName = document.getElementById("warning-display-name");
+        let warningPassword = document.getElementById("warning-password");
+        let warningConfirm = document.getElementById("warning-confirm");
+
+        let isValid = true;
+
+        // Display Name Validation
+        if (!displayName || displayName.length < 2 || displayName.length > 30) {
+            if (warningDisplayName) {
+                warningDisplayName.classList.add("text-warning");
+                warningDisplayName.style.display = "block";
+            }
+            isValid = false;
+        } else {
+            if (warningDisplayName) {
+                warningDisplayName.style.display = "none";
+                warningDisplayName.classList.remove("text-warning");
+            }
+        }
+
+        // Password Validation
+        if (!password || password.length < 4) {
+            if (warningPassword) {
+                warningPassword.classList.add("text-warning");
+                warningPassword.style.display = "block";
+            }
+            isValid = false;
+        } else {
+            if (warningPassword) {
+                warningPassword.style.display = "none";
+                warningPassword.classList.remove("text-warning");
+            }
+        }
+
+        // Confirm Password Validation
+        if (!confirmPassword || password !== confirmPassword) {
+            if (warningConfirm) {
+                warningConfirm.classList.add("text-warning");
+                warningConfirm.style.display = "block";
+            }
+            isValid = false;
+        } else {
+            if (warningConfirm) {
+                warningConfirm.style.display = "none";
+                warningConfirm.classList.remove("text-warning");
+            }
+        }
+
+        // Prevent skipping pages if validation fails
+        if (!isValid) {
+            event.preventDefault();
+        } else {
+            const progress = (3 / 5) * 100;
+            progressBar.style.width = `${progress}%`;
+            page_no.innerHTML = 3;
+            document.querySelector('[data-toggle="tab"][href="#tab-company"]')?.click();
+        }
+    });
+}
+
+function setupPreviousButton3() {
+    const progressBar = document.getElementById("signup_progress-bar");
+    const page_no = document.getElementById("page_no");
+    let prevButton = document.getElementById("button-prev-3");
+
+    if (prevButton) {
+        prevButton.addEventListener("click", function () {
+            setupNextButton3();
+            document.querySelector('[data-toggle="tab"][href="#tab-login"]')?.click();
+            const progress = (2 / 5) * 100;
+            progressBar.style.width = `${progress}%`;
+            page_no.innerHTML = 2;
+        });
+    }
+}
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    setupNextButton4();
+    setupPreviousButton4();
+});
+
+function setupNextButton4() {
+    const progressBar = document.getElementById("signup_progress-bar");
+    const page_no = document.getElementById("page_no");
+    let nextButton = document.getElementById("button-next-4");
+
+    if (!nextButton) {
+        console.error("button-next-4 not found in the DOM.");
+        return;
+    }
+
+    let companyInput = document.getElementById("input-company");
+    let gstinInput = document.getElementById("input-fax");
+    let verifyButton = document.getElementById("gstin-verify");
+    let panInput = document.getElementById("input-pan");
+
+    let warningCompany = document.getElementById("warning-company");
+    let warningGstin = document.getElementById("warning-fax");
+    let warningPan = document.getElementById("warning-pan");
+
+    // Remove company warning dynamically
+    function removeCompanyWarning() {
+        if (companyInput.value.trim().length > 0) {
+            warningCompany.style.display = "none";
+        }
+    }
+    companyInput.addEventListener("input", removeCompanyWarning);
+
+    // GSTIN validation helper
+    if (!warningGstin) {
+        warningGstin = document.createElement("div");
+        warningGstin.id = "warning-gstin";
+        warningGstin.classList.add("text-warning");
+        warningGstin.style.color = "#a94442";
+        warningGstin.style.display = "none";
+        warningGstin.innerText = "Please enter a valid 15-digit GSTIN number.";
+        gstinInput.parentNode.appendChild(warningGstin);
+    }
+
+    function validateCompanyForm(event) {
+        let isValid = true;
+
+        // Hide all warnings first
+        if (warningCompany) warningCompany.style.display = "none";
+        if (warningGstin) warningGstin.style.display = "none";
+        if (warningPan) warningPan.style.display = "none";
+
+        // ✅ Validate GSTIN (mandatory, 15 characters)
+        // if (gstinInput.value.trim().length !== 15) {
+        //     warningGstin.style.display = "block";
+        //     isValid = false;
+        // }
+
+        // ✅ Validate PAN (mandatory, 10 characters)
+        if (panInput.value.trim().length !== 10) {
+            warningPan.style.display = "block";
+            isValid = false;
+        }
+
+        // ✅ Validate Company Name
+        if (!companyInput.value.trim()) {
+            warningCompany.style.display = "block";
+            isValid = false;
+        }
+
+        // ✅ GSTIN Verify must be green
+        // if (verifyButton.style.backgroundColor !== "green") {
+        //     alert("Please verify your GSTIN. It must be active (green).");
+        //     isValid = false;
+        // }
+
+        if (!isValid) {
+            event.preventDefault();
+        } else {
+            const progress = (4 / 5) * 100;
+            progressBar.style.width = `${progress}%`;
+            page_no.innerHTML = 4;
+            document.querySelector('[data-toggle="tab"][href="#tab-business"]')?.click();
+        }
+    }
+
+    // Replace and re-attach fresh click listener
+    nextButton.replaceWith(nextButton.cloneNode(true));
+    nextButton = document.getElementById("button-next-4");
+    nextButton.addEventListener("click", validateCompanyForm);
+
+    // ✅ Remove warnings dynamically
+    function removeWarnings() {
+        if (warningCompany) warningCompany.style.display = "none";
+        if (warningGstin) warningGstin.style.display = "none";
+        if (warningPan) warningPan.style.display = "none";
+    }
+
+    companyInput?.addEventListener("input", removeWarnings);
+    gstinInput?.addEventListener("input", removeWarnings);
+    panInput?.addEventListener("input", removeWarnings);
+}
+
+function setupPreviousButton4() {
+    const progressBar = document.getElementById("signup_progress-bar");
+    const page_no = document.getElementById("page_no");
+    let prevButton = document.getElementById("button-prev-4");
+
+    if (prevButton) {
+        prevButton.addEventListener("click", function () {
+            document.querySelector('[data-toggle="tab"][href="#tab-company"]')?.click();
+            const progress = (3 / 5) * 100;
+            progressBar.style.width = `${progress}%`;
+            page_no.innerHTML = 3;
+            setTimeout(setupNextButton4, 500); // Re-initialize next button
+        });
+    }
+}
+</script>
+
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+let storeNameFields = document.querySelectorAll("[id^='input-name']");
+let nextButtons = document.querySelectorAll("#button-next");
+
+function validateStoreName() {
+let isValid = false;
+
+storeNameFields.forEach(field => {
+let length = field.value.trim().length;
+if (length >= 6 && length <= 20) {
+isValid = true;
+}
+});
+
+nextButtons.forEach(button => {
+button.disabled = ! isValid;
+});
+}
+
+// Add event listeners to all store name fields
+storeNameFields.forEach(field => {
+field.addEventListener("input", validateStoreName);
+});
+
+// Initial validation check on page load
+validateStoreName();
+});
+</script>
+
+{# <script>
+	function checkTelephone() {
+var telephone = document.getElementById("input-telephone").value;
+var errorDiv = document.getElementById("telephone-error");
+
+if (telephone.trim() === "") {
+errorDiv.innerHTML = "Enter your mobile number";
+} else {
+errorDiv.innerHTML = "";
+}
+}
+</script> #}
+
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+setupFormValidation();
+});
+
+function setupFormValidation() {
+function validateField(input, warning, minLength, maxLength) {
+if (! input || ! warning) 
+return;
+
+
+
+// Prevent errors if elements are missing
+
+let value = input.value.trim();
+
+if (value === "" || value.length<minLength || value.length>maxLength) {
+warning.classList.add("text-warning");
+warning.style.display = "block";
+
+
+if (value === "") {
+warning.innerHTML = "This field is required.";
+} else if (value.length<minLength) {
+                warning.innerHTML = `Must be at least ${minLength} characters.`;
+            } else {
+                warning.innerHTML = `Must not exceed ${maxLength} characters.`;
+            }
+        } else {
+            warning.classList.remove("text-warning");
+            warning.style.display = "none";
+        }
+    }
+
+    // Define fields with their min/max length requirements
+    let fields = [
+        { input: document.getElementById("input-package-titl"), warning: document.getElementById("warning-bank-account-name"), minLength: 3, maxLength: 150 }, { input: document.getElementById("input-account_number"), warning: document.getElementById("warning-bank-account-number"), minLength: 8, maxLength: 20 }, { input: document.getElementById("input-bankname"), warning: document.getElementById("warning-bank-name"), minLength: 3, maxLength: 50 }, { input: document.getElementById("input-branch_number"), warning: document.getElementById("warning-bank-branch-number"), minLength: 4, maxLength: 9 }, { input: document.getElementById("input-swift_code"), warning: document.getElementById("warning-bank-swift-code"), minLength: 11, maxLength: 20 }, ];
+
+    // Ensure warnings are hidden initially
+    fields.forEach((fieldObj) => {
+if (fieldObj.warning) {
+fieldObj.warning.style.display = "none"; // Hide warning initially
+}
+}) 
+
+
+// Attach event listeners to validate on blur and input
+fields.forEach((fieldObj) => {
+if (fieldObj.input && fieldObj.warning) {
+fieldObj.input.addEventListener("blur", function () {
+validateField(fieldObj.input, fieldObj.warning, fieldObj.minLength, fieldObj.maxLength);
+});
+
+fieldObj.input.addEventListener("input", function () {
+validateField(fieldObj.input, fieldObj.warning, fieldObj.minLength, fieldObj.maxLength);
+});
+}
+});
+
+
+
+}
+
+</script>
+
+
+
+			<script>
+				function showPopup() {
+function getValue(id) {
+const element = document.getElementById(id);
+if (element) {
+if (element.tagName === "SELECT") {
+return element.selectedIndex !== -1 ? element.options[element.selectedIndex].text : "N/A";
+}
+return element.value.trim() !== "" ? element.value : "N/A";
+}
+return "N/A";
+}
+
+
+document.getElementById("preview-firstname").innerText = getValue("input-firstname");
+document.getElementById("preview-lastname").innerText = getValue("input-lastname");
+document.getElementById("preview-email").innerText = getValue("input-email");
+document.getElementById("preview-telephone").innerText = getValue("input-telephone");
+document.getElementById("preview-address1").innerText = getValue("input-address-1");
+document.getElementById("preview-address2").innerText = getValue("input-address-2");
+document.getElementById("preview-country").innerText = getValue("input-country");
+document.getElementById("preview-postcode").innerText = getValue("input-postcode");
+document.getElementById("preview-city").innerText = getValue("input-city");
+document.getElementById("preview-state").innerText = getValue("input-zone");
+document.getElementById("preview-displayname").innerText = getValue("input-display_name");
+document.getElementById("preview-company").innerText = getValue("input-company");
+document.getElementById("preview-gstin").innerText = getValue("input-fax");
+document.getElementById("preview-account-name").innerText = getValue("input-package-titl");
+document.getElementById("preview-account-number").innerText = getValue("input-account_number");
+document.getElementById("preview-bank-name").innerText = getValue("input-bankname");
+document.getElementById("preview-swift-code").innerText = getValue("input-swift_code");
+
+
+document.getElementById("preview-modal").style.display = "block";
+}
+
+function closePopup() {
+document.getElementById("preview-modal").style.display = "none";
+}
+
+document.getElementById("closeModal").addEventListener("click", closePopup);
+			</script>
+
+
+			<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setupNextButton5();
+        setupPreviousButton5();
+    });
+
+    function setupNextButton5() {
+        const progressBar = document.getElementById("signup_progress-bar");
+        const page_no = document.getElementById("page_no");
+        let nextButton = document.getElementById("button-next-5");
+
+        if (!nextButton) {
+            console.error("button-next-5 not found in the DOM.");
+            return;
+        }
+
+        // Get all elements with the class "req-store"
+        const storeNameInputs = document.querySelectorAll(".req-store");
+        const warningStore = document.getElementById("warning-store");
+
+        // Function to validate store name
+        function validateStoreName(event) {
+            let isValid = true;
+
+            // Remove any previous warnings
+            if (warningStore) {
+                warningStore.style.display = "none";  // Hide warning initially
+            }
+
+            // Check if all store name fields are empty
+            storeNameInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    if (warningStore) {
+                        warningStore.style.display = "block";  // Show the warning
+                        warningStore.classList.add("text-warning");
+                    }
+                    isValid = false;
+                }
+            });
+
+            // If validation fails, prevent the default action of the button
+            if (!isValid) {
+                event.preventDefault();  // Stop the form from proceeding
+            } else {
+                // If valid, update the progress bar and page number
+                const progress = (5 / 5) * 100;
+                progressBar.style.width = `${progress}%`;
+                page_no.innerHTML = 5;
+				document.querySelector('[data-toggle="tab"][href="#tab-bank"]')?.click();
+            }
+        }
+
+        // Attach the validation function to the "Next" button
+        nextButton.replaceWith(nextButton.cloneNode(true));  // Refresh button to prevent old listeners
+        nextButton = document.getElementById("button-next-5");
+        nextButton.addEventListener("click", validateStoreName);
+    }
+
+    function setupPreviousButton5() {
+        const progressBar = document.getElementById("signup_progress-bar");
+        const page_no = document.getElementById("page_no");
+        let prevButton = document.getElementById("button-prev-5");
+
+        if (prevButton) {
+            prevButton.addEventListener("click", function () {
+                document.querySelector('[data-toggle="tab"][href="#tab-company"]')?.click(); // Adjust according to previous tab
+                const progress = (4 / 5) * 100;
+                progressBar.style.width = `${progress}%`;
+                page_no.innerHTML = 4;
+                setTimeout(setupNextButton5, 500); // Ensure re-initialization after UI update
+            });
+        }
+    }
+</script>
+
+
+<script>
+function fetchGSTINDetails() {
+    const gstinNo = document.getElementById('input-fax').value.trim();
+    const verifyButton = document.getElementById('gstin-verify');
+    const gstinDetails = document.getElementById('gstin_details');
+    const companyInput = document.getElementById('input-company');
+
+    if (!gstinNo) {
+        alert("Please enter GSTIN number");
+        return;
+    }
+
+    // 1️⃣ First check in DB
+    fetch(`index.php?route=vendor/vendor/checkGstinExist&fax=${encodeURIComponent(gstinNo)}`, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(response => response.json())
+    .then(dbData => {
+        if (dbData.exists) {
+            verifyButton.style.setProperty("background-color", "red", "important");
+            verifyButton.style.setProperty("border-color", "red", "important");
+            // verifyButton.textContent = "Already Exists";
+            gstinDetails.innerHTML = `<p style="color: red;"><strong>This GSTIN already exists in the system.</strong></p>`;
+        } else {
+            // 2️⃣ Call GSTIN API only if not in DB
+            fetch(`index.php?route=razorpayapis/razorpay_gstin&gstin_no=${encodeURIComponent(gstinNo)}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(response => response.json())
+            .then(apiData => {
+                if (apiData && apiData.gstin_info && !apiData.gstin_info.error) {
+                    const name = apiData.gstin_info.legal_name?.value || 'N/A';
+                    const status = apiData.gstin_info.status?.value || 'N/A';
+                    verifyButton.style.setProperty("background-color", "green", "important");
+                    verifyButton.style.setProperty("border-color", "green", "important");
+                    verifyButton.textContent = "Verified";
+                    gstinDetails.innerHTML = `<p style="color: green;"><strong>GSTIN is succefully verified</strong></p>`;
+
+                    if (companyInput) {
+                        companyInput.value = name; // Set business name
+                    }
+                } else {
+                    const errorMessage = apiData?.gstin_info?.error || "Invalid GSTIN Number";
+                    verifyButton.style.setProperty("background-color", "red", "important");
+                    verifyButton.style.setProperty("border-color", "red", "important");
+                    verifyButton.textContent = "Not Verified";
+                    gstinDetails.innerHTML = `<p style="color: red;"><strong>${errorMessage}</strong></p>`;
+                }
+            })
+            .catch(err => {
+                console.error("GSTIN API error:", err);
+                verifyButton.style.setProperty("background-color", "red", "important");
+                verifyButton.style.setProperty("border-color", "red", "important");
+                gstinDetails.innerHTML = `<p>Failed to fetch GSTIN details. Please try again.</p>`;
+            });
+        }
+    })
+    .catch(err => {
+        console.error("DB check error:", err);
+        verifyButton.style.setProperty("background-color", "red", "important");
+        verifyButton.style.setProperty("border-color", "red", "important");
+        gstinDetails.innerHTML = `<p>Failed to check GSTIN existence. Please try again.</p>`;
+    });
+}
+
+// Clear GSTIN details when input is empty
+document.getElementById('input-fax').addEventListener('input', function () {
+    const gstinDetails = document.getElementById('gstin_details');
+    const verifyButton = document.getElementById('gstin-verify');
+    const companyInput = document.getElementById('input-company');
+
+    if (this.value.trim() === "") {
+        gstinDetails.innerHTML = "";
+        if (verifyButton) {
+            verifyButton.style.removeProperty("background-color");
+            verifyButton.style.removeProperty("border-color");
+            verifyButton.textContent = "Verify";
+        }
+        if (companyInput) {
+            companyInput.value = "";
+        }
+    }
+});
+</script>
+
+
+<script>
+// Get the email input field
+const emailInput = document.getElementById('input-email');
+
+// Add an event listener that listens for input changes
+emailInput.addEventListener('input', function() {
+    // Convert the email value to lowercase and update the input field
+    emailInput.value = emailInput.value.toLowerCase();
+});
+</script>
+
+
+{#Ashwini Madam Changes#}
+<script>
+	// Function to prevent leading spaces in input fields
+	function preventSpaces(input) {
+		// Remove leading spaces from the input value
+		input.value = input.value.replace(/^\s+/, '');
+		
+		// Prevent consecutive spaces
+		input.value = input.value.replace(/\s{2,}/g, ' ');
+	}
+
+	// Function to validate text fields (prevent leading spaces, allow spaces after initials)
+	function validatedtext(input) {
+		// Remove leading spaces from the input value
+		input.value = input.value.replace(/^\s+/, '');
+		
+		// Prevent consecutive spaces
+		input.value = input.value.replace(/\s{2,}/g, ' ');
+	}
+
+	document.addEventListener("DOMContentLoaded", function () {
+		// Add event listeners to all input fields to prevent spaces
+		const inputFields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="password"]');
+		
+		inputFields.forEach(function(input) {
+			input.addEventListener('input', function() {
+				preventSpaces(this);
+			});
+			
+			// Also trim on blur to catch any spaces that might have been added
+			input.addEventListener('blur', function() {
+				this.value = this.value.trim();
+			});
+		});
+	});
+</script>
+
+<script>
+function updateIndicator(elementId, isValid) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.style.color = isValid ? '#28a745' : '#dc3545';
+        const prefix = isValid ? '▼ ' : '► ';
+        element.innerHTML = prefix + element.innerHTML.substring(1);
+    }
+}
+
+function validatePassword() {
+    const password = document.getElementById('input-password').value;
+
+    const hasLength = password.length >= 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSymbol = /[!@#$%^&*]/.test(password);
+
+    updateIndicator('length-check', hasLength);
+    updateIndicator('uppercase-check', hasUppercase);
+    updateIndicator('lowercase-check', hasLowercase);
+    updateIndicator('number-check', hasNumber);
+    updateIndicator('symbol-check', hasSymbol);
+
+    return hasLength && hasUppercase && hasLowercase && hasNumber && hasSymbol;
+}
+
+function validateLoginForm() {
+    const password = document.getElementById('input-password').value;
+    const confirmPassword = document.getElementById('input-confirm-password');
+    const warningElement = document.getElementById('warning-password');
+    const nextButton = document.getElementById('button-next-3');
+
+    const isPasswordValid = validatePassword();
+
+    if (confirmPassword && confirmPassword.value !== '') {
+        if (password !== confirmPassword.value) {
+            warningElement.style.display = 'block';
+            warningElement.innerHTML = 'Passwords do not match';
+            if (nextButton) nextButton.disabled = true;
+            return false;
+        }
+    }
+
+    warningElement.style.display = isPasswordValid ? 'none' : 'block';
+    warningElement.innerHTML = isPasswordValid ? '' : 'Please meet all password requirements';
+    
+    if (isPasswordValid) {
+        const requirementsBox = document.getElementById('password-requirements');
+        if (requirementsBox) requirementsBox.style.display = 'none';
+	}
+	
+    if (nextButton) nextButton.disabled = !isPasswordValid;
+    return isPasswordValid;
+    
+    if (isPasswordValid && confirmPassword && password === confirmPassword.value) {
+		const requirementsBox = document.getElementById('password-requirements');
+		if (requirementsBox) requirementsBox.style.display = 'none';
+	}
+}
+
+function togglePasswordVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    const iconId = (inputId === 'input-password') ? 'toggle-password-icon' : 'toggle-confirm-icon';
+    const icon = document.getElementById(iconId);
+
+    if (input && icon) {
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const passwordInput = document.getElementById('input-password');
+    const confirmInput = document.getElementById('input-confirm-password');
+
+    if (passwordInput) passwordInput.addEventListener('input', validateLoginForm);
+    if (confirmInput) confirmInput.addEventListener('input', validateLoginForm);
+
+    // Show password requirements on focus
+    if (passwordInput) {
+    	passwordInput.addEventListener('focus', function () {
+			const isValid = validatePassword();
+			if (!isValid) {
+				document.getElementById('password-requirements').style.display = 'block';
+			}
+    	});
+	}
+});
+</script>
+
+{#Nikita Madam Changes - 22/05/2025#}
+<script>
+function validateCompanyForm(event) {
+        let isValid = true;
+
+        // Remove warnings initially
+        if (warningCompany) warningCompany.style.display = "none";
+        if (warningGstin) warningGstin.style.display = "none";
+        if (warningUin) warningUin.style.display = "none";
+        
+        // Check if we're in UIN container mode
+        if (uin_container.style.display !== 'none') {
+            // Validate UIN field - either UIN must be filled or checkbox must be checked
+            const uinValue = input_uin.value.trim();
+            const isUinChecked = uinCheckbox.checked;
+            const isGstinChecked = newgstCheckbox.checked;
+            
+            if (uinValue === "" && !isUinChecked && !isGstinChecked) {
+                if (warningUin) {
+                    warningUin.style.display = "block";
+                }
+                isValid = false;
+                /* alert("Please enter UIN or select one of the options: 'I don't have UIN' or 'have a GSTIN'."); */
+            }
+        } else {
+            // ✅ Condition 1: GSTIN field or checkbox must be filled
+            if (!gstCheckbox.checked && gstinInput.value.trim().length !== 15) {
+                if (warningGstin) {
+                    warningGstin.style.display = "block";
+                    warningGstin.classList.add("text-warning");
+                }
+                isValid = false;
+            }
+
+            // ✅ Condition 3: If GSTIN is cancelled or Verify button is red, do not proceed
+            if (!gstCheckbox.checked && verifyButton.style.backgroundColor === "red") {
+                alert("Your GSTIN number is cancelled or not verified. Please provide a valid GSTIN.");
+                isValid = false;
+            }
+
+            // ✅ Condition 4: Allow only if GSTIN is active (green) & company field is filled
+            if (!gstCheckbox.checked && verifyButton.style.backgroundColor !== "green") {
+                isValid = false;
+            }
+        }
+        
+        // Company name validation is always required
+        if (!companyInput.value.trim()) {
+            if (warningCompany) {
+                warningCompany.style.display = "block";
+                warningCompany.classList.add("text-warning");
+            }
+            isValid = false;
+        }
+
+        // Prevent navigation if validation fails
+        if (!isValid) {
+            event.preventDefault();
+        } else {
+            const progress = (4 / 5) * 100;
+            progressBar.style.width = ${progress}%;
+            page_no.innerHTML = 4;
+            document.querySelector('[data-toggle="tab"][href="#tab-business"]')?.click();
+        }
+    }
+
+    // ✅ Remove old event listeners and attach a fresh one
+    nextButton.replaceWith(nextButton.cloneNode(true));
+    nextButton = document.getElementById("button-next-4");
+    nextButton.addEventListener("click", validateCompanyForm);
+
+    // ✅ Remove warnings dynamically when user interacts
+    function removeWarnings() {
+        if (warningCompany) warningCompany.style.display = "none";
+        if (warningGstin) warningGstin.style.display = "none";
+        if (warningUin) warningUin.style.display = "none";
+    }
+
+    companyInput?.addEventListener("input", removeWarnings);
+    gstinInput?.addEventListener("input", removeWarnings);
+    gstCheckbox?.addEventListener("change", removeWarnings);
+    input_uin?.addEventListener("input", removeWarnings);
+    uinCheckbox?.addEventListener("change", removeWarnings);
+    newgstCheckbox?.addEventListener("change", removeWarnings);
+}
+</script>
+
+{#Krishna Changes - 23/05/2025#}
+<script>
+  function blockDecimal(e) {
+    // Block '.' key (decimal point)
+    if (e.key === '.' || e.key === ',' || e.key === 'Decimal') {
+      e.preventDefault();
+      return false;
+    }
+  }
+</script>
+
+<script>
+    document.getElementById("input-account_number").addEventListener("input", function () {
+        // Remove non-numeric characters
+        this.value = this.value.replace(/[^0-9]/g, "");
+
+        // Enforce max length of 20 digits
+        this.value = this.value.slice(0, 20);
+    });
+</script>
+
+
+{#banner images start #}
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const bannerImages = {{ banner_images| json_encode(constant('JSON_UNESCAPED_SLASHES')) | raw
+	}};
+
+	const leftImg = document.getElementById('step-img-left');
+	const rightImg = document.getElementById('step-img-right');
+
+	function updateImages(tabId) {
+		if (bannerImages[tabId]) {
+			leftImg.src = bannerImages[tabId].left;
+			rightImg.src = bannerImages[tabId].right;
+		}
+	}
+
+	function getCurrentTabId() {
+		const activeTab = document.querySelector('.tab-pane.active');
+		return activeTab ? activeTab.id : null;
+	}
+
+	function handleTabChange() {
+		const tabId = getCurrentTabId();
+		updateImages(tabId);
+	}
+
+	// Initial load
+	handleTabChange();
+
+	// Observe tab changes (when next buttons switch .active)
+	const observer = new MutationObserver(() => {
+		handleTabChange();
+	});
+
+	observer.observe(document.querySelector('.tab-content'), {
+		attributes: true,
+		subtree: true,
+		attributeFilter: ['class']
+	});
+});
+</script>
+{#banner images end #}
+
+{#Pan Number Validation#}
+<script>
+document.getElementById('input-pan').addEventListener('input', function () {
+    let value = this.value.toUpperCase();
+    value = value.replace(/[^A-Z0-9]/g, '');
+    this.value = value;
+});
+</script>
+
+
+{# nikita google ads auto create start #}
+{#<script>#}
+{#document.addEventListener('DOMContentLoaded', function() {#}
+{#    const form = document.getElementById('form-product');#}
+{#    const googleAdsCheckbox = document.querySelector('input[name="enable_google_ads"]');#}
+{#    const progressContainer = document.getElementById('ipshopy-ads-progress-container');#}
+{#    const progressBar = document.getElementById('ipshopy-ads-progress-bar');#}
+{#    const progressText = document.getElementById('ipshopy-ads-progress-text');#}
+{#    const statusMessage = document.getElementById('ipshopy-ads-status-message');#}
+{#    const successContainer = document.getElementById('ipshopy-ads-success');#}
+{#    const errorContainer = document.getElementById('ipshopy-ads-error');#}
+{#    const accountIdSpan = document.getElementById('ipshopy-ads-account-id');#}
+
+{#    let googleAdsSessionId = null;#}
+{#    let pollingInterval = null;#}
+
+{#    if (form) {#}
+{#        form.addEventListener('submit', function(event) {#}
+{#            if (googleAdsCheckbox && googleAdsCheckbox.checked) {#}
+{#                event.preventDefault();#}
+                
+               
+{#                showGoogleAdsProgress();#}
+
+               
+{#                const formData = new FormData(form);#}
+                
+{#                fetch(form.action, {#}
+{#                    method: 'POST',#}
+{#                    headers: {#}
+{#                        'X-Requested-With': 'XMLHttpRequest'#}
+{#                    },#}
+{#                    body: formData#}
+{#                })#}
+{#                .then(response => response.json())#}
+{#                .then(result => {#}
+{#                    console.log('Form submitted successfully:', result);#}
+                    
+                   
+{#                    if (!result.success && result.errors) {#}
+                        
+{#                        let errorMsg = 'Validation failed:\n';#}
+{#                        if (result.missing_fields && result.missing_fields.length > 0) {#}
+{#                            errorMsg += 'Missing required fields: ' + result.missing_fields.join(', ');#}
+{#                        }#}
+{#                        showError(errorMsg);#}
+{#                        return;#}
+{#                    }#}
+                    
+{#                    if (result.success && result.vendor_id) {#}
+{#                        console.log('Vendor ID received:', result.vendor_id);#}
+                        
+                       
+{#                        const googleAdsCheckbox = document.querySelector('input[name="enable_google_ads"]');#}
+{#                        if (googleAdsCheckbox && googleAdsCheckbox.checked) {#}
+{#                            const companyName = document.querySelector('input[name="company"]')?.value || 'Unknown Company';#}
+                            
+{#                            startGoogleAdsAutoCreate(result.vendor_id, companyName);#}
+{#                        } else {#}
+                            
+{#                            window.location.href = '{{ success }}';#}
+{#                        }#}
+{#                    } else {#}
+{#                        console.log('Failed to get vendor ID:', result);#}
+{#                        showError('Failed to register vendor or get vendor ID');#}
+{#                    }#}
+{#                })#}
+{#                .catch(error => {#}
+{#                    console.error('Form submission error:', error);#}
+{#                    showError('Failed to submit registration form');#}
+{#                });#}
+{#            }#}
+{#        });#}
+{#    }#}
+
+{#    function showGoogleAdsProgress() {#}
+{#        if (progressContainer) progressContainer.style.display = 'block';#}
+{#        if (successContainer) successContainer.style.display = 'none';#}
+{#        if (errorContainer) errorContainer.style.display = 'none';#}
+{#        updateProgress(10, 'Initializing ipshopy Ads integration...');#}
+{#    }#}
+
+{#    function startGoogleAdsSetup(vendorId) {#}
+{#        if (!vendorId) {#}
+{#            showError('No vendor ID available for ipshopy Ads setup');#}
+{#            return;#}
+{#        }#}
+
+{#        updateProgress(25, 'Creating ipshopy Ads account...');#}
+{#        createGoogleAdsAccount(vendorId);#}
+{#    }#}
+
+{#    function createGoogleAdsAccount(vendorId) {#}
+{#        const vendorData = getVendorDataFromForm(vendorId);#}
+
+    
+{#        fetch('https://gads.ipshopy.com/api/google-ads/autoSetupGoogleAds', {#}
+{#            method: 'POST',#}
+{#            headers: { 'Content-Type': 'application/json' },#}
+{#            body: JSON.stringify(vendorData)#}
+{#        })#}
+{#        .then(response => response.json())#}
+{#        .then(data => {#}
+
+{#            if (data.success) {#}
+{#                updateProgress(75, 'Account created successfully!');#}
+                
+{#                storeAccountInfo(vendorId, data.data.customerId);#}
+                
+{#                updateProgress(100, 'ipshopy Ads integration complete!');#}
+{#                showSuccess(data.data.customerId);#}
+{#            } else {#}
+{#                showError(data.error || 'Failed to create ipshopy Ads account');#}
+{#            }#}
+{#        })#}
+{#        .catch(error => {#}
+{#            showError('Network error during account setup');#}
+{#        });#}
+{#    }#}
+
+{#    function getVendorDataFromForm(vendorId) {#}
+{#        return {#}
+{#            vendorId: vendorId,#}
+{#            email: document.getElementById('input-email').value,#}
+{#            firstName: document.getElementById('input-firstname').value,#}
+{#            lastName: document.getElementById('input-lastname').value,#}
+{#            companyName: document.getElementById('input-company').value,#}
+{#            phone: document.getElementById('input-telephone').value,#}
+{#            address: {#}
+{#                address_1: document.getElementById('input-address-1').value,#}
+{#                city: document.getElementById('input-city').value,#}
+{#                postcode: document.getElementById('input-postcode').value,#}
+{#                country_id: document.getElementById('input-country').value#}
+{#            }#}
+{#        };#}
+{#    }#}
+
+{#    function storeAccountInfo(vendorId, customerId) {#}
+{#        fetch('{{ action }}', {#}
+{#            method: 'POST',#}
+{#            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },#}
+{#            body: `vendor_id=${vendorId}&google_ads_customer_id=${customerId}&google_ads_status=active&google_ads_access_type=restricted&google_ads_managed_by=ipshopy&google_ads_direct_access=0`#}
+{#        })#}
+{#        .then(response => response.json())#}
+{#        .then(data => console.log('Account info stored:', data))#}
+{#        .catch(err => console.error('Failed to store account info:', err));#}
+{#    }#}
+
+{#    function updateProgress(percentage, message) {#}
+{#        if (progressBar) {#}
+{#            progressBar.style.width = percentage + '%';#}
+{#            progressBar.setAttribute('aria-valuenow', percentage);#}
+{#        }#}
+{#        if (progressText) progressText.textContent = percentage + '%';#}
+{#        if (statusMessage) statusMessage.textContent = message;#}
+{#    }#}
+
+{#    function showSuccess(customerId) {#}
+{#        if (progressContainer) progressContainer.style.display = 'none';#}
+{#        if (errorContainer) errorContainer.style.display = 'none';#}
+{#        if (successContainer) successContainer.style.display = 'block';#}
+{#        if (accountIdSpan) accountIdSpan.textContent = customerId;#}
+        
+
+{#        setTimeout(() => {#}
+{#            window.location.href = '{{ success }}';#}
+{#        }, 3000);#}
+{#    }#}
+
+{#    function showError(message) {#}
+{#        if (progressContainer) progressContainer.style.display = 'none';#}
+{#        if (successContainer) successContainer.style.display = 'none';#}
+{#        if (errorContainer) {#}
+{#            errorContainer.style.display = 'block';#}
+{#            const errorMessageSpan = document.getElementById('ipshopy-ads-error-message');#}
+{#            if (errorMessageSpan) errorMessageSpan.textContent = message;#}
+{#        }#}
+        
+{#        console.error('ipshopy Ads Error:', message);#}
+        
+{#        setTimeout(() => {#}
+{#            window.location.href = '{{ success }}';#}
+{#        }, 5000);#}
+{#    }#}
+{#});#}
+{#</script>#}
+
+
+
+
+{# Changes Start #}
+
+<script type="text/javascript">
+function validateAddress() {
+    const address1 = document.getElementById('input-address-1').value.trim();
+    const postcode = document.getElementById('input-postcode').value.trim();
+    const warningAddress = document.getElementById('warning-address');
+    const warningPostcode = document.getElementById('warning-postcode');
+
+    // Validate address_1
+    if (address1 === '') {
+        warningAddress.style.display = 'block';
+    } else {
+        warningAddress.style.display = 'none';
+    }
+
+    // Validate postcode (must be 6 digits)
+    const postcodePattern = /^[0-9]{6}$/;
+    if (!postcodePattern.test(postcode)) {
+        warningPostcode.style.display = 'block';
+    } else {
+        warningPostcode.style.display = 'none';
+    }
+}
+</script>
+
+{# Changes End #}
+
+<script type="text/javascript">
+// Global variables for Google Ads integration
+let googleAdsSessionId = null;
+let googleAdsStatusInterval = null;
+let googleAdsProgressContainer = null;
+
+// Set the success URL
+const successUrl = 'index.php?route=vendor/success'; // <-- Redirect URL after success
+
+// Initialize Google Ads progress container
+function initGoogleAdsProgressContainer() {
+    if (!googleAdsProgressContainer) {
+        googleAdsProgressContainer = document.createElement('div');
+        googleAdsProgressContainer.id = 'google-ads-progress-container';
+        googleAdsProgressContainer.style.display = 'none';
+        // googleAdsProgressContainer.innerHTML = `
+        //     <div class="alert alert-info" style="margin-top: 15px;">
+        //         <h4><i class="fa fa-google"></i> Google Ads Account Setup</h4>
+        //         <div class="progress" style="margin-top: 10px;">
+        //             <div id="google-ads-progress-bar" class="progress-bar progress-bar-striped active" 
+        //                  role="progressbar" style="width: 0%">
+        //                 <span id="google-ads-progress-text">Initializing...</span>
+        //             </div>
+        //         </div>
+        //         <small id="google-ads-status-text" style="color: #666;">
+        //             Setting up your Google Ads account automatically...
+        //         </small>
+        //     </div>
+        // `;
+        
+        // Insert after the form
+        const form = document.getElementById('form-product');
+        if (form) {
+            form.parentNode.insertBefore(googleAdsProgressContainer, form.nextSibling);
+        } else {
+            document.body.appendChild(googleAdsProgressContainer);
+        }
+    }
+}
+
+
+
+// Start Google Ads auto-create process
+async function startGoogleAdsAutoCreate(vendorId, companyName) {
+    console.log('Starting ipshopy Ads auto-create for vendor:', vendorId, 'company:', companyName);
+    
+    initGoogleAdsProgressContainer();
+    if (googleAdsProgressContainer) googleAdsProgressContainer.style.display = 'block';
+    
+    try {
+        const response = await fetch('index.php?route=vendor/vendor/googleAdsAutoCreate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ vendor_id: vendorId, company_name: companyName })
+        });
+        
+        if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        const result = await response.json();
+        // console.log('ipshopy Ads auto-create response:', result);
+        
+        if (result.success && result.session_id) {
+            googleAdsSessionId = result.session_id;
+            updateGoogleAdsProgress(10, 'ipshopy Ads setup initiated...');
+            startGoogleAdsStatusPolling();
+        } else {
+            showGoogleAdsError('Failed to start ipshopy Ads setup: ' + (result.error || 'Unknown error'));
+        }
+        
+    } catch (error) {
+        console.error('ipshopy Ads auto-create error:', error);
+        showGoogleAdsError('Failed to connect to ipshopy Ads service: ' + error.message);
+    }
+}
+
+// Start status polling
+function startGoogleAdsStatusPolling() {
+    if (!googleAdsSessionId) return;
+    
+    // console.log('Starting status polling for session:', googleAdsSessionId);
+    
+    googleAdsStatusInterval = setInterval(async () => {
+        try {
+            const response = await fetch(`index.php?route=vendor/vendor/googleAdsStatus&session_id=${googleAdsSessionId}`);
+            if (!response.ok) return console.error('Status check HTTP error:', response.status, response.statusText);
+            
+            const status = await response.json();
+            // console.log('ipshopy Ads status:', status);
+            
+            if (status.success && status.data) {
+                const data = status.data;
+                if (data.status === 'processing') {
+                    const progress = Math.min(data.current_step * 25, 75);
+                    const stepName = data.steps && data.steps[data.current_step - 1] ? data.steps[data.current_step - 1].name : 'Processing...';
+                    updateGoogleAdsProgress(progress, stepName);
+                } else if (data.status === 'completed') {
+                    updateGoogleAdsProgress(100, 'ipshopy Ads account created successfully!');
+                    showGoogleAdsSuccess(data.customer_id);
+                    stopGoogleAdsStatusPolling();
+                } else if (data.status === 'failed') {
+                    showGoogleAdsError('ipshopy Ads setup failed: ' + (data.error || 'Unknown error'));
+                    stopGoogleAdsStatusPolling();
+                }
+            } else {
+                console.error('Status check failed:', status.error || 'Unknown error');
+            }
+            
+        } catch (error) {
+            console.error('Status polling error:', error);
+        }
+    }, 2000);
+    
+    // Stop polling after 2 minutes
+    setTimeout(() => {
+        if (googleAdsStatusInterval) {
+            stopGoogleAdsStatusPolling();
+            showGoogleAdsError('ipshopy Ads setup timed out. Please try again later.');
+        }
+    }, 120000);
+}
+
+
+
+
+// Start------------------
+
+function pollGoogleAdsStatus(sessionId) {
+    console.log('Starting status polling for session: ' + sessionId);
+    let attempts = 0;
+    const maxAttempts = 24; // 2 minutes (5s interval * 24)
+    
+    const poll = setInterval(() => {
+        if (attempts >= maxAttempts) {
+            clearInterval(poll);
+            showError('ipshopy Ads setup timed out');
+            return;
+        }
+        
+        fetch('index.php?route=vendor/vendor/googleAdsStatus&session_id=' + encodeURIComponent(sessionId))
+            .then(response => {
+                console.log('Raw status response:', response);
+                if (!response.ok) {
+                    throw new Error('HTTP error ' + response.status);
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log('Status response:', result);
+                if (result.success && result.data && result.data.status === 'completed') {
+                    clearInterval(poll);
+                    showSuccess('ipshopy Ads account connected successfully!');
+                } else if (result.success && result.data && result.data.status === 'failed') {
+                    clearInterval(poll);
+                    showError('ipshopy Ads setup failed: ' + (result.data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Status polling error:', error);
+                clearInterval(poll);
+                showError('ipshopy Ads status check failed: ' + error.message);
+            });
+        attempts++;
+    }, 5000);
+}
+
+// Stop status polling
+function stopGoogleAdsStatusPolling() {
+    if (googleAdsStatusInterval) {
+        clearInterval(googleAdsStatusInterval);
+        googleAdsStatusInterval = null;
+    }
+}
+
+// Update progress
+function updateGoogleAdsProgress(percentage, text) {
+    const progressBar = document.getElementById('google-ads-progress-bar');
+    const progressText = document.getElementById('google-ads-progress-text');
+    const statusText = document.getElementById('google-ads-status-text');
+    
+    if (progressBar) progressBar.style.width = percentage + '%';
+    if (progressText) progressText.textContent = text;
+    if (statusText) statusText.textContent = text;
+}
+
+// Show success
+function showGoogleAdsSuccess(customerId) {
+    if (googleAdsProgressContainer) {
+        // googleAdsProgressContainer.innerHTML = `
+        //     <div class="alert alert-success">
+        //         <h4><i class="fa fa-check-circle"></i> Google Ads Account Created Successfully!</h4>
+        //         <p><strong>Customer ID:</strong> ${customerId}</p>
+        //         <p>Your Google Ads account has been created and connected to your vendor account.</p>
+        //         <button type="button" class="btn btn-primary" onclick="window.location.href='${successUrl}'">
+        //             Continue to Dashboard
+        //         </button>
+        //     </div>
+        // `;
+        // Optional: Auto redirect after 2 seconds
+        setTimeout(() => { window.location.href = successUrl; }, 2000);
+    }
+}
+
+
+
+// Show error
+function showGoogleAdsError(message) {
+    if (googleAdsProgressContainer) {
+        googleAdsProgressContainer.innerHTML = `
+            <div class="alert alert-danger">
+                <h4><i class="fa fa-exclamation-triangle"></i> ipshopy Ads Setup Failed</h4>
+                <p>${message}</p>
+                <button type="button" class="btn btn-primary btn-sm" onclick="retryGoogleAdsSetup()">
+                    <i class="fa fa-refresh"></i> Retry
+                </button>
+                <button type="button" class="btn btn-default btn-sm" onclick="skipGoogleAdsSetup()">
+                    Skip and Continue
+                </button>
+            </div>
+        `;
+    }
+    stopGoogleAdsStatusPolling();
+}
+
+// Retry Google Ads setup
+function retryGoogleAdsSetup() {
+    const vendorId = googleAdsSessionId ? googleAdsSessionId.split('_')[2] : null;
+    const companyName = document.querySelector('input[name="company"]')?.value || 'Unknown Company';
+    
+    if (vendorId) {
+        startGoogleAdsAutoCreate(vendorId, companyName);
+    } else {
+        showGoogleAdsError('Unable to retry: Vendor ID not found');
+    }
+}
+
+// Skip Google Ads setup
+function skipGoogleAdsSetup() {
+    window.location.href = successUrl;
+}
+</script>
+
+<script>
+(function () {
+  // ---------- Shortcuts ----------
+  const $ = (s, c = document) => c.querySelector(s);
+
+  // ---------- Endpoints ----------
+  const ROUTES = {
+    email: 'index.php?route=vendor/vendor/checkEmailExist',
+    phone: 'index.php?route=vendor/vendor/checkPhoneExist',
+    gstin: 'index.php?route=vendor/vendor/checkGstinExist', // expects GET fax=
+    pan:   'index.php?route=vendor/vendor/checkPanExist'    // expects POST value=
+  };
+
+  // ---------- Field ids ----------
+  const firstEl = $('#input-firstname');
+  const lastEl  = document.querySelector('#input-lastname') || document.querySelector('#input-last_name');
+  const emailEl = $('#input-email');
+  const phoneEl = $('#input-telephone');
+  const gstEl   = $('#input-fax');   // GSTIN
+  // PAN: robust selector (id/name fallbacks)
+  const panEl   = document.querySelector('#input-pan, #input-pan_no, #input-pan-number, [name="pan"], [name="pan_no"], [name="pan_number"]') || $('#input-pan');
+
+  // ---------- Find/Create warning div ----------
+  function getWarnEl(input, fallbackId) {
+    if (fallbackId) {
+      const byId = document.getElementById(fallbackId);
+      if (byId) return byId;
+    }
+    if (input && input.id) {
+      const guessIds = [
+        input.id.replace('input-', 'warning-'),
+        input.id.replace('_', '-').replace('input-', 'warning-'),
+        'warning-lastname', 'warning-last_name'
+      ];
+      for (const gid of guessIds) {
+        const el = document.getElementById(gid);
+        if (el) return el;
+      }
+    }
+    const grp = input.closest && input.closest('.form-group');
+    if (grp) {
+      const already = grp.querySelector('.text-warning');
+      if (already) return already;
+    }
+    const div = document.createElement('div');
+    div.className = 'text-warning';
+    div.style.display = 'none';
+    (input.parentNode || document.body).insertBefore(div, input.nextSibling);
+    return div;
+  }
+
+  // ---------- UI helpers ----------
+  function showWarn(input, msg) {
+    if (!input) return;
+    const wEl = getWarnEl(input);
+    if (wEl) { wEl.textContent = msg; wEl.style.display = 'block'; }
+    input.classList.add('has-error');
+    input.setAttribute('aria-invalid', 'true');
+  }
+  function hideWarn(input) {
+    if (!input) return;
+    const wEl = getWarnEl(input);
+    if (wEl) wEl.style.display = 'none';
+    input.classList.remove('has-error');
+    input.removeAttribute('aria-invalid');
+  }
+
+  // ---------- Regex ----------
+  const RE = {
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    phone: /^[0-9]{10}$/,
+    pan:   /^[A-Z]{5}[0-9]{4}[A-Z]$/,
+    gst:   /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/,
+    name:  /^[A-Za-z ]{2,32}$/
+  };
+
+  // ---------- Normalizers ----------
+  const normEmail = el => (el.value = (el.value || '').trim().toLowerCase());
+  const normPhone = el => (el.value = (el.value || '').replace(/\D/g, '').slice(0,10));
+  const normPAN   = el => (el.value = (el.value || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0,10));
+  const normGST   = el => (el.value = (el.value || '').trim().toUpperCase());
+  const normName  = el => {
+    let v = (el.value || '').replace(/\s{2,}/g, ' ').trim();
+    el.value = v;
+    return v;
+  };
+
+  // ---------- Server duplicate check helpers ----------
+  // POST with body paramName=val   (email/phone/pan)
+  async function uniqPOST(url, val, paramName = 'value') {
+    try {
+      const tsUrl = url + (url.includes('?') ? '&' : '?') + '_=' + Date.now();
+      const res = await fetch(tsUrl, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8' },
+        body: encodeURIComponent(paramName) + '=' + encodeURIComponent(val),
+        credentials: 'same-origin',
+        cache: 'no-store'
+      });
+      const data = await res.json();
+      return !!(data && data.exists === true);
+    } catch (e) {
+      console.warn('uniqPOST failed', e);
+      return false;
+    }
+  }
+
+  // GET ?fax=...  (GSTIN backend expects GET fax=)
+  async function uniqGSTGET(url, gstinVal) {
+    try {
+      const tsUrl = url + (url.includes('?') ? '&' : '?') +
+                    'fax=' + encodeURIComponent(gstinVal) + '&_=' + Date.now();
+      const res = await fetch(tsUrl, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+        credentials: 'same-origin',
+        cache: 'no-store'
+      });
+      const data = await res.json();
+      return !!(data && data.exists === true);
+    } catch (e) {
+      console.warn('uniqGSTGET failed', e);
+      return false;
+    }
+  }
+
+  // ---------- Validators ----------
+  async function vEmail(el){
+    const v = normEmail(el);
+    if(!v) return 'Email is required';
+    if(!RE.email.test(v)) return 'Invalid email';
+    if(await uniqPOST(ROUTES.email, v)) return 'Already exists';
+    return '';
+  }
+  async function vPhone(el){
+    const v = normPhone(el);
+    if(!v) return 'Contact number is required';
+    if(!RE.phone.test(v)) return 'Enter 10-digit number';
+    if(await uniqPOST(ROUTES.phone, v)) return 'Already exists';
+    return '';
+  }
+  async function vGST(el){
+    const v = normGST(el);
+    if(!v) return ''; // optional
+    if(!RE.gst.test(v)) return 'Invalid GSTIN';
+    if(await uniqGSTGET(ROUTES.gstin, v)) return 'Already exists';
+    return '';
+  }
+  async function vPAN(el){
+    const v = normPAN(el);
+    if(!v) return ''; // optional
+    if(!RE.pan.test(v)) return 'Invalid PAN';
+    // IMPORTANT: your PHP expects POST body "value=PAN"
+    if(await uniqPOST(ROUTES.pan, v)) return 'Already exists';
+    return '';
+  }
+  function vFirst(el){
+    const v = normName(el);
+    if(!v) return 'First name is required';
+    if(v.length < 2 || v.length > 32) return 'Must be 2–32 characters';
+    if(!RE.name.test(v)) return 'Only letters and spaces';
+    return '';
+  }
+  function vLast(el){
+    const v = normName(el);
+    if(!v) return 'Last name is required';
+    if(v.length < 2 || v.length > 32) return 'Must be 2–32 characters';
+    if(!RE.name.test(v)) return 'Only letters and spaces';
+    return '';
+  }
+
+  // ---------- Live hide ----------
+  [firstEl, lastEl, emailEl, phoneEl, gstEl, panEl]
+    .forEach(el => el && el.addEventListener('input', () => hideWarn(el)));
+
+  // Name filters (letters + single spaces)
+  function filterNameInput(e){
+    const before = e.target.value;
+    let after = before.replace(/[^A-Za-z ]+/g, '').replace(/\s{2,}/g, ' ');
+    e.target.value = after;
+  }
+  firstEl && firstEl.addEventListener('input', filterNameInput);
+  lastEl  && lastEl.addEventListener('input',  filterNameInput);
+
+  // PAN live filter (uppercase + A–Z/0–9 + max length 10)
+  panEl && panEl.addEventListener('input', () => {
+    const before = panEl.value || '';
+    const after = before.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0,10);
+    if (before !== after) panEl.value = after;
+    hideWarn(panEl);
+  });
+
+  // Blur feedback
+  firstEl && firstEl.addEventListener('blur', () => {
+    const m = vFirst(firstEl); if (m) showWarn(firstEl, m); else hideWarn(firstEl);
+  });
+  lastEl && lastEl.addEventListener('blur', () => {
+    const m = vLast(lastEl); if (m) showWarn(lastEl, m); else hideWarn(lastEl);
+  });
+  gstEl && gstEl.addEventListener('blur', async () => {
+    const m = await vGST(gstEl); if (m) showWarn(gstEl, m); else hideWarn(gstEl);
+  });
+  panEl && panEl.addEventListener('blur', async () => {
+    const m = await vPAN(panEl); if (m) showWarn(panEl, m); else hideWarn(panEl);
+  });
+
+  // ---------- Step checkers ----------
+  async function checkUserStep(){
+    let ok = true, m;
+    if(firstEl){ m = vFirst(firstEl); if(m){ showWarn(firstEl, m); ok = false; } }
+    if(lastEl) { m = vLast(lastEl);   if(m){ showWarn(lastEl,  m); ok = false; } }
+    if(emailEl){ m = await vEmail(emailEl); if(m){ showWarn(emailEl, m); ok = false; } }
+    if(phoneEl){ m = await vPhone(phoneEl); if(m){ showWarn(phoneEl, m); ok = false; } }
+    return ok;
+  }
+  async function checkCompanyGate(){
+    let ok = true, m;
+    if(gstEl){ m = await vGST(gstEl); if(m){ showWarn(gstEl, m); ok = false; } }
+    if(panEl){ m = await vPAN(panEl); if(m){ showWarn(panEl, m); ok = false; } }
+    return ok;
+  }
+
+  // ---------- Replace+bind ----------
+  function replaceAndBind(id, handler){
+    const btn = document.getElementById(id);
+    if(!btn) return;
+    const clone = btn.cloneNode(true);
+    btn.parentNode.replaceChild(clone, btn);
+    clone.addEventListener('click', handler, { capture:true });
+  }
+
+  replaceAndBind('button-next-1', async (e)=>{
+    e.preventDefault(); e.stopImmediatePropagation();
+    if(await checkUserStep()) document.querySelector('[href="#tab-address"]')?.click();
+  });
+  replaceAndBind('button-next-4', async (e)=>{
+    e.preventDefault(); e.stopImmediatePropagation();
+    if(await checkCompanyGate()) document.querySelector('[href="#tab-business"]')?.click();
+  });
+
+  // ---------- Tab guard ----------
+  function guardTab(href, checker){
+    document.addEventListener('click', async (ev)=>{
+      const a = ev.target.closest(`a[href="${href}"]`);
+      if(!a) return;
+      if(a.dataset.free === '1'){ a.dataset.free=''; return; }
+      ev.preventDefault(); ev.stopImmediatePropagation();
+      if(await checker()){ a.dataset.free='1'; a.click(); }
+    }, true);
+
+    if(window.jQuery){
+      jQuery(document).on('show.bs.tab', `a[href="${href}"]`, function(ev){
+        if(this.dataset.free === '1'){ this.dataset.free=''; return true; }
+        ev.preventDefault(); ev.stopImmediatePropagation();
+        (async()=>{ if(await checker()){ this.dataset.free='1'; jQuery(this).tab('show'); } })();
+        return false;
+      });
+    }
+  }
+  guardTab('#tab-address',  checkUserStep);
+  guardTab('#tab-business', checkCompanyGate);
+
+  // ---------- Final submit fallback ----------
+  const form = $('#form-product');
+  form && form.addEventListener('submit', async (e)=>{
+    const ok1 = await checkUserStep();
+    const ok2 = await checkCompanyGate();
+    if(!(ok1 && ok2)){
+      e.preventDefault(); e.stopPropagation();
+      alert('');
+    }
+  });
+
+})();
+</script>
+
+
+
+
+
+
+
+
+
+{# Ends  ------------------------- #}
+
+{# nikita google ads auto create end #}

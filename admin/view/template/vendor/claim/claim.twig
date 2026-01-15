@@ -1,0 +1,204 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Return Claims List</h3>
+      </div>
+      <div class="panel-body">
+          
+<style>
+.claims-stats-box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stat-pill {
+  text-align: center;
+  text-decoration: none;
+  min-width: 120px;
+  padding: 5px 10px;
+  border-radius: 12px;
+  color: #111;
+  transition: all 0.3s ease-in-out;
+}
+
+.stat-pill:hover {
+  background-color: #f2f2f2;
+}
+
+.stat-count {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #222;
+}
+</style>
+<div class="claims-stats-box">
+  <a href="{{ filter_url }}" class="stat-pill">
+    <div class="stat-count">{{ claim_counts.all }}</div>
+    <div class="stat-label">All Claims</div>
+  </a>
+  <a href="{{ filter_url }}&status=claim_request" class="stat-pill">
+    <div class="stat-count">{{ claim_counts.claim_request }}</div>
+    <div class="stat-label">In Processing</div>
+  </a>
+  
+  
+  <a href="{{ filter_url }}&status=approved" class="stat-pill">
+    <div class="stat-count">{{ claim_counts.approved }}</div>
+    <div class="stat-label">Approved</div>
+  </a>
+  <a href="{{ filter_url }}&status=not_approved" class="stat-pill">
+    <div class="stat-count">{{ claim_counts.not_approved }}</div>
+    <div class="stat-label">Not Approved</div>
+  </a>
+</div>
+
+        {% if return_claims %}
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Return ID</th>
+                <th>Claim ID</th>
+                <th>Order ID</th>
+                {#<th>Seller ID</th>#}
+                <th>Seller Name</th>
+                <th>Product</th>
+                <th>Model</th>
+                <th>Status</th>
+                <th>Amount</th>
+                <th>Date Added</th>
+                <th>Approval Comment</th>
+                <th>Approve Amount</th>
+                <th>Approval Percentage</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for claim in return_claims %}
+              <tr>
+                 <td>{{ claim.return_id }}</td>
+                <td>{{ claim.claim_id }}</td>
+                <td>{{ claim.order_id }}</td>
+                {#<td>{{ claim.vendor_id }}</td>#}
+                <td>{{ claim.vendor_name }}</td>
+                <td>{{ claim.name }}</td>
+                <td>{{ claim.model }}</td>
+                <td>{{ claim.status }}</td>
+                <td>{% if claim.claim_amount %}₹{{ claim.claim_amount }} {% endif %}</td>
+                <td>{{ claim.date_added }}</td>
+                <td class="text-center">
+                  <a class="btn btn-sm btn-info" href="{{ claim.reply_link }}">
+                    <i class="fa fa-comments"></i> View
+                  </a>
+                </td>
+                <td>{% if claim.approve_amount %}₹{{claim.approve_amount}}{% endif %}</td>
+                <td>{% if claim.percentage != 0 %}{{ claim.percentage|number_format(0, '.', '') }}% {% endif %}</td>
+                {# <td>#}
+                {#  {% if claim.is_approved %}#}
+                {#    <span class="label label-success">Approved</span>#}
+                {#  {% else %}#}
+                {#    <a href="index.php?route=vendor/claim/approve&claim_id={{ claim.claim_id }}&user_token={{ user_token }}" class="btn btn-success btn-xs" onclick="return confirm('Are you sure to approve this claim?');">Approve</a>#}
+                {#  {% endif %}#}
+                {#</td> #}
+
+                <td>
+                  {% if claim.claim_status_id == 40 %}
+                    {#{% else %}#}
+                      <a href="{{disapproval_url}}&claim_id={{ claim.claim_id }}" class="btn btn-danger btn-xs" onclick="return confirm('Disapprove this claim?');">
+                        <i class='fa fa-thumbs-o-down' ></i>
+                      </a>
+                      <form method="get" action="index.php">
+                        <input type="hidden" name="route" value="vendor/claim/Approval">
+                        <input type="hidden" name="claim_id" value="{{ claim.claim_id }}">
+                        <input type="hidden" name="user_token" value="{{ user_token }}">
+                        <input type="number" name="percentage" placeholder="%" min="0" max="100" required style="width: 60px;">
+                        <button type="submit" class="btn btn-success btn-xs" > <i class='fa fa-thumbs-o-up'></i></button>
+                      </form>
+                      {#{% elseif claim.is_approved %}#}
+                      {#  <span style='background:green; color:white; padding:5px 10px;'>Approved</span>#}
+                      {#{% else %}#}
+                      {#  <span style='background:red; color:white; padding:5px 10px;'>Not Approved</span>#}
+                        
+                    {% endif %}
+                </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+          <p>No return claims found.</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 60%;">
+    <div class="modal-content" id="comment-thread-content">
+      <!-- AJAX loads thread here -->
+    </div>
+  </div>
+</div>
+<script>
+function openCommentModal(claimId) {
+  $.ajax({
+    url: 'index.php?route=vendor/claim_comment/thread&user_token={{ user_token }}&claim_id=' + claimId,
+    type: 'GET',
+    success: function(html) {
+      $('#comment-thread-content').html(html);
+      $('#commentModal').modal('show');
+    },
+    error: function() {
+      alert('Failed to load comment thread.');
+    }
+  });
+}
+</script>
+<script>
+function approveByVendor(vendorId) {
+  if (confirm("Approve all claims for this vendor?")) {
+    $.ajax({
+      url: 'index.php?route=vendor/claim/approveByVendor&user_token={{ user_token }}',
+      type: 'POST',
+      data: { vendor_id: vendorId },
+      dataType: 'json',
+      success: function(response) {
+        if (response.success) {
+          alert('Approved!');
+          location.reload();
+        } else {
+          alert('Failed to approve.');
+        }
+      },
+      error: function() {
+        alert('AJAX Error');
+      }
+    });
+  }
+}
+</script>
+<script>
+  var user_token = '{{ user_token }}';
+</script>
+
+
+{{ footer }}

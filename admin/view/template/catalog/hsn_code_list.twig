@@ -1,0 +1,229 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">HSN Code Management</h3>
+      </div>
+      <div class="panel-body">
+
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-hsn-code" class="form-horizontal">
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-hsn-code">HSN Code</label>
+            <div class="col-sm-10">
+              <input type="number" name="hsn_code" value="" placeholder="Enter HSN Code" id="input-hsn-code" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-description">Description</label>
+            <div class="col-sm-10">
+              <textarea name="description" rows="5" placeholder="Enter Description" id="input-description" class="form-control" required></textarea>
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-gst-rate">GST Rate (%)</label>
+            <div class="col-sm-10">
+              <input type="number" name="gst_rate" value="" placeholder="Enter GST Rate" id="input-gst-rate" class="form-control" min="0" max="100" step="0.01" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-primary">Add HSN</button>
+              <button type="reset" class="btn btn-default">Reset</button>
+            </div>
+          </div>
+        </form>
+
+        <hr />
+
+        <form method="get" action="index.php" class="form-inline">
+          <input type="hidden" name="route" value="catalog/hsn_code" />
+          <input type="hidden" name="user_token" value="{{ user_token }}" />
+          
+          <input type="text" name="filter_hsn_code" value="{{ filter_hsn_code }}" placeholder="HSN Code" class="form-control" />
+          <input type="text" name="filter_description" value="{{ filter_description }}" placeholder="Description" class="form-control" />
+          <input type="text" name="filter_gst_rate" value="{{ filter_gst_rate }}" placeholder="GST Rate" class="form-control" style="width:120px;" />
+
+          <button type="submit" class="btn btn-primary">Filter</button>
+          <a href="{{ filter_action }}" class="btn btn-default">Reset</a>
+        </form>
+
+
+
+
+        <h3>HSN Code List</h3>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>HSN Code</th>
+                <th style='width : 75%;'>Description</th>
+                <th>GST Rate (%)</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if hsn_codes %}
+                {% for hsn in hsn_codes %}
+                <tr data-hsn-id="{{ hsn.hsn_id }}" data-hsn-code="{{ hsn.hsn_code }}" data-description="{{ hsn.description }}" data-gst-rate="{{ hsn.gst_rate }}">
+                  <td class="hsn-code">{{ hsn.hsn_code }}</td>
+                  <td class="description">{{ hsn.description }}</td>
+                  <td class="gst-rate">{{ hsn.gst_rate }}%</td>
+                  <td><button type="button" class="btn btn-primary btn-xs edit-btn"><i class="fa fa-pencil"></i></button></td>
+                </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="3">No records found.</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+
+        {% if pagination %}
+          <div class="text-center">
+            {{ pagination }}
+          </div>
+        {% endif %}
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+  .editable {
+    background-color: #fff8e1;
+  }
+  .edit-btn, .save-btn {
+    cursor: pointer;
+    min-width: 30px;
+  }
+  .fa-spin {
+    animation: fa-spin 2s infinite linear;
+  }
+  @keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(359deg); }
+  }
+</style>
+
+<script>
+$(document).ready(function() {
+  // Initialize edit button functionality
+  $(document).on('click', '.edit-btn', function() {
+    var row = $(this).closest('tr');
+    var hsnId = row.data('hsn-id');
+    
+    // Make fields editable with proper attributes
+    row.find('.hsn-code').html(
+      '<input type="text" name="hsn_code" id="edit-hsn-code-'+hsnId+'" ' +
+      'class="form-control input-sm" value="' + row.data('hsn-code') + '" ' +
+      'required>'
+    );
+    
+    row.find('.description').html(
+      '<textarea name="description" id="edit-description-'+hsnId+'" ' +
+      'class="form-control input-sm" rows="2" required>' + 
+      row.data('description') + '</textarea>'
+    );
+    
+    row.find('.gst-rate').html(
+      '<input type="number" name="gst_rate" id="edit-gst-rate-'+hsnId+'" ' +
+      'class="form-control input-sm" min="0" max="100" step="0.01" ' +
+      'value="' + row.data('gst-rate') + '" required>'
+    );
+    
+    // Change button to save
+    $(this).html('<i class="fa fa-save"></i>');
+    $(this).removeClass('edit-btn').addClass('save-btn');
+    row.addClass('editable');
+  });
+
+  // Save button functionality
+  $(document).on('click', '.save-btn', function() {
+    var $button = $(this);
+    var row = $button.closest('tr');
+    var hsnId = row.data('hsn-id');
+    
+    // Get values from inputs
+    var newHsnCode = row.find('[name="hsn_code"]').val();
+    var newDescription = row.find('[name="description"]').val();
+    var newGstRate = row.find('[name="gst_rate"]').val();
+    
+    // Validate inputs
+    if (!newHsnCode || !newDescription || newGstRate === '') {
+      showAlert('danger', 'Please fill all required fields');
+      return;
+    }
+    
+    // Disable button and show loading
+    $button.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
+
+    // Send AJAX request
+    $.ajax({
+      url: 'index.php?route=catalog/hsn_code/update&user_token={{ user_token }}',
+      type: 'post',
+      data: {
+        hsn_id: hsnId,
+        hsn_code: newHsnCode,
+        description: newDescription,
+        gst_rate: newGstRate
+      },
+      dataType: 'json',
+      success: function(json) {
+        if (json.success) {
+          // Update row data
+          row.data({
+            'hsn-code': newHsnCode,
+            'description': newDescription,
+            'gst-rate': newGstRate
+          });
+          
+          // Update display
+          row.find('.hsn-code').text(newHsnCode);
+          row.find('.description').text(newDescription);
+          row.find('.gst-rate').text(newGstRate);
+          
+          showAlert('success', json.success);
+        } else {
+          showAlert('danger', json.error || 'Update failed');
+        }
+      },
+      error: function(xhr, status, error) {
+        showAlert('danger', 'Error: ' + error);
+      },
+      complete: function() {
+        // Reset button state
+        $button.html('<i class="fa fa-pencil"></i>')
+               .removeClass('save-btn')
+               .addClass('edit-btn')
+               .prop('disabled', false);
+        row.removeClass('editable');
+      }
+    });
+  });
+
+  // Helper function to show alerts
+  function showAlert(type, message) {
+    var alertHtml = '<div class="alert alert-' + type + ' alert-dismissible">' +
+      '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+      message + '</div>';
+    
+    $('#alert-container').html(alertHtml).fadeIn().delay(5000).fadeOut();
+  }
+});
+</script>
+
+  
+
+{{ footer }}

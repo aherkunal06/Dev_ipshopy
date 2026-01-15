@@ -1,0 +1,674 @@
+ .pincode-checker {
+    margin: 15px 0;
+    padding: 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+
+  .pincode-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .pincode-input-wrapper {
+    position: relative;
+  }
+
+  .pincode-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .pincode-input-group input {
+    flex: 1;
+    height: 40px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .pincode-input-group input:focus {
+    border-color: #953a93;
+    box-shadow: 0 0 0 2px rgba(149, 58, 147, 0.1);
+    outline: none;
+  }
+
+  .pincode-input-group button {
+    min-width: 100px;
+    height: 40px;
+    background: #953a93;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .pincode-input-group button:hover {
+    background: #7c307a;
+  }
+
+  .pincode-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    height: 200px;
+    overflow-y: scroll;
+  }
+
+  .dropdown-section-title {
+    padding: 10px 15px;
+    background: #f5f5f5;
+    font-weight: 600;
+    font-size: 13px;
+    color: #666;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .address-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .address-item:hover {
+    background: #f5f5f5;
+  }
+
+  .address-title {
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  .address-pincode {
+    font-size: 12px;
+    color: #953a93;
+    font-weight: 600;
+  }
+
+  .recent-pincodes {
+    padding: 10px 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .recent-pincode {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #f0f0f0;
+    border-radius: 15px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .recent-pincode:hover {
+    background: #e0e0e0;
+  }
+
+  .pincode-message {
+    margin-top: 10px;
+  }
+  .address-item.selected {
+    background-color: #e6f7ff;
+    border-left: 3px solid #1890ff;
+  }
+
+  .pincode-error,
+  .pincode-success {
+    display: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-top: 5px;
+  }
+
+  .pincode-error {
+    background: #fff5f5;
+    color: #dc3545;
+    border: 1px solid #ffebeb;
+  }
+
+  .pincode-success {
+    background: #f5fff7;
+    color: #28a745;
+    border: 1px solid #ebffef;
+  }
+
+  #pincode-loader {
+    display: none;
+    position: absolute;
+    right: 120px;
+    top: 32px;
+    color: #953a93;
+  }
+
+  #pincode-loader i {
+    animation: spin 1s infinite linear;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 767px) {
+    /*.pincode-input-group {*/
+    /*  flex-direction: column;*/
+    /*}*/
+
+    /*.pincode-input-group button {*/
+    /*  width: 100%;*/
+    /*}*/
+
+    #pincode-loader {
+      right: 10px;
+    }
+  }
+  
+  
+  /*new style */
+  nav.bar.bar-tab{
+      display:none;
+  }
+  .product-detail .box-info-product .detail-action .cart{
+      position:fixed;
+      bottom:0px;
+      left:0px;
+      width:100%;
+      padding-inline:10px;
+      z-index:99;
+  }
+  .product-detail .box-info-product .cart .btn{
+      
+      width: calc(50% - 2px);
+      margin:0px !important;
+  }
+  
+  
+  /*cod, warranty, return*/
+  .product_model{
+    position: absolute;
+    /*width:90%;*/
+    width:400px;
+    bottom: 54px;
+    background: white;
+    padding: 30px;
+    box-shadow: lightgray 0px 0px 3px;
+    z-index: 99;   
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.product_model_close{
+    /*float:right;*/
+    background: transparent;
+    border: none;
+    font-size: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: black;
+}
+.variant.images{
+    box-shadow:0px 0px 2px lightgray;
+}
+.additional_btns{
+    display:inline-flex;
+    gap:15px;
+    width:100%;
+    justify-content:center;
+}
+.additional_btn:focus{
+    outline:none !important;
+}
+.additional_btns i{
+    font-size:24px;
+}
+.additional_btns p{
+    font-size:12px;
+}
+.additional_btn{
+    padding:0px;
+    background:white;
+    color:#953A93;
+}
+.additional_btn p{
+    margin:0px;
+}
+.additional_btn:hover{
+    background:white;
+    color:#953A93;
+}
+/*cod, warranty, return*/
+/*discount table */
+.discount_section table{
+    
+    border-radius:5px;
+    border:1px solid lightgray;
+    box-shadow:0px 0px 2px lightgray;
+}
+.discount_section table thead th{
+    color:black;
+    text-align:center;
+}
+
+.discount_section table tbody td{
+    text-align:center;
+}
+/*discount table end */
+
+/*brand name and seller name*/
+
+.seller_name_section .seller_name, .pincode_left, .option.quantity label{
+    min-width:120px;
+ 
+}
+.seller_name_section{
+    color:black;
+}
+.seller_name_section .highlight_right{
+    color:#953a93;
+    font-weight:500;
+    text-transform: capitalize;
+}
+/*.option.quantity{*/
+/*    display:flex;*/
+/*    gap:10px;*/
+/*    align-items:center;*/
+/*    margin-bottom:15px !important;*/
+/*}*/
+/*.option.quantity .control-label{*/
+/*    margin-bottom:0px;*/
+/*}*/
+/*.option.quantity *{*/
+/*    margin:0px;*/
+/*    color:black;*/
+/*}*/
+
+.highlight_wrapper{
+    margin-bottom:10px;
+    display:flex;
+}
+.highlight_right{
+    font-weigth:400;
+    font-size:14px;
+    color:black;
+}
+#product .highlight_left{
+    font-size:15px !important;
+    font-weight:500 !important;
+    display: flex !important;
+    align-items: center;
+}
+.highlight_left{
+    font-size:14px;
+    font-weight:500;
+    color:black;
+    min-width: 130px !important;
+
+}
+/*brand name and seller name*/
+/*faq start */
+
+	.product-faqs-section {
+		border: 1px solid #e0e0e0;
+		padding: 20px;
+		margin-top: 20px;
+		border-radius: 6px;
+	}
+
+	.faq-item {
+		padding: 10px 0;
+		border-bottom: 1px solid #eee;
+	}
+
+	.faq-question strong {
+		display: block;
+		color: #333;
+	}
+
+	.faq-answer span {
+		font-weight: bold;
+		color: #444;
+	}
+
+	.faq-toggle-buttons {
+		margin-top: 10px;
+		text-align: end;
+	}
+
+	.faq-toggle-buttons .btn-link {
+		background: none;
+		border: none;
+		color: #2874f0;
+		font-weight: 600;
+		cursor: pointer;
+		padding: 0;
+	}
+
+	.faq-toggle-buttons .btn-link:hover {
+		text-decoration: underline;
+	}
+/*faq end */
+
+
+/*replacement popup*/.replacement-policy-wrapper {
+		position: relative;
+		/* Container is the reference point */
+		/* display: inline-block; */
+	}
+
+	.replacement-popup {
+		position: absolute;
+		bottom: 100%;
+		/* Position above the button */
+		left: 0;
+		margin-bottom: 20px;
+		/* 10px gap from the button */
+		background: #fff;
+		border: 1px solid #ddd;
+		width: 90%;
+		max-width: 600px;
+		padding: 24px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+		z-index: 1000;
+		font-family: 'Segoe UI', Tahoma, sans-serif;
+		font-size: 14px;
+		border-radius: 10px;
+		transition: all 0.3s ease;
+	}
+
+
+	/* === Header Section === */
+	.replacement-popup-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 16px;
+		font-weight: 600;
+		color: #202020;
+		margin-bottom: 18px;
+	}
+
+	/* === Close Button === */
+	.replacement-close {
+		background: transparent;
+		border: none;
+		font-size: 24px;
+		cursor: pointer;
+		color: #666;
+		transition: color 0.2s;
+	}
+
+	.replacement-close:hover {
+		color: #000;
+	}
+
+	/* === Table Styling === */
+	.replacement-table {
+		width: 100%;
+		border-collapse: separate;
+		border-spacing: 0;
+		margin-bottom: 16px;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	.replacement-table th,
+	.replacement-table td {
+		padding: 14px 18px;
+		font-size: 14px;
+		text-align: left;
+	}
+
+	.replacement-table th {
+		background-color: #f4f6f8;
+		color: #333;
+		font-weight: 600;
+		text-transform: capitalize;
+		border-bottom: 1px solid #ddd;
+	}
+
+	.replacement-table td {
+		background-color: #fff;
+		color: #444;
+		border-bottom: 1px solid #eee;
+	}
+
+	.replacement-table tr:last-child td {
+		border-bottom: none;
+	}
+
+	.replacement-table tr:hover td {
+		background-color: #f9fbff;
+	}
+
+	/* === Description Text === */
+	.replacement-description {
+		color: #444;
+		font-size: 13.5px;
+		line-height: 1.6;
+		padding-top: 10px;
+		border-top: 1px solid #eee;
+	}
+
+	/* === Icon & Label Wrapper === */
+	.replacement-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		color: #953A93;
+		/* deep purple */
+		font-size: 14px;
+		cursor: pointer;
+		margin: 12px 0;
+		width: max-content;
+		transition: transform 0.2s;
+	}
+
+
+
+	/* === Icon Styling === */
+	.replacement-icon {
+		font-size: 26px;
+		margin-bottom: 6px;
+		color: #953A93;
+		font-weight: 600;
+	}
+
+	/* === Text Below Icon === */
+	.replacement-text {
+		text-align: center;
+		color: #953A93;
+		font-weight: 500;
+		line-height: 1.3;
+	}
+/*replacement popup end*/
+
+#freeChargesCont{
+    color:black;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+	/* Ask Question Modal – Overall Style */
+.ask-question-modal {
+  border-radius: 10px;
+  max-width: 700px;
+  margin: auto;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+   padding: 20px;
+  background-color: #fff;
+ 
+}
+
+/* Modal Layout */
+.ask-question-modal-body {
+  display: flex;
+  /* flex-wrap: wrap; */
+}
+
+/* Left Panel */
+.ask-left-panel {
+  /* background-color: #f7f5f9; */
+  border-right: 1px solid #e0e0e0;
+  height: 100%;
+ margin-top: 20px;
+
+}
+
+.ask-guidelines {
+  font-size: 14px;
+  color: #333;
+  padding-left: 0;
+}
+
+.ask-guidelines li {
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+/* Right Panel */
+.ask-right-panel {
+  background-color: #fff;
+  height: 100%;
+}
+
+.ask-right-panel h5 {
+  font-size: 18px;
+  color: #212121;
+  font-weight: bold;
+}
+
+.ask-right-panel textarea {
+  resize: vertical;
+  width: 100%;
+  font-size: 14px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Submit Button */
+.ask-submit-btn {
+  background-color: #953A93;
+  border: none;
+  padding: 10px 30px;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.ask-submit-btn:hover {
+  background-color: #b86db7 !important;
+  color: #fff !important;
+
+}
+
+/* Modal Close Buttons */
+.modal-header .close,
+.ask-right-panel .close {
+  font-size: 24px;
+  color: #000;
+  opacity: 0.6;
+  margin-top: -15px;
+}
+
+.modal-header .close:hover,
+.ask-right-panel .close:hover {
+  opacity: 1;
+}
+
+/* Login Required Section */
+.ask-login-required {
+  background-color: #fdf9fd;
+  border: 1px solid #eee;
+  padding: 30px 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.ask-login-required p {
+  font-size: 16px;
+  color: #000 !important;
+  font-weight: 500;
+}
+
+.faq-login-link {
+  color: #953A93;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.faq-login-link:hover {
+  color: #721b72;
+  text-decoration: underline;
+}
+
+/* Responsive Behavior */
+@media (max-width: 767px) {
+  .ask-left-panel {
+    display: none;
+  }
+
+  .ask-right-panel {
+    padding: 20px;
+	width: 100%;
+  }
+
+  .ask-question-modal {
+    border-radius: 0;
+  }
+}
+
+#ask-question-btn {
+  background-color: #953A93;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+
+}
+#ask-question-btn:hover {
+  background-color: #721b72;
+}
+
+.modal-title {
+	color: #000;
+	font-size: 18px;
+	font-weight: 600;
+}

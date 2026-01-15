@@ -1,0 +1,166 @@
+<div class="dashboard1">
+	{% if logged %}
+	<div class="profile">
+		<div class="image" id="image">
+			<input type="hidden" name="image" id="image" value=""/>
+			<div class="profileimage">
+				{% if prodileimage %}
+				<img src="{{ prodileimage }}" class="img-responsive" alt="{{ firstname }} {{ lastname }}" title="{{ firstname }} {{ lastname }}" />
+				{% elseif defaulpic %}
+				<img src="{{ defaulpic }}" class="img-responsive" alt="{{ firstname }} {{ lastname }}" title="{{ firstname }} {{ lastname }}" />
+				{% else %}
+				<img src="{{ placeholder1 }}" class="img-responsive img-thumbnail " alt="profile Image" title="profile Image"/>
+				{% endif %}
+			</div>
+			<div id="errors"></div>
+		</div>
+		<div class="detail">
+			<h3>{{ firstname }} {{ lastname }}</h3>
+			<p>{{ email }}</p>
+		</div>
+	</div>
+	{% endif %}
+
+	{% if account_status %}
+	<div class="list-group">
+		<div class="box1">
+			{% if not logged %}
+			{% if account_login %}
+			<a href="{{ login }}" class="list-group-item"><i class="fa fa-sign-in" aria-hidden="true"></i> {{ text_login }}</a>
+			{% endif %}
+			{% if account_register %}
+			<a href="{{ register }}" class="list-group-item"><i class="fa fa-user-plus" aria-hidden="true"></i> {{ text_register }}</a>
+			{% endif %}
+			{% if account_forgot %}
+			<a href="{{ forgotten }}" class="list-group-item"><i class="fa fa-key" aria-hidden="true"></i> {{ text_forgotten }}</a>
+			{% endif %}
+			{% endif %}
+			{% if logged %}
+			{% if my_account %}
+			<a href="{{ account }}" class="list-group-item"><i class="fa fa-user" aria-hidden="true"></i> {{ text_account }}</a>
+			{% endif %}
+			{% if edit_account %}
+			<a href="{{ edit }}" class="list-group-item"><i class="fa fa-pencil" aria-hidden="true"></i> {{ text_edit }}</a>
+			{% endif %}
+			{% if change_password %}
+			<a href="{{ password }}" class="list-group-item"><i class="fa fa-key" aria-hidden="true"></i> {{ text_password }}</a>
+			{% endif %}
+			{% if address_book %}
+			<a href="{{ address }}" class="list-group-item"><i class="fa fa-globe" aria-hidden="true"></i> {{ text_address }}</a>
+			{% endif %}
+			{% if my_wishlist %}
+			<a href="{{ wishlist }}" class="list-group-item"><i class="fa fa-heart" aria-hidden="true"></i> {{ text_wishlist }}</a>
+			{% endif %}
+			{% if account_newsletter %}
+			<a href="{{ newsletter }}" class="list-group-item"><i class="fa fa-envelope" aria-hidden="true"></i> {{ text_newsletter }}</a>
+			{% endif %}
+			{% if my_order %}
+			<a href="{{ order }}" class="list-group-item"><i class="fa fa-undo" aria-hidden="true"></i>{{ text_order }}</a>
+			{% endif %}
+			{% if my_downloads %}
+			<a href="{{ download }}" class="list-group-item"><i class="fa fa-cloud-download" aria-hidden="true"></i> {{ text_download }}</a>
+			{% endif %}
+			{% if my_payments %}
+			<a href="{{ recurring }}" class="list-group-item"><i class="fa fa-usd" aria-hidden="true"></i> {{ text_recurring }}</a>
+			{% endif %}
+			{% if my_reward %}
+			<a href="{{ reward }}" class="list-group-item"><i class="fa fa-shield" aria-hidden="true"></i> {{ text_reward_point }}</a>
+			{% endif %}
+			{% if my_returns %}
+			<a href="{{ return }}" class="list-group-item"><i class="fa fa-retweet" aria-hidden="true"></i> {{ text_return }}</a>
+			{% endif %}
+			{% if my_transaction %}
+			<a href="{{ transaction }}" class="list-group-item"><i class="fa fa-money" aria-hidden="true"></i> {{ text_transaction }}</a>
+			{% endif %}
+			{% if account_logout %}
+			<a href="{{ logout }}" class="list-group-item"><i class="fa fa-sign-out" aria-hidden="true"></i> {{ text_logout }}</a>
+			{% endif %}
+			{% endif %}
+			{% for tmdaccounticon in tmdaccounticons %}
+			{% if tmdaccounticon.status == 1 %}
+			<a href="{{ tmdaccounticon.routing }}" class="list-group-item"><i class="fa {{ tmdaccounticon.icon }}"></i>{{ tmdaccounticon.text }}</a>
+			{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+	{% endif %}
+</div>
+
+<!-- Css code start here -->
+<style type="text/css">
+{{ tmdaccount_customcss }}
+</style>
+
+<!-- JS code start here -->
+<script type="text/javascript">
+$('.profileimage').on('click', function() {
+	var node = this;
+
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+		clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			$.ajax({
+				url: 'index.php?route=extension/tmdaccount/uploadprofileimage',
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');
+				},
+				success: function(json) {
+					$('.text-danger').remove();
+
+					if (json['error']) {
+						$('#image').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+
+					if (json['success']) {
+
+						$.ajax({
+							url: 'index.php?route=extension/tmdaccount/saveimage',
+							type: 'post',
+							dataType: 'json',
+							data: 'image='+json['file'],
+							beforeSend: function() {
+								// $(node).button('loading');
+							},
+							complete: function() {
+								// $(node).button('reset');
+							},
+							success: function(json) {
+								$("#errors").html("Successfully Inserted!");
+								$('.profileimage').load(' .profileimage');
+
+							}
+						}); 
+						
+						$('#image').attr('value', json['file']);
+						$('#imagesrc').attr('src', json['file1'] );
+						$('#imagesrc').css({ display: "block", padding: "0px" });
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+</script>

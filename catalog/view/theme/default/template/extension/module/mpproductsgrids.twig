@@ -1,0 +1,56 @@
+
+{% for type,key in products %}
+  {% for key1,upproducts in key %}
+    {% for subproduct in upproducts %}
+      <div class="mpgrid_item {% if subproduct.highlight %} mpgrid_item--size-a {% endif %} {{ mpgrids[ type ][ key1 ].id }}">
+        <div class="inner-mpg">
+          <div class="mpgridslider" data-sliderignition="{% if subproduct.images %}{{ show_product_additional_images }}{% else %}0{% endif %}" data-sliderbuttons="{{ show_prevnextbuttons }}" data-sliderpagedots="{{ show_pagedots }}" data-sliderauto="{{ slider_autoplay }}" data-sliderautospeed="{{ slider_autoplayspeed }}" data-sliderpauseonhover="{{ slider_pauseautoplayonhover }}">
+            <div class="mpgridslider_additional"><a href="{{ subproduct.href }}"><img src="{{ subproduct.thumb }}" alt="{{ subproduct.name }}" /></a></div>
+            {% if subproduct.images %}
+            {% for image in subproduct.images %}
+            <div class="mpgridslider_additional"><a href="{{ subproduct.href }}"><img src="{{ image.thumb }}" alt="{{ subproduct.name }}" /></a></div>
+            {% endfor %}
+            {% endif %}
+          </div>
+          <div class="meta caption content">
+            {% if show_product_name %}<h3 class="meta__title">{{ subproduct.name }}</h3>{% endif %}
+
+            {% if subproduct.rating %}
+            <div class="rating">
+              {% for i in 1..5 %}
+              {% if subproduct.rating < i %}
+              <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+              {% else %}
+              <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+              {% endif %}
+              {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if subproduct.price %}
+            <span class="meta__price">
+              <p class="price">
+                {% if not subproduct.special %}
+                {{ subproduct.price }}
+                {% else %}
+                <span class="price-new">{{ subproduct.special }}</span> <span class="price-old">{{ subproduct.price }}</span>
+                {% endif %}
+                {% if subproduct.tax %}
+                <span class="price-tax">{{ text_tax }} {{ subproduct.tax }}</span>
+                {% endif %}
+              </p>
+            </span>
+            {% endif %}
+            {% if show_product_description %}<span class="meta__brand hidden-sm">{{ subproduct.description }}</span>{% endif %}
+            <div class="button-group">
+              <button type="button" data-toggle="tooltip" title="{{ button_cart }}" onclick="cart.add('{{ subproduct.product_id }}');"><i class="fa fa-shopping-cart"></i></button>
+              <button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="wishlist.add('{{ subproduct.product_id }}');"><i class="fa fa-heart"></i></button>
+              <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="compare.add('{{ subproduct.product_id }}');"><i class="fa fa-exchange"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {% endfor %}
+  {% endfor %}
+{% endfor %}

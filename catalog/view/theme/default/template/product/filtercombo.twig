@@ -1,0 +1,496 @@
+<form id="filter-form" action="{{ action }}" method="get">
+	<input type="hidden" name="route" value="{{ route }}"/>
+	<input type="hidden" name="search" value="{{ search }}"/>
+	<input type="hidden" name="category_id" value="{{ category_id }}"/>
+	{% if path %}
+		<input type="hidden" name="path" value="{{ path }}"/>
+	{% endif %}
+
+	<div class="price-slider-container mt-4">
+		<label>
+			<strong>Price</strong>
+		</label>
+		<div class="price-values">
+			<input type="text" id="input-min" readonly>
+			<span>to</span>
+			<input type="text" id="input-max" readonly>
+		</div>
+		<div id="price-slider"></div>
+		<input type="hidden" name="min" id="minPrice" value="{{ min|default(0) }}">
+		<input type="hidden" name="max" id="maxPrice" value="{{ max|default(20000) }}">
+	</div>
+
+	<div class="brand-filter">
+		<div class="filter-header" onclick="toggleFilterDropdown('brand-dropdown', this)">
+
+
+			<label>
+				<strong>Brand</strong>
+			</label>
+			<button type="button" class="toggle-brand-filter" onclick="toggleFilterDropdown('brand-dropdown', this.parentElement)">
+				&#9662;
+			</button>
+
+
+		</div>
+		{# <div id="brand-dropdown" class="brand-dropdown{% if selected_manufacturers|length > 0 %} open{% endif %}"> #}
+		<div id="brand-dropdown" class="brand-dropdown open">
+
+			<input type="text" class="form-control mb-2" placeholder="Search Brand" onkeyup="filterBrands(this)">
+			<div class="brand-checkboxes" id="brand-checkboxes">
+				{% for brand in brands %}
+					<label class="brand-item ">
+						<input type="checkbox" name="manufacturer[]" value="{{ brand.manufacturer_id }}" {% if brand.manufacturer_id in selected_manufacturers %} checked {% endif %} onchange="document.getElementById('filter-form').submit();">
+						<span>{{ brand.name }}</span>
+					</label>
+				{% endfor %}
+			</div>
+			{#{% if brands|length > 5 %}#}
+			{#	<div class="text-center mt-2">#}
+			{#		<a href="javascript:void(0);" id="toggle-brands" data-expanded="false" onclick="toggleBrandList()">+ Show More</a>#}
+			{#	</div>#}
+			{#{% endif %}#}
+		</div>
+	</div>
+
+	<div class="color-filter mt-4">
+		<div class="filter-header" onclick="toggleFilterDropdown('color-dropdown', this)">
+
+
+			<label>
+				<strong>Color</strong>
+			</label>
+			<button type="button" class="toggle-color-filter" onclick="toggleFilterDropdown('color-dropdown')">&#9662;</button>
+		</div>
+		{# <div id="color-dropdown" class="color-dropdown{% if selected_colors|length > 0 %} open{% endif %}"> #}
+		<div id="color-dropdown" class="color-dropdown open">
+
+			<div class="color-checkboxes">
+				{% for row in colors %}
+					{% set color = row.variant_name %}
+					<label class="brand-item">
+						<input type="checkbox" name="color[]" value="{{ color|lower }}" {% if color|lower in selected_colors %} checked {% endif %} onchange="document.getElementById('filter-form').submit();">
+						<span>{{ color }}</span>
+					</label>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+	<div class="discount-filter mt-4">
+		<div class="filter-header" onclick="toggleFilterDropdown('discount-dropdown', this)">
+
+
+			<label>
+				<strong>Discount</strong>
+			</label>
+			<button type="button" class="toggle-discount-filter" onclick="toggleFilterDropdown('discount-dropdown')">&#9662;</button>
+		</div>
+		{# <div id="discount-dropdown" class="discount-dropdown{% if selected_discounts|length > 0 %} open{% endif %}"> #}
+		<div id="discount-dropdown" class="discount-dropdown open">
+
+			<div class="discount-checkboxes">
+				{% for range in discount_ranges %}
+					<label class="discount-item">
+						<input type="checkbox" name="discount[]" value="{{ range }}" {% if range in selected_discounts %} checked {% endif %} onchange="document.getElementById('filter-form').submit();">
+						<span>
+							{{ range }}% or more</span>
+						</label>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		{% if sizes %}
+			<div class="size-filter mt-4">
+				<div class="filter-header" onclick="toggleFilterDropdown('size-dropdown', this)">
+
+
+					<label>
+						<strong>Size</strong>
+					</label>
+					<button type="button" class="toggle-size-filter" onclick="toggleFilterDropdown('size-dropdown')">&#9662;</button>
+				</div>
+				{# <div id="size-dropdown" class="size-dropdown{% if selected_sizes|length > 0 %} open{% endif %}"> #}
+				<div id="size-dropdown" class="size-dropdown open">
+
+					{% if sizes %}
+						<div class="size-checkboxes">
+							{% for size in sizes %}
+								<label class="size-item">
+									<input type="checkbox" class="filter-size" name="size[]" value="{{ size.option_value_id }}" {% if size.option_value_id in selected_sizes %} checked {% endif %} onchange="document.getElementById('filter-form').submit();">
+									<span>{{ size.name }}</span>
+								</label>
+							{% endfor %}
+						</div>
+					{% else %}
+						<div class="text-muted">No sizes available</div>
+					{% endif %}
+				</div>
+			</div>
+		{% endif %}
+
+		<div class="rating-filter mt-4">
+			<div class="filter-header" onclick="toggleFilterDropdown('rating-dropdown', this)">
+
+
+				<label>
+					<strong>Customer Rating</strong>
+				</label>
+				<button type="button" class="filter-header" onclick="toggleFilterDropdown('rating-dropdown')">&#9662;</button>
+			</div>
+			{# <div id="rating-dropdown" class="rating-dropdown{% if selected_ratings|length > 0 %} open{% endif %}"> #}
+			<div id="rating-dropdown" class="rating-dropdown open">
+
+				<div class="rating-checkboxes">
+					{% for value in rating_filters %}
+						<label class="rating-item">
+							<input type="checkbox" name="rating[]" value="{{ value }}" {% if value in selected_ratings %} checked {% endif %} onchange="document.getElementById('filter-form').submit();">
+							<span>{{ value }}
+								★ & above</span>
+						</label>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</form>
+
+
+
+	<!-- Combined CSS -->
+
+
+	<style>
+		/* === PRICE SLIDER === */
+		#price-slider {
+			position: relative;
+			height: 6px;
+			background: #ddd;
+			margin-top: 20px;
+			border-radius: 3px;
+			width: 100%;
+			overflow: visible; /* ✅ important */
+		}
+
+		#price-slider .range {
+			position: absolute;
+			height: 100%;
+			background: #953A93;
+			border-radius: 3px;
+			z-index: 1;
+		}
+		#price-slider {
+			overflow: visible !important; /* ✅ allows full thumb to show */
+		}
+
+		#price-slider .thumb {
+			position: absolute;
+			top: -4.5px; /* (15px height - 6px slider height) / 2 = 4.5px */
+			width: 15px;
+			height: 15px;
+			background: #fff;
+			border: 2px solid #953A93;
+			border-radius: 50%;
+			cursor: pointer;
+			z-index: 2;
+			box-shadow: 0 0 3px rgba(149, 58, 147, 0.3);
+		}
+		#price-slider .thumb:hover {
+			box-shadow: 0 0 8px rgba(149, 58, 147, 0.5);
+		}
+
+		/* === Form === */
+		form {
+			font-family: 'Inter', sans-serif;
+			font-size: 14px;
+			color: #333;
+			background: #fff;
+			padding: 15px;
+			border: 1px solid #ddd;
+			max-width: 280px;
+		}
+
+		/* === Filter Header === */
+		.filter-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			cursor: pointer;
+			padding: 8px 0;
+			border-bottom: 1px solid #eee;
+		}
+		.filter-header label {
+			font-weight: bold;
+			font-size: 13px;
+			color: #000;
+			text-transform: uppercase;
+			margin: 0;
+		}
+		.filter-header button {
+			background: none;
+			border: none;
+			font-size: 14px;
+			color: #444;
+			cursor: pointer;
+			transform: rotate(0deg);
+			transition: transform 0.3s ease;
+		}
+		.filter-header.open button {
+			transform: rotate(180deg);
+		}
+
+		/* === Dropdowns === */
+		.brand-dropdown,
+		.color-dropdown,
+		.discount-dropdown,
+		.size-dropdown,
+		.rating-dropdown {
+			display: none;
+			padding-top: 5px;
+		}
+		.brand-dropdown.open,
+		.color-dropdown.open,
+		.discount-dropdown.open,
+		.size-dropdown.open,
+		.rating-dropdown.open {
+			display: block;
+			padding-bottom: 10px;
+			margin-bottom: 10px;
+		}
+
+		.brand-checkboxes,
+		.color-checkboxes,
+		.discount-checkboxes,
+		.size-checkboxes,
+		.rating-checkboxes {
+			max-height: 140px;
+			overflow-y: auto;
+			padding-right: 5px;
+			border-bottom: 1px solid #ddd;
+			margin-bottom: 10px;
+		}
+
+		.form-control.mb-2 {
+			margin-bottom: 10px;
+			padding: 6px 10px;
+			font-size: 13px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			width: 100%;
+		}
+
+		.brand-item,
+		.discount-item,
+		.size-item,
+		.rating-item,
+		.color-item {
+			display: flex;
+			align-items: center;
+			font-size: 13px;
+			color: #333;
+			margin-bottom: 6px;
+			white-space: nowrap;
+			gap: 5px;
+		}
+
+		input[type="checkbox"] {
+			-webkit-appearance: none;
+			appearance: none;
+			background-color: #fff;
+			border: 1px solid #ccc;
+			width: 16px;
+			height: 16px;
+			position: relative;
+			cursor: pointer;
+		}
+		input[type="checkbox"]:checked::before {
+			content: "✔";
+			font-size: 11px;
+			position: absolute;
+			top: 0;
+			left: 3px;
+			color: #953A93;
+		}
+
+		.size-item input[type="checkbox"],
+		.rating-item input[type="checkbox"],
+		.discount-item input[type="checkbox"] {
+			border-color: #953A93;
+		}
+
+		.brand-checkboxes::-webkit-scrollbar,
+		.color-checkboxes::-webkit-scrollbar,
+		.size-checkboxes::-webkit-scrollbar {
+			width: 6px;
+		}
+		.brand-checkboxes::-webkit-scrollbar-thumb,
+		.color-checkboxes::-webkit-scrollbar-thumb,
+		.size-checkboxes::-webkit-scrollbar-thumb {
+			background: #ccc;
+			border-radius: 3px;
+		}
+
+		#toggle-brands {
+			display: inline-block;
+			margin-top: 5px;
+			font-size: 13px;
+			color: #953A93;
+			cursor: pointer;
+		}
+
+		/* === Misc Styling === */
+		.price-slider-container,
+		.brand-filter,
+		.color-filter,
+		.discount-filter,
+		.size-filter,
+		.rating-filter {
+			margin-bottom: 20px;
+		}
+
+		.price-values {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 10px;
+		}
+		.price-values input {
+			width: 90px;
+			height: 34px;
+			font-size: 14px;
+			text-align: center;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			background: #fff;
+			cursor: default;
+			appearance: none;
+		}
+		.price-values span {
+			margin: 0 10px;
+			font-weight: 600;
+			color: #666;
+		}
+
+		@media(max-width: 768px) {
+			form {
+				max-width: 100%;
+				padding: 10px;
+			}
+		}
+	</style>
+
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+const slider = document.getElementById('price-slider');
+const inputMin = document.getElementById('input-min');
+const inputMax = document.getElementById('input-max');
+const hiddenMin = document.getElementById('minPrice');
+const hiddenMax = document.getElementById('maxPrice');
+const filterForm = document.getElementById('filter-form');
+
+const min = 0;
+const max = 30000;
+let currentMin = parseInt(hiddenMin.value) || min;
+let currentMax = parseInt(hiddenMax.value) || max;
+
+// Clamp initial values
+currentMin = Math.max(min, Math.min(currentMin, max));
+currentMax = Math.max(min, Math.min(currentMax, max));
+
+slider.innerHTML = '';
+slider.style.position = 'relative';
+
+const range = document.createElement('div');
+range.className = 'range';
+slider.appendChild(range);
+
+const thumbMin = document.createElement('div');
+const thumbMax = document.createElement('div');
+thumbMin.className = 'thumb';
+thumbMax.className = 'thumb';
+slider.appendChild(thumbMin);
+slider.appendChild(thumbMax);
+
+const sliderWidth = () => slider.offsetWidth;
+const valueToPos = val => ((val - min) / (max - min)) * sliderWidth();
+const posToValue = pos => Math.round((pos / sliderWidth()) * (max - min) + min);
+
+function updateUI() {
+const posMin = valueToPos(currentMin);
+const posMax = valueToPos(currentMax);
+
+thumbMin.style.left = `${
+posMin - 9
+}px`;
+thumbMax.style.left = `${
+posMax - 9
+}px`;
+
+range.style.left = `${posMin}px`;
+range.style.width = `${
+posMax - posMin
+}px`;
+
+inputMin.value = currentMin;
+inputMax.value = currentMax + '+';
+hiddenMin.value = currentMin;
+hiddenMax.value = currentMax;
+}
+
+updateUI();
+
+let activeThumb = null;
+
+function onMouseDown(e, thumb) {
+e.preventDefault();
+activeThumb = thumb;
+document.addEventListener('mousemove', onMouseMove);
+document.addEventListener('mouseup', onMouseUp);
+}
+
+function onMouseMove(e) {
+if (! activeThumb) 
+return;
+
+
+
+const rect = slider.getBoundingClientRect();
+let x = e.clientX - rect.left;
+x = Math.max(0, Math.min(x, sliderWidth())); // clamp within slider bounds
+
+let val = posToValue(x);
+val = Math.max(min, Math.min(val, max)); // clamp value within min/max
+
+if (activeThumb === thumbMin) {
+currentMin = Math.min(val, currentMax - 100);
+} else {
+currentMax = Math.max(val, currentMin + 100);
+} updateUI();
+}
+
+function onMouseUp() {
+activeThumb = null;
+document.removeEventListener('mousemove', onMouseMove);
+document.removeEventListener('mouseup', onMouseUp);
+filterForm.submit();
+}
+
+thumbMin.addEventListener('mousedown', e => onMouseDown(e, thumbMin));
+thumbMax.addEventListener('mousedown', e => onMouseDown(e, thumbMax));
+});
+	</script>
+	<script>
+		function toggleFilterDropdown(dropdownId, headerEl) {
+const dropdown = document.getElementById(dropdownId);
+const isOpen = dropdown.classList.contains('open');
+
+// Toggle dropdown
+dropdown.classList.toggle('open');
+
+// Toggle arrow rotation (optional)
+if (headerEl) {
+headerEl.classList.toggle('open', ! isOpen);
+}
+}
+	</script>

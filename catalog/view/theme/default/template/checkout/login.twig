@@ -1,0 +1,188 @@
+{#<div class="row">#}
+{#  <div class="col-sm-6">#}
+{#    <h2>{{ text_new_customer }}</h2>#}
+{#    <p>{{ text_checkout }}</p>#}
+{#    <div class="radio">#}
+{#      <label> {% if account == 'register' %}#}
+{#        <input type="radio" name="account" value="register" checked="checked" />#}
+{#        {% else %}#}
+{#        <input type="radio" name="account" value="register" />#}
+{#        {% endif %}#}
+{#        {{ text_register }}</label>#}
+{#    </div>#}
+{#    {% if checkout_guest %}#}
+{#    <div class="radio">#}
+{#      <label> {% if account == 'guest' %}#}
+{#        <input type="radio" name="account" value="guest" checked="checked" />#}
+{#        {% else %}#}
+{#        <input type="radio" name="account" value="guest" />#}
+{#        {% endif %}#}
+{#        {{ text_guest }}</label>#}
+{#    </div> #}
+{#    {% endif %}#}
+{#    <p>{{ text_register_account }}</p>#}
+{#    <input type="button" value="{{ button_continue }}" id="button-account" data-loading-text="{{ text_loading }}" class="btn btn-primary" />#}
+{#  </div>#}
+{#  <div class="col-sm-6">#}
+{#    <h2>{{ text_returning_customer }}</h2>#}
+{#    <p>{{ text_i_am_returning_customer }}</p>#}
+{#    <div class="form-group">#}
+{#      <label class="control-label" for="input-email">{{ entry_email }}</label>#}
+{#      <input type="text" name="email" value="" placeholder="{{ entry_email }}" id="input-email" class="form-control" />#}
+{#    </div>#}
+{#    <div class="form-group">#}
+{#      <label class="control-label" for="input-password">{{ entry_password }}</label>#}
+{#      <input type="password" name="password" value="" placeholder="{{ entry_password }}" id="input-password" class="form-control" />#}
+{#      <a href="{{ forgotten }}">{{ text_forgotten }}</a></div>#}
+{#    <input type="button" value="{{ button_login }}" id="button-login" data-loading-text="{{ text_loading }}" class="btn btn-primary" />#}
+{#  </div>#}
+{#</div>#}
+
+
+<style>
+	#register_container,
+	#login-box {
+		margin: 60px auto;
+	}
+	#register_container {
+		margin-inline: 60px
+	}
+</style>
+<div class="login-modal-box" id="login-box" style="max-width: 400px; border-radius: 10px; padding: 30px; box-shadow: 0 0 10px rgba(0,0,0,0.2); background: #fff;">
+
+	<h2 class="text-center mb-4" style="font-weight: bold;">Login</h2>
+
+	<div class="form-group">
+		<label for="input-email">Email</label>
+		<div class="input-group">
+			<span class="input-group-addon">
+				<i class="fa fa-envelope"></i>
+			</span>
+			<input type="email" name="email" placeholder="Enter your email" id="input-email" class="form-control"/>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="input-password">Password</label>
+		<div class="input-group">
+			<span class="input-group-addon">
+				<i class="fa fa-lock"></i>
+			</span>
+			<input type="password" name="password" placeholder="Enter your password" id="input-password" class="form-control"/>
+		</div>
+	</div>
+
+	<div class="text-center mb-3">
+		<a href="{{ forgotten }}" style="color: #a04bae;">Forgot Your Password?</a>
+	</div>
+
+	<div class="form-group text-center mb-3">
+		<input type="button" value="{{ button_login }}" id="button-login" class="btn btn-lg" style="background: #a04bae; color: white; border: none; width: 100%;"/>
+	</div>
+
+	 {#<div class="social-login-buttons text-center">#}
+	{#												    <button class="btn btn-block btn-light mb-2" style="border: 1px solid #ccc;">#}
+	{#												      <img src="https://img.icons8.com/color/16/google-logo.png" style="margin-right: 8px;" />#}
+	{#												      Sign in with Google#}
+	{#												    </button>#}
+	{#												    <button class="btn btn-block btn-light" style="border: 1px solid #ccc;">#}
+	{#												      <img src="https://img.icons8.com/ios-filled/16/3b5998/facebook-new.png" style="margin-right: 8px;" />#}
+	{#												      Sign in with Facebook#}
+	{#												    </button>#}
+													  {#</div> #}
+
+	<div class="text-center mt-3">
+		<span>New user?</span>
+		<a href="javascript:void(0);" id="button-account-register" style="color: #a04bae;">Create an Account</a>
+	</div>
+</div>
+
+<!-- Register form will be loaded inside this -->
+<div id="register_container">
+	{{register}}
+	<div class="text-center mt-3">
+		<span>Already have an account?
+		</span>
+		<a href="javascript:void(0);" id="button-account-login" style="color: #a04bae;">Login</a>
+	</div>
+</div>
+
+<script>
+
+	$('#register_container').hide();
+// Handle Login
+$(document).on('click', '#button-login', function () {
+$.ajax({
+url: 'index.php?route=checkout/login/save',
+type: 'post',
+data: {
+email: $('#input-email').val(),
+password: $('#input-password').val()
+},
+dataType: 'json',
+beforeSend: function () {
+$('#button-login').prop('disabled', true).val('Loading...');
+},
+complete: function () {
+$('#button-login').prop('disabled', false).val('Login');
+},
+success: function (json) {
+$('.alert-dismissible, .text-danger').remove();
+$('.form-group').removeClass('has-error');
+
+if (json.redirect) {
+location = json.redirect;
+} else if (json.error) {
+$('#button-login').before('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json.error.warning + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+$('#input-email, #input-password').closest('.form-group').addClass('has-error');
+}
+},
+error: function () {
+alert('Something went wrong during login.');
+}
+});
+});
+
+// Handle "Create an Account" click
+$(document).on('click', '#button-account-register', function () {
+$('input[name="account"][value="register"]').prop('checked', true);
+// If radio exists
+
+// Hide login box
+$('#login-box').hide();
+
+// Redirect to the register page added at 06-05-2025
+    window.location.href = 'https://www.ipshopy.com/index.php?route=account/register'; 
+// ----------------=============================----------------
+
+// Show and load register form
+// $('#register_container').show();
+});
+$(document).on('click', '#button-account-login', function () {
+$('input[name="account"][value="register"]').prop('checked', true);
+// If radio exists
+// Hide login box
+$('#login-box').show();
+
+// Show and load register form
+$('#register_container').hide();
+});
+
+// $.ajax({
+// url: 'index.php?route=checkout/register',
+// dataType: 'html',
+// success: function (html) {
+// $('#collapse-payment-address .panel-body').html(html);
+// $('html, body').animate({
+// scrollTop: $('#collapse-payment-address').offset().top - 100
+// }, 500);
+// setTimeout(() => {
+// $('#collapse-payment-address select[name="country_id"]').trigger('change');
+// }, 300);
+// $('#button-account-register').text('Create an Account');
+// },
+// error: function () {
+// alert('Failed to load registration form.');
+// }
+// });
+</script>

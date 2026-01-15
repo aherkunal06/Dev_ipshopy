@@ -1,0 +1,40 @@
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/customer/common/large_banners.css" />
+
+
+<div class="large_banners2">
+    <div class="swiper-container2">
+        <div class="swiper-wrapper">
+            {% for banner in large_banners %}
+                <div class="swiper-slide">
+                    <a href="{{ banner.link }}">
+                        <img src="{{ banner.src }}" alt="{{ banner.title }}">
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+ 
+        {#<div class="swiper-button-next"></div>#}
+        {#<div class="swiper-button-prev"></div>#}
+    </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+<script>
+const swiper2 = new Swiper('.large_banners2 .swiper-container2', {
+    loop: true,
+    slidesPerView: 1,
+    speed: 800, 
+    autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+    },
+    navigation: {
+        nextEl: '.large_banners .swiper-button-next',
+        prevEl: '.large_banners .swiper-button-prev',
+    }
+});
+</script>

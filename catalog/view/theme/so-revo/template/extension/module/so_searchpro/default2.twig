@@ -1,0 +1,2685 @@
+
+<script src="catalog/view/theme/so-revo/js/visualsearch.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+  <link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="catalog/view/theme/so-revo/css/visualsearch.css?v=1.0.0">
+  
+
+  <div id="sosearchpro" class="sosearchpro-wrapper {{ additional_class }}">
+    {% if disp_title_module %}
+      <h3>{{ head_name }}</h3>
+    {% endif %}
+
+    <form method="GET" action="index.php">
+      <div id="search{{ module }}" class="search input-group form-group" style="display: flex;">
+        {% if categories %}
+        <div class="select_category filter_type icon-select">
+          <select class="no-border" name="category_id" style='width:fit-content'>
+            <option value="0">{{ text_category_all }}</option>
+            {% for category in categories %}
+              {% if category.category_id == category_id %}
+                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+              {% else %}
+                <option value="{{ category.category_id }}">{{ category.name }}</option>
+              {% endif %}
+              {% for category_lv2 in category.children %}
+                {% if category_lv2.category_id == category_id %}
+                  <option value="{{ category_lv2.category_id }}" selected="selected">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_lv2.name }}</option>
+                {% else %}
+                  <option value="{{ category_lv2.category_id }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_lv2.name }}</option>
+                {% endif %}
+                {% for category_lv3 in category_lv2.children %}
+                  {% if category_lv3.category_id == category_id %}
+                    <option value="{{ category_lv3.category_id }}" selected="selected">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_lv3.name }}</option>
+                  {% else %}
+                    <option value="{{ category_lv3.category_id }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_lv3.name }}</option>
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+
+        <input class="autosearch-input form-control" type="text" value="" size="50" autocomplete="off" placeholder="search" name="search" style="">
+
+        <button type="button" class="btn btn-primary search-camera" id='visualSearch_button' style="margin-left: 10px;">
+          <i class="fa fa-camera"></i>
+        </button>
+
+        <button type="submit" class="button-search btn btn-default btn-lg" name="submit_search">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>         
+
+      {% if show_keyword %}
+      <div class="text-keyword hidden-sm hidden-md hidden-xs">
+        <span class="title-key"><b>{{ str_keyword }} :</b></span>
+        <span class="item-key">
+          {% set dem = 0 %}
+          {% for item in list_products %}
+            {% set dem = dem + 1 %}
+            <a href="{{ item.href }}" target="_blank" title="{{ item.nameFull }}">{{ item.name_maxlength }}</a>
+            {% if dem < list_products|length %} | {% endif %}
+          {% endfor %}
+        </span>
+      </div>
+      {% endif %}
+
+      <input type="hidden" name="route" value="product/search"/>
+    </form>
+  </div>
+
+  <!-- Visual Search Modal -->
+  <div class="modal fade" id="visualSearchModal" tabindex="-1" role="dialog" aria-labelledby="visualSearchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" id='sample_modal_close'><i class="fa fa-times" aria-hidden="true"></i>
+</button>
+        </div>
+        <div class="modal-body">
+          <h5 class="modal-title" id="visualSearchModalLabel">{{ text_visual_search|default('Try Visual Search') }}</h5>
+          <p class="modal-subtitle">{{ text_search_with_image|default('Search with a picture instead of text') }}</p>
+
+          <form id="visual-search-form" method="post" enctype="multipart/form-data">
+            <div class="interaction-box">
+              <i class="fas fa-info-circle info-icon" title="Drag and drop images here to search"></i>
+              <div class="drop-zone-prompt">
+                <i class="fa fa-cloud-upload-alt mr:1px"></i>
+                <span>
+                  Drag one or more images here or 
+                  <span class="browse-text" onclick="document.getElementById('fileInput').click()">browse</span>
+                </span>
+                <input type="file" id="fileInput" name="file" style="display: none;" accept="image/">
+              </div>
+
+              <div class="divider">OR</div>
+
+              <div class="action-buttons">
+                 
+              <div id="take-photo-container">
+    <button type="button" id="take-photo-btn" class="btn" style="width: 315px;">
+      <i class="fa fa-camera"></i> Take photo
+    </button>
+  </div>
+
+              </div>
+            </div>
+
+            <input type="hidden" name="image_base64" id="image-base64" />
+
+            <video id="video" class="video-feed" style="display: none;" autoplay></video>
+            <canvas id="canvas" class="canvas-feed" style="display: none;"></canvas>
+            <canvas id="capture-canvas" width="640" height="480" style="display: none;"></canvas>
+
+            <p class="sample-images-title">Click a sample image to try it</p>
+
+            <div class="sample-images">
+              <div class="row" style="margin-bottom: 15px;">
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample9.jpg" class="img-responsive sample-img" alt="Sample 1" data-url="catalog/view/theme/so-revo/images/bg/sample9.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample10.jpg" class="img-responsive sample-img" alt="Sample 2" data-url="catalog/view/theme/so-revo/images/bg/sample10.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample11.jpg" class="img-responsive sample-img" alt="Sample 3" data-url="catalog/view/theme/so-revo/images/bg/sample11.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample12.jpg" class="img-responsive sample-img" alt="Sample 4" data-url="catalog/view/theme/so-revo/images/bg/sample12.jpg">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample13.jpg" class="img-responsive sample-img" alt="Sample 5" data-url="catalog/view/theme/so-revo/images/bg/sample13.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample14.jpg" class="img-responsive sample-img" alt="Sample 6" data-url="catalog/view/theme/so-revo/images/bg/sample14.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample15.jpg" class="img-responsive sample-img" alt="Sample 7" data-url="catalog/view/theme/so-revo/images/bg/sample15.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample16.jpg" class="img-responsive sample-img" alt="Sample 8" data-url="catalog/view/theme/so-revo/images/bg/sample16.jpg">
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="learn-more-link">
+            <a href="#">{{ text_learn_more|default('Learn more') }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript">
+  // Use jQuery and Bootstrap 3.3.5 modal methods
+  $(document).ready(function() {
+    // Visual search button click handler
+    $('#visualSearch_button').on('click', function() {
+      $('#visualSearchModal').modal('show');
+    });
+    
+    // Close button click handler
+    $('#sample_modal_close').on('click', function() {
+      $('#visualSearchModal').modal('hide');
+    });
+  });
+  
+  if (typeof jQuery == 'undefined') {
+    document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>');
+  }
+
+  (function($) {
+    $.fn.Soautocomplete = function(option) {
+      return this.each(function() {
+        this.timer = null;
+        this.items = new Array();
+
+        $.extend(this, option);
+
+        $(this).attr('autocomplete', 'off');
+
+        $(this).on('focus', function() {
+          this.request();
+        });
+
+        $(this).on('blur', function() {
+          setTimeout(function(object) {
+            object.hide();
+          }, 200, this);
+        });
+
+        $(this).on('keydown', function(event) {
+          switch(event.keyCode) {
+            case 27:
+              this.hide();
+              break;
+            default:
+              this.request();
+              break;
+          }
+        });
+
+        this.click = function(event) {
+          event.preventDefault();
+          value = $(event.target).parent().attr('data-value');
+          if (value && this.items[value]) {
+            this.select(this.items[value]);
+          }
+        }
+
+        this.show = function() {
+          var pos = $(this).position();
+          $(this).siblings('ul.dropdown-menu').css({
+            top: pos.top + $(this).outerHeight(),
+            left: pos.left
+          });
+          $(this).siblings('ul.dropdown-menu').show();
+        }
+
+        this.hide = function() {
+          $(this).siblings('ul.dropdown-menu').hide();
+        }
+
+        this.request = function() {
+          clearTimeout(this.timer);
+          this.timer = setTimeout(function(object) {
+            object.source($(object).val(), $.proxy(object.response, object));
+          }, 200, this);
+        }
+
+        this.response = function(json) {
+          html = '';
+          if (json.length) {
+            for (i = 0; i < json.length; i++) {
+              this.items[json[i]['value']] = json[i];
+            }
+
+            for (i = 0; i < json.length; i++) {
+              if (!json[i]['category']) {
+                html += '<li class="media" data-value="' + json[i]['value'] + '" title="' + json[i]['label'] + '">';
+                if(json[i]['image'] && json[i]['show_image'] && json[i]['show_image'] == 1 ) {
+                  html += '	<a class="media-left" href="' + json[i]['link'] + '"><img class="pull-left" src="' + json[i]['image'] + '"></a>';
+                }
+
+                html += '<div class="media-body">';
+                html += '<a href="' + json[i]['link'] + '" title="' + json[i]['label'] + '"><span>' +json[i]['cate_name'] + json[i]['label'] + '</span></a>';
+                if(json[i]['price'] && json[i]['show_price'] && json[i]['show_price'] == 1){
+                  html += '	<div class="box-price">';
+                  if (!json[i]['special']) {
+                    html += '<span class="price">'+json[i]['price']+'</span>';
+                  } else {
+                    html += '</span><span class="price-new">' + json[i]['special'] + '</span>'+'<span class="price-old" style="text-decoration:line-through;">' + json[i]['price']  ;
+                  }
+                  html += '	</div>';
+                }
+                html += '</div></li>';
+                html += '<li class="clearfix"></li>';
+              }
+            }
+
+            var category = new Array();
+            for (i = 0; i < json.length; i++) {
+              if (json[i]['category']) {
+                if (!category[json[i]['category']]) {
+                  category[json[i]['category']] = new Array();
+                  category[json[i]['category']]['name'] = json[i]['category'];
+                  category[json[i]['category']]['item'] = new Array();
+                }
+                category[json[i]['category']]['item'].push(json[i]);
+              }
+            }
+
+            for (i in category) {
+              html += '<li class="dropdown-header">' + category[i]['name'] + '</li>';
+              for (j = 0; j < category[i]['item'].length; j++) {
+                html += '<li data-value="' + category[i]['item'][j]['value'] + '"><a href="#">   ' + category[i]['item'][j]['label'] + '</a></li>';
+              }
+            }
+          }
+
+          if (html) {
+            this.show();
+          } else {
+            this.hide();
+          }
+
+          $(this).siblings('ul.dropdown-menu').html(html);
+        }
+
+        $(this).after('<ul class="dropdown-menu"></ul>');
+      });
+    }
+  })(window.jQuery);
+
+    // Function to handle sample image clicks
+    function setupSampleImageClicks() {
+      const sampleImages = document.querySelectorAll('.sample-img');
+      
+      sampleImages.forEach(img => {
+        img.addEventListener('click', function() {
+          // Get the image URL from data attribute
+          const imageUrl = this.getAttribute('data-url');
+          if (imageUrl) {
+            // Show loading overlays with engaging messages
+            showFullPageLoading('Processing sample image...');
+            
+            // Submit the image URL for processing
+            submitFormWithUrl(imageUrl);
+          }
+        });
+      });
+    }
+    
+    $(document).ready(function() {
+      // Setup sample image click handlers
+      setupSampleImageClicks();
+    var selector = '#search{{ module }}';
+    var total = 0;
+    var showimage = {{ showimage|default(0) }};
+    var showprice = {{ showprice|default(0) }};
+    var character = {{ character|default(3) }};
+    var height = {{ height|default(50) }};
+    var width = {{ width|default(50) }};
+
+    $(selector).find('input[name=\'search\']').Soautocomplete({
+      delay: 500,
+      source: function(request, response) {
+        var category_id = $(".select_category select[name=\"category_id\"]").first().val();
+        if(typeof(category_id) == 'undefined')
+          category_id = 0;
+        var limit = {{ limit|default(10) }};
+        if(request.length >= character){
+          $.ajax({
+            url: 'index.php?route=extension/module/so_searchpro/autocomplete&filter_category_id='+category_id+'&limit='+limit+'&width='+width+'&height='+height+'&filter_name='+encodeURIComponent(request),
+            dataType: 'json',
+            success: function(json) {
+              response($.map(json, function(item) {
+                total = 0;
+                if(item.total){
+                  total = item.total;
+                }
+
+                return {
+                  price:   item.price,
+                  special: item.special,
+                  tax:     item.tax,
+                  label:   item.name,
+                  cate_name:   (item.category_name) ? item.category_name + ' > ' : '',
+                  image:   item.image,
+                  link:    item.link,
+                  minimum:    item.minimum,
+                  show_price:  showprice,
+                  show_image:  showimage,
+                  value:   item.product_id,
+                }
+              }));
+            }
+          });
+        }
+      },
+    });
+
+    const dropZone = document.querySelector(".drop-zone-prompt");
+    const fileInput = document.getElementById('fileInput');
+
+    if (dropZone && fileInput) {
+      // Ensure the dropzone is properly initialized
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.add("drop-zone--over");
+      });
+
+      ["dragleave", "dragend"].forEach((type) => {
+        dropZone.addEventListener(type, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.remove("drop-zone--over");
+        });
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove("drop-zone--over");
+        
+        if (e.dataTransfer.files.length) {
+          fileInput.files = e.dataTransfer.files;
+          console.log("Files dropped:", fileInput.files);
+          // Show the bubble loader with engaging messages
+          showFullPageLoading('Processing your dropped image...');
+          submitForm();
+        }
+      });
+
+      // Make the entire drop zone clickable to open file browser
+      dropZone.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener("change", () => {
+        if (fileInput.files.length) {
+          console.log("Files selected:", fileInput.files);
+          // Show the bubble loader with engaging messages
+          showFullPageLoading('Processing your image... Please wait');
+          submitForm();
+        }
+      });
+    }
+
+    $("#paste-image-btn").on("click", () => {
+      const container = document.getElementById('paste-url-container');
+      container.innerHTML = '';
+
+      const inputGroup = document.createElement('div');
+      inputGroup.className = 'url-input-container';
+
+      const urlInput = document.createElement('input');
+      urlInput.type = 'text';
+      urlInput.id = 'image-url-input';
+      urlInput.name = 'image_url';
+      urlInput.className = 'form-control';
+      urlInput.placeholder = 'Paste image URL';
+      urlInput.autofocus = true;
+
+      const submitButton = document.createElement('button');
+      submitButton.type = 'button';
+      submitButton.className = 'submit-url-btn';
+      submitButton.innerHTML = '<i class="fa fa-search"></i>';
+
+      inputGroup.appendChild(urlInput);
+      inputGroup.appendChild(submitButton);
+      container.appendChild(inputGroup);
+
+      urlInput.focus();
+
+      try {
+        navigator.clipboard.readText().then(function(text) {
+          urlInput.value = text;
+        }).catch(function(err) {
+
+        });
+      } catch (err) {
+
+      }
+
+      submitButton.addEventListener('click', () => {
+        const url = urlInput.value.trim();
+        if (url) {
+          // Show the bubble loader with engaging messages
+          showFullPageLoading('Processing image from URL...');
+          submitFormWithUrl(url);
+        } else {
+          alert('Please enter a valid URL.');
+        }
+      });
+
+      urlInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const url = urlInput.value.trim();
+          if (url) {
+            // Show the bubble loader with engaging messages
+            showFullPageLoading('Processing image from URL...');
+            submitFormWithUrl(url);
+          } else {
+            alert('Please enter a valid URL.');
+          }
+        }
+      });
+    });
+
+    // Bing-style camera implementation
+    $("#take-photo-btn").on("click", async () => {
+      try {
+        // Hide the modal first using Bootstrap 3.3.5 method
+        $("#visualSearchModal").modal('hide');
+
+        // Create Bing-style camera overlay
+        const cameraOverlay = document.createElement('div');
+        cameraOverlay.className = 'bing-camera-overlay';
+        cameraOverlay.innerHTML = `
+          <div class="bing-camera-container">
+            <div class="bing-camera-header">
+              <div class="bing-camera-title">Take a photo</div>
+              <button class="bing-camera-close">&times;</button>
+            </div>
+            <div class="bing-camera-video-container">
+              <video class="bing-camera-video" id="bing-camera-video" autoplay playsinline></video>
+              <div class="bing-camera-instruction">Drag one</div>
+              <div class="bing-camera-controls">
+                <div class="bing-capture-button"></div>
+              </div>
+              <div class="bing-side-controls">
+                <button class="bing-control-btn" id="bing-flash-btn">
+                  <i class="fa fa-bolt"></i>
+                </button>
+                <button class="bing-control-btn" id="bing-switch-btn">
+                  <i class="fa fa-sync-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(cameraOverlay);
+
+        // Get camera elements
+        const cameraVideo = document.getElementById('bing-camera-video');
+        const captureBtn = document.querySelector('.bing-capture-button');
+        const closeBtn = document.querySelector('.bing-camera-close');
+        const switchBtn = document.getElementById('bing-switch-btn');
+        const flashBtn = document.getElementById('bing-flash-btn');
+        const canvas = document.getElementById('canvas');
+
+        // Camera setup
+        let currentFacingMode = 'environment';
+        let stream = null;
+        let flashEnabled = false;
+
+        // Function to start camera
+        async function startCamera(facingMode) {
+          try {
+            if (stream) {
+              stream.getTracks().forEach(track => track.stop());
+            }
+            
+            // First check if we have camera permissions
+            stream = await navigator.mediaDevices.getUserMedia({ 
+              video: { 
+                facingMode: facingMode,
+                width: { ideal: 640 },
+                height: { ideal: 480 }
+              } 
+            });
+            
+            cameraVideo.srcObject = stream;
+            
+            // Wait for video to be ready
+            await new Promise(resolve => {
+              cameraVideo.onloadedmetadata = () => {
+                resolve();
+              };
+            });
+            
+            // Show the camera is active visually
+            cameraVideo.style.transform = facingMode === 'user' ? 'scaleX(-1)' : 'none';
+            
+            // Make sure both canvas elements have correct dimensions
+            const captureCanvas = document.getElementById('capture-canvas');
+            captureCanvas.width = cameraVideo.videoWidth;
+            captureCanvas.height = cameraVideo.videoHeight;
+            
+            // Also set the other canvas for compatibility
+            if (canvas) {
+              canvas.width = cameraVideo.videoWidth;
+              canvas.height = cameraVideo.videoHeight;
+            }
+            
+
+            return true;
+          } catch (err) {
+            console.error('Error starting camera:', err);
+            alert('Unable to access camera. Please allow camera access and try again.');
+            return false;
+          }
+        }
+
+        // Start camera
+        await startCamera(currentFacingMode);
+
+        // Switch camera
+        switchBtn.addEventListener('click', async () => {
+          currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+          await startCamera(currentFacingMode);
+        });
+
+        // Flash toggle
+        flashBtn.addEventListener('click', () => {
+          flashEnabled = !flashEnabled;
+          flashBtn.style.color = flashEnabled ? '#ffd700' : 'white';
+        });
+
+        // Capture photo
+        captureBtn.addEventListener('click', async () => {
+          // Disable capture button
+          captureBtn.style.pointerEvents = 'none';
+          captureBtn.style.opacity = '0.6';
+          
+          // Flash effect if enabled
+          if (flashEnabled) {
+            cameraOverlay.style.background = 'rgba(255, 255, 255, 0.8)';
+            setTimeout(() => {
+              cameraOverlay.style.background = 'rgba(0, 0, 0, 0.7)';
+            }, 150);
+          }
+          
+          try {
+            // Get capture canvas and draw the image
+            const captureCanvas = document.getElementById('capture-canvas');
+            captureCanvas.width = cameraVideo.videoWidth;
+            captureCanvas.height = cameraVideo.videoHeight;
+            const ctx = captureCanvas.getContext('2d');
+            ctx.drawImage(cameraVideo, 0, 0, captureCanvas.width, captureCanvas.height);
+            
+            // Convert to base64 image data
+            const imageData = captureCanvas.toDataURL('image/jpeg', 0.9);
+            document.getElementById('image-base64').value = imageData;
+            
+            // Create a file from the base64 data
+            const dataURLtoBlob = (dataurl) => {
+              const arr = dataurl.split(',');
+              const mime = arr[0].match(/:(.*?);/)[1];
+              const bstr = atob(arr[1]);
+              let n = bstr.length;
+              const u8arr = new Uint8Array(n);
+              while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+              }
+              return new Blob([u8arr], { type: mime });
+            };
+            
+            // Create a File object from the blob
+            const blob = dataURLtoBlob(imageData);
+            const file = new File([blob], 'camera_capture.jpg', { type: 'image/jpeg' });
+            
+            // Create a new FileList-like object and assign it to the file input
+            try {
+              // Modern browsers support DataTransfer API
+              const dataTransfer = new DataTransfer();
+              dataTransfer.items.add(file);
+              document.getElementById('fileInput').files = dataTransfer.files;
+            } catch (err) {
+              // Fallback for browsers that don't support DataTransfer
+              // Store the base64 data and directly submit the form without updating the file input
+            }
+            
+            // Show the unified loading animation
+            showFullPageLoading('Processing your camera image... Please wait');
+          } catch (err) {
+            console.error('Error capturing image:', err);
+          }
+          
+          // Stop camera
+          if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+          }
+          
+          // Remove camera overlay
+          setTimeout(() => {
+            cameraOverlay.remove();
+            submitForm();
+          }, 500);
+        });
+
+        // Close camera
+        closeBtn.addEventListener('click', () => {
+          if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+          }
+          cameraOverlay.remove();
+          
+          // Reopen modal using Bootstrap 3.3.5 method
+          $("#visualSearchModal").modal('show');
+        });
+
+        // Close on overlay click
+        cameraOverlay.addEventListener('click', (e) => {
+          if (e.target === cameraOverlay) {
+            if (stream) {
+              stream.getTracks().forEach(track => track.stop());
+            }
+            cameraOverlay.remove();
+          }
+        });
+
+      } catch (err) {
+        console.error('Error accessing camera:', err);
+        alert('Unable to access camera. Please allow camera access.');
+      }
+    });
+
+    $(".sample-img").on("click", function() {
+      const imgSrc = $(this).attr("data-url");
+      submitFormWithUrl(imgSrc);
+    });
+
+    function submitForm() {
+      const form = document.getElementById('visual-search-form');
+      const formData = new FormData(form);
+
+      // Full page loading is already shown before this function is called
+      // No need to show it again here
+      
+      $.ajax({
+        url: 'https://www.ipshopy.com/api/search_by_image',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        timeout: 20000, // 20 seconds timeout
+        success: function(response) {
+          hideFullPageLoading();
+          
+          // Hide modal using Bootstrap 3.3.5 method
+          $('#visualSearchModal').modal('hide');
+          
+          // Short delay to ensure the loading overlay is seen
+          setTimeout(() => {
+            redirectToSearchResults(response);
+          }, 500);
+        },
+        error: function(xhr, status, error) {
+          hideFullPageLoading();
+          
+          let errorMessage = 'An error occurred while processing the image.';
+          if (xhr.responseJSON && xhr.responseJSON.error) {
+            errorMessage = xhr.responseJSON.error;
+          } else if (xhr.responseText) {
+            errorMessage = xhr.responseText;
+          } else if (status === 'timeout') {
+            errorMessage = 'The request timed out. Server might be busy. Please try again.';
+          }
+          
+          alert(errorMessage);
+        }
+      });
+    }
+
+    function submitFormWithUrl(url) {
+      // Show a full page loading overlay immediately
+      showFullPageLoading('Processing your image... Please wait');
+      
+      const isImageUrl = /\.(jpeg|jpg|gif|png|webp|bmp|svg)$/i.test(url);
+      
+      if (isImageUrl) {
+        // Set a timeout for the fetch operation
+        const fetchTimeout = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Fetch timeout - URL took too long to respond')), 10000);
+        });
+        
+        // Race between fetch and timeout
+        Promise.race([
+          fetch(url),
+          fetchTimeout
+        ])
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Failed to fetch image (HTTP ${response.status})`);
+          }
+          return response.blob();
+        })
+        .then(blob => {
+          const formData = new FormData();
+          formData.append('file', blob, 'image_from_url.jpg');
+          
+          $.ajax({
+            url: 'https://www.ipshopy.com/api/search_by_image',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            timeout: 20000, // 20 seconds timeout
+            success: function(response) {
+              hideFullPageLoading();
+              
+              // Hide modal using Bootstrap 3.3.5 method
+              $('#visualSearchModal').modal('hide');
+              
+              // Short delay to ensure the loading overlay is seen
+              setTimeout(() => {
+                redirectToSearchResults(response);
+              }, 500);
+            },
+            error: function(xhr, status, error) {
+              hideFullPageLoading();
+              
+              let errorMessage = 'An error occurred while processing the image.';
+              if (xhr.responseJSON && xhr.responseJSON.error) {
+                errorMessage = xhr.responseJSON.error;
+              } else if (xhr.responseText) {
+                errorMessage = xhr.responseText;
+              } else if (status === 'timeout') {
+                errorMessage = 'The request timed out. Server might be busy. Please try again.';
+              }
+              alert(errorMessage);
+            }
+          });
+        })
+        .catch(err => {
+          hideFullPageLoading();
+          alert('Failed to load image from URL: ' + err.message);
+        });
+      } else {
+        hideFullPageLoading();
+        window.location.href = `index.php?route=product/visual_search&search=${encodeURIComponent(url)}`;
+      }
+    }
+
+    function redirectToSearchResults(response) {
+      try {
+        if (response.success && response.session_id) {
+          // Show full-screen loading before redirect
+          const loadingOverlay = document.createElement('div');
+          loadingOverlay.className = 'full-page-loading';
+          loadingOverlay.style.opacity = '1'; // Make immediately visible
+          loadingOverlay.innerHTML = `
+            <div class="loading-container">
+              <div class="bubble-loader">
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+              </div>
+              <div class="loading-text">Loading visual search results...</div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 50%"></div>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(loadingOverlay);
+          
+          // Create the search parameters
+          const searchParams = new URLSearchParams(window.location.search);
+          searchParams.set('route', 'product/visual_search');
+          searchParams.set('session_id', response.session_id);
+          searchParams.set('result_count', response.result_count || 0);
+          
+          if (!searchParams.has('search')) {
+            searchParams.set('search', 'visual');
+          }
+          if (!searchParams.has('category_id')) {
+            searchParams.set('category_id', '0');
+          }
+          if (!searchParams.has('submit_search')) {
+            searchParams.set('submit_search', '');
+          }
+          // Add fromRefPage parameter if it exists in the response
+          if (response.fromRefPage) {
+            searchParams.set('fromRefPage', response.fromRefPage);
+          }
+
+          const redirectUrl = 'index.php?' + searchParams.toString();
+          
+          // Add a small delay to ensure the loading overlay is visible
+          setTimeout(() => {
+            window.location.href = redirectUrl;
+          }, 300);
+        } else {
+          alert("Failed to process search results. Please try again.");
+        }
+      } catch (err) {
+        alert("Failed to redirect to search results: " + err.message);
+      }
+    }
+
+    function showModalLoading() {
+      const modalBody = document.querySelector('#visualSearchModal .modal-body');
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'modal-loading';
+      loadingDiv.innerHTML = `
+        <div class="bubble-loader">
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+        </div>
+        <div class="loading-text" id="modal-loading-message">Analyzing your image...</div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="modal-progress-bar"></div>
+        </div>
+      `;
+      modalBody.appendChild(loadingDiv);
+      
+      // Set up sequence of messages
+      const loadingMessages = [
+        "Analyzing your image...",
+        "Looking for similar products...",
+        "Matching colors and patterns...",
+        "Finding best matches...",
+        "Almost done! Preparing results...",
+        "Sorting by relevance..."
+      ];
+      
+      let messageIndex = 0;
+      let progress = 0;
+      
+      // Update loading message and progress bar
+      const messageElement = document.getElementById('modal-loading-message');
+      const progressBar = document.getElementById('modal-progress-bar');
+      
+      const updateMessage = setInterval(() => {
+        messageIndex = (messageIndex + 1) % loadingMessages.length;
+        if (messageElement) {
+          messageElement.textContent = loadingMessages[messageIndex];
+          
+          // Update progress
+          progress += (100 - progress) * 0.2;
+          if (progressBar) {
+            progressBar.style.width = Math.min(progress, 95) + '%';
+          }
+        }
+      }, 2000);
+      
+      // Store the interval ID
+      loadingDiv.dataset.intervalId = updateMessage;
+      
+      // Set a timeout to hide the loading after a maximum wait time
+      // This prevents the loading spinner from showing indefinitely
+      window.loadingTimeout = setTimeout(() => {
+        hideModalLoading();
+      }, 15000); // 15 seconds max loading time
+    }
+
+    function hideModalLoading() {
+      // Clear the loading timeout if it exists
+      if (window.loadingTimeout) {
+        clearTimeout(window.loadingTimeout);
+        window.loadingTimeout = null;
+      }
+      
+      const loadingDiv = document.querySelector('.modal-loading');
+      if (loadingDiv) {
+        // Clear the message update interval
+        if (loadingDiv.dataset.intervalId) {
+          clearInterval(parseInt(loadingDiv.dataset.intervalId));
+        }
+        
+        // Set progress to 100% before hiding
+        const progressBar = document.getElementById('modal-progress-bar');
+        if (progressBar) {
+          progressBar.style.width = '100%';
+        }
+        
+        // Update message to completion
+        const messageElement = document.getElementById('modal-loading-message');
+        if (messageElement) {
+          messageElement.textContent = "Search complete!";
+        }
+        
+        // Add fade-out effect after showing completion
+        setTimeout(() => {
+          loadingDiv.style.opacity = '0';
+          setTimeout(() => {
+            if (loadingDiv.parentNode) {
+              loadingDiv.remove();
+            }
+          }, 300);
+        }, 500);
+      }
+    }
+    
+    function showFullPageLoading(initialMessage) {
+      // Remove any existing loading overlay
+      const existingOverlay = document.querySelector('.full-page-loading');
+      if (existingOverlay) {
+        existingOverlay.remove();
+      }
+      
+      // Create the full page loading overlay
+      const loadingOverlay = document.createElement('div');
+      loadingOverlay.className = 'full-page-loading';
+      loadingOverlay.style.opacity = '0';
+      loadingOverlay.style.backgroundColor = '#ffffff'; // Add white background
+      loadingOverlay.innerHTML = `
+        <div class="loading-container">
+          <div class="bubble-loader">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+          </div>
+          <div class="loading-text" id="full-page-loading-message">${initialMessage || 'Analyzing your image...'}</div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" id="full-page-progress-bar"></div>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(loadingOverlay);
+      
+      // Force a reflow to enable the transition
+      loadingOverlay.offsetHeight;
+      
+      // Fade in the overlay
+      loadingOverlay.style.opacity = '1';
+      
+      // Set up sequence of messages
+      const loadingMessages = [
+        initialMessage || "Analyzing your image...",
+        "Looking for similar products...",
+        "Matching colors and patterns...",
+        "Finding best matches...",
+        "Almost done! Preparing results...",
+        "Sorting by relevance..."
+      ];
+      
+      let messageIndex = 0;
+      let progress = 0;
+      
+      // Update loading message and progress bar
+      const messageElement = document.getElementById('full-page-loading-message');
+      const progressBar = document.getElementById('full-page-progress-bar');
+      
+      const updateMessage = setInterval(() => {
+        messageIndex = (messageIndex + 1) % loadingMessages.length;
+        if (messageElement) {
+          messageElement.textContent = loadingMessages[messageIndex];
+          
+          // Update progress
+          progress += (100 - progress) * 0.2;
+          if (progressBar) {
+            progressBar.style.width = Math.min(progress, 95) + '%';
+          }
+        }
+      }, 2000);
+      
+      // Store the interval ID
+      loadingOverlay.dataset.intervalId = updateMessage;
+      
+      // Set a timeout to hide the loading after a maximum wait time
+      window.fullPageLoadingTimeout = setTimeout(() => {
+        hideFullPageLoading();
+      }, 30000); // 30 seconds max loading time
+      
+      return loadingOverlay;
+    }
+    
+    function hideFullPageLoading() {
+      // Clear the timeout if it exists
+      if (window.fullPageLoadingTimeout) {
+        clearTimeout(window.fullPageLoadingTimeout);
+        window.fullPageLoadingTimeout = null;
+      }
+      
+      const loadingOverlay = document.querySelector('.full-page-loading');
+      if (loadingOverlay) {
+        // Clear the message update interval
+        if (loadingOverlay.dataset.intervalId) {
+          clearInterval(parseInt(loadingOverlay.dataset.intervalId));
+        }
+        
+        // Set progress to 100% before hiding
+        const progressBar = document.getElementById('full-page-progress-bar');
+        if (progressBar) {
+          progressBar.style.width = '100%';
+        }
+        
+        // Update message to completion
+        const messageElement = document.getElementById('full-page-loading-message');
+        if (messageElement) {
+          messageElement.textContent = "Search complete!";
+        }
+        
+        // Fade out after showing completion
+        setTimeout(() => {
+          // Fade out effect
+          loadingOverlay.style.opacity = '0';
+          
+          // Remove after animation completes
+          setTimeout(() => {
+            if (loadingOverlay.parentNode) {
+              loadingOverlay.remove();
+            }
+          }, 300);
+        }, 500);
+      }
+    }
+
+    // Disable browser's automatic scroll restoration
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    
+    // Force scroll to top on page load/refresh
+    window.onload = function() {
+      window.scrollTo(0, 0);
+    };
+    
+    // Also force scroll to top immediately
+    window.scrollTo(0, 0);
+    
+    // Function to show skeleton loaders
+    function showSkeletonLoaders() {
+      const skeletonLoader = document.getElementById('skeleton-loader');
+      const imageSkeletonLoader = document.getElementById('image-skeleton');
+      const resultsContainer = document.getElementById('results-container');
+      
+      // Show skeleton loaders
+      if (skeletonLoader) {
+        skeletonLoader.style.display = 'block';
+        
+        // Add message element if it doesn't exist
+        if (!document.getElementById('skeleton-message')) {
+          const messageElement = document.createElement('div');
+          messageElement.id = 'skeleton-message';
+          messageElement.className = 'skeleton-message';
+          messageElement.textContent = 'Finding products that match your image...';
+          skeletonLoader.appendChild(messageElement);
+          
+          // Add progress bar
+          const progressBarContainer = document.createElement('div');
+          progressBarContainer.className = 'progress-bar-container';
+          progressBarContainer.innerHTML = '<div class="progress-bar" id="skeleton-progress-bar"></div>';
+          skeletonLoader.appendChild(progressBarContainer);
+          
+          // Add CSS for skeleton message if not exists
+          if (!document.getElementById('skeleton-message-style')) {
+            const style = document.createElement('style');
+            style.id = 'skeleton-message-style';
+            style.textContent = `
+              .skeleton-message {
+                color: #1a73e8;
+                font-size: 16px;
+                font-weight: 500;
+                text-align: center;
+                margin-top: 20px;
+                min-height: 24px;
+              }
+            `;
+            document.head.appendChild(style);
+          }
+          
+          // Set up sequence of messages
+          const loadingMessages = [
+            "Finding products that match your image...",
+            "Analyzing colors and patterns...",
+            "Searching for similar items...",
+            "Almost there! Preparing your results...",
+            "Finding the best matches for you..."
+          ];
+          
+          let messageIndex = 0;
+          let progress = 0;
+          
+          // Update loading message and progress bar
+          const progressBar = document.getElementById('skeleton-progress-bar');
+          
+          const updateMessage = setInterval(() => {
+            messageIndex = (messageIndex + 1) % loadingMessages.length;
+            messageElement.textContent = loadingMessages[messageIndex];
+            
+            // Update progress
+            progress += (100 - progress) * 0.2;
+            if (progressBar) {
+              progressBar.style.width = Math.min(progress, 95) + '%';
+            }
+          }, 2000);
+          
+          // Store the interval ID
+          skeletonLoader.dataset.intervalId = updateMessage;
+        }
+      }
+      
+      if (imageSkeletonLoader) imageSkeletonLoader.style.display = 'block';
+      
+      // Hide results container while loading
+      if (resultsContainer) resultsContainer.style.display = 'none';
+      
+      return true;
+    }
+    
+    // Handle page refresh and scrolling
+    window.addEventListener('beforeunload', function() {
+      // Save a flag in sessionStorage to indicate page is refreshing
+      sessionStorage.setItem('isRefreshing', 'true');
+    });
+    
+    // Add scroll event listener to show skeleton on scroll-triggered refresh
+    window.addEventListener('scroll', function() {
+      // Only set flag if we're on a search page
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('route') === 'product/search') {
+        sessionStorage.setItem('isScrolling', 'true');
+      }
+    });
+    
+    (function checkAndDisplayVisualSearchResults() {
+      // Force scroll to top on initial execution
+      setTimeout(function() {
+        window.scrollTo(0, 0);
+      }, 0);
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const route = urlParams.get('route');
+      const sessionId = urlParams.get('session_id');
+      
+      // Check if page is being refreshed or was scrolling
+      const isRefreshing = sessionStorage.getItem('isRefreshing') === 'true';
+      const wasScrolling = sessionStorage.getItem('isScrolling') === 'true';
+      
+      // Clear the flags
+      sessionStorage.removeItem('isRefreshing');
+      sessionStorage.removeItem('isScrolling');
+      
+      // Force scroll to top again after a very short delay
+      if (route === 'product/search') {
+        for (let i = 0; i < 5; i++) {
+          setTimeout(function() {
+            window.scrollTo(0, 0);
+          }, i * 50); // Try multiple times with increasing delays
+        }
+      }
+      
+      // Always show skeleton loaders on initial load, refresh, or after scrolling
+      if (route === 'product/search') {
+        showSkeletonLoaders();
+      }
+      
+      // Set a timeout to hide skeleton loader if results take too long
+      let skeletonTimeout = setTimeout(() => {
+        const skeletonLoader = document.getElementById('skeleton-loader');
+        const imageSkeletonLoader = document.getElementById('image-skeleton');
+        const resultsContainer = document.getElementById('results-container');
+        
+        // Clear the message update interval if it exists
+        if (skeletonLoader && skeletonLoader.dataset.intervalId) {
+          clearInterval(parseInt(skeletonLoader.dataset.intervalId));
+        }
+        
+        if ((skeletonLoader && skeletonLoader.style.display !== 'none') || 
+            (imageSkeletonLoader && imageSkeletonLoader.style.display !== 'none')) {
+          if (skeletonLoader) skeletonLoader.style.display = 'none';
+          if (imageSkeletonLoader) imageSkeletonLoader.style.display = 'none';
+          
+          if (resultsContainer) {
+            resultsContainer.style.display = 'grid';
+            resultsContainer.innerHTML = '<p>Results are taking longer than expected. Please try again.</p>';
+          }
+        }
+      }, 10000); // 10 seconds max waiting time
+
+      if (route === 'product/search' && sessionId) {
+        try {
+          let contentArea = document.getElementById('content');
+          if (!contentArea) {
+            contentArea = document.querySelector('.container');
+          }
+          if (!contentArea) {
+            contentArea = document.querySelector('#product-search');
+          }
+          if (!contentArea) {
+            contentArea = document.querySelector('main');
+          }
+          if (!contentArea) {
+            alert("Failed to display visual search results: Content area not found.");
+            return;
+          }
+
+          let visualSearchContainer = document.createElement('div');
+          visualSearchContainer.className = 'visual-search-results';
+          visualSearchContainer.id = 'visual-search-results';
+          visualSearchContainer.innerHTML = `
+            <div class="visual-search-container">
+              <div class="visual-search-left" id="uploaded-image-container">
+                <h3>Your Image</h3>
+                <div id="image-skeleton" class="skeleton-uploaded-image"></div>
+              </div>
+              
+              <div class="visual-search-right">
+                <h3>Similar Products</h3>
+                <div class="skeleton-loader" id="skeleton-loader">
+                  <div class="skeleton-grid">
+                    <div class="skeleton-item">
+                      <div class="skeleton-image"></div>
+                      <div class="skeleton-text"></div>
+                      <div class="skeleton-text short"></div>
+                    </div>
+                    <div class="skeleton-item">
+                      <div class="skeleton-image"></div>
+                      <div class="skeleton-text"></div>
+                      <div class="skeleton-text short"></div>
+                    </div>
+                    <div class="skeleton-item">
+                      <div class="skeleton-image"></div>
+                      <div class="skeleton-text"></div>
+                      <div class="skeleton-text short"></div>
+                    </div>
+                    <div class="skeleton-item">
+                      <div class="skeleton-image"></div>
+                      <div class="skeleton-text"></div>
+                      <div class="skeleton-text short"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="similar-products-grid" id="results-container" style="display: none;"></div>
+              </div>
+            </div>
+          `;
+
+          contentArea.insertBefore(visualSearchContainer, contentArea.firstChild);
+          
+          setTimeout(() => {
+            setupImageHotspots();
+            setupCustomCropSelection();
+          }, 500);
+          
+
+          const apiServer = 'https://www.ipshopy.com/api/';
+
+          
+          const fetchUrl = `${apiServer}/get_search_results/${sessionId}`;
+
+          
+          fetch(fetchUrl, {
+            method: 'GET',
+            credentials: 'omit',
+            headers: {
+              'Accept': 'application/json'
+            },
+            timeout: 10000
+          })
+            .then(response => {
+
+              if (!response.ok) {
+                return response.text().then(text => {
+                  console.error('Error response:', text);
+                  throw new Error(`Server returned ${response.status}: ${text}`);
+                });
+              }
+              return response.json();
+            })
+            .then(data => {
+              const results = data.results || [];
+              const uploadedImageUrl = data.uploaded_image_url || '';
+              const message = data.message || (results.length === 0 ? 'No similar products found.' : '');
+              
+              // Clear the skeleton timeout since results loaded successfully
+              if (window.skeletonTimeout) {
+                clearTimeout(window.skeletonTimeout);
+                window.skeletonTimeout = null;
+              }
+              
+              const skeletonLoader = document.getElementById('skeleton-loader');
+              const imageSkeletonLoader = document.getElementById('image-skeleton');
+              const resultsContainer = document.getElementById('results-container');
+              
+              // Clear the message update interval if it exists
+              if (skeletonLoader && skeletonLoader.dataset.intervalId) {
+                clearInterval(parseInt(skeletonLoader.dataset.intervalId));
+                
+                // Show completion message before hiding
+                const messageElement = document.getElementById('skeleton-message');
+                if (messageElement) {
+                  messageElement.textContent = "Search complete! Showing results...";
+                }
+                
+                // Set progress bar to 100%
+                const progressBar = document.getElementById('skeleton-progress-bar');
+                if (progressBar) {
+                  progressBar.style.width = '100%';
+                }
+                
+                // Short delay before hiding
+                setTimeout(() => {
+                  // Hide both skeleton loaders
+                  if (skeletonLoader) skeletonLoader.style.display = 'none';
+                  if (imageSkeletonLoader) imageSkeletonLoader.style.display = 'none';
+                  
+                  // Show results container
+                  if (resultsContainer) resultsContainer.style.display = 'grid';
+                }, 500);
+              } else {
+                // Hide both skeleton loaders immediately if no interval
+                if (skeletonLoader) skeletonLoader.style.display = 'none';
+                if (imageSkeletonLoader) imageSkeletonLoader.style.display = 'none';
+                
+                // Show results container
+                if (resultsContainer) resultsContainer.style.display = 'grid';
+              }
+
+              const uploadedImageContainer = document.getElementById('uploaded-image-container');
+              if (uploadedImageUrl) {
+                uploadedImageContainer.innerHTML += `
+                  <div class="uploaded-image-container">
+                    <div class="image-wrapper" id="image-wrapper">
+                      <img src="${uploadedImageUrl}" alt="Uploaded Image" class="uploaded-image" id="uploaded-search-image" onerror="this.src='image/placeholder.png'; this.alt='Image failed to load';" />
+                    </div>
+                    <div class="image-controls">
+                      <span class="control-label">Translate</span>
+                      <span class="control-label">Text</span>
+                    </div>
+                  </div>
+                `;
+              }
+
+              if (results && results.length > 0) {
+                // Store all results for pagination
+                window.allSearchResults = results;
+                
+                // Set items per page to 20
+                const itemsPerPage = 20;
+                
+                // Start with page 1
+                const currentPage = 1;
+                
+                // Calculate total pages
+                const totalPages = Math.ceil(results.length / itemsPerPage);
+                
+                // Get results for the first page
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = Math.min(startIndex + itemsPerPage, results.length);
+                const pageResults = results.slice(startIndex, endIndex);
+                
+                let productsHTML = '';
+                
+                // Generate HTML for the current page results
+                pageResults.forEach(result => {
+                  const productUrl = result.product_id ? 
+                    `index.php?route=product/product&product_id=${result.product_id}` : 
+                    (result.url || '#');
+                  
+                  const mrpPrice = result.mrp_price ? parseFloat(result.mrp_price).toFixed(2) : '';
+                  const specialPrice = result.special_price ? parseFloat(result.special_price).toFixed(2) : '';
+                  
+                  const productName = result.product_name ? result.product_name : (result.filename || 'Product');
+                  
+                  // Limit product name to 25 characters with ellipsis if longer
+                  const truncatedName = productName.length > 25 ? productName.substring(0, 25) + '...' : productName;
+                  
+                  // Calculate discount percentage if not provided but we have both prices
+                  const discountPercentage = result.discount_percentage || 
+                    (specialPrice && mrpPrice ? Math.round((mrpPrice - specialPrice) / mrpPrice * 100) : null);
+                  
+                  productsHTML += `
+                    <div class="product-card">
+                      ${discountPercentage ? `<div class="discount-badge">-${discountPercentage}%</div>` : ''}
+                      <div class="product-image-container">
+                        <a href="${productUrl}">
+                          <img src="${result.image_url || result.image}" alt="${productName}" class="product-image">
+                        </a>
+                      </div>
+                      <div class="product-details">
+                        <h4 class="product-name">${truncatedName}</h4>
+                        <div class="price-container">
+                          ${specialPrice ? 
+                            `<span class="product-price">₹${specialPrice}</span>
+                             <span class="product-mrp">₹${mrpPrice}</span>` 
+                            : 
+                            `<span class="product-price">${mrpPrice ? `₹${mrpPrice}` : ''}</span>`
+                          }
+                        </div>
+                      </div>
+                      
+                      <div class="hover-actions">
+                        ${result.product_id ? `<button class="add-to-cart-btn" data-product-id="${result.product_id}"><i class="fa fa-shopping-cart"></i></button>` : ''}
+                        <div class="action-icon wishlist"><i class="fa fa-heart-o"></i></div>
+                        <div class="action-icon compare"><i class="fa fa-exchange"></i></div>
+                      </div>
+                    </div>
+                  `;
+                });
+                
+                // Add pagination if there are multiple pages
+                if (totalPages > 1) {
+                  productsHTML += generatePaginationHTML(currentPage, totalPages);
+                }
+                
+                resultsContainer.innerHTML = productsHTML;
+                
+                // Setup pagination event listeners
+                if (totalPages > 1) {
+                  setupPaginationListeners(results, itemsPerPage);
+                }
+              } else {
+                resultsContainer.innerHTML = `<p>${message}</p>`;
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching search results:', error);
+              // Hide both skeleton loaders
+              const skeletonLoader = document.getElementById('skeleton-loader');
+              const imageSkeletonLoader = document.getElementById('image-skeleton');
+              const resultsContainer = document.getElementById('results-container');
+              
+              if (skeletonLoader) skeletonLoader.style.display = 'none';
+              if (imageSkeletonLoader) imageSkeletonLoader.style.display = 'none';
+              
+              if (resultsContainer) {
+                resultsContainer.style.display = 'block';
+                resultsContainer.innerHTML = `<p>Error loading search results: ${error.message}</p>`;
+              }
+            });
+        } catch (err) {
+          alert("Failed to display visual search results: " + err.message);
+        }
+      }
+    })();
+    
+    function setupEventListeners() {
+      setupVisualSearchModal();
+      setupPhotoCapturing();
+      setupDragAndDrop();
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      setupEventListeners();
+    });
+    
+    function setupImageHotspots() {
+      const imageWrapper = document.getElementById('image-wrapper');
+      const uploadedImage = document.getElementById('uploaded-search-image');
+      
+      if (!imageWrapper || !uploadedImage) {
+
+        return;
+      }
+      
+      document.querySelectorAll('.image-hotspot, .image-selection-outline, .hotspot-tooltip').forEach(el => el.remove());
+      
+      const hotspotPositions = [
+        { left: 35, top: 45, width: 30, height: 30 },
+        { left: 65, top: 45, width: 30, height: 30 },
+      ];
+      
+      const positionHotspots = function() {
+        const imgRect = uploadedImage.getBoundingClientRect();
+        const wrapperRect = imageWrapper.getBoundingClientRect();
+        
+        const offsetX = (wrapperRect.width - imgRect.width) / 2;
+        const offsetY = (wrapperRect.height - imgRect.height) / 2;
+        
+        hotspotPositions.forEach((pos, index) => {
+          const hotspot = document.createElement('div');
+          hotspot.className = 'image-hotspot';
+          hotspot.dataset.index = index;
+          
+          const dotLeft = offsetX + (imgRect.width * pos.left / 100);
+          const dotTop = offsetY + (imgRect.height * pos.top / 100);
+          
+          hotspot.style.left = dotLeft + 'px';
+          hotspot.style.top = dotTop + 'px';
+          
+          const outline = document.createElement('div');
+          outline.className = 'image-selection-outline';
+          outline.dataset.index = index;
+          
+          const outlineWidth = imgRect.width * pos.width / 100;
+          const outlineHeight = imgRect.height * pos.height / 100;
+          outline.style.width = outlineWidth + 'px';
+          outline.style.height = outlineHeight + 'px';
+          outline.style.left = (dotLeft - outlineWidth/2) + 'px';
+          outline.style.top = (dotTop - outlineHeight/2) + 'px';
+          
+          const corners = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+          corners.forEach(position => {
+            const corner = document.createElement('div');
+            corner.className = `crop-corner ${position}`;
+            outline.appendChild(corner);
+          });
+          
+          const tooltip = document.createElement('div');
+          tooltip.className = 'hotspot-tooltip';
+          tooltip.textContent = 'Click to search within the image';
+          tooltip.style.left = dotLeft + 'px';
+          tooltip.style.top = dotTop + 'px';
+          
+          hotspot.addEventListener('mouseenter', function() {
+            tooltip.style.opacity = '1';
+            outline.style.opacity = '0.8';
+          });
+          
+          hotspot.addEventListener('mouseleave', function() {
+            if (!hotspot.classList.contains('active')) {
+              tooltip.style.opacity = '0';
+              outline.style.opacity = '0';
+            }
+          });
+          
+          hotspot.addEventListener('click', function() {
+            document.querySelectorAll('.image-hotspot').forEach(d => {
+              d.classList.remove('active');
+            });
+            document.querySelectorAll('.image-selection-outline').forEach(o => {
+              o.classList.remove('active');
+            });
+            document.querySelectorAll('.hotspot-tooltip').forEach(t => {
+              t.style.opacity = '0';
+            });
+            
+            this.classList.add('active');
+            outline.classList.add('active');
+            
+            searchImageRegion(index);
+          });
+          
+          imageWrapper.appendChild(outline);
+          imageWrapper.appendChild(hotspot);
+          imageWrapper.appendChild(tooltip);
+        });
+      };
+      
+      if (uploadedImage.complete) {
+        positionHotspots();
+      } else {
+        uploadedImage.onload = positionHotspots;
+      }
+      
+      window.addEventListener('resize', positionHotspots);
+    }
+    
+    function setupCustomCropSelection() {
+      const imageWrapper = document.getElementById('image-wrapper');
+      const uploadedImage = document.getElementById('uploaded-search-image');
+      
+      if (!imageWrapper || !uploadedImage) return;
+      
+      let isSelecting = false;
+      let startX, startY;
+      let selectionElement = null;
+      let cornerElements = [];
+      
+      function createCorners(parent) {
+        cornerElements.forEach(corner => corner.remove());
+        cornerElements = [];
+        
+        const positions = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+        positions.forEach(position => {
+          const corner = document.createElement('div');
+          corner.className = `crop-corner ${position}`;
+          parent.appendChild(corner);
+          cornerElements.push(corner);
+        });
+      }
+      
+      imageWrapper.addEventListener('mousedown', function(e) {
+        const imgRect = uploadedImage.getBoundingClientRect();
+        const wrapperRect = imageWrapper.getBoundingClientRect();
+        
+        const offsetX = e.clientX - wrapperRect.left;
+        const offsetY = e.clientY - wrapperRect.top;
+        
+        const imageLeft = (wrapperRect.width - imgRect.width) / 2;
+        const imageTop = (wrapperRect.height - imgRect.height) / 2;
+        const imageRight = imageLeft + imgRect.width;
+        const imageBottom = imageTop + imgRect.height;
+        
+        if (offsetX >= imageLeft && offsetX <= imageRight && 
+            offsetY >= imageTop && offsetY <= imageBottom) {
+          const existingSelections = document.querySelectorAll('.custom-selection-area');
+          existingSelections.forEach(el => el.remove());
+          
+          document.querySelectorAll('.image-hotspot').forEach(d => {
+            d.classList.remove('active');
+          });
+          document.querySelectorAll('.image-selection-outline').forEach(o => {
+            o.classList.remove('active');
+          });
+          
+          isSelecting = true;
+          startX = offsetX;
+          startY = offsetY;
+          
+          selectionElement = document.createElement('div');
+          selectionElement.className = 'custom-selection-area';
+          selectionElement.style.left = startX + 'px';
+          selectionElement.style.top = startY + 'px';
+          selectionElement.style.width = '0';
+          selectionElement.style.height = '0';
+          imageWrapper.appendChild(selectionElement);
+          
+          createCorners(selectionElement);
+          
+          e.preventDefault();
+        }
+      });
+      
+      document.addEventListener('mousemove', function(e) {
+        if (!isSelecting || !selectionElement) return;
+        
+        const wrapperRect = imageWrapper.getBoundingClientRect();
+        const currentX = e.clientX - wrapperRect.left;
+        const currentY = e.clientY - wrapperRect.top;
+        
+        const width = Math.abs(currentX - startX);
+        const height = Math.abs(currentY - startY);
+        
+        const left = Math.min(startX, currentX);
+        const top = Math.min(startY, currentY);
+        
+        selectionElement.style.width = width + 'px';
+        selectionElement.style.height = height + 'px';
+        selectionElement.style.left = left + 'px';
+        selectionElement.style.top = top + 'px';
+        
+        e.preventDefault();
+      });
+      
+      document.addEventListener('mouseup', function(e) {
+        if (isSelecting && selectionElement) {
+          isSelecting = false;
+          
+          const width = parseInt(selectionElement.style.width);
+          const height = parseInt(selectionElement.style.height);
+          
+          if (width < 20 || height < 20) {
+            selectionElement.remove();
+            return;
+          }
+          
+          const imgRect = uploadedImage.getBoundingClientRect();
+          const wrapperRect = imageWrapper.getBoundingClientRect();
+          
+          const imageLeft = (wrapperRect.width - imgRect.width) / 2;
+          const imageTop = (wrapperRect.height - imgRect.height) / 2;
+          
+          const selLeft = parseInt(selectionElement.style.left) - imageLeft;
+          const selTop = parseInt(selectionElement.style.top) - imageTop;
+          const selRight = selLeft + width;
+          const selBottom = selTop + height;
+          
+          const relativeCoords = {
+            left: (selLeft / imgRect.width * 100).toFixed(2),
+            top: (selTop / imgRect.height * 100).toFixed(2),
+            right: (selRight / imgRect.width * 100).toFixed(2),
+            bottom: (selBottom / imgRect.height * 100).toFixed(2),
+            width: (width / imgRect.width * 100).toFixed(2),
+            height: (height / imgRect.height * 100).toFixed(2)
+          };
+          
+
+          
+          const instruction = document.createElement('div');
+          instruction.className = 'selection-instruction';
+          instruction.textContent = 'Click to search within the image';
+          instruction.style.left = (parseInt(selectionElement.style.left) + width/2 - 100) + 'px';
+          instruction.style.top = (parseInt(selectionElement.style.top) - 40) + 'px';
+          imageWrapper.appendChild(instruction);
+          
+          selectionElement.style.pointerEvents = 'auto';
+          selectionElement.style.cursor = 'pointer';
+          
+          selectionElement.addEventListener('click', function() {
+            instruction.remove();
+            searchCustomImageRegion(relativeCoords);
+          });
+          
+          imageWrapper.addEventListener('click', function clickHandler(e) {
+            if (!e.target.classList.contains('image-hotspot')) {
+              instruction.remove();
+              searchCustomImageRegion(relativeCoords);
+              imageWrapper.removeEventListener('click', clickHandler);
+            }
+          }, { once: true });
+        }
+      });
+    }
+    
+    function searchImageRegion(regionIndex) {
+
+      updateResultsDisplay();
+    }
+    
+    function searchCustomImageRegion(coords) {
+
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionId = urlParams.get('session_id');
+      
+      if (!sessionId) {
+        console.error('No session ID found for crop search');
+        return;
+      }
+      
+      const resultsContainer = document.getElementById('results-container');
+      if (resultsContainer) {
+        resultsContainer.style.opacity = '0.6';
+      }
+      
+      const apiServer = 'https://www.ipshopy.com/api/';
+      const searchUrl = `${apiServer}/search_region/${sessionId}`;
+      
+      fetch(searchUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          crop_coordinates: coords
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+
+        
+        if (data.results && data.results.length > 0) {
+          updateResultsWithNewData(data.results);
+        } else {
+          updateResultsDisplay('custom');
+        }
+      })
+      .catch(error => {
+        console.error('Error searching region:', error);
+        updateResultsDisplay('custom');
+      });
+    }
+    
+    function updateResultsDisplay(type = 'hotspot') {
+      const resultsContainer = document.getElementById('results-container');
+      if (!resultsContainer) return;
+      
+      resultsContainer.style.opacity = '0.6';
+      
+      setTimeout(() => {
+        const productCards = resultsContainer.querySelectorAll('.product-card');
+        if (productCards.length > 0) {
+          const productsArray = Array.from(productCards);
+          
+          for (let i = productsArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [productsArray[i].style.order, productsArray[j].style.order] = 
+            [productsArray[j].style.order, productsArray[i].style.order];
+            
+            productsArray[i].style.opacity = (0.7 + Math.random() * 0.3).toFixed(2);
+          }
+          
+          const highlightColor = type === 'custom' ? 
+            'rgba(0, 174, 239, 0.6)' : 'rgba(0, 174, 239, 0.6)';
+          
+          for (let i = 0; i < Math.min(3, productsArray.length); i++) {
+            productsArray[i].style.boxShadow = `0 0 15px ${highlightColor}`;
+            setTimeout(() => {
+              productsArray[i].style.boxShadow = '';
+            }, 1500);
+          }
+        }
+        
+        resultsContainer.style.opacity = '1';
+      }, 700);
+    }
+    
+    function updateResultsWithNewData(results) {
+      const resultsContainer = document.getElementById('results-container');
+      if (!resultsContainer) return;
+      
+      const itemsPerPage = 20;
+      const totalPages = Math.ceil(results.length / itemsPerPage);
+      const currentPage = 1;
+      
+      let productsHTML = '';
+      
+      results.forEach(result => {
+        const productUrl = result.product_id ? 
+          `index.php?route=product/product&product_id=${result.product_id}` : 
+          (result.url || '#');
+        
+        const mrpPrice = result.mrp_price ? parseFloat(result.mrp_price).toFixed(2) : '';
+        const specialPrice = result.special_price ? parseFloat(result.special_price).toFixed(2) : '';
+        
+        const productName = result.product_name ? result.product_name : (result.filename || 'Product');
+        
+        productsHTML += `
+          <div class="product-card">
+            ${result.discount_percentage ? 
+              `<div class="discount-badge">-${result.discount_percentage}%</div>` : ''}
+            <div class="product-image-container">
+              <a href="${productUrl}">
+                <img src="${result.image_url || result.image}" alt="${productName}" class="product-image">
+              </a>
+            </div>
+            <div class="product-details">
+              <h4 class="product-name">${productName}</h4>
+              <div class="price-container">
+                ${specialPrice ? 
+                  `<span class="product-price">₹${specialPrice}</span>
+                  <span class="product-mrp">₹${mrpPrice}</span>` 
+                  : 
+                  `<span class="product-price">${mrpPrice ? `₹${mrpPrice}` : ''}</span>`}
+              </div>
+            </div>
+            <div class="hover-actions">
+              ${result.product_id ? `<button class="add-to-cart-btn" data-product-id="${result.product_id}"><i class="fa fa-shopping-cart"></i></button>` : ''}
+              <div class="action-icon wishlist"><i class="fa fa-heart-o"></i></div>
+              <div class="action-icon compare"><i class="fa fa-exchange"></i></div>
+            </div>
+          </div>
+        `;
+      });
+      
+      resultsContainer.style.opacity = '0.3';
+      
+      if (totalPages > 1) {
+        productsHTML += generatePaginationHTML(currentPage, totalPages);
+      }
+      
+      setTimeout(() => {
+        resultsContainer.innerHTML = productsHTML;
+        
+        const newProducts = resultsContainer.querySelectorAll('.product-card');
+        newProducts.forEach(product => {
+          product.style.boxShadow = '0 0 15px rgba(0, 174, 239, 0.6)';
+          setTimeout(() => {
+            product.style.boxShadow = '';
+          }, 1500);
+        });
+        
+        setupPaginationListeners(results, itemsPerPage);
+        
+        resultsContainer.style.opacity = '1';
+      }, 400);
+    }
+    
+    function generatePaginationHTML(currentPage, totalPages) {
+      let paginationHTML = `
+        <div class="pagination-container">
+          <div class="pagination">
+      `;
+      
+      // Previous page arrow
+      if (currentPage > 1) {
+        paginationHTML += `<a href="#" class="page-link" data-page="${currentPage - 1}">&laquo;</a>`;
+      } else {
+        paginationHTML += `<a href="#" class="page-link" style="visibility: hidden;">&laquo;</a>`;
+      }
+      
+      // First page
+      paginationHTML += `<a href="#" class="page-link ${currentPage === 1 ? 'active' : ''}" data-page="1">1</a>`;
+      
+      // Page numbers
+      const maxVisiblePages = 5; // Show 5 page numbers at a time
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(totalPages - 1, startPage + 2);
+      
+      // Adjust start page if we're near the end
+      if (endPage - startPage < 2 && startPage > 2) {
+        startPage = Math.max(2, endPage - 2);
+      }
+      
+      // Add ellipsis if needed before middle pages
+      if (startPage > 2) {
+        paginationHTML += `<span class="page-ellipsis">...</span>`;
+      }
+      
+      // Generate middle page links
+      for (let i = startPage; i <= endPage; i++) {
+        paginationHTML += `<a href="#" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
+      }
+      
+      // Add ellipsis if needed after middle pages
+      if (endPage < totalPages - 1) {
+        paginationHTML += `<span class="page-ellipsis">...</span>`;
+      }
+      
+      // Last page (if not already included)
+      if (totalPages > 1) {
+        paginationHTML += `<a href="#" class="page-link ${currentPage === totalPages ? 'active' : ''}" data-page="${totalPages}">${totalPages}</a>`;
+      }
+      
+      // Next page arrow
+      if (currentPage < totalPages) {
+        paginationHTML += `<a href="#" class="page-link" data-page="${currentPage + 1}">&raquo;</a>`;
+      } else {
+        paginationHTML += `<a href="#" class="page-link" style="visibility: hidden;">&raquo;</a>`;
+      }
+      
+      paginationHTML += `
+          </div>
+          <div class="pagination-info">Showing ${(currentPage-1)*20+1} to ${Math.min(currentPage * 20, window.allSearchResults.length)} of ${window.allSearchResults.length} items</div>
+        </div>
+      `;
+      
+      return paginationHTML;
+    }
+    
+    function setupPaginationListeners(allResults, itemsPerPage) {
+      const pageLinks = document.querySelectorAll('.page-link');
+      pageLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const page = parseInt(this.dataset.page);
+          updatePageContent(allResults, page, itemsPerPage);
+        });
+      });
+    }
+    
+    function updatePageContent(allResults, page, itemsPerPage) {
+      const resultsContainer = document.getElementById('results-container');
+      if (!resultsContainer) return;
+      
+      const startIndex = (page - 1) * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, allResults.length);
+      const pageResults = allResults.slice(startIndex, endIndex);
+      
+      // Fade out the container before updating
+      resultsContainer.style.opacity = '0.5';
+      
+      let productsHTML = '';
+      pageResults.forEach(result => {
+        const productUrl = result.product_id ? 
+          `index.php?route=product/product&product_id=${result.product_id}` : 
+          (result.url || '#');
+        
+        const mrpPrice = result.mrp_price ? parseFloat(result.mrp_price).toFixed(2) : '';
+        const specialPrice = result.special_price ? parseFloat(result.special_price).toFixed(2) : '';
+        
+        const productName = result.product_name ? result.product_name : (result.filename || 'Product');
+        
+        productsHTML += `
+          <div class="product-card">
+            ${result.discount_percentage ? 
+              `<div class="discount-badge">-${result.discount_percentage}%</div>` : ''}
+            <div class="product-image-container">
+              <a href="${productUrl}">
+                <img src="${result.image_url || result.image}" alt="${productName}" class="product-image">
+              </a>
+            </div>
+            <div class="product-details">
+              <h4 class="product-name">${productName}</h4>
+              <div class="price-container">
+                ${specialPrice ? 
+                  `<span class="product-price">₹${specialPrice}</span>
+                  <span class="product-mrp">₹${mrpPrice}</span>` 
+                  : 
+                  `<span class="product-price">${mrpPrice ? `₹${mrpPrice}` : ''}</span>`}
+              </div>
+            </div>
+            <div class="hover-actions">
+              ${result.product_id ? `<button class="add-to-cart-btn" data-product-id="${result.product_id}"><i class="fa fa-shopping-cart"></i></button>` : ''}
+              <div class="action-icon wishlist"><i class="fa fa-heart-o"></i></div>
+              <div class="action-icon compare"><i class="fa fa-exchange"></i></div>
+            </div>
+          </div>
+        `;
+      });
+      
+      const totalPages = Math.ceil(allResults.length / itemsPerPage);
+      if (totalPages > 1) {
+        productsHTML += generatePaginationHTML(page, totalPages);
+      }
+      
+      resultsContainer.innerHTML = productsHTML;
+      
+      // Setup pagination event listeners
+      setupPaginationListeners(allResults, itemsPerPage);
+      
+      // Fade in the container after updating
+      setTimeout(() => {
+        resultsContainer.style.opacity = '1';
+        
+        // Ensure hover effects work after page change
+        document.querySelectorAll('.product-card').forEach(card => {
+          card.addEventListener('mouseenter', function() {
+            this.querySelector('.hover-actions').style.display = 'flex';
+          });
+          
+          card.addEventListener('mouseleave', function() {
+            this.querySelector('.hover-actions').style.display = 'none';
+          });
+        });
+      }, 300);
+      
+      resultsContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  // Drag and Drop functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const interactionBox = document.querySelector('.interaction-box');
+    const fileInput = document.getElementById('fileInput');
+    
+    if (!interactionBox || !fileInput) return;
+    
+    // Setup file input change event
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        handleFiles(this.files);
+      }
+    });
+    
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      interactionBox.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    // Highlight drop area when item is dragged over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+      interactionBox.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      interactionBox.addEventListener(eventName, unhighlight, false);
+    });
+    
+    // Handle dropped files
+    interactionBox.addEventListener('drop', handleDrop, false);
+    
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    function highlight() {
+      interactionBox.classList.add('drag-over');
+    }
+    
+    function unhighlight() {
+      interactionBox.classList.remove('drag-over');
+    }
+    
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      
+      if (files.length) {
+        handleFiles(files);
+      } else if (dt.items) {
+        // Handle drag from browser
+        for (let i = 0; i < dt.items.length; i++) {
+          if (dt.items[i].kind === 'file') {
+            const file = dt.items[i].getAsFile();
+            if (file) {
+              const fileArray = [file];
+              handleFiles(fileArray);
+              break;
+            }
+          } else if (dt.items[i].kind === 'string' && dt.items[i].type.match('^text/uri-list')) {
+            // Handle image URLs
+            dt.items[i].getAsString(url => {
+              if (url && isValidImageUrl(url)) {
+                fetchImageFromUrl(url);
+              }
+            });
+            break;
+          }
+        }
+      }
+    }
+    
+    function handleFiles(files) {
+      if (files.length) {
+        const file = files[0]; // Use first file only
+        if (!file.type.match('image.*')) {
+          alert('Please drop an image file.');
+          return;
+        }
+        
+        // Show the unified loading animation
+        showFullPageLoading('Processing your image...');
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imageBase64 = e.target.result;
+          document.getElementById('image-base64').value = imageBase64;
+          
+          // Submit the form or process the image
+          processUploadedImage(imageBase64);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    
+    function isValidImageUrl(url) {
+      return url.match(/\.(jpeg|jpg|gif|png|webp|bmp)$/i) !== null;
+    }
+    
+    function fetchImageFromUrl(url) {
+      // Show the unified loading animation
+      showFullPageLoading('Fetching image from URL...');
+      
+      fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.onloadend = function() {
+            document.getElementById('image-base64').value = reader.result;
+            processUploadedImage(reader.result);
+          };
+          reader.readAsDataURL(blob);
+        })
+        .catch(error => {
+          console.error('Error fetching image:', error);
+          hideFullPageLoading();
+          alert('Could not load the image. Please try another URL or upload directly.');
+        });
+    }
+    
+    function showLoadingIndicator() {
+      // Create and show loading indicator
+      let loadingContainer = document.getElementById('loading-indicator');
+      
+      if (!loadingContainer) {
+        loadingContainer = document.createElement('div');
+        loadingContainer.id = 'loading-indicator';
+        loadingContainer.className = 'loading-container';
+        loadingContainer.innerHTML = `
+          <div class="loading-animation">
+            <div class="loading-dots">
+              <div class="dot dot-blue"></div>
+              <div class="dot dot-red"></div>
+              <div class="dot dot-yellow"></div>
+            </div>
+            <div class="loading-text" id="loading-message">Analyzing your image...</div>
+          </div>
+        `;
+        
+        // Add the loading styles if they don't exist
+        if (!document.getElementById('loading-styles')) {
+          const style = document.createElement('style');
+          style.id = 'loading-styles';
+          style.textContent = `
+            .loading-container {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(255, 255, 255, 0.9);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              z-index: 9999;
+            }
+            
+            .loading-animation {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 15px;
+            }
+            
+            .loading-dots {
+              display: flex;
+              gap: 8px;
+            }
+            
+            .dot {
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              animation: bounce 1.4s infinite ease-in-out both;
+            }
+            
+            .dot-blue {
+              background-color: #4285F4;
+              animation-delay: -0.32s;
+            }
+            
+            .dot-red {
+              background-color: #EA4335;
+              animation-delay: -0.16s;
+            }
+            
+            .dot-yellow {
+              background-color: #FBBC05;
+              animation-delay: 0s;
+            }
+            
+            .loading-text {
+              color: #1a73e8;
+              font-size: 16px;
+              font-weight: 500;
+              text-align: center;
+              min-height: 48px;
+            }
+            
+            @keyframes bounce {
+              0%, 80%, 100% { transform: scale(0.4); }
+              40% { transform: scale(1.0); }
+            }
+
+            .progress-bar-container {
+              width: 250px;
+              height: 6px;
+              background-color: #e0e0e0;
+              border-radius: 3px;
+              margin-top: 15px;
+              overflow: hidden;
+            }
+            
+            .progress-bar {
+              height: 100%;
+              background-color: #4285F4;
+              width: 0%;
+              border-radius: 3px;
+              transition: width 0.5s ease;
+            }
+          `;
+          document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(loadingContainer);
+
+        // Add progress bar
+        const loadingAnimation = loadingContainer.querySelector('.loading-animation');
+        const progressBarContainer = document.createElement('div');
+        progressBarContainer.className = 'progress-bar-container';
+        progressBarContainer.innerHTML = '<div class="progress-bar" id="loading-progress-bar"></div>';
+        loadingAnimation.appendChild(progressBarContainer);
+
+        // Set up sequence of messages
+        const loadingMessages = [
+          "Analyzing your image...",
+          "Looking for similar products...",
+          "Matching colors and patterns...",
+          "Finding best matches...",
+          "Almost done! Preparing results...",
+          "Loading Visual Search Result..."
+        ];
+        
+        let messageIndex = 0;
+        let progress = 0;
+        
+        // Update loading message and progress bar
+        const messageElement = document.getElementById('loading-message');
+        const progressBar = document.getElementById('loading-progress-bar');
+        
+        const updateMessage = setInterval(() => {
+          messageIndex = (messageIndex + 1) % loadingMessages.length;
+          if (messageElement) {
+            messageElement.textContent = loadingMessages[messageIndex];
+            
+            // Update progress
+            progress += (100 - progress) * 0.2;
+            if (progressBar) {
+              progressBar.style.width = Math.min(progress, 95) + '%';
+            }
+          }
+        }, 2000);
+        
+        // Store the interval ID so we can clear it later
+        loadingContainer.dataset.intervalId = updateMessage;
+        
+      } else {
+        loadingContainer.style.display = 'flex';
+        
+        // Reset progress bar
+        const progressBar = document.getElementById('loading-progress-bar');
+        if (progressBar) {
+          progressBar.style.width = '0%';
+        }
+        
+        // Restart message sequence
+        const messageElement = document.getElementById('loading-message');
+        if (messageElement) {
+          messageElement.textContent = "Analyzing your image...";
+        }
+      }
+      
+      // Hide the modal while loading using Bootstrap 3.3.5 method
+      $('#visualSearchModal').modal('hide');
+    }
+    
+    function hideLoadingIndicator() {
+      const loadingContainer = document.getElementById('loading-indicator');
+      if (loadingContainer) {
+        // Clear the message update interval
+        if (loadingContainer.dataset.intervalId) {
+          clearInterval(parseInt(loadingContainer.dataset.intervalId));
+        }
+        
+        // Set progress to 100% before hiding
+        const progressBar = document.getElementById('loading-progress-bar');
+        if (progressBar) {
+          progressBar.style.width = '100%';
+        }
+        
+        // Update message to completion
+        const messageElement = document.getElementById('loading-message');
+        if (messageElement) {
+          messageElement.textContent = "Search complete!";
+        }
+        
+        // Fade out and hide after a short delay
+        setTimeout(() => {
+          loadingContainer.style.opacity = '0';
+          setTimeout(() => {
+            loadingContainer.style.display = 'none';
+          }, 300);
+        }, 500);
+      }
+    }
+    
+    function processUploadedImage(imageData) {
+      // Show unified loading animation  
+      showFullPageLoading('Processing your image... Please wait');
+      
+      // Convert base64 to blob
+      const byteString = atob(imageData.split(',')[1]);
+      const mimeString = imageData.split(',')[0].split(':')[1].split(';')[0];
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      
+      const blob = new Blob([ab], {type: mimeString});
+      const formData = new FormData();
+      formData.append('file', blob, 'dropped_image.jpg');
+      
+      // Step 1: Upload image and get session ID
+      fetch('https://www.ipshopy.com/api/search_by_image', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(data => {
+            throw new Error(data.error || 'Error processing image');
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Check if the response contains a session_id for fetching results
+        if (!data.success || !data.session_id) {
+          throw new Error('Invalid response from server');
+        }
+      
+        const sessionId = data.session_id;
+        const uploadedImageUrl = data.uploaded_image_url;
+        
+        // Store these values for later use
+        window.visualSearchSessionId = sessionId;
+        
+        // Step 2: Fetch the actual search results using session ID
+        return fetch(`https://www.ipshopy.com/api/get_search_results/${sessionId}`)
+          .then(response => {
+            if (!response.ok) {
+              return response.json().then(errorData => {
+                throw new Error(errorData.error || 'Error fetching search results');
+              });
+            }
+            return response.json().then(resultsData => {
+              // Add the uploaded image URL and session ID to the results
+              resultsData.query_image = uploadedImageUrl;
+              resultsData.session_id = sessionId; // Make sure session ID is passed along
+              return resultsData;
+            });
+          });
+      })
+      .then(finalResults => {
+        hideFullPageLoading();
+        
+        // Make sure the session ID is present in the final results
+        if (!finalResults.session_id && window.visualSearchSessionId) {
+          finalResults.session_id = window.visualSearchSessionId;
+        }
+        
+        redirectToSearchResults(finalResults);
+      })
+      .catch(error => {
+        console.error('Error processing image:', error);
+        hideFullPageLoading();
+        alert(error.message || 'There was an error processing your image. Please try again.');
+      });
+    }
+  
+  // Function to handle search results and redirect to the product search page
+  function redirectToSearchResults(data) {
+
+    
+    // Hide loading indicator
+    hideLoadingIndicator();
+    
+    // First try to get session ID from the global variable we set earlier
+    let sessionId = window.visualSearchSessionId || '';
+
+    
+    // If not found, try to get it from the data object
+    if (!sessionId && data) {
+      if (data.session_id) {
+        sessionId = data.session_id;
+
+      } else if (typeof data === 'object') {
+        // Try to find the session_id property at any level
+        const findSessionId = (obj, depth = 0) => {
+          if (depth > 3) return null; // Prevent too deep recursion
+          
+          for (const key in obj) {
+            if (key === 'session_id' && typeof obj[key] === 'string' && obj[key]) {
+              return obj[key];
+            } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+              const found = findSessionId(obj[key], depth + 1);
+              if (found) return found;
+            }
+          }
+          return null;
+        };
+        
+        const foundId = findSessionId(data);
+        if (foundId) {
+          sessionId = foundId;
+
+        }
+      }
+    }
+    
+
+    
+    // Fallback if we still don't have a session ID
+    if (!sessionId) {
+      console.warn('No session ID found. Using generated UUID as fallback.');
+      sessionId = 'gen_' + Math.random().toString(36).substring(2, 15);
+    }
+    
+    // Count the number of results if available
+    let resultCount = 1000; // Default value
+    if (data.result_count) {
+      resultCount = data.result_count;
+    } else if (data.results && Array.isArray(data.results)) {
+      resultCount = data.results.length;
+    } else if (data.products && Array.isArray(data.products)) {
+      resultCount = data.products.length;
+    }
+    
+    // Check if fromRefPage exists in the data
+    const fromRefPage = data.fromRefPage || '';
+    
+    // Create the redirect URL to the search page
+    let searchUrl = `https://www.ipshopy.com/index.php?route=product%2Fvisual_search&session_id=${sessionId}&result_count=${resultCount}&search=visual&category_id=0&submit_search=`;
+    
+    // Add fromRefPage parameter if it exists
+    if (fromRefPage) {
+      searchUrl += `&fromRefPage=${encodeURIComponent(fromRefPage)}`;
+    }
+    
+    // Create a form to POST the session_id to make sure it's properly sent
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://www.ipshopy.com/index.php?route=product%2Fvisual_search';
+    
+    // Add hidden fields for all the parameters
+    const addField = (name, value) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.value = value;
+      form.appendChild(input);
+    };
+    
+    addField('session_id', sessionId);
+    addField('result_count', resultCount);
+    addField('search', 'visual');
+    addField('category_id', '0');
+    addField('submit_search', 'true');
+    
+    // Add fromRefPage if it exists
+    if (fromRefPage) {
+      addField('fromRefPage', fromRefPage);
+    }
+    
+    // Add the form to the document and submit it
+    document.body.appendChild(form);
+    form.submit();
+    
+    // As a fallback, also try the redirect method
+    setTimeout(() => {
+      window.location.href = searchUrl;
+    }, 500);
+    
+    // No additional processing needed since we're redirecting to the search page
+  }
+  
+  // Setup interactive hotspots on the image
+  function setupImageHotspots(results) {
+    const container = document.getElementById('hotspot-container');
+    const image = document.getElementById('query-image');
+    
+    if (!container || !image) {
+
+      return;
+    }
+    
+
+    
+    // Clear any existing hotspots
+    const existingHotspots = container.querySelectorAll('.image-hotspot');
+    existingHotspots.forEach(spot => spot.remove());
+    
+    // Add click event to create hotspots
+    image.addEventListener('click', function(e) {
+
+      
+      // Remove any existing hotspots
+      const existingHotspots = container.querySelectorAll('.image-hotspot');
+      existingHotspots.forEach(spot => spot.remove());
+      
+      // Get click coordinates relative to the image
+      const rect = image.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // Calculate percentage position
+      const percentX = (x / image.width) * 100;
+      const percentY = (y / image.height) * 100;
+      
+
+      
+      // Create hotspot
+      const hotspot = document.createElement('div');
+      hotspot.className = 'image-hotspot';
+      hotspot.style.left = `${percentX}%`;
+      hotspot.style.top = `${percentY}%`;
+      container.appendChild(hotspot);
+      
+      // Here we would typically send a new search request with the specific coordinates
+      // For now, let's just refresh the current results
+      // In a real implementation, you would send these coordinates to the server
+      // and get back results for that specific part of the image
+      if (Array.isArray(results) && results.length > 0) {
+
+        // Simulate filtering results based on the clicked area
+        // In a real implementation, this would be a new API call
+        const filteredResults = [...results].sort(() => Math.random() - 0.5).slice(0, Math.max(4, Math.floor(results.length / 2)));
+        
+        // Update the products display
+        updateProductsDisplay(filteredResults);
+      } else {
+
+      }
+    });
+  }
+  
+  // Update products display based on filtered results
+  function updateProductsDisplay(results) {
+    const productsGrid = document.getElementById('similar-products-grid');
+    
+    if (!productsGrid || !results) return;
+    
+    // Clear existing products
+    productsGrid.innerHTML = '';
+    
+    // Display products in a grid
+    results.forEach(product => {
+      // Calculate discount percentage if both prices exist
+      let discountPercentage = '';
+      if (product.sale_price && product.original_price) {
+        const originalPrice = parseFloat(product.original_price.replace(/[^0-9.]/g, ''));
+        const salePrice = parseFloat(product.sale_price.replace(/[^0-9.]/g, ''));
+        if (!isNaN(originalPrice) && !isNaN(salePrice) && originalPrice > salePrice) {
+          const discount = Math.round(((originalPrice - salePrice) / originalPrice) * 100);
+          discountPercentage = `<span class="discount-badge">-${discount}%</span>`;
+        }
+      }
+      
+      // Determine availability class
+      const availabilityClass = product.in_stock ? 'in-stock' : 'out-of-stock';
+      const availabilityText = product.in_stock ? 'In Stock' : 'Out of Stock';
+      
+      // Create product card
+      const productCard = `
+        <div class="col-md-3 col-sm-6 mb-4">
+          <div class="product-card">
+            ${discountPercentage}
+            <div class="product-image">
+              <img src="${product.image_url}" alt="${product.title}">
+            </div>
+            <div class="product-info">
+              <h5 class="product-title">${product.title}</h5>
+              <div class="product-price">
+                ${product.original_price ? `<span class="original-price">${product.original_price}</span>` : ''}
+                <span class="regular-price">${product.sale_price || product.price || ''}</span>
+              </div>
+              <div class="similarity">Similarity: ${Math.round(product.similarity_score * 100)}%</div>
+              <div class="action-buttons mt-2">
+                <button class="btn btn-sm btn-primary add-to-cart-btn">Add to Cart</button>
+                <button class="btn btn-sm btn-outline-secondary view-product-btn">View</button>
+              </div>
+              <div class="availability ${availabilityClass}">${availabilityText}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      productsGrid.innerHTML += productCard;
+    });
+  }
+});
+
+</script>

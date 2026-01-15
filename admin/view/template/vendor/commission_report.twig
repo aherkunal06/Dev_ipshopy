@@ -1,0 +1,562 @@
+{{ header }}<style>
+  .table thead th,
+  .table thead td {
+    background-color: #f5f5f5 !important;
+    border: 1px solid #ddd !important;
+    box-shadow: inset 0 -1px #ddd;
+  }
+</style>{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+        <div class="pull-right">
+            <form id="downloadForm" method="post" action="index.php?route=vendor/commission_report/downloadSelectedExcel&user_token={{ user_token }}" >
+			<button type="submit" class="btn btn-success"><i class="fa fa-download"></i> Download Selected</button>
+			</form>
+        </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+         {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+			<h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+		  </div>
+			<div class="panel-body">
+				{#<div class="well">#}
+				{#	<div class="row">#}
+				{#		<div class="col-sm-3">#}
+				{#			<div class="form-group">#}
+				{#				  <label class="control-label" for="input-filter_name">{{ column_seller }}</label>#}
+				{#				  <input type="text" name="filter_name" value="{{ filter_name }}" placeholder="{{ column_seller }}" id="input-filter_name" class="form-control"/>#}
+				{#				  <input type="hidden" name="vendor_id" value="{{ filter_vendor }}"/>#}
+				{#			</div>#}
+				{#		</div>#}
+						
+				{#		<div class="col-sm-5">#}
+				{#		  <div class="form-group">#}
+				{#			<label class="control-label">{{ column_date }}</label>#}
+				{#			<div class="input-group ">#}
+				{#			  <span class="input-group-addon">#}
+				{#				{{ entry_from }}#}
+				{#			  </span>#}
+				{#			  <input type="text" name="filter_from" value="{{ filter_from }}" class="form-control date" data-date-format="YYYY-MM-DD" id="input-filter_form"/>#}
+				{#			  <span class="input-group-addon ">#}
+				{#				{{ entry_to }}#}
+				{#			  </span>#}
+				{#			  <input type="text" name="filter_to" value="{{ filter_to }}" class="form-control date" data-date-format="YYYY-MM-DD" id="input-filter_to"/>#}
+				{#			</div>#}
+				{#		  </div>#}
+				{#		</div>#}
+						
+				{#		<div class="col-sm-4 text-center">#}
+				{#			<button type="button" style="margin-top:12%;" id="button-filter" class="btn btn-primary col-sm-12"><i class="fa fa-filter"></i> {{ button_filter }}</button>#}
+				{#		</div>#}
+				{#	</div>#}
+				{#</div>	  #}
+				
+				{#--- added account changes  on the 26-05-2025 -----------------------------------------------#}
+				<div class="well">
+					<div class="row">
+						<!-- Seller Name Input -->
+						<div class="col-sm-3">
+							<div class="form-group">
+								<label class="control-label" for="input-filter_name">{{ column_seller }}</label>
+								<input type="text" name="filter_name" value="{{ filter_name }}" placeholder="{{ column_seller }}" id="input-filter_name" class="form-control" />
+								<input type="hidden" name="vendor_id" value="{{ filter_vendor }}" />
+							</div>
+						</div>
+
+						<!-- Order ID Input -->
+						<div class="col-sm-3">
+							<div class="form-group">
+								<label class="control-label" for="input-filter_order_id">{{ column_order_id }}</label>
+								<input type="text" name="filter_order_id" value="{{ filter_order_id }}" placeholder="{{ column_order_id }}" id="input-filter_order_id" class="form-control" />
+							</div>
+						</div>
+
+						<!-- Order Status Dropdown -->
+						<div class="col-sm-3">
+							<div class="form-group">
+								<label class="control-label" for="input-status">{{ column_status }}</label>
+								<select name="filter_status" id="input-status" class="form-control">
+									<option value="">{{ text_all_statuses }}</option>
+									{% for status in [
+										{ 'id': '17', 'label': 'Breached' },
+										{ 'id': '7', 'label': 'Canceled' },
+										{ 'id': '8', 'label': 'Label Generated' },
+										{ 'id': '9', 'label': 'Canceled Reversal' },
+										{ 'id': '5', 'label': 'Complete' },
+										{ 'id': '18', 'label': 'Delivered' },
+										{ 'id': '20', 'label': 'Undelivered' },
+										{ 'id': '21', 'label': 'RTO' },
+										{ 'id': '13', 'label': 'Ready to Dispatch (RTD)' },
+										{ 'id': '19', 'label': 'In Transit' },
+										{ 'id': '22', 'label': 'RTO Delivered' },
+										{ 'id': '24', 'label': 'On Hold' },
+										{ 'id': '39', 'label': 'Loss Shipment' },
+										{ 'id': '25', 'label': 'Out For Delivery' },
+										{ 'id': '28', 'label': 'Out for Pickup' },
+										{ 'id': '37', 'label': 'Pickup Failed' },
+										{ 'id': '1', 'label': 'Pending' },
+										{ 'id': '26', 'label': 'Status Pending' },
+										{ 'id': '3', 'label': 'Shipped' },
+										{ 'id': '36', 'label': 'Pickup Cancelled' },
+										{ 'id': '35', 'label': 'Pickup Delayed' },
+										{ 'id': '32', 'label': 'Pickup Rescheduled' },
+										{ 'id': '27', 'label': 'Pickup Scheduled' },
+										{ 'id': '15', 'label': 'Processed' },
+										{ 'id': '16', 'label': 'Manifested' },
+										{ 'id': '2', 'label': 'Processing' },
+										{ 'id': '11', 'label': 'Refunded' },
+										{ 'id': '12', 'label': 'Reversed' },
+										{ 'id': '30', 'label': 'Return Delivered' },
+										{ 'id': '31', 'label': 'Return In Transit' },
+										{ 'id': '33', 'label': 'Return Request Cancelled' },
+										{ 'id': '34', 'label': 'Return Request Closed' },
+										{ 'id': '29', 'label': 'Shipment Picked Up' },
+										{ 'id': '23', 'label': 'Shipment Booked' },
+										{ 'id': '38', 'label': 'RTO In Transit' }
+									] %}
+										<option value="{{ status.id }}" {% if filter_status == status.id %}selected{% endif %}>{{ status.label }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<!-- Date Range Filter -->
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label class="control-label">{{ column_date }}</label>
+								<div class="input-group">
+									<span class="input-group-addon">{{ entry_from }}</span>
+									<input type="text" name="filter_from" value="{{ filter_from }}" class="form-control date" data-date-format="YYYY-MM-DD" id="input-filter_form" />
+									<span class="input-group-addon">{{ entry_to }}</span>
+									<input type="text" name="filter_to" value="{{ filter_to }}" class="form-control date" data-date-format="YYYY-MM-DD" id="input-filter_to" />
+								</div>
+							</div>
+						</div>
+
+						<!-- Payment Status Dropdown -->
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label class="control-label" for="input-payment-status">{{ entry_payment_status }}</label>
+								{# <select name="filter_payment_status" id="input-payment-status" class="form-control">#}
+								{#	<option value="">{{ text_all_statuses }}</option>#}
+								{#	<option value="Paid" {% if filter_payment_status == 'Paid' %}selected{% endif %}>Paid</option>#}
+								{#	<option value="unpaid" {% if filter_payment_status == 'Unpaid' %}selected{% endif %}>Unpaid</option>#}
+								{#	<!-- Uncomment if needed:-->#}
+								{#</select> #}
+
+								<select name="filter_payment_status" id="input-payment-status" class="form-control">
+									<option value="">{{ text_all_statuses }}</option>
+									<option value="paid" {% if filter_payment_status == 'paid' %}selected{% endif %}>Paid</option>
+									<option value="unpaid" {% if filter_payment_status == 'unpaid' %}selected{% endif %}>Unpaid</option>
+								</select>
+
+							</div>
+						</div>
+
+						<!-- Filter Button -->
+						<div class="col-sm-4 text-center">
+							<button type="button" id="button-filter" class="btn btn-primary" style="margin-top: 12%; width: 100%;">
+								<i class="fa fa-filter"></i> {{ button_filter }}
+							</button>
+						</div>
+					</div>
+				</div>
+				{#--- added account changes  on the 26-05-2025 -----------------------------------------------#}
+                {#-- update the changes for apply the scrollbar to account section -- on 07-06-2025 ---#}
+				<form action="" method="post" enctype="multipart/form-data" id="form-commission">
+					<div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+						<table class="table table-bordered table-hover" style="width: max-content; min-width: 100%;">
+							<thead style="position: sticky; top: 0; z-index: 1; background-color:white;">
+								<tr>
+								    <!-- Checkbox to select all rows -->
+								    <td><input type="checkbox" onclick="$('input[name^=\'selected\']').prop('checked', this.checked);" /></td>
+								    <td class="text-left">{{ column_order_id }}</td>
+									<td class="text-left">{% if sort == 'seller' %}
+										<a href="{{ sort_seller }}" class="{{ order|lower }}">{{ column_seller }}</a>
+										{% else %}
+										<a href="{{ sort_seller }}">{{ column_seller }}</a>
+										{% endif %}
+									</td>
+									
+									<td class="text-left">{% if sort == 'name' %}
+										<a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+										{% else %}
+										<a href="{{ sort_name }}">{{ column_name }}</a>
+										{% endif %}
+									</td>
+									
+									<td class="text-left">{% if sort == 'model' %}
+										<a href="{{ sort_model }}" class="{{ order|lower }}">{{ column_model }}</a>
+										{% else %}
+										<a href="{{ sort_model }}">{{ column_model }}</a>
+										{% endif %}
+									</td>
+									{#-- added hsn code on the 31-05-2025#}
+									<td class="text-left">{{column_hsn_code}}</td>
+									
+									<td class="text-left">{% if sort == 'qty' %}
+										<a href="{{ sort_qty }}" class="{{ order|lower }}">{{ column_qty }}</a>
+										{% else %}
+										<a href="{{ sort_qty }}">{{ column_qty }}</a>
+										{% endif %}
+									</td>
+									
+									<td class="text-left">{% if sort == 'price' %}
+										<a href="{{ sort_price }}" class="{{ order|lower }}">{{ column_price }}</a>
+										{% else %}
+										<a href="{{ sort_price }}">{{ column_price }}</a>
+										{% endif %}
+									</td>
+									
+									{# ---- updated following data -----#}
+									<td class="text-left">{{column_product_courier_charges}}</td>
+									<td class="text-left">{{ column_status }}</td>
+									
+									
+									<td class="text-left">{% if sort == 'percentage' %}
+										<a href="{{ sort_percentage }}" class="{{ order|lower }}">{{ column_commission }}</a>
+										{% else %}
+										<a href="{{ sort_percentage }}">{{ column_commission }}</a>
+										{% endif %}
+									</td>
+									{#-------------------------------------------#}
+									<td class="text-left">{% if sort == 'fixed' %}
+										<a href="{{ sort_fixed }}" class="{{ order|lower }}">{{ column_fixed }}</a>
+										{% else %}
+										<a href="{{ sort_fixed }}">{{ column_fixed }}</a>
+										{% endif %}
+									</td>
+									{#-- updated following code --- on 26-05-2025 ----#}
+									<td class="text-left">{{column_forward_courier_charges}}</td>
+									<td class="text-left">{{column_reverse_courier_charges}}</td>
+									<td class="text-left">{{column_rto_charges}}</td>
+									<td class="text-left">{{column_total_charges}}</td>
+									<td class="text-left">{{column_net_settlement_amount}}</td>
+									{#--- added code changes on 04-06-2025 --------#}
+									<td class="text-left">{{column_courier_name}}</td>
+									{#----------------------------------------------#}
+									<td class="text-left">{{column_payment_status}}</td>
+									<td class="text-left">{{column_payment_date}}</td>
+									<td class="text-left">{{column_reference_number}}</td>
+									{#---------------------------------------------------------#}
+									{#<td class="text-left">{{ column_total }}</td>#}
+									
+									{#<td class="text-left">{% if sort == 'date' %}#}
+									{#	<a href="{{ sort_date }}" class="{{ order|lower }}">{{ column_date }}</a>#}
+									{#	{% else %}#}
+									{#	<a href="{{ sort_date }}">{{ column_date }}</a>#}
+									{#	{% endif %}#}
+									{#</td>#}
+										
+								</tr>
+							</thead>
+							<tbody>
+								{% if commissionreports %}
+								{% for report in commissionreports %}
+								<tr>
+								    <!-- Checkbox column -->
+									<td><input type="checkbox" name="selected[]" value="{{ report.order_id }}" /></td>
+								    <td class="text-left">{{report.order_id}}</td>
+									<td class="text-left">{{ report.sellername }}</td>
+									<td class="text-left">{{ report.name }}</td>
+									<td class="text-left">{{ report.model }}</td>
+									{#-- added hsn code on the 31-05-2025#}
+									<td class="text-left">{{report.hsn_code}}</td>
+									{#------------------------------------------#}
+									<td class="text-left">{{ report.quantity }}</td>
+									<td class="text-left">{{ report.price }}</td>
+									<td class="text-left">{{ report.product_courier_charges }}</td>
+									<td class="text-left">{{report.status}}</td>
+									<td class="text-left">{{ report.commissionper }}</td>
+									<td class="text-left">{{ report.commissionfix }}</td>
+									{#-- updated the logic on 26-05-2025 -----------------------------#}
+									<td class="text-left">{{report.courier_rate}}</td>
+									<td class="reverse-courier-cell" style="cursor: pointer;">
+										<span class="reverse-courier-text">{{ report.reverse_courier_charges }}</span>
+										<input type="text"
+												class="reverse-courier-input"
+												value="{{ report.reverse_courier_charges or 0}}"
+												data-order-id="{{ report.order_id }}"
+												data-product-id="{{ report.order_product_id }}"
+												style="display: none; width: 50px; height:35px ; border: none ; outline:none" />
+									</td>
+									<td class="text-left">{{report.rto_charges}}</td>
+									<td class="text-left">{{report.total_deduction}}</td>
+									<td class="text-left">{{report.net_settlement_amount}}</td>
+									{#--- added changes to show the courier name on 04-06-2025#}
+									<td class="text-left">{{report.courier_name}}</td>
+									{#-------------------------------------------------------#}
+									<td class="text-left">{{report.payment_status}}</td>
+									<td class="text-left">{{report.payment_date}}</td>
+									<td class="text-left">{{report.reference_number}}</td>
+									{#----- end here -----------------------------------------------------------#}
+								</tr>
+									{% endfor %} 
+									{% else %}
+								<tr>
+									<td class="text-center" colspan="10">{{ text_no_results }}</td>
+								</tr>
+								{% endif %}
+							</tbody>	
+						</table>
+					</div>
+				</form>
+				<div class="row">
+					<div class="col-sm-6 text-left">{{ pagination }}</div>
+					<div class="col-sm-6 text-right">{{ results }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=vendor/commission_report&user_token={{ user_token }}';
+	
+	var filter_name = $('input[name=\'filter_name\']').val();
+
+	if (filter_name) {
+		url += '&filter_name=' + encodeURIComponent(filter_name);
+	}
+	
+	/* 11 02 2020 */
+	var filter_vendor = $('input[name=\'vendor_id\']').val();
+
+	if (filter_vendor) {
+		url += '&filter_vendor=' + encodeURIComponent(filter_vendor);
+	}
+	/* 11 02 2020 */	
+	var filter_from = $('input[name=\'filter_from\']').val();
+
+	if (filter_from) {
+		url += '&filter_from=' + encodeURIComponent(filter_from);
+	}
+	
+	var filter_to = $('input[name=\'filter_to\']').val();
+
+	if (filter_to) {
+		url += '&filter_to=' + encodeURIComponent(filter_to);
+	}
+	
+	// added on 26-05-2025
+	var filter_order_id = $('input[name="filter_order_id"]').val();
+	if (filter_order_id) {
+	url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
+	}
+
+	var filter_status = $('select[name="filter_status"]').val();
+	if (filter_status !== '') {
+	url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+
+	var filter_payment_status = $('select[name="filter_payment_status"]').val();
+	if (filter_payment_status !== '') {
+	url += '&filter_payment_status=' + encodeURIComponent(filter_payment_status);
+	}
+	//-=------------------------------------------------------
+		
+  location = url;
+});
+
+
+// Autocomplete for filter_order_id
+$('input[name="filter_order_id"]').autocomplete({
+	  'source': function (request, response) {
+		$.ajax({
+		  url: 'index.php?route=vendor/commission/autocomplete&user_token={{ user_token }}&filter_order_id=' + encodeURIComponent(request),
+		  dataType: 'json',
+		  success: function (json) {
+			response($.map(json, function (item) {
+			  return {
+				label: item['order_id'],
+				value: item['order_id']
+			  };
+			}));
+		  }
+		});
+	  },
+	  'select': function (item) {
+		$('input[name="filter_order_id"]').val(item['label']);
+	  }
+	});
+// =====-------------------
+
+</script>
+
+
+
+<script type="text/javascript"><!--
+/* 05 02 2020 update vendorname firstname pe */  
+// Seller
+$('input[name=\'filter_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=vendor/vendor/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				json.unshift({
+					vendor_id: 0,
+					vendorname: '{{ text_none }}'
+				});
+
+				response($.map(json, function(item) {
+					return {
+						label: item['vendorname'],
+						value: item['vendor_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_name\']').val(item['label']);
+		$('input[name=\'vendor_id\']').val(item['value']);
+	}
+});
+</script>
+
+ <script type="text/javascript"><!--
+$('.date').datetimepicker({
+	pickTime: false
+});
+//--></script>
+
+
+{# added changes regadring to the revrese courier charges on 26-05-2025 #}
+<script>
+$(document).on('click', '.reverse-courier-cell', function () {
+  const input = $(this).find('.reverse-courier-input');
+  const span = $(this).find('.reverse-courier-text');
+
+  // Hide the text, show the input
+  span.hide();
+  input.show().focus();
+});
+
+$(document).on('change blur', '.reverse-courier-input', function () {
+  const input = $(this);
+  let value = input.val();
+
+  // Check if the value is blank or invalid
+  if (value === '' || value === undefined || value === null) {
+    value = '0'; // Set default value to 0 if it's blank
+  }
+
+  const orderId = input.data('order-id');
+  const productId = input.data('product-id');
+  const span = input.siblings('.reverse-courier-text');
+
+  // Now save the updated value (either user input or default value)
+  $.ajax({
+    url: 'index.php?route=vendor/commission_report/updateReverseCourier&user_token={{ user_token }}',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      order_id: orderId,
+      product_id: productId,
+      reverse_courier: value
+    },
+    success: function (res) {
+      if (res.success) {
+        span.text(value).show();
+        input.hide();
+		location.reload(); // Reload the page to reflect the addition
+      } else {
+        alert('Error: ' + (res.error || 'Could not update.'));
+      }
+    },
+    error: function () {
+      alert('Something went wrong.');
+    }
+  });
+});
+</script>
+
+
+<script>
+  $(document).on('blur', '.reverse-courier-input', function() {
+    const reverseCourier = parseFloat($(this).val());
+
+    if (isNaN(reverseCourier)) {
+      alert('Please enter a valid number for Reverse Courier Charges.');
+      $(this).val(''); // Clear the input if invalid
+      return;
+    }
+
+    if (reverseCourier < 0) {
+      alert('Reverse Courier Charges cannot be negative.');
+      $(this).val(''); // Clear the input if invalid
+      return;
+    }
+
+    // Valid input, proceed with saving (or any further action)
+    //alert('Reverse Courier Charges are valid!');
+    // Optionally, you can make an AJAX request to save the data
+  });
+</script>
+
+<script type="text/javascript">
+  // When the input is focused, set the border to green
+  $(document).on('focus', '.reverse-courier-input', function () {
+    $(this).css({
+      'border': '2px solid grey', // Apply green border on focus
+      'outline': 'none'            // Ensure there's no default focus outline
+    });
+  });
+
+  // When the input loses focus (blur), remove the green border
+  $(document).on('blur', '.reverse-courier-input', function () {
+    $(this).css('border', 'none'); // Remove the border when focus is lost
+  });
+</script>
+{# --------------------------------------------------------------------------- #}
+
+<!-- for excel download -->
+<script>
+document.getElementById('downloadForm').addEventListener('submit', function(e) {
+    const selected = document.querySelectorAll('input[name="selected[]"]:checked');
+    if (selected.length === 0) {
+        alert('Please select at least one row.');
+        e.preventDefault();
+        return;
+    }
+
+    // Remove any old dynamic hidden inputs
+    this.querySelectorAll('input.dynamic-hidden').forEach(el => el.remove());
+
+    // Add selected IDs as hidden inputs
+    selected.forEach((checkbox) => {
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'selected[]';
+        hidden.value = checkbox.value;
+        hidden.classList.add('dynamic-hidden');
+        this.appendChild(hidden);
+    });
+});
+</script>
+
+{{ footer }}

@@ -1,0 +1,117 @@
+<div class="featured-categories">
+  <h3>Featured Categories</h3>
+  <div class="category-grid">
+    {% for category in categories %}
+      <div class="category-box">
+        <a href="{{ category.href }}">
+          <img src="{{ category.image }}" alt="{{ category.name }}">
+          <div class="overlay full">
+            <div class="overlay-text">
+              <strong>{{ category.name }}</strong><br>
+              {{ category.total|number_format(0, '.', ',') }} items
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+
+    <div class="category-box view-all">
+      <a href="{{ view_all_url }}">View All</a>
+    </div>
+  </div>
+</div>
+
+<style>
+.featured-categories {
+  padding: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.featured-categories h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: left;
+  color: #333;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.category-box {
+  position: relative;
+  border: 2px solid #9a4ea9b8;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 100px; /* 👈 reduced height */
+  transition: transform 0.3s ease;
+  background: #fff;
+}
+
+.category-box:hover {
+  transform: scale(1.02);
+}
+
+.category-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Full overlay covering entire box */
+.overlay.full {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(0 0 0 / 48%);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.overlay-text {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.view-all {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+  border: 2px dashed #ba42d1;
+  background: #fff;
+  color: #ba42d1;
+  transition: all 0.3s ease;
+  height: 100px; /* same height as category-box */
+}
+
+.view-all a {
+  text-decoration: none;
+  color: #ba42d1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.view-all:hover {
+  background: #ba42d1;
+}
+
+.view-all:hover a {
+  color: #fff;
+}
+</style>
+

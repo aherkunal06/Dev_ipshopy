@@ -1,0 +1,293 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="javascript:void(0);" id="bulk-delete-btn" data-toggle="tooltip" title="{{ button_delete_selected }}" class="btn btn-danger">
+                    <i class="fa fa-trash"></i>
+                </a>
+                <a href="javascript:void(0);" id="bulk-send-btn" data-toggle="tooltip" title="{{ button_send_selected }}" class="btn btn-success">
+                    <i id="send-icon" class="fa fa-paper-plane"></i>
+                </a>
+            </div>
+
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {# {% if success %}
+        <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }} <button type="button" class="close" data-dismiss="alert">&times;</button></div>
+        {% endif %} #}
+
+        {% if success %}
+            <div class="alert alert-success">
+                <i class="fa fa-exclamation-circle"></i>
+                {{ success }}
+                <button type="button" class="close" data-dismiss="alert">
+                    &times;
+                </button>
+            </div>
+        {% endif %}
+        {% if error_warning %}
+            <div class="alert alert-danger">
+                <i class="fa fa-exclamation-circle"></i>
+                {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">
+                    &times;
+                                    
+                </button>
+            </div>
+        {% endif %}
+        
+        <div class="row">
+            <div id="filter-product" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
+                <!-- Filter Product Content Goes Here -->
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
+                </div>
+                <div class="panel-body">
+                    <!-- Filter Form Goes Here -->
+                    <div class="form-group">
+                        <label class="control-label" for="input-filter-customer">{{ entry_customer }}</label>
+                        <input type="text" name="filter_customer" value="{{ filter_customer }}" placeholder="{{ entry_customer }}" id="input-filter-customer" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="input-filter-email">{{ entry_email }}</label>
+                        <input type="text" name="filter_email" value="{{ filter_email }}" placeholder="{{ entry_email }}" id="input-filter-email" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="input-filter-telephone">{{ entry_telephone }}</label>
+                        <input type="text" name="filter_telephone" value="{{ filter_telephone }}" placeholder="{{ entry_telephone }}" id="input-filter-telephone" class="form-control" />
+                    </div>
+                </div>
+            <div class="panel-footer">
+                <button type="button" id="button-filter-panel" class="btn btn-primary"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+            </div>
+
+            </div>
+
+            </div>
+            <div class="col-md-9 col-md-pull-3 col-sm-12">
+                <!-- Main Content Goes Here -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-list"></i>
+                            {{ heading_title }}
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <!-- Cart History Table Goes Here -->
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                               <thead>
+                                    <tr>
+                                        <td class="text-center">
+                                            <input type="checkbox" id="select-all-checkbox">
+                                        </td>
+                                        <td class="text-left">{{ entry_customer }}</td>
+                                        <td class="text-left">{{ entry_email }}</td>
+                                        <td class="text-left">{{ entry_telephone }}</td>
+                                        <td class="text-left">{{ entry_products }}</td>
+                                        <td class="text-center">{{ column_action }}</td>
+                                        <td class="text-center">{{ column_action }}</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if cart_history %}
+                                        {% for customer_id, history in cart_history %}
+                                            <tr>
+                                                <td class="text-center">
+                                                    <input type="checkbox" name="selected[]" value="{{ customer_id }}">
+                                                </td>
+                                                <td class="text-left">{{ history.customer_name }}</td>
+                                                <td class="text-left">{{ history.email }}</td>
+                                                <td class="text-left">{{ history.telephone }}</td>
+                                                <td class="text-left">
+                                                    {% for product in history.products %}
+                                                        <div class="product-item">
+                                                            <div style="display: flex">
+                                                                <div style="margin-right:8px; margin-left:8px;">
+                                                                    {% if product.product_image %}
+                                                                        <img src="{{ product.product_image }}" alt="Product Image" class="img-thumbnail">
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div>
+                                                                    <strong>{{ product.product_name }}</strong><br>
+                                                                    {{ text_quantity }} <span class="label label-success">{{ product.quantity }}</span><br>
+                                                                    {{ text_date_added }} {{ product.date_added }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </td>
+                                                <td class="text-center">
+                                                    <form action="index.php?route=extension/module/waclient/carthistory/sendabandnotify&user_token={{ user_token }}" method="post">
+                                                        {% for cart_id in history.cart_ids %}
+                                                            <input type="hidden" name="cart_ids[]" value="{{ cart_id }}">
+                                                        {% endfor %}
+                                                        <input type="hidden" name="session_id" value="{{ history.session_id }}">
+                                                        <button type="submit" class="btn btn-success" data-toggle="tooltip" title="{{ button_notify }}"><i class="fa fa-paper-plane"></i></button>
+                                                    </form>
+                                                </td>
+                                                <td class="text-center">
+                                                    <form action="index.php?route=extension/module/waclient/carthistory/delete&user_token={{ user_token }}" method="post" onsubmit="return confirm('Are you sure ?');">
+                                                        <input type="hidden" name="customer_id" value="{{ customer_id }}">
+                                                        <button type="submit" class="btn btn-danger" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash"></i></button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td class="text-center" colspan="7">{{ text_no_results }}</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 text-left">
+                                {{ pagination }}
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                {{ results }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript"><!--
+$('#button-filter-panel').on('click', function() {
+    var url = 'index.php?route=extension/module/waclient/carthistory&user_token={{ user_token }}';
+
+    var filter_customer = $('input[name=\'filter_customer\']').val();
+    var filter_email = $('input[name=\'filter_email\']').val();
+    var filter_telephone = $('input[name=\'filter_telephone\']').val();
+    var filter_date_added = $('input[name=\'filter_date_added\']').val();
+
+    if (filter_customer) {
+        url += '&filter_customer=' + encodeURIComponent(filter_customer);
+    }
+
+    if (filter_email) {
+        url += '&filter_email=' + encodeURIComponent(filter_email);
+    }
+
+    if (filter_telephone) {
+        url += '&filter_telephone=' + encodeURIComponent(filter_telephone);
+    }
+
+    location = url;
+});
+//--></script>
+
+<script type="text/javascript">
+$('#select-all-checkbox').on('click', function() {
+    $('input[name="selected[]"]').prop('checked', this.checked);
+});
+
+$('#bulk-send-btn').on('click', function () {
+    var selected = [];
+    var $btn = $(this); // الإشارة إلى الزر نفسه
+    var $icon = $('#send-icon'); // الإشارة إلى الأيقونة داخل الزر
+
+    // جمع البيانات المحددة
+    $('input[name="selected[]"]:checked').each(function () {
+        var customer_id = $(this).val();
+        var cart_ids = [];
+        var session_id = $(this).closest('tr').find('input[name="session_id"]').val();
+
+        $(this).closest('tr').find('input[name="cart_ids[]"]').each(function () {
+            cart_ids.push($(this).val());
+        });
+
+        selected.push({
+            customer_id: customer_id,
+            cart_ids: cart_ids,
+            session_id: session_id
+        });
+    });
+
+    if (selected.length === 0) {
+        alert('Please select at least one record to send!');
+        return;
+    }
+
+    if (confirm('Are you sure you want to send the selected records?')) {
+        // تبديل الأيقونة إلى التحميل وقفل الزر
+        $icon.removeClass('fa-paper-plane').addClass('fa-spinner fa-spin'); // تغيير الأيقونة
+        $btn.addClass('disabled').css('pointer-events', 'none'); // تعطيل التفاعل مع الزر
+
+        $.ajax({
+            url: 'index.php?route=extension/module/waclient/carthistory/sendabandnotify&user_token={{ user_token }}',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify({ selected: selected }),
+            success: function (response) {
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                alert('An error occurred. Please try again!');
+            },
+            complete: function () {
+                // إعادة الأيقونة إلى الأصل وإعادة تفعيل الزر
+                $icon.removeClass('fa-spinner fa-spin').addClass('fa-paper-plane');
+                $btn.removeClass('disabled').css('pointer-events', 'auto'); // إرجاع التفاعل مع الزر
+            }
+        });
+    }
+});
+
+
+
+
+
+
+// Bulk Delete Button
+$('#bulk-delete-btn').on('click', function() {
+    var selected = [];
+    $('input[name="selected[]"]:checked').each(function() {
+        selected.push($(this).val());
+    });
+
+    if (selected.length === 0) {
+        alert('Please select at least one record to delete!');
+        return;
+    }
+
+    if (confirm('Are you sure you want to delete the selected records?')) {
+        $.ajax({
+            url: 'index.php?route=extension/module/waclient/carthistory/delete&user_token={{ user_token }}',
+            type: 'post',
+            data: { customer_ids: selected },
+            success: function(response) {
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred. Please try again!');
+            }
+        });
+    }
+});
+</script>
+
+
+
+{{ footer }}
+
+

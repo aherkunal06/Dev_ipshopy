@@ -1,0 +1,34 @@
+{% if members %}
+<div class="whatsapp_products {{ custom_class }} {{ layout }} {{ multi_inspect }}">
+    {% for member in members %}
+    <div class="single_member clearfix {{ member['online_status'] ? 'online' : 'offline' }}">
+      <a href="{{ member['apilink'] }}" {{ member.online_status ? 'target="_blank"' : '' }}>
+        <div class="circle_design {{ member.online_status ? 'online' : 'offline' }}"></div>
+        <div class="user_image">
+          <div class="img_p">
+            <img src="{{ member['photo_thumb'] }}" class="img-responsive">
+            <div class="whatsapp_icon_here">
+              <i class="fa fa-whatsapp"></i>
+            </div>
+            </div>
+        </div>
+        <div class="user_content">
+          {% if member['department_name'] %}
+          <h5>{{ member['department_name'] }}</h5>
+          {% endif %}
+
+          {% if member['member_name'] %}
+          <h4>{{ member['member_name'] }}</h4>
+          {% endif %}
+
+          {% if member['time_text'] %}
+          <p>{{ member['time_text'] }}</p>
+          {% endif %}
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+
+  <div style="clear: both;"></div>
+</div>
+{% endif %}

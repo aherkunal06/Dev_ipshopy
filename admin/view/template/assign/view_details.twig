@@ -1,0 +1,121 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content" style="background-color: #f5f7fa; min-height: 100vh;">
+  <div class="page-header" style="border-bottom: 1px solid #ddd;">
+    <div class="container-fluid">
+      <h1 style="color: #333;"><i class="fa fa-list"></i> {{ heading_title }}</h1>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="panel panel-default" style="box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-radius: 8px;">
+      <div class="panel-heading" style="background-color: white; color: black; border-radius: 8px 8px 0 0;">
+        <h3 class="panel-title"><i class="fa fa-tasks"></i> Assignment Details</h3>
+      </div>
+      <div class="panel-body">
+
+        <!-- Filter Form Block -->
+        <div style="background-color: #f5f5f5; padding: 15px; border-radius: 4px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.12);">
+          <form method="get" action="{{ action }}" id="filter-form">
+            <input type="hidden" name="route" value="assign/assign_work/viewDetails" />
+            <input type="hidden" name="user_token" value="{{ user_token }}" />
+            <input type="hidden" name="user_id" value="{{ user_id }}" />
+
+            <div class="row">
+              <div class="col-sm-4">
+                <label for="filter_assign_date" style="font-weight: bold; color: #333;">Assign Date</label>
+                <input type="date" name="filter_assign_date" value="{{ filter_assign_date }}" id="filter_assign_date" class="form-control" style="background-color: #f9f9f9; border: 1px solid #ccc;" />
+              </div>
+
+              <div class="col-sm-3">
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 25px;">
+                  <i class="fa fa-filter"></i> Filter
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Results Table -->
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover" style="background-color: white;">
+            <thead style="background-color: #f1f3f5;">
+              <tr style="color: #333;">
+                <th>User ID</th>
+                <th>Username</th>
+                <th>No. of Sellers</th>
+                <th>Assign Date</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if assignments %}
+                {% for row in assignments %}
+                  <tr>
+                    <td>{{ row.user_id }}</td>
+                    <td>{{ row.username }}</td>
+                    <td>{{ row.seller_count }}</td>
+                    <td>{{ row.assign_date }}</td>
+                    <td class="text-center">
+                      <a href="index.php?route=assign/assign_work/viewSellerDetails&user_token={{ user_token }}&user_id={{ row.user_id }}&assign_date={{ row.assign_date }}" class="btn btn-primary btn-sm" data-toggle="tooltip" title="View Sellers">
+                        <i class="fa fa-eye"></i>
+                      </a>
+                      <button type="button" class="btn btn-danger btn-sm btn-unassign-all" data-toggle="tooltip" title="Unassign All Sellers" data-user-id="{{ row.user_id }}">
+                        <i class="fa fa-times"></i>
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="5" class="text-center">No assignment records found.</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Back Button -->
+        <a href="{{ back_url }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"
+           style="position: absolute; top: 8px; right: 20px; width: 40px; height: 30px; padding: 0;
+                  display: flex; align-items: center; justify-content: center; border: 1px solid #ddd;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-radius: 6px;">
+          <i class="fa fa-reply" style="font-size: 18px; color: #444;"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tooltip and Unassign Script -->
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('.btn-unassign-all').on('click', function() {
+      var user_id = $(this).data('user-id');
+      if (confirm('Are you sure you want to unassign all sellers from this user?')) {
+        $.ajax({
+          url: 'index.php?route=assign/assign_work/unassignAllSellers&user_token={{ user_token }}',
+          type: 'post',
+          data: { user_id: user_id },
+          dataType: 'json',
+          success: function(json) {
+            if (json.success) {
+              alert(json.success);
+              location.reload();
+            } else if (json.error) {
+              alert('Error: ' + json.error);
+            }
+          },
+          error: function() {
+            alert('An error occurred while unassigning sellers.');
+          }
+        });
+      }
+    });
+  });
+</script>
+
+{{ footer }}

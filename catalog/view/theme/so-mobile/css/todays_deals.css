@@ -1,0 +1,71 @@
+/* mobile_deals.css */
+.mobile-deals-container {
+  padding: 10px;
+  background: #fff;
+}
+
+.mobile-deals-container .deals-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: black;
+}
+
+.mobile-deals-container .deals-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;            /* ✅ horizontal scroll */
+  overflow-y: hidden;          /* ✅ vertical hide */
+  gap: 12px;
+  padding:5px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  align-items: flex-start;     /* ✅ important fix */
+}
+
+.mobile-deals-container .deals-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-deals-container .deal-card {
+  flex: 0 0 auto;
+    width: 163px;
+    height: 220px;
+    background: #F9FAFB;
+     /*background: transparent;*/
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 0px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.mobile-deals-container .deal-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.mobile-deals-container .product-name {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0px 0 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  color: black;
+}
+
+.mobile-deals-container .product-tag {
+  font-size: 13px;
+  color: purple;
+  font-weight: 600;
+}
+.mobile-deals-container .product-price{
+    margin:0px;
+}

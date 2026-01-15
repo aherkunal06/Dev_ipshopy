@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <h4 class="modal-title">Comment Page</h4>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  {% if comments %}
+    {% for c in comments %}
+      <div class="mb-2">
+        <strong>{{ c.comment_by|capitalize }}:</strong><br>
+        <p>{{ c.comment }}</p>
+        <small class="text-muted">{{ c.date_added }}</small>
+        {% if c.media %}
+          <div class="mt-2">
+            {% for file in c.media %}
+              {% if file ends with '.jpg' or file ends with '.jpeg' or file ends with '.png' %}
+                <img src="image/{{ file }}" width="60" class="img-thumbnail">
+              {% elseif file ends with '.mp4' %}
+                <video width="150" controls><source src="image/{{ file }}"></video>
+              {% else %}
+                <a href="image/{{ file }}" target="_blank">Download File</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+      <hr>
+    {% endfor %}
+  {% else %}
+    <p class="text-muted">No comments found.</p>
+  {% endif %}
+
+  {% if allow_reply %}
+    <form method="post" action="{{ reply_action }}" enctype="multipart/form-data">
+      <div class="form-group">
+        <label>Edit Your Reply:</label>
+        <textarea name="reply" class="form-control" rows="3" required>{{ last_vendor_reply.comment ?? '' }}</textarea>
+      </div>
+      {#<div class="form-group">#}
+      {#  <label>Update Attachments:</label>#}
+      {#  <input type="file" name="media[]" multiple class="form-control">#}
+      {#</div>#}
+      <button type="submit" class="btn btn-primary btn-sm">Update Reply</button>
+    </form>
+  {% endif %}
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>

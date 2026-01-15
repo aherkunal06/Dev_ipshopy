@@ -1,0 +1,153 @@
+<link rel="stylesheet" href="catalog/view/theme/so-mobile/stylesheet/recent_view.css">
+{{header}}
+
+<style>
+/* ==============================
+   🟣 UNIQUE RECENT PRODUCTS SECTION
+============================== */
+
+/* Hide section until validated */
+.unique-recent-products-container {
+  display: none;
+  margin: 24px 0;
+}
+.unique-recent-products-container.is-visible {
+  display: block;
+}
+
+/* Box wrapper */
+.unique-recent-box {
+  background: #953A93;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+/* Title text */
+.unique-recent-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 14px;
+  color: #ffffff;
+}
+
+/* Product slider (horizontal scroll) */
+.unique-product-slider {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 2px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.unique-product-slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* Product card */
+.unique-product-card {
+  flex: 0 0 calc(40% - 8px); /* ≈2.5 cards visible */
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 8px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  scroll-snap-align: start;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.unique-product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.unique-product-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Product image */
+.unique-product-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+/* Product name */
+.unique-product-card h4 {
+  font-size: 14px;
+  margin: 0;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
+
+<!-- ✅ HTML Section -->
+<div class="unique-recent-products-container">
+  <div class="unique-recent-box">
+    <div class="unique-recent-title" id="unique-recent-title"></div>
+    <div id="unique-recent-view" class="unique-product-slider"></div>
+  </div>
+</div>
+
+<!-- ✅ Script -->
+<script>
+(function () {
+  const section   = document.querySelector(".unique-recent-products-container");
+  const titleEl   = document.getElementById("unique-recent-title");
+  const container = document.getElementById("unique-recent-view");
+
+  if (!section || !titleEl || !container) return;
+
+  // Ensure hidden initially
+  section.classList.remove("is-visible");
+  container.innerHTML = "";
+  titleEl.textContent = "";
+
+  fetch("index.php?route=common/recent_view/loadView")
+    .then(res => res.json())
+    .then(data => {
+      const items = (data && Array.isArray(data.products)) ? data.products : [];
+
+      // ❌ If fewer than 3, keep hidden
+      if (items.length < 3) {
+        section.classList.remove("is-visible");
+        container.innerHTML = "";
+        titleEl.textContent = "";
+        return;
+      }
+
+      // ✅ Show section if 3+
+      section.classList.add("is-visible");
+
+      const name = (data && data.customer_name) ? data.customer_name : "Guest";
+      titleEl.textContent = `${name}, still looking for these?`;
+
+      container.innerHTML = "";
+      items.forEach(p => {
+        const card = document.createElement("div");
+        card.classList.add("unique-product-card");
+
+        const fullName = p?.name || "";
+        const shortName = fullName.length > 20 ? fullName.slice(0, 20) + "..." : fullName;
+
+        card.innerHTML = `
+          <a href="${p?.href || "#"}">
+            <img src="${p?.image || ""}" alt="${fullName.replace(/"/g, "&quot;")}" loading="lazy" />
+            <h4 title="${fullName.replace(/"/g, "&quot;")}">${shortName}</h4>
+          </a>
+        `;
+        container.appendChild(card);
+      });
+    })
+    .catch(() => {
+      // On error, keep hidden
+      section.classList.remove("is-visible");
+    });
+})();
+</script>

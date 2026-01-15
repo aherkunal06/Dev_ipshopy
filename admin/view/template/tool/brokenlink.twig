@@ -1,0 +1,46 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>Broken Link Checker</h1>
+      <div class="pull-right">
+        <a href="{{ scan_action }}" class="btn btn-primary"><i class="fa fa-refresh"></i> Scan Site</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    {% if links %}
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>URL</th>
+            <th>Status Code</th>
+            <th>Checked On</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for link in links %}
+            <tr>
+              <td>{{ link.url }}</td>
+              <td>
+                {% if link.status_code == 200 %}
+                  <span style="color:green;">{{ link.status_code }}</span>
+                {% else %}
+                  <span style="color:red;">{{ link.status_code }}</span>
+                {% endif %}
+              </td>
+              <td>{{ link.checked_on }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No broken links found. Click "Scan Site" to start.</p>
+    {% endif %}
+  </div>
+</div>
+
+{{ footer }}

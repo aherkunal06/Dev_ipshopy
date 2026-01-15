@@ -1,0 +1,597 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="container-fluid">
+		<div class="page-header">
+			<div class="container-fluid">
+				<h1>Ticket Details</h1>
+				<div class="float-end">
+					<a href="{{ cancel }}" class="btn" style="background-color: white; border: 1px solid #6c757d; color: #6c757d;">
+						<i class="fa fa-reply"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		{% if success %}
+			<div class="alert alert-success alert-dismissible">
+				<i class="fa fa-check-circle"></i>
+				{{ success }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+
+		{% if error %}
+			<div class="alert alert-danger alert-dismissible">
+				<i class="fa fa-exclamation-circle"></i>
+				{{ error }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+
+		{% if ticket_closed %}
+			<div class="alert alert-warning alert-dismissible">
+				<i class="fa fa-exclamation-triangle"></i>
+				This ticket is closed. You cannot add new replies.
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+
+		<!-- Ticket Information -->
+		<div class="card mb-3">
+			<div class="card-header">
+				<h3 class="card-title mb-0">
+					<i class="fa fa-info-circle"></i>
+					Ticket Information
+				</h3>
+			</div>
+			<div class="card-body p-0">
+				<div class="table-responsive">
+					<table class="table table-bordered mb-0">
+						<tr>
+							<th width="15%">Ticket ID</th>
+							<td width="35%">{{ ticket.ticket_id }}</td>
+							<th width="15%">Status</th>
+							<td width="35%">
+								<span class="label label-{{ ticket.status == 'open' ? 'success' : (ticket.status == 'pending' ? 'warning' : 'danger') }}">
+									{{ ticket.status|upper }}
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<th>Vendor Name</th>
+							<td>{{ ticket.firstname }}
+								{{ ticket.lastname }}</td>
+							<th>Date Added</th>
+							<td>{{ ticket.date_added }}</td>
+						</tr>
+						<tr>
+							<th>Subject</th>
+							<td colspan="3">{{ ticket.subject }}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<!-- Conversation History -->
+		<div class="card mb-3">
+			<div class="card-header">
+				<h3 class="card-title mb-0">
+					<i class="fa fa-comments"></i>
+					Conversation History
+				</h3>
+			</div>
+			<div class="card-body p-3">
+				<div
+					class="conversation-scroll">
+					<!-- Original Message -->
+					<div class="message-block">
+						<div class="message-header">
+							<div class="d-flex align-items-center">
+								<i class="fa fa-user me-2"></i>
+								<strong>{{ ticket.firstname }}
+									{{ ticket.lastname }}</strong>
+								<span class="text-muted ms-auto">
+									<i class="fa fa-clock-o"></i>
+									{{ ticket.date_added }}
+								</span>
+							</div>
+						</div>
+						<div class="message-content">
+							{{ ticket.message }}
+							{% if ticket.image %}
+								<div class="message-attachment mt-3">
+									<a href="{{ ticket.image }}" data-fancybox="gallery" class="d-inline-block">
+										<img src="{{ ticket.image }}" alt="Attachment" class="img-thumbnail" style="max-width: 200px;">
+									</a>
+								</div>
+							{% endif %}
+						</div>
+					</div>
+
+					{% if seller %}
+						{% for reply in seller %}
+							<div class="message-block">
+								<div class="message-header">
+									<div class="d-flex align-items-center">
+										<i class="fa fa-user me-2"></i>
+										<strong>{{ ticket.firstname }}
+											{{ ticket.lastname }}</strong>
+										<span class="text-muted ms-auto">
+											<i class="fa fa-clock-o"></i>
+											{{ reply.date_added }}
+										</span>
+									</div>
+								</div>
+								<div class="message-content">
+									{{ reply.message }}
+									{% if reply.image %}
+										<div class="message-attachment mt-3">
+											<a href="{{ reply.image }}" data-fancybox="gallery" class="d-inline-block">
+												<img src="{{ reply.image }}" alt="Attachment" class="img-thumbnail" style="max-width: 200px;">
+											</a>
+										</div>
+									{% endif %}
+								</div>
+							</div>
+						{% endfor %}
+					{% endif %}
+
+					{% if replies %}
+						{% for reply in replies %}
+							<div class="message-block admin-message">
+								<div class="message-header">
+									<div class="d-flex align-items-center">
+										<i class="fa fa-user-secret me-2"></i>
+										<strong>Admin</strong>
+										<span class="text-muted ms-auto">
+											<i class="fa fa-clock-o"></i>
+											{{ reply.date_added }}
+										</span>
+									</div>
+								</div>
+								<div class="message-content">
+									{{ reply.message }}
+									{% if reply.image %}
+										<div class="message-attachment mt-3">
+											<a href="{{ reply.image }}" data-fancybox="gallery" class="d-inline-block">
+												<img src="{{ reply.image }}" alt="Attachment" class="img-thumbnail" style="max-width: 200px;">
+											</a>
+										</div>
+									{% endif %}
+								</div>
+							</div>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+		<!-- Reply Form -->
+		{% if ticket.status == 'closed' or ticket.status == 'Closed' %}
+          <div class="alert alert-danger text-center">
+             <strong>This ticket is closed.</strong>
+          </div>
+        {% else %}
+		<div class="card mb-3">
+			<div class="card-header py-2">
+				<h3 class="card-title mb-0">
+					<i class="fa fa-reply"></i>
+					Add Reply
+				</h3>
+			</div>
+			<div class="card-body p-3">
+				{% if not ticket_closed %}
+					<form action="{{ reply_action }}" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="ticket_id" value="{{ ticket.ticket_id }}">
+						<input type="hidden" name="user_token" value="{{ user_token }}">
+
+						<div class="form-group mb-3">
+							<label class="control-label mb-2">Type your reply here...</label>
+							<textarea name="message" class="form-control" rows="4" required></textarea>
+						</div>
+
+						<div class="form-group mb-3">
+							<label class="control-label mb-2">Status</label>
+							<select name="status" class="form-control" required>
+								<option value="open" {% if ticket.status == 'open' %} selected {% endif %}>Open</option>
+								<option value="pending" {% if ticket.status == 'pending' %} selected {% endif %}>Pending</option>
+								<option value="closed" {% if ticket.status == 'closed' %} selected {% endif %}>Closed</option>
+							</select>
+						</div>
+
+						<div class="row align-items-center">
+							<div class="col-sm-12 mb-2">
+								<div class="form-group mb-0">
+									<label class="control-label mb-2">Attachment (Optional)</label>
+									<div class="input-group input-group-sm">
+										<input type="file" name="attachment" class="form-control form-control-sm" accept="image/*">
+									</div>
+									<small class="form-text text-muted mt-1">
+										<i class="fa fa-info-circle"></i>
+										Allowed: JPG, JPEG, PNG (Max: 5MB)
+									</small>
+								</div>
+							</div>
+							<div class="col-sm-12 mb-2 text-center">
+								<button type="submit" class="btn btn-primary">
+									<i class="fa fa-paper-plane"></i>
+									Send Reply
+								</button>
+							</div>
+						</div>
+					</form>
+				{% else %}
+					<div class="alert alert-warning text-center" style="margin-bottom: 0;">
+						<i class="fa fa-lock fa-2x mb-2"></i>
+						<h4 class="alert-heading">Ticket Closed</h4>
+						<p class="mb-0">This ticket has been closed. No further replies can be added.</p>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+
+<style>
+	/* Card Styles */
+	.card {
+		background: #fff;
+		border: 1px solid #e5e5e5;
+		border-radius: 3px;
+		box-shadow: none;
+	}
+
+	.card-header {
+		background: #f8f9fa;
+		border-bottom: 1px solid #e5e5e5;
+		padding: 12px 15px;
+	}
+
+	.card-title {
+		font-size: 15px;
+		font-weight: 500;
+		color: #333;
+	}
+
+	.card-title i {
+		margin-right: 5px;
+		color: #666;
+	}
+
+	/* Table Styles */
+	.table {
+		margin-bottom: 0;
+	}
+
+	.table th {
+		background: #f8f9fa;
+		font-weight: 500;
+		padding: 10px 15px;
+		border-bottom: 1px solid #e5e5e5;
+	}
+
+	.table td {
+		padding: 10px 15px;
+		border-bottom: 1px solid #e5e5e5;
+	}
+
+	.badge {
+		padding: 5px 10px;
+		font-weight: 500;
+		font-size: 12px;
+	}
+
+	.bg-success {
+		background-color: #28a745 !important;
+	}
+	.bg-warning {
+		background-color: #ffc107 !important;
+	}
+	.bg-danger {
+		background-color: #dc3545 !important;
+	}
+
+	/* Message Styles */
+	.message-block {
+		margin-bottom: 15px;
+		background: #fff;
+		border: 1px solid #e5e5e5;
+		border-radius: 3px;
+	}
+
+	.message-block:last-child {
+		margin-bottom: 0;
+	}
+
+	.message-header {
+		padding: 10px 15px;
+		background: #f8f9fa;
+		border-bottom: 1px solid #e5e5e5;
+	}
+
+	.message-content {
+		padding: 15px;
+		font-size: 14px;
+		line-height: 1.5;
+	}
+
+	.admin-message .message-header {
+		background: #e3f2fd;
+		border-bottom: 1px solid #bbdefb;
+	}
+
+	.admin-message .message-content {
+		background: #f8f9fa;
+	}
+
+	.message-attachment {
+		padding-top: 10px;
+		border-top: 1px solid #e5e5e5;
+	}
+
+	/* Form Styles */
+	.form-group {
+		margin-bottom: 15px;
+	}
+
+	.control-label {
+		font-size: 14px;
+		font-weight: normal;
+		color: #666;
+	}
+
+	.form-control {
+		padding: 6px 12px;
+		font-size: 14px;
+		line-height: 1.42857143;
+		color: #333;
+		border: 1px solid #ddd;
+		border-radius: 3px;
+	}
+
+	.form-control-sm {
+		padding: 4px 8px;
+		font-size: 13px;
+		height: 30px;
+	}
+
+	textarea.form-control {
+		min-height: 80px;
+	}
+
+	.input-group-sm {
+		max-width: 300px;
+	}
+
+	.form-text {
+		font-size: 12px;
+	}
+
+	/* Button Styles */
+	.btn {
+		padding: 6px 15px;
+		font-size: 14px;
+		line-height: 1.42857143;
+		border-radius: 3px;
+	}
+
+	.btn-light {
+		background: #f8f9fa;
+		border-color: #ddd;
+	}
+
+	.btn-light:hover {
+		background: #e9ecef;
+		border-color: #ccc;
+	}
+
+	.btn-primary {
+		background-color: #0088cc;
+		border-color: #0088cc;
+	}
+
+	.btn-primary:hover {
+		background-color: #0077b3;
+		border-color: #0077b3;
+	}
+
+	/* Utility Classes */
+	.mb-2 {
+		margin-bottom: 0.5rem !important;
+	}
+	.mb-3 {
+		margin-bottom: 1rem !important;
+	}
+	.me-2 {
+		margin-right: 0.5rem !important;
+	}
+	.ms-auto {
+		margin-left: auto !important;
+	}
+	.mt-3 {
+		margin-top: 1rem !important;
+	}
+	.py-2 {
+		padding-top: 0.5rem !important;
+		padding-bottom: 0.5rem !important;
+	}
+	.p-3 {
+		padding: 1rem !important;
+	}
+	.text-end {
+		text-align: right !important;
+	}
+	.text-muted {
+		color: #6c757d !important;
+	}
+	.float-end {
+		float: right !important;
+	}
+	.d-flex {
+		display: flex !important;
+	}
+	.align-items-center {
+		align-items: center !important;
+	}
+	.d-inline-block {
+		display: inline-block !important;
+	}
+
+	/* Conversation History Scroll */
+	.conversation-scroll {
+		max-height: 500px;
+		overflow-y: auto;
+		padding-right: 5px;
+	}
+
+	.conversation-scroll::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	.conversation-scroll::-webkit-scrollbar-track {
+		background: #f1f1f1;
+		border-radius: 3px;
+	}
+
+	.conversation-scroll::-webkit-scrollbar-thumb {
+		background: #888;
+		border-radius: 3px;
+	}
+
+	.conversation-scroll::-webkit-scrollbar-thumb:hover {
+		background: #555;
+	}
+
+	/* Center align text */
+	.text-center {
+		text-align: center !important;
+	}
+
+	/* Status Label Styles */
+	.label {
+		display: inline-block;
+		padding: 5px 10px;
+		font-size: 12px;
+		font-weight: 600;
+		line-height: 1;
+		color: #fff;
+		text-align: center;
+		white-space: nowrap;
+		vertical-align: baseline;
+		border-radius: 3px;
+	}
+
+	.label-success {
+		background-color: #28a745;
+	}
+
+	.label-warning {
+		background-color: #ffc107;
+		color: #000;
+	}
+
+	.label-danger {
+		background-color: #dc3545;
+	}
+</style>
+
+<script type="text/javascript">
+	$(document).ready(function () { // Initialize FancyBox
+$('[data-fancybox="gallery"]').fancybox({
+buttons: ["zoom", "close"]
+});
+
+// File input change handler
+$('#attachment').on('change', function () {
+var file = this.files[0];
+if (file) {
+var maxSize = 5 * 1024 * 1024;
+var allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+if (! allowedTypes.includes(file.type)) {
+alert('Only JPG, JPEG, and PNG images are allowed.');
+this.value = '';
+} else if (file.size > maxSize) {
+alert('File size must be less than 5MB.');
+this.value = '';
+}
+}
+});
+
+// Form submission handler
+$('#form-reply').on('submit', function (e) {
+e.preventDefault();
+
+var $form = $(this);
+var $submitBtn = $('#submit-btn');
+var $alertContainer = $('#alert-container');
+
+// Validate required fields
+var message = $('#message').val().trim();
+
+if (! message) {
+$alertContainer.html('<div class="alert alert-danger">' + '<i class="fa fa-exclamation-circle"></i> Please enter your reply message' + '</div>');
+$('#message').focus();
+return false;
+}
+
+$alertContainer.empty();
+$submitBtn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Sending...');
+
+$.ajax({
+url: $form.attr('action'),
+type: 'POST',
+data: new FormData(this),
+processData: false,
+contentType: false,
+success: function (response) {
+try {
+if (typeof response === 'string') {
+response = JSON.parse(response);
+}
+
+if (response.success) {
+$alertContainer.html('<div class="alert alert-success">' + '<i class="fa fa-check-circle"></i> ' + response.success + '</div>');
+
+setTimeout(function () {
+window.location.href = response.redirect;
+}, 1000);
+} else if (response.error) {
+$alertContainer.html('<div class="alert alert-danger">' + '<i class="fa fa-exclamation-circle"></i> ' + response.error + '</div>');
+$submitBtn.prop('disabled', false).html('<i class="fa fa-paper-plane"></i> Send Reply');
+}
+} catch (e) {
+console.error('Error parsing response:', e);
+$alertContainer.html('<div class="alert alert-danger">' + '<i class="fa fa-exclamation-circle"></i> Error processing response' + '</div>');
+$submitBtn.prop('disabled', false).html('<i class="fa fa-paper-plane"></i> Send Reply');
+}
+},
+error: function (xhr, status, error) {
+$alertContainer.html('<div class="alert alert-danger">' + '<i class="fa fa-exclamation-circle"></i> Error: ' + error + '</div>');
+$submitBtn.prop('disabled', false).html('<i class="fa fa-paper-plane"></i> Send Reply');
+}
+});
+});
+// File upload validation
+    $('#attachment').on('change', function() {
+        var file = this.files[0];
+        if (file) {
+            var maxSize = 5 * 1024 * 1024; // 5MB
+            var allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+            
+            if (!allowedTypes.includes(file.type)) {
+                alert('Only JPG, JPEG, and PNG images are allowed.');
+                this.value = '';
+            } else if (file.size > maxSize) {
+                alert('File size must be less than 5MB.');
+                this.value = '';
+            }
+        }
+    });
+});
+</script>
+
+
+{{ footer }}

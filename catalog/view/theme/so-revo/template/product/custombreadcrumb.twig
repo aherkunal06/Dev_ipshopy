@@ -1,0 +1,31 @@
+{% if breadcrumb_path %}
+<ul class="breadcrumb">
+    {# Home icon link #}
+    <li>
+        <a href="{{ breadcrumb_path[0].href }}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+
+    {% for crumb in breadcrumb_path %}
+        {% if loop.index > 1 %}
+            {% if not loop.last %}
+                <li>
+                    <a href="{{ crumb.href }}">{{ crumb.name }}</a>
+                </li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+    {# If product_name exists, append it as the last item #}
+    {% if product_name %}
+       <li>
+        <a href="{{ breadcrumb_path|last.href }}">{{ breadcrumb_path|last.name }}</a>
+    </li>
+        <li class="active">{{ product_name }}</li>
+    {% else %}
+        {# If no product, mark last category as active #}
+        <li class="active">{{ breadcrumb_path|last.name }}</li>
+    {% endif %}
+</ul>
+{% endif %}

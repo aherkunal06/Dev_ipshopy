@@ -1,0 +1,53 @@
+<div class="row main-products product-grid" data-grid-classes="{{ journal2.settings.get('product_grid_classes') }} display-{{ journal2.settings.get('product_grid_wishlist_icon_display') }} {{ journal2.settings.get('product_grid_button_block_button') }}">
+			{% for product in products %}
+			<div class="product-grid-item xs-100 sm-50 md-33 lg-33 xl-33">
+             <div class="product-thumb product-wrapper">
+				<div class="image">
+					<a href="{{ product.href }}"><img src="{{ product.pimage }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive"></a>
+				</div>
+                <div class="product-details">
+				<div class="caption">
+					<h4 class="name"><a href="{{ product.href }}">{{ product.name }}</a></h4>
+					<p class="description">{{ product.description }}</p>
+                    {% if product.rating %}
+					<div class="rating">
+						{% for i in 1..5 %}
+						{% if product.ratings < i %}
+						<span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+						{% else %}
+						<span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+						{% endif %}
+				        {% endfor %}
+					</div>
+                    {% endif %}
+					 {% if product.price %}
+					 <p class="price"> 
+					 {% if not product.special %}
+					  {{ product.price }}
+					  {% else %} 
+					  <span class="price-new">{{ product.special }}</span> 
+					  <span class="price-old">{{ product.price }}</span> {% endif %}
+					  {% if product.tax %}
+					  <span class="price-tax">
+					  {{ text_tax }} {{ product.tax }}</span>
+					  {% endif %}
+					  </p>
+					  {% endif %}
+					
+				 </div>
+				 <div class="button-group">
+                    <div class="cart">
+                     <a onclick="addToCart('{{ product.product_id }}', '{{ product.minimum }}');" class="button hint--top" data-hint="{{ button_cart }}"><i class="button-left-icon"></i><span class="button-cart-text">{{ button_cart }}</span><i class="button-right-icon"></i></a>
+                    </div>
+					<div class="wishlist"><a onclick="addToWishList('{{ product.product_id }}');" class="hint--top" data-hint="{{ button_wishlist }}"><i class="wishlist-icon"></i><span class="button-wishlist-text">{{ button_wishlist }}</span></a></div>
+                    <div class="compare"><a onclick="addToCompare('{{ product.product_id }}');" class="hint--top" data-hint="{{ button_compare }}"><i class="compare-icon"></i><span class="button-compare-text">{{ button_compare }}</span></a></div>
+				 </div>
+				</div>
+				</div>
+			</div>
+			{% endfor %}
+</div>
+		<div class="row pagination">
+            <div class="col-sm-6 text-left links">{{ pagination }}</div>
+			<div class="col-sm-6 text-right results">{{ results }}</div>
+		</div>

@@ -1,0 +1,201 @@
+<link rel="stylesheet" href="catalog\view\theme\so-mobile\stylesheet\ganesh_festival.css" />
+
+{{ header }}
+
+<div class="ganeshfest-page">
+
+    <!-- Top Banner -->
+    <div class="ganeshfest-top-banner">
+        <img src="{{ top_banner }}" alt="Ganesh Festival" class="img-fluid w-100">
+    </div>
+
+    <!-- Categories -->
+ <div class="ganeshfest-category-scroll-section">
+    <div class="ganeshfest-category-scroll-container">
+        {% for category in categories %}
+        <div class="ganeshfest-category-card">
+            <a href="{{ category.href }}">
+                <div class="ganeshfest-category-img">
+                    <img src="{{ category.thumb }}" alt="{{ category.name }}">
+                    <div class="ganeshfest-category-overlay">{{ category.name }}</div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+    <!-- Second Banner -->
+    <div class="ganeshfest-second-banner my-3">
+        <img src="{{ second_banner }}" alt="Festival Offer" class="img-fluid w-100">
+    </div>
+
+ 
+   <!-- Women's Dresses Subcategories -->
+<div class="ganeshfest-subcategory-section">
+    <div class="ganeshfest-section-title">Women's - Dresses</div>
+    <div class="ganeshfest-subcategory-list">
+        {% for sub in subcategories %}
+        <div class="ganeshfest-subcategory-card">
+            <a href="{{ sub.href }}" style="text-decoration:none; color:inherit;">
+                <img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+                <p>{{ sub.name }}</p>
+                 {% if sub.special_price %}
+                    <p style="margin:5px 0; font-size:14px;">
+                        <span style="color:#d9534f; font-weight:bold;">From {{ sub.special_price }}</span>
+                        
+                    </p>
+                {% elseif sub.original_price %}
+                    <p style="margin:5px 0; font-size:14px; color:#333;">
+                        {{ sub.original_price }}
+                    </p>
+                {% endif %}
+
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- Third Banner -->
+<div class="ganeshfest-third-banner my-3">
+    <img src="{{ third_banner }}" alt="Ganesh Festival Offer" class="img-fluid w-100">
+</div>
+
+<!-- New Categories Section -->
+{% set cards = festival_cards %}
+{% if config_theme == 'so-mobile' %}
+  {% set cards = festival_cards|slice(0,3) %}
+{% endif %}
+<div class="festival-categories">
+    <h3 class="festival-title">Categories</h3>
+<div class="festival-cards">
+  {% for category in cards %}
+    <div class="festival-card">
+      <a href="{{ category.href }}">
+        <div class="festival-card-img">
+          <img src="{{ category.thumb }}" alt="{{ category.name }}">
+        </div>
+        <div class="festival-card-text">
+          {{ category.name }}
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
+
+
+
+<div class="ganeshfest-subcategory-section">
+    <div class="ganeshfest-section-title">Men's - Dresses</div>
+    <div class="ganeshfest-subcategory-list">
+        {% for sub in men_subcategories %}
+        <div class="ganeshfest-subcategory-card">
+            <a href="{{ sub.href }}" style="text-decoration:none; color:inherit;">
+                <img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+                <p class="product-title">{{ sub.name }}</p>
+
+                {% if sub.special_price %}
+                    <p class="product-price">
+                        <span class="current-price">From {{ sub.special_price }}</span>
+                    </p>
+                {% elseif sub.original_price %}
+                    <p class="product-price">
+                        <span class="current-price">{{ sub.original_price }}</span>
+                    </p>
+                {% endif %}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<!-- Extra Categories Section -->
+<div class="extra-categories">
+    <h3 class="extra-title">Let Your Home Glow</h3>
+    <div class="extra-cards">
+        {% for category in festival_extra_cards %}
+        <div class="extra-card">
+            <a href="{{ category.href }}">
+                <img src="{{ category.thumb }}" alt="{{ category.name }}">
+                <div class="extra-card-overlay">
+                    <span>{{ category.name }}</span>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<div class="ganeshfest-subcategory-section">
+    <div class="ganeshfest-section-title">Today's Deals</div>
+    <div class="ganeshfest-subcategory-list">
+        {% for sub in electronics %}
+        <div class="ganeshfest-subcategory-card">
+            <a href="{{ sub.href }}" style="text-decoration:none; color:inherit;">
+                <img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+                <p class="product-name">
+  {{ sub.name|slice(0,20) }}{% if sub.name|length > 30 %}{% endif %}
+</p>
+
+                 {% if sub.special_price %}
+                    <p style="margin:5px 0; font-size:14px;">
+                        <span style="color:#d9534f; font-weight:bold;">From {{ sub.special_price }}</span>
+                        
+                    </p>
+                {% elseif sub.original_price %}
+                    <p style="margin:5px 0; font-size:14px; color:#333;">
+                        {{ sub.original_price }}
+                    </p>
+                {% endif %}
+
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+   
+      
+{# fourth_banner #}
+<div class="ganeshfest-third-banner my-3">
+    <img src="{{ fourth_banner }}" alt="Ganesh Festival Offer" class="img-fluid w-100">
+</div>
+
+
+
+<div class="ganeshfest-subcategory-section">
+    <div class="ganeshfest-section-title">Kids - Dresses</div>
+    <div class="ganeshfest-subcategory-list">
+        {% for sub in kids %}
+        <div class="ganeshfest-subcategory-card">
+            <a href="{{ sub.href }}" style="text-decoration:none; color:inherit;">
+                <img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+                <p>{{ sub.name }}</p>
+                 {% if sub.special_price %}
+                    <p style="margin:5px 0; font-size:14px;">
+                        <span style="color:#d9534f; font-weight:bold;">From {{ sub.special_price }}</span>
+                    
+                    </p>
+                {% elseif sub.original_price %}
+                    <p style="margin:5px 0; font-size:14px; color:#333;">
+                        {{ sub.original_price }}
+                    </p>
+                {% endif %}
+
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+</div>
+
+

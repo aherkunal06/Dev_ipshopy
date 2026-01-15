@@ -1,0 +1,579 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        {% if licensed_md5 is defined and licensed_md5 == 'd9a22d7a8178d5b42a8750123cbfe5b1' %}
+      <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        {% endif %}
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+        <a href="{{ orderpage }}" data-toggle="tooltip" title="{{ text_orderlist }}" class="btn btn-warning"><i class="fa fa-list" aria-hidden="true"></i> {{ text_orderlist }}</a>
+        </div>
+      <h1><i class="fa fa-line-chart" aria-hidden="true" style="color:green;"></i> {{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+  {% if support_status is defined and support_status == 'enabled' %}
+        <div class="table-responsive"> 
+          <table id="order_details" class="table table-bordered table-striped">
+            <tbody>
+            <tr>
+              <td style="width:7%;background: #8e8e8e;color: white;">License Info</td>
+              <td style="width:5%;background: #efefef;">Order Id</td>
+              <td>{{ support_order_id }}</td>
+              <td style="width:4%;background: #efefef;">Domain</td>
+              <td>{{ domain }}</td>
+              <td style="width:8%;background: #efefef;">Registered To</td>
+              <td>{{ support_email }}</td>
+              <td style="width:7%;background: #efefef;">Registered</td>
+              <td>{{ support_registered_date }}</td>
+              <td style="width:7%;background: #efefef;">Support Ends</td>
+              <td>{{ support_order_date }}</td>
+            </tr>
+            </tbody>
+            <tfooter>
+              <tr>
+                <td colspan="11" class="text-center">{{ text_free_support_remaining }}</td>
+              </tr>
+            </tfooter>
+          </table>
+        </div>
+      {% else %}
+       <div class="table-responsive"> 
+          <table id="order_details" class="table table-bordered table-striped">
+            <tfooter>
+              <tr>
+                <td class="text-center">{{ text_free_support_remaining }}</td>
+              </tr>
+            </tfooter>
+          </table>
+        </div>
+        {% endif %}
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+       {% if licensed_md5 is defined and licensed_md5 == 'd9a22d7a8178d5b42a8750123cbfe5b1' %}
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+        <input type="hidden" name="module_improvedorder_status" value="1">
+<div class="col-sm-3">
+        <div class="form-group">
+          <label class="control-label" for="input-salesdate">{{ salesdate_setting }}</label>
+          <select name="module_improvedorder_salesbydate" id="input-salesdate" class="form-control">
+            {% if module_improvedorder_salesbydate %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_salesbydate %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="input-quickorder">{{ quickorder_setting }}</label>
+          <select name="module_improvedorder_quickstatus" id="input-quickorder" class="form-control">
+            {% if module_improvedorder_quickstatus %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_quickstatus %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="input-productpurchased">{{ productpurchased_setting }}</label>
+          <select name="module_improvedorder_productpurchased" id="input-productpurchased" class="form-control">
+            {% if module_improvedorder_productpurchased %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_productpurchased %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="input-extraproductfields"><span data-toggle="tooltip" title="{{ help_extraproductfields }}">{{ text_extraproductfields }}</span></label>
+          <input type="text" name="module_improvedorder_extraproductfields" value="{{ module_improvedorder_extraproductfields }}" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="input-imagesize">{{ text_imagesize }}</label>
+          <input type="number" name="module_improvedorder_imagesizewidth" value="{{ module_improvedorder_imagesizewidth }}" placeholder="{{ text_imagesizewidth }}"> X 
+           <input type="number" name="module_improvedorder_imagesizeheigth" value="{{ module_improvedorder_imagesizeheigth }}" placeholder="{{ text_imagesizeheigth }}">
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="input-removecolumnn">{{ removecolumnn_setting }}</label>
+          <input type="text" name="module_improvedorder_removecolumnn" value="{{ module_improvedorder_removecolumnn }}" placeholder="{{ removecolumnn_setting }}" id="input-removecolumnn" class="form-control" />
+        </div>
+
+         <div class="form-group">
+          <label class="control-label" for="input-paymentmethod">{{ paymentmethod_setting }}</label>
+          <select name="module_improvedorder_paymentmethod" id="input-paymentmethod" class="form-control">
+            {% if module_improvedorder_paymentmethod %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_paymentmethod %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label class="control-label" for="input-shippingmethod">{{ shippingmethod_setting }}</label>
+          <select name="module_improvedorder_shippingmethod" id="input-shippingmethod" class="form-control">
+            {% if module_improvedorder_shippingmethod %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_shippingmethod %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+         <div class="form-group">
+          <label class="control-label" for="input-totalnoorders">{{ text_totalnoorders }}</label>
+          <select name="module_improvedorder_totalnoorders" id="input-totalnoorders" class="form-control">
+            {% if module_improvedorder_totalnoorders %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_totalnoorders %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="input-text_displaysettinglink">{{ text_displaysettinglink }}</label>
+          <select name="module_improvedorder_displaylinkorderlistpage" id="input-text_displaysettinglink" class="form-control">
+            {% if module_improvedorder_displaylinkorderlistpage %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_displaylinkorderlistpage %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+      </div>
+       <div class="col-sm-1">
+        &nbsp;
+       </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label class="control-label" for="input-filtercgid">{{ text_filtercgid }}</label>
+          <select name="module_improvedorder_filtercgid" id="input-filtercgid" class="form-control">
+            {% if module_improvedorder_filtercgid %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filtercgid %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="input-filterproductsp">{{ text_filterproductsp }}</label>
+          <select name="module_improvedorder_filterproductsp" id="input-filterproductsp" class="form-control">
+            {% if module_improvedorder_filterproductsp %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filterproductsp %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="input-totalproductcount">{{ text_display_totalproductcount }}</label>
+            <select name="module_improvedorder_totalproductcount" id="input-totalproductcount" class="form-control">
+              {% if module_improvedorder_totalproductcount %}
+              <option value="1" selected="selected">{{ text_enabled }}</option>
+              {% else %}
+              <option value="1">{{ text_enabled }}</option>
+              {% endif %}
+              {% if not module_improvedorder_totalproductcount %}
+              <option value="0" selected="selected">{{ text_disabled }}</option>
+              {% else %}
+              <option value="0">{{ text_disabled }}</option>
+              {% endif %}
+            </select>
+          </div>
+          
+        <div class="form-group">
+          <label class="control-label" for="input-text_filterphone">{{ text_filterphone }}</label>
+          <select name="module_improvedorder_filterphone" id="input-text_filterphone" class="form-control">
+            {% if module_improvedorder_filterphone %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filterphone %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label class="control-label" for="input-editphoneno">{{ entry_editphoneno }}</label>
+          <select name="module_improvedorder_editphoneno" id="input-editphoneno" class="form-control">
+            {% if module_improvedorder_editphoneno %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_editphoneno %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="input-text_filtercompany">{{ text_filtercompany }}</label>
+          <select name="module_improvedorder_filtercompany" id="input-text_filtercompany" class="form-control">
+            {% if module_improvedorder_filtercompany %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filtercompany %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="input-commentsorder">{{ ordercomments_text }}</label>
+            <select name="module_improvedorder_ordercomments" id="input-commentsorder" class="form-control">
+              {% if module_improvedorder_ordercomments %}
+              <option value="1" selected="selected">{{ text_enabled }}</option>
+              {% else %}
+              <option value="1">{{ text_enabled }}</option>
+              {% endif %}
+              {% if not module_improvedorder_ordercomments %}
+              <option value="0" selected="selected">{{ text_disabled }}</option>
+              {% else %}
+              <option value="0">{{ text_disabled }}</option>
+              {% endif %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="input-multistore">{{ text_filterstore }}</label>
+            <select name="module_improvedorder_multistore" id="input-multistore" class="form-control">
+              {% if module_improvedorder_multistore %}
+              <option value="1" selected="selected">{{ text_enabled }}</option>
+              {% else %}
+              <option value="1">{{ text_enabled }}</option>
+              {% endif %}
+              {% if not module_improvedorder_multistore %}
+              <option value="0" selected="selected">{{ text_disabled }}</option>
+              {% else %}
+              <option value="0">{{ text_disabled }}</option>
+              {% endif %}
+            </select>
+          </div>
+          {% if 0 %}
+          <div class="form-group">
+            <label class="control-label" for="input-editshippingaddress">{{ text_editshippingaddress }}</label>
+            <select name="module_improvedorder_editshippingaddress" id="input-editshippingaddress" class="form-control">
+              {% if module_improvedorder_editshippingaddress %}
+              <option value="1" selected="selected">{{ text_enabled }}</option>
+              {% else %}
+              <option value="1">{{ text_enabled }}</option>
+              {% endif %}
+              {% if not module_improvedorder_editshippingaddress %}
+              <option value="0" selected="selected">{{ text_disabled }}</option>
+              {% else %}
+              <option value="0">{{ text_disabled }}</option>
+              {% endif %}
+            </select>
+          </div>
+          {% endif %}
+          <div class="form-group">
+            <label class="control-label" for="input-multipleorderids">{{ text_multipleorderids }}</label>
+            <select name="module_improvedorder_multipleorderids" id="input-multipleorderids" class="form-control">
+              {% if module_improvedorder_multipleorderids %}
+              <option value="1" selected="selected">{{ text_enabled }}</option>
+              {% else %}
+              <option value="1">{{ text_enabled }}</option>
+              {% endif %}
+              {% if not module_improvedorder_multipleorderids %}
+              <option value="0" selected="selected">{{ text_disabled }}</option>
+              {% else %}
+              <option value="0">{{ text_disabled }}</option>
+              {% endif %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="input-multipleorderstatus"><span data-toggle="tooltip" title="{{ help_multipleorderstatus }}">{{ entry_multipleorderstatus }}</span></label>
+            <select name="module_improvedorder_multipleorderstatus" id="input-multipleorderstatus" class="form-control">
+              {% if module_improvedorder_multipleorderstatus %}
+              <option value="1" selected="selected">{{ text_enabled }}</option>
+              {% else %}
+              <option value="1">{{ text_enabled }}</option>
+              {% endif %}
+              {% if not module_improvedorder_multipleorderstatus %}
+              <option value="0" selected="selected">{{ text_disabled }}</option>
+              {% else %}
+              <option value="0">{{ text_disabled }}</option>
+              {% endif %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="input-storename">{{ text_storename }}</label>
+            <select name="module_improvedorder_storename" id="input-storename" class="form-control">
+              {% if module_improvedorder_storename %}
+              <option value="1" selected="selected">{{ text_enabled }}</option>
+              {% else %}
+              <option value="1">{{ text_enabled }}</option>
+              {% endif %}
+              {% if not module_improvedorder_storename %}
+              <option value="0" selected="selected">{{ text_disabled }}</option>
+              {% else %}
+              <option value="0">{{ text_disabled }}</option>
+              {% endif %}
+            </select>
+          </div>
+
+        
+          
+        </div>
+      <div class="col-sm-1">
+        &nbsp;
+       </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label class="control-label" for="input-text_filteremail">{{ text_filteremail }}</label>
+          <select name="module_improvedorder_filteremail" id="input-text_filteremail" class="form-control">
+            {% if module_improvedorder_filteremail %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filteremail %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="input-text_filtermodel">{{ text_filtermodel }}</label>
+          <select name="module_improvedorder_filtermodel" id="input-text_filtermodel" class="form-control">
+            {% if module_improvedorder_filtermodel %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filtermodel %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+
+         <div class="form-group">
+          <label class="control-label" for="input-text_filtercountry">{{ text_filtercountry }}</label>
+          <select name="module_improvedorder_filtercountry" id="input-text_filtermodel" class="form-control">
+            {% if module_improvedorder_filtercountry %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filtercountry %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label class="control-label" for="input-text_filterpostcode">{{ text_filterpostcode }}</label>
+          <select name="module_improvedorder_filterpostcode" id="input-text_filtermodel" class="form-control">
+            {% if module_improvedorder_filterpostcode %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filterpostcode %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label class="control-label" for="input-text_filtercity">{{ text_filtercity }}</label>
+          <select name="module_improvedorder_filtercity" id="input-text_filtermodel" class="form-control">
+            {% if module_improvedorder_filtercity %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filtercity %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label class="control-label" for="input-text_filteraddress1">{{ text_filteraddress1 }}</label>
+          <select name="module_improvedorder_filteraddress1" id="input-text_filtermodel" class="form-control">
+            {% if module_improvedorder_filteraddress1 %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filteraddress1 %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label class="control-label" for="input-text_filteraddress2">{{ text_filteraddress2 }}</label>
+          <select name="module_improvedorder_filteraddress2" id="input-text_filtermodel" class="form-control">
+            {% if module_improvedorder_filteraddress2 %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filteraddress2 %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="input-text_filterdaterange">{{ text_filterdaterange }}</label>
+          <select name="module_improvedorder_filterdaterange" id="input-text_filterdaterange" class="form-control">
+            {% if module_improvedorder_filterdaterange %}
+            <option value="1" selected="selected">{{ text_enabled }}</option>
+            {% else %}
+            <option value="1">{{ text_enabled }}</option>
+            {% endif %}
+            {% if not module_improvedorder_filterdaterange %}
+            <option value="0" selected="selected">{{ text_disabled }}</option>
+            {% else %}
+            <option value="0">{{ text_disabled }}</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="input-shippingaddress"><span data-toggle="tooltip" title="{{ order_shippingaddress_help }}">{{ order_shippingaddress_text }}</span></label><textarea name="module_improvedorder_shippingaddress"  placeholder="{{ order_shippingaddress_text }}" id="input-shippingaddress" class="form-control" />{{ module_improvedorder_shippingaddress }}</textarea>
+        </div>
+
+      </div>
+      </form>
+      {% endif %}
+       {% if (licensed == 'none') %} 
+    {{ license_purchase_thanks }} 
+    {% if (regerror is defined) %} {{ regerror_quote_msg }} {% endif %} 
+    {% if (regerror is defined) %}<p style="color:red;">error msg: {{ regerror }}</p>{% endif %} 
+      <h2>{{ license_registration }}</h2>
+      <form name="reg" method="post" action="{{ oc_licensing_home }}register.php" id="reg" class="form-horizontal containr-fluid">
+          <div class="form-group">
+              <label class="col-sm-2 control-label" for="opencart_email">{{ license_opencart_email }}</label>
+              <div class="col-sm-10">
+                <input name="opencart_email" type="text" autofocus required id="opencart_email" form="reg" class="form-control"></div>
+            </div>
+    {% if (emailmal is defined and regerror == 'emailmal') %}<p style="color:red;">{{ check_email }}</p>{% endif %} 
+          <div class="form-group">
+              <label class="col-sm-2 control-label" for="order_id">{{ license_opencart_orderid }}</label>
+              <div class="col-sm-10">
+                <input name="order_id" type="text" autofocus required id="order_id" form="reg" class="form-control"></div>
+            </div>
+    {% if (regerror is defined and regerror == 'orderid') %}<p style="color:red;">{{ check_orderid }}</p>{% endif %} 
+          <div class="form-group">
+              <div class="col-sm-12">
+                <button type="submit" form="reg" data-toggle="tooltip" title="{{ license_registration }}" class="btn btn-primary"><i class="fa fa-save"></i></button><input name="extension_id" type="hidden" id="extension_id" form="reg" value="{{ extension_id }}"><input type="hidden" name="aurl" value="{{ aurl }}" form="reg"><input type="hidden" name="auri" value="{{ auri }}">
+              </div>
+            </div>
+    </form>
+    {% else %} 
+    <div class="form-horizontal containr-fluid"></div>
+    {% endif %} 
+    {% if (licensed == 'curl') %} 
+    {{ server_error_curl }} 
+    {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

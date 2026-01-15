@@ -1,0 +1,536 @@
+  /* General Styles for Image Upload Section */
+
+
+
+  .description-content {
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  position: relative;
+  transition: max-height 0.4s ease;
+  line-height: 1.6em;
+  max-height: calc(1.6em * 10); /* ~10 lines */
+  margin-bottom: 20px;
+}
+
+/* On expand */
+.description-content.expanded {
+  display: block;
+  -webkit-line-clamp: unset;
+  max-height: none;
+  overflow: visible;
+}
+
+
+
+
+  .form-group {
+  margin-bottom: 20px;
+}
+
+#image-upload-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.img-thumbnail {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+}
+
+button {
+  margin-top: 20px;
+}
+
+
+
+.form-group.required .control-label::after{
+
+  content:  ' *';
+  color: #FF0000;
+}
+
+
+#button-review{
+
+  background-color: #953A93;
+  color: #FFFFFF;
+
+  width: 602px;
+  height: 35px;
+    /* padding: 16px 8px; */
+  border-radius: 8px;
+display: flex;
+justify-content: center;
+align-items: center;
+margin: 20px auto 0;
+text-align: center;
+
+font-family: 'Inter', sans-serif;
+font-size: 16px;
+font-weight: 500;
+
+  
+}
+
+
+
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* .popup-overlay.active {
+  display: flex;
+} */
+
+
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* border-bottom: 1px solid #ddd; */
+  padding-bottom: 10px;
+}
+
+.popup-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
+
+  .popup-close {
+    font-size: 24px;
+    background: none;
+    border: none;
+    float: right;
+    cursor: pointer;
+  }
+
+
+
+
+
+
+/* .popup-content {
+ background: #fff;
+  padding: 20px;
+  width: 100%;
+  max-width: 700px;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  margin: auto;
+  display: block;
+  position: fixed;
+  top:20px;
+  bottom: 10px;
+
+
+ 
+} */
+
+
+
+.popup-overlay.active {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  position: absolute; /* Fix for iOS */
+  background: #fff;
+  padding: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+  width: 90%;
+  border-radius: 10px;
+}
+
+
+
+  .popup-title {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 72px;
+  color: #1F2937;
+}
+
+
+.label-style {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+
+body.no-scroll {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+
+
+@media screen and (max-width: 768px){
+
+    .popup-content{
+
+        width:auto;
+        max-width: none;
+        height: auto;
+        padding: 16px;
+          border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        top:50px;
+        /* bottom: 10px; */
+        left:10px;
+        right: 10px;
+        position: fixed;
+        overflow-y: scroll;
+        max-height: 80vh;
+    }
+
+  /* body.no-scroll {
+    overflow: hidden;
+  } */
+    
+  #button-review {
+    width: 100%;
+    height: auto;
+    padding: 12px;
+    font-size: 14px;
+    margin-top: 16px;
+  }
+
+
+  .popup-title {
+    font-size: 14px;
+    line-height: 14px;
+    text-align: center;
+    /* margin-bottom: 12px; */
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+
+  .img-thumbnail {
+    width: 70px;
+    height: 70px;
+  }
+
+  .remove-btn {
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+  }
+
+  #image-upload-wrapper {
+    justify-content: center;
+    gap: 10px;
+  }
+
+
+  
+  input[type="text"],
+  textarea,
+  select {
+    width: 100% !important;
+    max-width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+    box-sizing: border-box;
+  }
+
+ #review_button-review {
+    width: 100%;
+    /* padding: 10px; */
+    font-size: 14px;
+    height: auto;
+    margin-top: 12px;
+    flex-shrink: 0;
+  }
+
+
+
+  #input-review {
+    rows: 3; /* Optional: doesn't affect much, just for clarity */
+    height: 80px; /* Reduce height */
+    font-size: 14px;
+    padding: 6px;
+      width: 100%;
+  box-sizing: border-box;
+  }
+}
+
+
+/* General error message styling */
+.error {
+  color: #dc3545; /* Bootstrap's red (danger) color */
+  font-size: 15px; /* Smaller font for error */
+  font-weight: 500;
+  margin-top: 4px;
+  display: block;
+}
+
+
+
+
+/* 
+Validations */
+
+.text-danger {
+  color: red;
+}
+.text-success {
+  color: green;
+}
+
+
+
+.rating-star.fa-solid {
+  color: #ffc107; /* Gold */
+}
+.rating-star.fa-regular {
+  color: #ccc;    /* Grey */
+}
+
+
+
+
+.fa-solid { color: #ffc107; }
+.fa-regular { color: #ccc; }
+
+
+
+
+
+
+#review_openReviewPopup {
+    background-color: #953A93;
+    border: none;
+}
+
+
+#review_button-review{
+
+  background-color: #953A93;
+  border: none;
+}
+
+
+
+
+/* iPhone SE (375px width x 667px height) specific styles */
+/* @media only screen 
+  and (device-width: 375px) 
+  and (device-height: 667px) 
+  and (-webkit-device-pixel-ratio: 2) {
+
+  .popup-content {
+    width: 92%;
+    padding: 14px;
+
+    bottom: 200px;
+    max-height: 78vh;
+    border-radius: 12px;
+  }
+
+  #review_button-review {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    height: auto;
+    margin-top: 12px;
+  }
+
+  .popup-title {
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .img-thumbnail {
+    width: 60px;
+    height: 60px;
+  }
+
+  .remove-btn {
+    width: 16px;
+    height: 16px;
+    font-size: 12px;
+  }
+
+  #review_image-upload-wrapper {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  input[type="text"],
+  textarea {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  #review_input-review {
+    height: 70px;
+  }
+
+  .error {
+    font-size: 13px;
+  }
+} */
+
+
+
+
+
+
+
+@media only screen 
+  and (device-width: 375px) 
+  and (device-height: 667px) 
+  and (-webkit-device-pixel-ratio: 2) {
+
+  .popup-overlay.active {
+    align-items: flex-start;
+    padding-top: 20px;
+    overflow-y: auto;
+  }
+
+  .popup-content {
+    width: 94%;
+    padding: 16px;
+    border-radius: 12px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .popup-header {
+    margin-bottom: 10px;
+    flex-shrink: 0;
+  }
+
+  .popup-title {
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .popup-body {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  .img-thumbnail {
+    width: 60px;
+    height: 60px;
+  }
+
+  .remove-btn {
+    width: 16px;
+    height: 16px;
+    font-size: 12px;
+  }
+
+  #review_image-upload-wrapper {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  input[type="text"],
+  textarea {
+    font-size: 14px;
+    padding: 6px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #review_input-review {
+    height: 70px;
+  }
+
+  .error {
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  #review_button-review {
+    width: 100%;
+    /* padding: 10px; */
+    font-size: 14px;
+    height: auto;
+    margin-top: 12px;
+    flex-shrink: 0;
+  }
+
+  #review_review-success {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+}
+
+
+
+
+
+
+
+
+

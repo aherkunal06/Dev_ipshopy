@@ -1,0 +1,652 @@
+{{ header }}{{ column_left }}
+<div id="content" class="mp-content">
+ <div class="page-header">
+  <div class="container-fluid">
+   <div class="pull-right">
+    <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-warning"><i class="fa fa-reply"></i> {{ button_cancel }}</a>
+  </div>
+   <h1>{{ heading_title }}</h1>
+   <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+   </ul>
+  </div>
+ </div>
+ <div class="container-fluid">
+  {% if error_warning %}
+  <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+   <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+  <div class="panel panel-default beforenotice">
+		<div class="panel-heading">
+			<h3 class="panel-title"><i class="fa fa-download"></i> {{ text_list }}</h3>
+		</div>
+		<div class="panel-body" id="form-order-export">
+			<div class="alert alert-info"><i class="fa fa-info-circle"></i> <strong>{{ text_filters_note }}</strong></div>
+			<ul class="nav nav-tabs" style="position: relative;">
+        <li class="active"><a href="#tab-general" data-toggle="tab"><i class="fa fa-cog"></i> <span>{{ tab_general }}</span></a></li>
+        <li><a href="#tab-support" data-toggle="tab"><i class="fa fa-thumbs-up"></i> <span>{{ tab_support }}</span></a></li>
+      </ul>
+      <div class="tab-content">
+	      <div class="tab-pane active" id="tab-general">
+	      	<div class="row">
+						<div class="col-sm-8">
+							<div class="well">
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label" for="input-orderid">{{ entry_order_id }}</label>
+											<input type="text" name="find_order_id" value="" placeholder="{{ entry_order_id }}" id="input-orderid" class="form-control" />
+											<div class="help">{{ help_order_id }}</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label" for="input-total">{{ entry_total }}</label>
+											<input type="text" name="find_total" value="" placeholder="{{ entry_total }}" id="input-total" class="form-control" />
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label" for="input-date-start">{{ entry_date_start }}</label>
+											<div class="input-group date">
+												<input type="text" name="find_date_start" value="" placeholder="{{ entry_date_start }} : 2021-03-06" data-date-format="YYYY-MM-DD" id="input-date-start" class="form-control" />
+												<span class="input-group-btn">
+												<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+												</span></div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label" for="input-date-end">{{ entry_date_end }}</label>
+											<div class="input-group date">
+												<input type="text" name="find_date_end" value="" placeholder="{{ entry_date_end }} : 2021-03-16" data-date-format="YYYY-MM-DD" id="input-date-end" class="form-control" />
+												<span class="input-group-btn">
+												<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+												</span></div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label" for="input-limit-start">{{ entry_limit_start }}</label>
+											<input type="text" name="find_limit_start" value="" placeholder="{{ entry_limit_start }} : 0" id="input-limit-start" class="form-control" />
+											<div class="help">{{ help_order_limit }}</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label" for="input-limit-end">{{ entry_limit_end }}</label>
+											<input type="text" name="find_limit_end" value="" placeholder="{{ entry_limit_end }} : 500" id="input-limit-end" class="form-control" />
+											<div class="help">{{ help_order_limit }}</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label" for="input-order-status">{{ entry_order_status }}</label>
+											<select name="find_order_status" id="input-order-status" class="form-control" data-live-search="true">
+												<option value="">{{ text_all }}</option>
+												<option value="0">{{ text_missing }}</option>
+												{% for order_status in order_statuses %}
+												<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label" for="input-customer-group">{{ entry_customer_group }}</label>
+											<select class="form-control" name="find_customer_group" id="input-customer-group" data-live-search="true">
+												<option value="">{{ text_all }}</option>
+												{% for customer_group in customer_groups %}
+												<option value="{{ customer_group.customer_group_id }}">{{ customer_group.name }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label" for="input-payment"> {{ entry_payment_method }}</label>
+											<select name="find_payment_method[]" id="input-payment" class="form-control" multiple="multiple">
+												{% for payment_method in payment_methods %}
+												<option value="{{ payment_method.code }}">{{ payment_method.heading_title }}</option>
+												{% endfor %}
+											</select>
+											<div class="help">{{ help_payment_method }}</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label" for="input-shipping">{{ entry_shipping_method }}</label>
+											<select name="find_shipping_method[]" id="input-shipping" class="form-control" multiple="multiple">
+												{% for shipping_method in shipping_methods %}
+												<option value="{{ shipping_method.code }}">{{ shipping_method.heading_title }}</option>
+												{% endfor %}
+											</select>
+											<div class="help">{{ help_shipping_method }}</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label" for="input-store">{{ entry_store }}</label>
+											<select name="find_store_id" id="input-store" class="form-control">
+												<option value="">{{ text_all }}</option>
+												{% for store in stores %}
+												<option value="{{ store.store_id }}">{{ store.name }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-sort">{{ entry_sort }}</label>
+											<select name="find_sort" id="input-sort" class="form-control">
+												{% for sort in sorts %}
+												<option value="{{ sort.value }}">{{ sort.text }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-order">{{ entry_order }}</label>
+											<select name="find_order" id="input-order" class="form-control">
+												<option value="ASC">{{ text_asc }}</option>
+												<option value="DESC">{{ text_desc }}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title"><label class="control-label" for="input-product"><i class="fa fa-tags"></i>{{ entry_product }}</label></h3>
+								</div>
+								<div class="panel-body">
+									<input type="text" name="product_name" value="" placeholder="{{ entry_product }}" id="input-product" class="form-control" />
+									<div id="export-product" class="well well-sm"></div>
+									<div class="help">{{ help_product }}</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title"><label class="control-label" for="input-customer"><i class="fa fa-user"></i>{{ entry_customer }}</label></h3>
+								</div>
+								<div class="panel-body">
+									<input type="text" name="customer_name" value="" placeholder="{{ entry_customer }}" id="input-customer" class="form-control" />
+									<div id="export-customer" class="well well-sm"></div>
+									<div class="help">{{ help_customer }}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<p><button class="btn btn-success btn-sm" id="button-advance-filter"><i class="fa fa-search"></i>	{{ button_advance_filter }}</button></p>
+						</div>
+					</div>
+					<div class="row" style="display: none;" id="advance-filters">
+						<div class="col-sm-12">
+							<div class="well">
+								<div class="row">
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-payment-country-id">{{ entry_payment_country }}</label>
+											<select name="find_payment_country_id" id="input-payment-country-id" class="form-control" data-live-search="true">
+												<option value="">{{ text_all }}</option>
+												{% for country in countries %}
+												<option value="{{ country.country_id }}">{{ country.name }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-payment-zone-id">{{ entry_payment_zone }}</label>
+											<select name="find_payment_zone_id" id="input-payment-zone-id" class="form-control" data-live-search="true"></select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-payment-postcode">{{ entry_payment_postcode }}</label>
+											<input type="text" name="find_payment_postcode" id="input-payment-postcode" class="form-control" value="" />
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-language-id">{{ entry_language }}</label>
+											<select name="find_language_id" id="input-language-id" class="form-control" data-live-search="true">
+												<option value="">{{ text_all }}</option>
+												{% for language in languages %}
+												<option value="{{ language.language_id }}">{{ language.name }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-shipping-country-id">{{ entry_shipping_country }}</label>
+											<select name="find_shipping_country_id" id="input-shipping-country-id" class="form-control" data-live-search="true">
+												<option value="">{{ text_all }}</option>
+												{% for country in countries %}
+												<option value="{{ country.country_id }}">{{ country.name }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-shipping-zone-id">{{ entry_shipping_zone }}</label>
+											<select name="find_shipping_zone_id" id="input-shipping-zone-id" class="form-control" data-live-search="true"></select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-shipping-postcode">{{ entry_shipping_postcode }}</label>
+											<input type="text" name="find_shipping_postcode" id="input-shipping-postcode" class="form-control" value="" />
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-currency-id">{{ entry_currency }}</label>
+											<select name="find_currency_id" id="input-currency-id" class="form-control" data-live-search="true">
+												<option value="">{{ text_all }}</option>
+												{% for currency in currencies %}
+												<option value="{{ currency.currency_id }}">{{ currency.code }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-invoice-prefix">{{ entry_invoice_prefix }}</label>
+											<input type="text" name="find_invoice_prefix" id="input-invoice-prefix" class="form-control" value="" />
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="control-label" for="input-invoice">{{ entry_invoice }}</label>
+											<input type="text" name="find_invoice" id="input-invoice" class="form-control" value="" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title"><i class="fa fa-shopping-cart"></i>{{ entry_order_fields }}</h3>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="form-group mp-buttons">
+												<label class="control-label" for="input-orderdetail">{{ entry_orderdetail }}</label>
+												<div class="">
+													<div id="input-orderdetail" class="btn-group btn-group-justified" data-toggle="buttons">
+														<label class="btn btn-primary active"><input type="radio" name="find_orderdetail" value="1" checked="checked" /> {{ text_yes }}</label>
+														<label class="btn btn-primary"><input type="radio" name="find_orderdetail" value="0" /> {{ text_no }}</label>
+													</div>
+													<div class="help">{{ help_orderdetail }}</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group mp-buttons">
+												<label class="control-label" for="input-customerdetail">{{ entry_customerdetail }}</label>
+												<div class="">
+													<div id="input-customerdetail" class="btn-group btn-group-justified" data-toggle="buttons">
+														<label class="btn btn-primary active"><input type="radio" name="find_customerdetail" value="1" checked="checked" /> {{ text_yes }}</label>
+														<label class="btn btn-primary"><input type="radio" name="find_customerdetail" value="0" /> {{ text_no }}</label>
+													</div>
+													<div class="help">{{ help_customerdetail }}</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="form-group mp-buttons">
+												<label class="control-label" for="input-productdetail">{{ entry_productdetail }}</label>
+												<div class="">
+													<div id="input-productdetail" class="btn-group btn-group-justified" data-toggle="buttons">
+														<label class="btn btn-primary active"><input type="radio" name="find_productdetail" value="1" checked="checked" /> {{ text_yes }}</label>
+														<label class="btn btn-primary"><input type="radio" name="find_productdetail" value="0" /> {{ text_no }}</label>
+													</div>
+													<div class="help">{{ help_productdetail }}</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group mp-buttons">
+												<label class="control-label" for="input-voucherdetail">{{ entry_voucherdetail }}</label>
+												<div class="">
+													<div id="input-voucherdetail" class="btn-group btn-group-justified" data-toggle="buttons">
+														<label class="btn btn-primary active"><input type="radio" name="find_voucherdetail" value="1" checked="checked" /> {{ text_yes }}</label>
+														<label class="btn btn-primary"><input type="radio" name="find_voucherdetail" value="0" /> {{ text_no }}</label>
+													</div>
+													<div class="help">{{ help_voucherdetail }}</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="form-group mp-buttons">
+												<label class="control-label" for="input-totals">{{ entry_totals }}</label>
+												<div class="">
+													<div id="input-totals" class="btn-group btn-group-justified" data-toggle="buttons">
+														<label class="btn btn-primary active"><input type="radio" name="find_ordertotals" value="1" checked="checked" /> {{ text_yes }}</label>
+														<label class="btn btn-primary"><input type="radio" name="find_ordertotals" value="0" /> {{ text_no }}</label>
+													</div>
+													<div class="help">{{ help_totals }}</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group mp-buttons">
+												<label class="control-label" for="input-shippingaddress">{{ entry_shippingaddress }}</label>
+												<div class="">
+													<div id="input-shippingaddress" class="btn-group btn-group-justified" data-toggle="buttons">
+														<label class="btn btn-primary active"><input type="radio" name="find_shippingaddress" value="1" checked="checked" /> {{ text_yes }}</label>
+														<label class="btn btn-primary"><input type="radio" name="find_shippingaddress" value="0" /> {{ text_no }}</label>
+													</div>
+													<div class="help">{{ help_shippingaddress }}</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="form-group mp-buttons">
+												<label class="control-label" for="input-paymentaddress">{{ entry_paymentaddress }}</label>
+												<div class="">
+													<div id="input-paymentaddress" class="btn-group btn-group-justified" data-toggle="buttons">
+														<label class="btn btn-primary active"><input type="radio" name="find_paymentaddress" value="1" checked="checked" /> {{ text_yes }}</label>
+														<label class="btn btn-primary"><input type="radio" name="find_paymentaddress" value="0" /> {{ text_no }}</label>
+													</div>
+													<div class="help">{{ help_paymentaddress }}</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group mp-buttons">
+												<label class="control-label" for="input-customerdetail">{{ entry_customfields }}</label>
+												<div class="">
+													<div id="input-customerdetail" class="btn-group btn-group-justified" data-toggle="buttons">
+														<label class="btn btn-primary active"><input type="radio" name="find_customfields" value="1" checked="checked" /> {{ text_yes }}</label>
+														<label class="btn btn-primary"><input type="radio" name="find_customfields" value="0" /> {{ text_no }}</label>
+													</div>
+													<div class="help">{{ help_customfields }}</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% if extrafields %}
+						<div class="col-sm-5">
+							{% for extrafield in extrafields %}
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title"><label class="control-label"><i class="fa fa-list"></i>{{ entry_extra_field }}</label></h3>
+									<div class="help">{{ help_extra_field }}</div>
+								</div>
+								<div class="panel-body">
+									{% set okfields = extrafield.fields %}
+									{% for extrafield_name in okfields|batch(2) %}
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="checkbox">
+											{% for extrafield_values in extrafield_name %}
+												<label class="checkbox-inline"><input type="checkbox" name="find_extrafields[]" value="{{ extrafield.tablename }}::{{ extrafield_values }}" /> {{ extrafield_values }}</label>
+											{% endfor %}
+											</div>
+										</div>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+						{% endif %}
+						<div class="col-sm-5">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title"><label class="control-label" for="export-format"><i class="fa fa-file-o"></i>{{ entry_format }}</label></h3>
+								</div>
+								<div class="panel-body">
+									<div class="form-group mp-buttons">
+										<select name="find_format" class="form-control" id="export-format">
+										<option value="xls">{{ text_xls }}</option>
+										<option value="xlsx">{{ text_xlsx }}</option>
+										<option value="csv">{{ text_csv }}</option>
+										<option value="xml">{{ text_xml }}</option>
+										<option value="json">{{ text_json }}</option>
+										</select>
+										<div class="help">{{ help_format }}</div>
+									</div>
+									<div class="buttons exports">
+										<button type="button" class="btn btn-success btn-block" id="exporter-order"><i class="fa fa-download" aria-hidden="true"></i> {{ button_export }}</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+	      </div>
+	      <div class="tab-pane" id="tab-support">
+        	<div class="bs-callout bs-callout-info">
+	          <h4>ModulePoints {{ heading_title }}</h4>
+	          <center><strong>{{ heading_title }} - Version 2.0 </strong></center> <br/>
+	          <p>{{ heading_title }} v2 comes with new features and few bug fixes. With this extension you have multiple filters and many export fields, so you get only data which you required. It's a upgraded version of "Old {{ heading_title }}" extension with various new features and bug fixes.</p>
+	        </div>
+        	<fieldset>
+            <div class="form-group">
+              <div class="col-md-12 col-xs-12">
+                <h4 class="text-mpsuccess text-center"><i class="fa fa-thumbs-up" aria-hidden="true"></i> Thanks For Choosing Our Extension</h4>
+                 <ul class="list-group">
+                  <li class="list-group-item clearfix">Installed Version <span class="badge"><i class="fa fa-gg" aria-hidden="true"></i> V.2.0</span></li>
+                </ul>
+                <h4 class="text-mpsuccess text-center"><i class="fa fa-phone" aria-hidden="true"></i> Please Contact Us In Case Any Issue OR Give Feedback!</h4>
+                <ul class="list-group">
+                  <li class="list-group-item clearfix">support@modulepoints.com <span class="badge"><a href="mailto:support@modulepoints.com?Subject=Request Support: {{ heading_title }} Extension"><i class="fa fa-envelope"></i> Contact Us</a></span></li>
+                </ul>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+   </div>
+  </div>
+ </div>
+ <div class="mpteam"></div>
+<script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+<script type="text/javascript"><!--
+$(function() {
+	// Exporter Order
+	$('#exporter-order').click(function() {
+		$.ajax({
+			url: 'index.php?route={{ isdir_extension }}mpimporterexporter/export_order/export&{{ get_token }}={{ token }}',
+			type: 'post',
+			data: $('#form-order-export input[type=\'text\'], #form-order-export input[type=\'hidden\'], #form-order-export select, #form-order-export input[type=\'checkbox\']:checked, #form-order-export input[type=\'radio\']:checked').serialize(),
+			dataType: 'json',
+			beforeSend: function() {
+				$('.alert-danger, .alert-success').remove();
+				$('#exporter-order').button('loading');
+				$('.mpteam').after('<div class="modal-backdrop in mpteam_loader"></div><div class="loader mpteam_loader"></div>');
+			},
+			complete: function() {
+				$('#exporter-order').button('reset');
+				$('.mpteam_loader').remove();
+			},
+			success: function(json) {
+				if(json['error']) {
+					$('.beforenotice').before('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> '+ json['error'] +' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+					$('html, body').animate({ scrollTop: 0 }, 'slow');
+				}
+
+				if(json['href']) {
+					window.location = json['href'];
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				if(xhr.responseText) {
+					$('.beforenotice').before('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> '+ xhr.responseText +' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				}
+			}
+		});
+	});
+
+
+	// Product
+	$('input[name=\'product_name\']').autocomplete({
+		source: function(request, response) {
+			$.ajax({
+				url: 'index.php?route=catalog/product/autocomplete&{{ get_token }}={{ token }}&filter_name=' + encodeURIComponent(request),
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item['name'],
+							value: item['product_id']
+						}
+					}));
+				}
+			});
+		},
+		select: function(item) {
+			$('input[name=\'product_name\']').val('');
+
+			$('#export-product' + item['value']).remove();
+
+			$('#export-product').append('<div id="export-product' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="find_product[]" value="' + item['value'] + '" /></div>');
+		}
+	});
+	$('#export-product').delegate('.fa-minus-circle', 'click', function() {
+		$(this).parent().remove();
+	});
+
+
+	// Customer
+	$('input[name=\'customer_name\']').autocomplete({
+		source: function(request, response) {
+			$.ajax({
+				url: 'index.php?route=customer/customer/autocomplete&{{ get_token }}={{ token }}&filter_name=' + encodeURIComponent(request),
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item['name'],
+							value: item['name']
+						}
+					}));
+				}
+			});
+		},
+		select: function(item) {
+			$('input[name=\'customer_name\']').val('');
+
+			$('#export-customer' + item['value']).remove();
+
+			$('#export-customer').append('<div id="export-customer' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="find_customer[]" value="' + item['value'] + '" /></div>');
+		}
+	});
+	$('#export-customer').delegate('.fa-minus-circle', 'click', function() {
+		$(this).parent().remove();
+	});
+
+
+	// Date
+	$('.date').datetimepicker({
+		pickTime: false
+	});
+
+	$('select[name=\'find_payment_country_id\']').on('change', function() {
+		$.ajax({
+			url: 'index.php?route=localisation/country/country&{{ get_token }}={{ token }}&country_id=' + this.value,
+			dataType: 'json',
+			beforeSend: function() {
+				$('select[name=\'find_payment_country_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+			},
+			complete: function() {
+				$('.fa-spin').remove();
+			},
+			success: function(json) {
+				html = '<option value="" selected="selected">{{ text_all }}</option>';
+
+				if (json['zone'] && json['zone'] != '') {
+					for (i = 0; i < json['zone'].length; i++) {
+	  			html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+						html += '>' + json['zone'][i]['name'] + '</option>';
+					}
+				} else {
+					html += '<option value="0">{{ text_none }}</option>';
+				}
+
+				$('select[name=\'find_payment_zone_id\']').html(html);
+			}
+		});
+	});
+
+	$('select[name=\'find_payment_country_id\']').trigger('change');
+
+	$('select[name=\'find_shipping_country_id\']').on('change', function() {
+		$.ajax({
+			url: 'index.php?route=localisation/country/country&{{ get_token }}={{ token }}&country_id=' + this.value,
+			dataType: 'json',
+			beforeSend: function() {
+				$('select[name=\'find_shipping_country_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+			},
+			complete: function() {
+				$('.fa-spin').remove();
+			},
+			success: function(json) {
+				html = '<option value="" selected="selected">{{ text_all }}</option>';
+
+				if (json['zone'] && json['zone'] != '') {
+					for (i = 0; i < json['zone'].length; i++) {
+	  			html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+						html += '>' + json['zone'][i]['name'] + '</option>';
+					}
+				} else {
+					html += '<option value="0">{{ text_none }}</option>';
+				}
+
+				$('select[name=\'find_shipping_zone_id\']').html(html);
+			}
+		});
+	});
+
+	$('select[name=\'find_shipping_country_id\']').trigger('change');
+
+	$('#button-advance-filter').click(function() {
+		$('#advance-filters').slideDown(200);
+
+		$('#button-advance-filter').attr('disabled', true);
+	});
+});
+//--></script>
+</div>
+{{ footer }}

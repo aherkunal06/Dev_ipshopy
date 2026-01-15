@@ -1,0 +1,112 @@
+{% if mainstatus is not empty or otpverifystatus is not empty %}
+	<input type="hidden" class="loginotpstatus" value="{{ loginotpstatus }}">
+	<div class="form-group required waotpbox{{otplocation}}" id="waotpbox">
+		<label class="col-sm-2 control-label" for="input-telephone">{{ entry_telephone }}</label>
+		<div class="col-sm-10">
+			<div class="input-group telephoneerror{{otplocation}}" >
+				<input type="text" v-model="order_data.telephone" name="telephone" value="{{ telephone }}" id="input-telephone" placeholder="{{ entry_telephone }}"  class="form-control telephonenew{{otplocation}}"/>
+				<span class="input-group-btn"><input type="button" id="verify" class="btn btn-danger btnverify{{otplocation}}" value="{{ text_verify }}"><i class="fa fa-check" aria-hidden="true"></i> </span>
+			</div>
+		</div>
+		<span class="text-danger" v-if="error && error.telephone" v-html="error.telephone"></span>
+	</div>
+	
+	<div class="inputotp otpverify{{otplocation}}" id="otplogin{{otplocation}}" style="display:none;">
+		<div class="otperror{{otplocation}} successmsg{{otplocation}}"></div>
+		<div class="text-center">
+			<div class="loadtelephone{{otplocation}}"></div>
+			<input name="otp" maxlength="{% if otpdigitoption == '4' %} 4 {% else %} 6 {% endif %}" {% if otpdigitoption == '4' %} style="width: 6.0ch;" {% else %} style="width: 9.0ch;" {% endif %} id="otpinput{{otplocation}}" class="otpinput{{otplocation}}">
+			<div class="counter{{otplocation}}"></div>
+			<br><button type="button" style="display:none;" class="btn btn-warning resendotp{{otplocation}}">{{text_security}}</button>
+		</div>
+	</div>
+	
+	{% if route != "checkout/checkout" %}
+	<script>
+	var otplocation='{{otplocation}}';
+	var resendtime='{{resendtime}}';
+	var loginotpstatus='{{loginotpstatus}}';
+	var chkloginotpstatus='{{chkloginotpstatus}}';
+//language var
+	var text_enterotp='{{text_enterotp}}';
+	var text_pleaswait='{{text_pleaswait}}';
+	var text_requesting='{{text_requesting}}';
+	</script>
+	<script src="catalog/view/javascript/jquery/verifyotp.js" type="text/javascript"></script>
+	{% endif %}
+<style>
+#waotpbox{{otplocation}} {margin-top: 20px;}
+.otpinput{{otplocation}} {
+  border: none;
+  
+  background: 
+    repeating-linear-gradient(90deg, 
+        dimgrey 0, 
+        dimgrey 1ch, 
+        transparent 0, 
+        transparent 1.5ch) 
+      0 100%/100% 2px no-repeat;
+  color: dimgrey;
+  font: 5ch consolas, monospace;
+  letter-spacing: .47ch;
+  margin: 12px 0;
+}
+.otpinput{{otplocation}}:focus {
+  outline: none;
+  color: dodgerblue;
+}
+
+.intl-tel-input {
+  direction: ltr !important;
+}
+
+input#input-telephone {
+  text-align: left !important;
+  height: 38px;
+}
+
+/* == New code start here 18/7/22 == */
+#verify i {
+	position: initial;
+	transform: none;
+}
+
+#waotpbox .input-group{
+	width: 100%;
+}
+
+.showinput {
+	margin-top: 20px;
+	width: 100%;
+}
+
+.otpverifyaccountlogin {
+    margin: 20px 0;
+}
+
+.otpsendto {
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+.counteraccountregister {
+	font-size: 14px;
+    margin-top: 12px;
+}
+.counteraccountlogin {
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+.waotpboxaccountregister {
+    width: 100%;
+}
+div#otploginaccountregister {
+    display: block;
+	width: 100%;
+}
+
+/* == New code end here 18/7/22 == */
+
+</style>
+{% endif %}

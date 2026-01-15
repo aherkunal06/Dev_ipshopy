@@ -1,0 +1,94 @@
+<!-- /**
+ * OpenCart 3.x Backend Ecommerce Feed  application
+ * 
+ * @package Mega Feed Pro
+ * @author Andras Kato <developer@newcms.hu>
+ * @link https://www.newcms.hu/
+ * @copyright NewCart and NewCMS Software LTD. 2004-2021 (https://www.newcms.hu)
+ * @license https://www.www.newcms.hu/oc3/license/
+ * @version 1.2.7 Pro
+ * 
+ * Attention!
+ * In case you want to use a nulled software version, we will detect it due to the built-in protection and you will be prosecuted!
+ * DO NOT USE NULLED SOFTWARE BETTER USE ORIGINAL LICENSED SOFTWARE! 
+ * 
+ */
+ 
+{% if megaNewsWidget is null and ( mega_news.data.news is not empty or mega_news.data.update is not empty ) %}
+  <div id="mega-news-widget" class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="icon fa fa-newspaper-o"></span>&nbsp;{{ mega }}</h3>
+          <div class="pull-right">
+            <button type="button" id="mega-news-close" class="btn btn-danger"><i class="fa fa-times-circle"></i></button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+
+              {% if mega_news.data.news is not empty %}
+
+                {% for item in mega_news.data.news %}
+                  <div class="media">
+                    <div class="media-body">
+                      <h4 class="media-heading"><a href="{{ item.url }}" target="_blank"><strong>{{ item.title }}</strong></a></h4>
+                      <div>
+                        <span class="label label-success">{{ mega_category_news }}</span>
+                        <span><i>{{ item.pubdate }}</i></span>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+
+              {% else %}
+                {{ mega_news_empty_text }}
+              {% endif %}
+
+            </div>
+            <div class="col-lg-6 col-md-6">
+              {% if mega_news.data.update is not empty %}
+
+                {% for item in mega_news.data.update %}
+                  <div class="media">
+                    <div class="media-body">
+                      <h4 class="media-heading"><a href="{{ item.url }}" target="_blank"><strong>{{ item.title }}</strong></a></h4>
+                      <div>
+                        <span class="label label-info">{{ mega_category_update }}</span>
+                        <span><i>{{ item.pubdate }}</i></span>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+
+              {% else %}
+                {{ mega_update_empty_text }}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <script type="text/javascript"><!--
+  $(document).ready(function(){
+    $('#mega-news-close').on('click', function() {
+      hideMegaNews();
+    });
+  });
+
+  function hideMegaNews(){
+    $.ajax({
+    url: 'index.php?route={{ route }}/hide-mega-news&user_token={{ user_token }}',
+    data: { },
+    method: 'POST',
+    success : function(response){
+      $('#mega-news-widget').slideUp();
+    },
+    error : function(){
+      $('#mega-news-widget').slideUp();
+    }
+    });
+  }
+  //--></script>
+<!--{% endif %}
+-->

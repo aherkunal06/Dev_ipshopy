@@ -1,0 +1,174 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-filter"></i> Filter</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row"> 
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label for="filter_user_id">User ID</label>
+              <input type="text" name="filter_user_id" id="filter_user_id" value="{{ filter_user_id }}" placeholder="User ID" class="form-control" />
+            </div>
+          </div>
+          
+          <!-- <div class="col-sm-3">
+            <div class="form-group">
+              <label for="filter_name">Name</label>
+              <input type="text" name="filter_name" id="filter_name" value="{{ filter_name }}" placeholder="Enter Name" class="form-control" autocomplete="off" />
+            </div>
+          </div> -->
+          
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label for="filter_email">Email</label>
+            <input type="text" name="filter_email" id="filter_email" value="{{ filter_email }}" placeholder="Enter Email" class="form-control" autocomplete="off" />
+            </div>
+          </div>
+          
+        <div class="col-sm-3">
+          <label>&nbsp;</label>
+          <div>
+            <button type="button" id="button-filter" class="btn btn-primary">{{ button_filter }}</button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table id="tracking-table" class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                
+                <th>{{column_user_id}}</th>
+                <th>{{column_name}}</th>
+                <th>{{column_email}}</th>
+                <th>{{column_total_products_approved}}</th>
+                <th>{{column_total_products_disapproved}}</th>
+                <th>{{column_action}}</th>
+              </tr>
+            </thead>
+            <tbody id="tracking-body">
+              {% for user in combined_list %}
+              <tr>
+                
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.approved_total }}</td>
+                <td>{{ user.disapproved_total }}</td>
+                <td><a href="{{ user.view }}" class="btn btn-info btn-sm" >View</a></td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="5" class="text-center">No data found</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}
+
+<script type="text/javascript">
+  $('#button-filter').on('click', function () {
+    let url = 'index.php?route=tracking/product_approval&user_token={{ user_token }}';
+
+    const filter_user_id = $('input[name="filter_user_id"]').val();
+    if (filter_user_id) {
+      url += '&filter_user_id=' + encodeURIComponent(filter_user_id);
+    }
+
+    const filter_name = $('input[name="filter_name"]').val();
+    if (filter_name) {
+      url += '&filter_name=' + encodeURIComponent(filter_name);
+    }
+
+    const filter_email = $('input[name="filter_email"]').val();
+    if (filter_email) {
+      url += '&filter_email=' + encodeURIComponent(filter_email);
+    }
+
+    location = url;
+  });
+</script>
+
+
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+  // Name autocomplete
+  $('#filter_name').autocomplete({
+    minLength: 0,
+    source: function(request, response) {
+      $.ajax({
+        url: 'index.php?route=tracking/product_approval/autocompleteName&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request.term),
+        dataType: 'json',
+        success: function(json) {
+          response($.map(json, function(item) {
+            return {
+              label: item.name,
+              value: item.name
+            };
+          }));
+        }
+      });
+    },
+    select: function(event, ui) {
+      $('#filter_name').val(ui.item.value);
+    }
+  }).focus(function() {
+    $(this).autocomplete('search', '');
+  });
+
+  // Email autocomplete
+  $('#filter_email').autocomplete({
+    minLength: 0,
+    source: function(request, response) {
+      $.ajax({
+        url: 'index.php?route=tracking/product_approval/autocompleteEmail&user_token={{ user_token }}&filter_email=' + encodeURIComponent(request.term),
+        dataType: 'json',
+        success: function(json) {
+          response($.map(json, function(item) {
+            return {
+              label: item.email,
+              value: item.email
+            };
+          }));
+        }
+      });
+    },
+    select: function(event, ui) {
+      $('#filter_email').val(ui.item.value);
+    }
+  }).focus(function() {
+    $(this).autocomplete('search', '');
+  });
+
+});
+</script>

@@ -1,0 +1,551 @@
+<style>
+   
+ p{
+     text-align:justify;
+ }
+    .privacy-policy-section {
+           display: flex;
+             gap: 40px;
+            color:#000;
+    }
+
+    .privacy-container {
+        display: flex;
+       
+
+        background-color: #fff;
+     
+        border-radius: 5px;
+        overflow: hidden;
+        padding-top:10px;
+        flex-direction: column;
+    }
+
+    .sidebar-container {
+        background-color: #f0f0f0;
+        padding: 20px;
+        width: 250px;
+        border-right: 1px solid #ddd;
+        transition: transform 0.3s ease-in-out;
+        position: fixed;
+        top: 0px;
+        left: 0;
+        height: fit-content;
+        overflow-y: auto;
+        position:relative;
+    }
+
+    .sidebar-container.closed {
+        transform: translateX(-250px);
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-menu li {
+        margin-bottom: 10px;
+    }
+
+    .sidebar-menu a {
+        display: block;
+        text-decoration: none;
+        color: #333;
+        padding: 5px 10px;
+        border-radius: 3px;
+        transition: background-color 0.2s ease;
+       font-weight:600;
+    }
+
+    .sidebar-menu a:hover {
+        background-color: #ddd;
+    }
+    h3{
+    font-size: 20px;
+margin-bottom: 10px;
+}
+    .content-area {
+        padding: 20px;
+        flex: 1;
+        overflow-y:auto;
+max-height: calc(220vh - 40px);
+        scrollbar-width:none;
+        position: relative;
+
+    }
+
+    .content-area h2 {
+        color: purple;
+        margin-top: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 15px;
+    }
+
+    .content-area p {
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .close-menu-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        color: #777;
+        cursor: pointer;
+        display: none;
+    }
+   .privacy-heading{
+       text-align: center;
+   }
+.content-area ul{
+list-style:disc;
+ padding-left: 20px;}
+ .privacy-policy-section{
+     padding:40px;
+ }
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .sidebar-container {
+            width: 100%;
+            transform: translateX(0);
+            z-index: 10;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            display:none;
+        }
+
+        .sidebar-container.closed {
+            transform: translateX(-100%);
+        }
+
+        .content-area {
+            padding-top: 20px;
+        }
+
+        .close-menu-button {
+            display: block;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: right;
+        }
+
+    .privacy-policy-section {
+           display: flex;
+             gap: 0px;
+            color:#000;
+            padding:20px;
+    }
+
+    }
+    
+    
+</style>
+{{header}}
+<div class="privacy-heading"><h1><font style="background-color: rgb(255, 255, 255);">Privacy Policy</font></h1></div>
+<div class="privacy-policy-section">
+<div>
+    <aside class="sidebar-container">
+        <ul class="sidebar-menu">
+            <li><a href="#information-we-collect">Information We Collect</a></li>
+            <li><a href="#how-we-use-your-information">How We Use Your Information</a></li>
+            <li><a href="#cookies-and-similar-technologies">Cookies and Similar Technologies</a></li>
+            <li><a href="#how-we-share-your-information">How We Share Your Information</a></li>
+            <li><a href="#data-retention">Data Retention</a></li>
+            <li><a href="#cross-border-data-transfers">Cross-border Data Transfers</a></li>
+            <li><a href="#how-we-protect-your-information">How We Protect Your Information</a></li>
+            <li><a href="#your-rights-and-choices">Your Rights and Choices</a></li>
+            <li><a href="#advertising-and-marketing">Advertising and Marketing Communications</a></li>
+            <li><a href="#data-security-breach-notification">Data Security Breach Notification</a></li>
+            <li><a href="#childrens-privacy">Children's Privacy</a></li>
+            <li><a href="#updates-to-privacy-policy">Updates to This Privacy Policy</a></li>
+             <li><a href="#grievance-officer-details">Grievance Officer Details</a></li>
+            <li><a href="#contact-us">Contact Us</a></li>
+             <li><a href="#examples-of-information-collected">Examples of Information Collected</a></li>
+        </ul>
+    </aside>
+</div>
+<main class="content-area">
+     
+  <section style="line-height:40px; text-align:justify;">
+    <b>Privacy Policy of ipshopy.com</b> <br>
+    <b>Disclaimer:</b> In case of any conflict between translations of this policy, the English version shall prevail.<br>
+    <b>Effective Date:</b> April 25, 2025
+    <p>We at IP SUPER SHOPPEE PVT. LTD. ("ipshopy" or "we" or "our" or "us") are committed to protecting your privacy. This Privacy Policy describes how we collect, use, store, disclose and safeguard your personal information when you visit our website www.ipshopy.com and use our services, products and applications ("ipshopy Services").
+By accessing or using ipshopy Services you agree to the practices described in this Privacy Policy. If you do not agree with this policy you must not use ipshopy.
+This Privacy Policy complies with applicable Indian laws including the Information Technology Act 2000, the Consumer Protection Act 2019, and the rules made thereunder.</p>
+
+  
+  </section>
+  
+  
+    <section id="information-we-collect">
+        <h2>1. Information We Collect</h2>
+         <p>We collect several types of information
+        from and about users of our Services, including:</p>
+        <h3>a. Information You Provide Voluntarily</h3>
+        <p>When you use ipshopy you provide
+        information directly to us, including:</p>
+        <ul>
+            <li>Full name</li>
+            <li>Email address</li>
+            <li>Mobile number</li>
+             <li>Shipping and billing addresses</li>
+            <li>Payment information</li>
+            <li>Government-issued ID documents for verification</li>
+            <li>Profile photos (if provided)</li>
+            <li>Reviews, comments, survey responses</li>
+            <li>Uploaded media files (images, videos)</li>
+            <li>Information shared during communication with our support teams</li>
+         </ul>
+         <p>You may choose not to provide certain
+        information, but it may limit your ability to access some Services.</p>
+        <h3>b. Information We Collect Automatically</h3>
+        <p>We automatically collect information about
+        your interactions with our Services such as:</p>
+        <ul>
+            <li>Device and browser information</li>
+            <li>IP address and general location</li>
+            <li>Login timestamps and usage sessions</li>
+            <li>Browsing behavior (pages viewed, time spent)</li>
+            <li>Interaction with advertisements</li>
+            <li>Clickstream data</li>
+            <li>Cookies and similar tracking technologies</li>
+        </ul>
+        <h3>c. Information from Third-Party Sources</h3>
+        <p>We may receive information about you from:</p>
+        <ul>
+            <li>Delivery partners (updated delivery address)</li>
+            <li>Payment providers (transaction validation)</li>
+            <li>Social media platforms (when you use social login)</li>
+            <li>Marketing affiliates</li>
+            <li>Credit reference agencies (for seller verification)</li>
+         </ul>
+    </section>
+    <section id="how-we-use-your-information">
+        <h2>2. How We Use Your Information</h2>
+        <p>We use your personal information to deliver
+        a better user experience and for business operations. Our purposes include:</p>
+        <h3>a. Service Delivery</h3>
+        <ul>
+            <li>Processing transactions</li>
+            <li>Shipping orders</li>
+            <li>Facilitating returns and refunds</li>
+            <li>Verifying user identity for secure transactions</li>
+        </ul>
+        <h3>b. Account Management</h3>
+        <ul>
+            <li>Creating and maintaining user accounts</li>
+            <li>Managing seller profiles and stores</li>
+        </ul>
+        <h3>c. Customer Support</h3>
+        <ul>
+            <li>Responding to your queries and support requests</li>
+            <li>Resolving disputes and technical issues</li>
+        </ul>
+        <h3>d. Service Improvement</h3>
+        <ul>
+            <li>Conducting surveys, feedback collection</li>
+            <li>Analyzing user behavior for platform optimization</li>
+        </ul>
+        <h3>e. Marketing and Promotions</h3>
+        <ul>
+            <li>Sending offers, deals and promotional messages</li>
+            <li>Conducting contests, loyalty programs and special events</li>
+        </ul>
+        <h3>f. Legal and Compliance</h3>
+        <ul>
+            <li>Complying with tax, regulatory and legal requirements</li>
+            <li>Assisting law enforcement agencies when required</li>
+        </ul>
+        <h3>g. Fraud Prevention</h3>
+        <ul>
+            <li>Detecting, preventing and investigating fraudulent activities</li>
+            <li>Monitoring suspicious transactions</li>
+        </ul>
+    </section>
+
+    <section id="cookies-and-similar-technologies">
+        <h2>3. Cookies and Similar Technologies</h2>
+        <p>We use cookies
+        and other tracking technologies to enhance your browsing experience and improve
+        our services. </p>
+        <p>Cookies allow us to:</p>
+        <ul>
+            <li>Recognize returning users</li>
+            <li>Personalize your shopping experience</li>
+            <li>Measure campaign effectiveness</li>
+            <li>Enable essential site functionalities like cart management</li>
+        </ul>
+        <p>You can disable cookies through your
+        browser settings, but certain features of ipshopy may not function properly
+        without cookies.</p>
+        <p>We also use third-party tools like Google
+        Analytics to understand user behavior, but personal identifiers are anonymized
+        wherever possible.</p>
+    </section>
+
+    <section id="how-we-share-your-information">
+        <h2>4. How We Share Your Information</h2>
+        <p>We do not sell
+        your personal information. However, we may share your information in the
+        following cases:</p>
+        <h3>a. Service Providers and Vendors</h3>
+        <p>We share information with trusted
+        third-party service providers for:</p>
+        <ul>
+            <li>Payment processing</li>
+            <li>Order fulfillment</li>
+            <li>Data storage and hosting</li>
+            <li>Logistics and delivery services</li>
+            <li>Marketing and analytics</li>
+         </ul>
+         <p>They are obligated to use your data only
+        for providing the contracted services.</p>
+        <h3>b. Business Transfers</h3>
+        <p>In the event of a merger, acquisition,
+        restructuring or sale of assets, your personal information may be transferred
+        as part of that transaction.</p>
+
+        <h3>c. Legal Compliance and Protection</h3>
+        <p>We may disclose your information to:</p>
+         <ul>
+            <li>Comply with a legal obligation</li>
+            <li>Enforce our Terms and Conditions</li>
+            <li>Protect the rights, property or safety of ipshopy, our users or
+            the public</li>
+         </ul>
+        <h3>d. With Your Consent</h3>
+        <p>In cases where legally required, we will
+        seek your explicit consent before sharing your personal data.</p>
+    </section>
+
+    <section id="data-retention">
+        <h2>5. Data Retention</h2>
+        <p>We retain your information for as long as
+        necessary for the purposes outlined in this policy unless a longer retention
+        period is required by law.</p>
+        <p>For example:</p>
+        <ul>
+            <li>Order history and invoices are stored for seven years for tax
+            and accounting purposes.</li>
+            <li>Account information is retained until account closure.</li>
+            <li>Certain backup copies may persist for a limited time due to
+            system design.</li>
+         </ul>
+         <p>When your personal information is no longer
+        needed, we will securely delete or anonymize it.</p>
+    </section>
+
+    <section id="cross-border-data-transfers">
+        <h2>6. Cross-border Data Transfers</h2>
+        <p>Your information may be stored and
+        processed in India or any other country where ipshopy has operations or engages
+        service providers.</p>
+        <p>By using ipshopy Services you consent to
+        the transfer of information to countries outside of your country of residence,
+        which may have different data protection rules.</p>
+        <p>We implement safeguards for such
+        cross-border transfers including data transfer agreements and standard
+        contractual clauses.</p>
+    </section>
+
+    <section id="how-we-protect-your-information">
+        <h2>7. How We Protect Your Information</h2>
+        <p>We have implemented strong technical and organizational
+        measures to protect your data against unauthorized access, misuse, alteration
+        and destruction.</p>
+        <p>Measures include:</p>
+        <ul>
+            <li>End-to-end encryption of sensitive data</li>
+            <li>Access control mechanisms</li>
+            <li>Regular security audits and vulnerability testing</li>
+            <li>Secure payment gateways compliant with PCI DSS standards</li>
+            <li>Employee access restrictions based on roles</li>
+        </ul>
+         <p>However, no electronic transmission or
+        storage method is 100% secure and we cannot guarantee absolute security.</p>
+    </section>
+
+    <section id="your-rights-and-choices">
+        <h2>8. Your Rights and Choices</h2>
+        <p>You have several rights regarding your
+        personal data:</p>
+         <ul>
+            <li><b>Right to Access: </b>You can request
+            access to the personal information we hold about you.</li>
+            <li><b>Right to Rectification: </b>You can
+            correct inaccuracies in your personal data.</li>
+            <li><b>Right to Erasure: </b>You can request
+            deletion of your personal information under certain circumstances.</li>
+            <li><b>Right to Withdraw Consent: </b>You can
+            withdraw previously given consent for data processing.</li>
+            <li><b>Right to Object: </b>You may object to
+            direct marketing or certain processing activities.</li>
+            <li><b>Right to Lodge Complaint: </b>You have
+            the right to complain to a regulatory authority if you feel your data has
+            been mishandled.</li>
+        </ul>
+        <p>You can exercise these rights by contacting
+        our Grievance Officer.</p>
+    </section>
+
+    <section id="advertising-and-marketing">
+        <h2>9. Advertising and Marketing
+        Communications</h2>
+        <p>We may send you
+        promotional communications about new products, special offers or other
+        information which we think you may find interesting.</p>
+        <p>You may opt-out of receiving marketing
+        emails anytime by:</p>
+        <ul>
+            <li>Clicking on the unsubscribe link in the email</li>
+            <li>Updating your preferences in "Your Account" settings</li>
+        </ul>
+        <p>Even after
+        opting out of marketing emails, you may continue to receive non-promotional
+        communications such as order updates and account notices.</p>
+    </section>
+
+    <section id="data-security-breach-notification">
+        <h2>10. Data Security Breach Notification</h2>
+        <p>In the unlikely event of a data breach that
+        compromises your personal information, we will:</p>
+        <ul>
+            <li>Notify affected individuals within a reasonable time</li>
+            <li>Report to the applicable regulatory authority where required</li>
+            <li>Take steps to mitigate the breach and prevent recurrence</li>
+        </ul>
+        <p>We are committed to transparency and
+        maintaining your trust.</p>
+    </section>
+
+    <section id="childrens-privacy">
+        <h2>11. Children's Privacy</h2>
+        <p>ipshopy does not
+        knowingly collect personal information from individuals under the age of 18.</p>
+        <p>If you are under
+        18 you may only use ipshopy under the supervision of a parent or legal
+        guardian.</p>
+        <p>If we discover
+        that we have collected information from a child without parental consent we
+        will promptly delete such information.</p>
+    </section>
+
+    <section id="updates-to-privacy-policy">
+        <h2>12. Updates to This Privacy Policy</h2>
+        <p>We reserve the right to modify or update
+        this Privacy Policy at any time.</p>
+        <p>Any changes will be posted on this page
+        with the updated effective date. We encourage you to review this page
+        periodically.</p>
+        <p>Your continued use of ipshopy after changes
+        means you agree to the revised Privacy Policy.</p>
+    </section>
+    
+    <section id="examples-of-information-collected">
+        <h2>13. Examples of Information Collected</h2>
+        <h3>a. Information You Provide Us</h3>
+         <ul>
+            <li>Contact details (name, address, phone number)</li>
+            <li>Payment information</li>
+            <li>Government-issued identity proofs</li>
+            <li>Reviews, comments, survey responses</li>
+            <li>Uploaded profile images and videos</li>
+            <li>Purchase history</li>
+            <li>Wishlist and favorites</li>
+          </ul>
+        <h3>b. Automatic Information</h3>
+        <ul>
+             <li>Browser type and device information</li>
+             <li>Clickstream behavior</li>
+              <li>Search terms</li>
+              <li>Pages visited</li>
+              <li>Ads clicked</li>
+              <li>Session duration</li>
+              <li>Device location when enabled</li>
+        </ul>
+        <h3>c. Information from Other Sources</h3>
+        <ul>
+             <li>Delivery updates from logistics providers</li>
+              <li>Payment status updates from banks</li>
+              <li>Demographic details from marketing partners</li>
+              <li>Identity verification data from KYC agencies</li>
+        </ul>
+    </section>
+
+    <section id="grievance-officer-details">
+        <h2>13. Grievance Officer Details</h2>
+        <p>In accordance
+        with the Information Technology Act 2000 and Consumer Protection Act 2019, the
+        contact details of the Grievance Officer are:</p>
+        <p><b>Name</b>: Grievance Officer</p>
+        <p><b>Designation</b>: Grievance Officer</p>
+        <p><b>Email</b>: info@ipshopy.com</p>
+        <p><b>Phone</b>: 9342525252, 9021505747 </p>
+        <p><b>Address</b>:</p>
+        <address>
+            IP SUPER SHOPPEE PVT. LTD.<br>
+            Dnyanpeeth Campus T-18, Opp. Garrware Stadium, STPI, Naregaon Road, Chhatrapati
+            Sambhaji Nagar&nbsp; (Aurangabad), Maharashtra, India. 431001
+        </address>
+    </section>
+
+    <section id="contact-us">
+        <h2>14. Contact Us</h2>
+        <p>If you have any
+        questions about this Privacy Policy or wish to exercise your rights you can
+        contact us at:</p>
+         <p>IP SUPER SHOPPEE PVT. LTD.</p>
+        <p><b>Website</b>: www.ipshopy.com</p>
+        <p><b>Email</b>: info@ipshopy.com</p>
+        <p><b>Contact Number</b> : 9342525252</p>
+    </section>
+</main>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const closeButton = document.querySelector('.close-menu-button');
+    const sidebar = document.querySelector('.sidebar-container');
+    const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+    const contentArea = document.querySelector('.content-area');
+
+    if (closeButton && sidebar) {
+        closeButton.addEventListener('click', function() {
+            sidebar.classList.toggle('closed');
+        });
+    }
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                const offsetTop = targetElement.offsetTop;
+                 contentArea.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.add('closed');
+                }
+            }
+        });
+    });
+});
+</script>
+{{footer}}

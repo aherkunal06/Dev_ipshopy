@@ -1,0 +1,856 @@
+{{ header }}{{ column_left }}
+
+
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right text-right">
+                <button type="submit" form="form-first-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+
+                <div class="export-right" style="margin-top:10px; margin-bottom:10px;">
+                    <form action="{{ import_url }}" style="display:inline-flex;" method="post" enctype="multipart/form-data">
+                        <label for="file-upload" class="btn btn-default" style="margin-right:4px; margin-left:4px;">
+                            <i class="fa fa-cloud-upload"></i> <span id="file-name">{{ text_upload_file }}</span>
+                        </label>
+                        <input id="file-upload" type="file" name="settings_file" accept=".json" style="display: none;" onchange="updateFileName(this)">
+
+                        <button type="submit" data-toggle="tooltip" title="{{ text_import_setting }}" class="btn btn-success">
+                            <i class="fa fa-upload"></i> {{ text_import_setting }}
+                        </button>
+                    </form>
+                    <a href="{{ export_url }}" data-toggle="tooltip" title="{{ text_export_setting }}" class="btn btn-primary">
+                        <i class="fa fa-download"></i> {{ text_export_setting }}
+                    </a>
+                </div>
+
+            </div>
+
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if success %}
+            <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if error_warning %}
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="nav nav-tabs" id="tabs">
+                    <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+                    <li><a href="#tab-order-status" data-toggle="tab">{{ tab_order_status }}</a></li>
+                    <li><a href="#tab-customers-notifications" data-toggle="tab">{{ tab_customers_notifications }}</a></li>
+                     <li><a href="#tab-admin-notifications" data-toggle="tab">{{ tab_admin_notifications }}</a></li>
+                     <li><a href="#tab-abandoned-cart" data-toggle="tab">{{ tab_abandoned_cart }}</a></li>
+                     <li><a href="#tab-otpverification" data-toggle="tab">{{ tab_otp }}</a></li>
+                    <li><a href="#tab-telephone-settings" data-toggle="tab">{{ tab_telephone }}</a></li>
+                     <li><a href="#tab-language" data-toggle="tab">{{ tab_language }}</a></li>
+                    <li><a href="#tab-support" data-toggle="tab">{{ tab_support }}</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-general">
+                        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-first-module" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                                <div class="col-sm-10">
+                                    <select name="module_waclient_status" id="input-status" class="form-control">
+                                        {% if module_waclient_status %}
+                                            <option value="1" selected="selected">{{ text_enabled }}</option>
+                                            <option value="0">{{ text_disabled }}</option>
+                                        {% else %}
+                                            <option value="1">{{ text_enabled }}</option>
+                                            <option value="0" selected="selected">{{ text_disabled }}</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-waclient-username">{{ entry_username }}</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="module_waclient_username" id="input-waclient-username" class="form-control" value="{{ waclient_username }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-waclient-password">{{ entry_password }}</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="module_waclient_password" id="input-waclient-password" class="form-control" value="{{ waclient_password }}" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                 <div class="col-sm-2">
+                                </div>
+                                <div class="col-sm-10">
+                                   <a href="https://waclient.com/" target="_blank" data-toggle="tooltip" title="{{ test_text }}" class="btn btn-primary">{{ get_token }}</a>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-waclient-countrycode-phone">{{ entry_countrycode_phone }}</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="module_waclient_countrycode_phone" id="input-waclient-countrycode-phone" class="form-control" value="{{ waclient_countrycode_phone }}" />
+                                    <span>{{ entry_countrycode_des }}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-waclient-delay-messages">{{ entry_delay_messages }}</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="module_waclient_delay_messages" id="input-waclient-delay-messages" class="form-control" value="{{ waclient_delay_messages }}" />
+                                    <span>{{ entry_delay_messages_des }}</span>
+                                </div>
+                            </div>
+
+                    </div>
+
+                   <div class="tab-pane" id="tab-order-status">
+                       <div class="form-horizontal">                            
+                            {% for status in statuses %}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-waclient-message-{{ status.order_status_id }}">{{ status.name }}</label>
+                                <div class="col-sm-1 control-label">
+                                    {{ entry_status }}  <input type="checkbox" name="module_waclient_message[{{ status.order_status_id }}][status]" value="1" {% if module_waclient_message[status.order_status_id].status %}checked="checked"{% endif %} />
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="tabs-row">
+                                    <div id="languageTabs-{{ language.code }}">
+                                    <ul class="nav nav-tabs">
+                                        {% for language in languages %}
+                                            <li>
+                                                <a href="#" data-lang="{{ language.code }}">
+                                                    <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                                    {{ language.name }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                
+                                    {% for language in languages %}
+                                        <div class="language-tab-content" data-lang="{{ language.code }}">
+                                            <textarea name="module_waclient_message[{{ status.order_status_id }}][text][{{ language.code }}]" id="input-waclient-message-{{ status.order_status_id }}-text-{{ language.code }}" rows="5" class="form-control emoji waclient_char_count">{{ module_waclient_message[status.order_status_id].text[language.code] }}</textarea>
+                                        </div>
+                                    {% endfor %}
+
+                                        <span class="help-block">{{ entry_available_vars }}: {billing_first_name}, {billing_last_name}, {billing_company}, {billing_address_1}, {billing_address_2}, {billing_city}, {billing_postcode}, {billing_country}, {billing_zone}, {shipping_first_name}, {shipping_last_name}, {shipping_company}, {shipping_address_1}, {shipping_address_2}, {shipping_city}, {shipping_postcode}, {shipping_country}, {shipping_zone}, {email}, {telephone}, {shipping_method}, {payment_method}, {status_comment}, {order_status}, {order_number}, {order_date}, {order_total}, {store_name}, {products}</span>
+                                </div>
+                            </div>
+                            </div>
+                        {% endfor %}
+                        
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="input-waclient-add_return_customer_message">{{ add_return_message }}</label>
+                            <div class="col-sm-1 control-label">
+                                {{ entry_status }}  <input type="checkbox" name="module_waclient_add_return_customer_message[status]" value="1" {% if module_waclient_add_return_customer_message.status %}checked="checked"{% endif %} />
+                            </div>
+                            <div class="col-sm-9">
+                            <div class="tabs-row">
+                            <div id="languageTabs-{{ language.code }}">
+                            <ul class="nav nav-tabs">
+                                {% for language in languages %}
+                                    <li>
+                                        <a href="#" data-lang="{{ language.code }}">
+                                            <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                            {{ language.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        {% for language in languages %}
+                            <div class="language-tab-content" data-lang="{{ language.code }}">
+                                <textarea name="module_waclient_add_return_customer_message[text][{{ language.code }}]" id="module_waclient_add_return_customer_message-text-{{ language.code }}" rows="5" class="form-control emoji">{{ module_waclient_add_return_customer_message ? module_waclient_add_return_customer_message.text[language.code] }}</textarea>
+                            </div>
+                        {% endfor %}
+
+                                <span class="help-block">{{ entry_available_vars }}: {first_name}, {last_name}, {email}, {telephone}, {order_id}, {return_id}, {date_ordered}, {date_added}, {product_name}, {product_code}, {quantity}, {reason}, {opened}, {comment}</span>
+                            </div>
+                        </div>
+                     </div>
+
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="tab-admin-notifications">
+                        <div class="form-horizontal">
+                                <div class="form-group">
+                                        <label class="col-sm-2 control-label" for="input-waclient_admin_phone_number">{{ admin_phone_number }}</label>
+                                        <div class="col-sm-1">
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="module_waclient_admin_phone_number" id="input-waclient_admin_phone_number" class="form-control" value="{{ waclient_admin_phone_number }}" />
+                                            <span class="help-block">Format: 201024038668,201024038668</span>
+                                        </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="input-waclient-admin_neworder_message">{{ admin_status_change }}</label>
+                                    <div class="col-sm-1 control-label">
+                                        {{ entry_status }}  <input type="checkbox" name="module_waclient_admin_neworder_message[status]" value="1" {% if module_waclient_admin_neworder_message.status %}checked="checked"{% endif %} />
+                                    </div>
+                                    <div class="col-sm-9">
+                                    <div class="tabs-row">
+                                    <div id="languageTabs-{{ language.code }}">
+                                    <ul class="nav nav-tabs">
+                                        {% for language in languages %}
+                                            <li>
+                                                <a href="#" data-lang="{{ language.code }}">
+                                                    <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                                    {{ language.name }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+
+                                    {% for language in languages %}
+                                        <div class="language-tab-content" data-lang="{{ language.code }}">
+                                            <textarea name="module_waclient_admin_neworder_message[text][{{ language.code }}]" id="module_waclient_admin_neworder_message-text-[{{ language.code }}]" rows="5" class="form-control emoji">{{ module_waclient_admin_neworder_message ? module_waclient_admin_neworder_message.text[language.code] }}</textarea>
+                                        </div>
+                                    {% endfor %}
+
+                                        <span class="help-block">{{ entry_available_vars }}: {billing_first_name}, {billing_last_name}, {billing_company}, {billing_address_1}, {billing_address_2}, {billing_city}, {billing_postcode}, {billing_country}, {billing_zone}, {shipping_first_name}, {shipping_last_name}, {shipping_company}, {shipping_address_1}, {shipping_address_2}, {shipping_city}, {shipping_postcode}, {shipping_country}, {shipping_zone}, {email}, {telephone}, {shipping_method}, {payment_method}, {status_comment}, {order_status}, {order_number}, {order_date}, {order_total}, {store_name}, {products}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="input-waclient-add_return_admin_message">{{ add_return_message }}</label>
+                            <div class="col-sm-1 control-label">
+                                {{ entry_status }}  <input type="checkbox" name="module_waclient_add_return_admin_message[status]" value="1" {% if module_waclient_add_return_admin_message.status %}checked="checked"{% endif %} />
+                            </div>
+                            <div class="col-sm-9">
+                            <div class="tabs-row">
+                            <div id="languageTabs-{{ language.code }}">
+                            <ul class="nav nav-tabs">
+                                {% for language in languages %}
+                                    <li>
+                                        <a href="#" data-lang="{{ language.code }}">
+                                            <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                            {{ language.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        {% for language in languages %}
+                            <div class="language-tab-content" data-lang="{{ language.code }}">
+                                <textarea name="module_waclient_add_return_admin_message[text][{{ language.code }}]" id="module_waclient_add_return_admin_message-text-{{ language.code }}" rows="5" class="form-control emoji">{{ module_waclient_add_return_admin_message ? module_waclient_add_return_admin_message.text[language.code] }}</textarea>
+                            </div>
+                        {% endfor %}
+
+                                <span class="help-block">{{ entry_available_vars }}: {first_name}, {last_name}, {email}, {telephone}, {order_id}, {return_id}, {date_ordered}, {date_added}, {product_name}, {product_code}, {quantity}, {reason}, {opened}, {comment}</span>
+                            </div>
+                        </div>
+                     </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="input-waclient-admin_add_customer_message">{{ add_customer_message }}</label>
+                                    <div class="col-sm-1 control-label">
+                                        {{ entry_status }}  <input type="checkbox" name="module_waclient_admin_add_customer_message[status]" value="1" {% if module_waclient_admin_add_customer_message.status %}checked="checked"{% endif %} />
+                                    </div>
+                                    <div class="col-sm-9">
+                                    <div class="tabs-row">
+                                    <div id="languageTabs-{{ language.code }}">
+                                    <ul class="nav nav-tabs">
+                                        {% for language in languages %}
+                                            <li>
+                                                <a href="#" data-lang="{{ language.code }}">
+                                                    <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                                    {{ language.name }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+
+                                    {% for language in languages %}
+                                        <div class="language-tab-content" data-lang="{{ language.code }}">
+                                            <textarea name="module_waclient_admin_add_customer_message[text][{{ language.code }}]" id="module_waclient_admin_add_customer_message-text-[{{ language.code }}]" rows="5" class="form-control emoji">{{ module_waclient_admin_add_customer_message ? module_waclient_admin_add_customer_message.text[language.code] }}</textarea>
+                                        </div>
+                                    {% endfor %}
+
+                                        <span class="help-block">{{ entry_available_vars }}: {first_name}, {last_name}, {email}, {telephone}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+
+
+                    <div class="tab-pane" id="tab-customers-notifications">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-waclient-add_customer_message">{{ add_customer_message }}</label>
+                        <div class="col-sm-1 control-label">
+                            {{ entry_status }}  <input type="checkbox" name="module_waclient_add_customer_message[status]" value="1" {% if module_waclient_add_customer_message.status %}checked="checked"{% endif %} />
+                        </div>
+                        <div class="col-sm-9">
+                        <div class="tabs-row">
+                        <div id="languageTabs-{{ language.code }}">
+                        <ul class="nav nav-tabs">
+                            {% for language in languages %}
+                                <li>
+                                    <a href="#" data-lang="{{ language.code }}">
+                                        <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                        {{ language.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    {% for language in languages %}
+                        <div class="language-tab-content" data-lang="{{ language.code }}">
+                            <textarea name="module_waclient_add_customer_message[text][{{ language.code }}]" id="module_waclient_add_customer_message-text-{{ language.code }}" rows="5" class="form-control emoji">{{ module_waclient_add_customer_message ? module_waclient_add_customer_message.text[language.code] }}</textarea>
+                        </div>
+                    {% endfor %}
+
+                            <span class="help-block">{{ entry_available_vars }}: {first_name}, {last_name}, {email}, {telephone}</span>
+                        </div>
+                    </div>
+                 </div>
+
+                <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-waclient-forgot_password">{{ entry_forgot_password }}</label>
+                        <div class="col-sm-1 control-label">
+                            {{ entry_status }}  <input type="checkbox" name="module_waclient_forgot_password[status]" value="1" {% if module_waclient_forgot_password.status %}checked="checked"{% endif %} />
+                        </div>
+                        <div class="col-sm-9">
+                        <div class="tabs-row">
+                        <div id="languageTabs-{{ language.code }}">
+                        <ul class="nav nav-tabs">
+                            {% for language in languages %}
+                                <li>
+                                    <a href="#" data-lang="{{ language.code }}">
+                                        <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                        {{ language.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    {% for language in languages %}
+                        <div class="language-tab-content" data-lang="{{ language.code }}">
+                            <textarea name="module_waclient_forgot_password[text][{{ language.code }}]" id="module_waclient_forgot_password-text-{{ language.code }}" rows="5" class="form-control emoji">{{ module_waclient_forgot_password ? module_waclient_forgot_password.text[language.code] }}</textarea>
+                        </div>
+                    {% endfor %}
+
+                            <span class="help-block">{{ entry_available_vars }}: {first_name}, {last_name}, {email}, {telephone}, {link}</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                 <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-waclient-add_address_message">{{ add_address_message }}</label>
+                        <div class="col-sm-1 control-label">
+                            {{ entry_status }}  <input type="checkbox" name="module_waclient_add_address_message[status]" value="1" {% if module_waclient_add_address_message.status %}checked="checked"{% endif %} />
+                        </div>
+                        <div class="col-sm-9">
+                        <div class="tabs-row">
+                        <div id="languageTabs-{{ language.code }}">
+                        <ul class="nav nav-tabs">
+                            {% for language in languages %}
+                                <li>
+                                    <a href="#" data-lang="{{ language.code }}">
+                                        <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                        {{ language.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    {% for language in languages %}
+                        <div class="language-tab-content" data-lang="{{ language.code }}">
+                            <textarea name="module_waclient_add_address_message[text][{{ language.code }}]" id="module_waclient_add_address_message-text-{{ language.code }}" rows="5" class="form-control emoji">{{ module_waclient_add_address_message ? module_waclient_add_address_message.text[language.code] }}</textarea>
+                        </div>
+                    {% endfor %}
+
+                            <span class="help-block">{{ entry_available_vars }}: {first_name}, {last_name}, {email}, {telephone}, {address_firstname}, {address_lastname}, {address_company}, {address_address_1}, {address_address_2}, {address_city}, {address_postcode}, {address_country}, {address_zone}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-waclient-edit_address_message">{{ edit_address_message }}</label>
+                        <div class="col-sm-1 control-label">
+                            {{ entry_status }}  <input type="checkbox" name="module_waclient_edit_address_message[status]" value="1" {% if module_waclient_edit_address_message.status %}checked="checked"{% endif %} />
+                        </div>
+                        <div class="col-sm-9">
+                        <div class="tabs-row">
+                        <div id="languageTabs-{{ language.code }}">
+                        <ul class="nav nav-tabs">
+                            {% for language in languages %}
+                                <li>
+                                    <a href="#" data-lang="{{ language.code }}">
+                                        <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                        {{ language.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    {% for language in languages %}
+                        <div class="language-tab-content" data-lang="{{ language.code }}">
+                            <textarea name="module_waclient_edit_address_message[text][{{ language.code }}]" id="module_waclient_edit_address_message-text-{{ language.code }}" rows="5" class="form-control emoji">{{ module_waclient_edit_address_message ? module_waclient_edit_address_message.text[language.code] }}</textarea>
+                        </div>
+                    {% endfor %}
+
+                            <span class="help-block">{{ entry_available_vars }}: {first_name}, {last_name}, {email}, {telephone}, {address_firstname}, {address_lastname}, {address_company}, {address_address_1}, {address_address_2}, {address_city}, {address_postcode}, {address_country}, {address_zone}</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-waclient-delete_address_message">{{ delete_address_message }}</label>
+                        <div class="col-sm-1 control-label">
+                            {{ entry_status }}  <input type="checkbox" name="module_waclient_delete_address_message[status]" value="1" {% if module_waclient_delete_address_message.status %}checked="checked"{% endif %} />
+                        </div>
+                        <div class="col-sm-9">
+                        <div class="tabs-row">
+                        <div id="languageTabs-{{ language.code }}">
+                        <ul class="nav nav-tabs">
+                            {% for language in languages %}
+                                <li>
+                                    <a href="#" data-lang="{{ language.code }}">
+                                        <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                        {{ language.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    {% for language in languages %}
+                        <div class="language-tab-content" data-lang="{{ language.code }}">
+                            <textarea name="module_waclient_delete_address_message[text][{{ language.code }}]" id="module_waclient_delete_address_message-text-{{ language.code }}" rows="5" class="form-control emoji">{{ module_waclient_delete_address_message ? module_waclient_delete_address_message.text[language.code] }}</textarea>
+                        </div>
+                    {% endfor %}
+
+                            <span class="help-block">{{ entry_available_vars }}: {first_name}, {last_name}, {email}, {telephone}</span>
+                        </div>
+                    </div>
+                </div>
+                            </div>
+                         </div>
+
+                     <div class="tab-pane" id="tab-abandoned-cart">   
+    <div class="form-horizontal">
+
+        <div class="form-group" style="padding:0 20px 20px 20px">
+            <b>{{ entry_cron }}</b>
+            <div style="display: flex; margin-bottom:6px; margin-top:8px;">
+                <input type="text" class="form-control" id="inputValue" value="/usr/bin/php {{ opencartPath }}/catalog/controller/extension/module/send_abandoned_cart.php" readonly>
+                <div class="input-group-append" style="margin-right: 8px; margin-left: 8px;">
+                    <button class="btn btn-primary" type="button" onclick="copyValue()">
+                        <i class="fa fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-waclient-abandoned_cart_days">{{ entry_cart_days }}</label>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-9">
+                <input type="number" name="module_waclient_abandoned_cart_days" id="module_waclient_abandoned_cart_days" class="form-control" value="{{ module_waclient_abandoned_cart_days }}" />
+                <span>{{ entry_abandoned_cart_days_des }}</span>
+            </div>
+        </div>
+
+        {% for day in 1..module_waclient_abandoned_cart_days %}
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{ abandoned_cart_message }} - {{ cart_day }} {{ day }}</label>
+                <div class="col-sm-1 control-label">
+                    {{ entry_status }}  <input type="checkbox" name="module_waclient_abandoned_cart_message[{{ day }}][status]" value="1" {% if module_waclient_abandoned_cart_message[day] and module_waclient_abandoned_cart_message[day].status %}checked="checked"{% endif %} />
+                </div>
+                <div class="col-sm-9">
+                    <div class="tabs-row">
+                        <ul class="nav nav-tabs">
+                            {% for language in languages %}
+                                <li {% if loop.first %}class="active"{% endif %}>
+                                    <a href="#tab-day{{ day }}-{{ language.code }}" data-toggle="tab">
+                                        <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                        {{ language.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                            {% for language in languages %}
+                                <div id="tab-day{{ day }}-{{ language.code }}" class="tab-pane {% if loop.first %}active{% endif %}">
+                                    <textarea name="module_waclient_abandoned_cart_message[{{ day }}][text][{{ language.code }}]" id="module_waclient_abandoned_cart_message-text-{{ day }}-{{ language.code }}" rows="5" class="form-control emoji">{% if module_waclient_abandoned_cart_message[day] and module_waclient_abandoned_cart_message[day].text[language.code] %}{{ module_waclient_abandoned_cart_message[day].text[language.code] }}{% else %}{{ defaultText }}{% endif %}</textarea>
+                                </div>
+                            {% endfor %}
+                            <span class="help-block">{{ entry_available_vars }}: {first_name}, {last_name}, {email}, {telephone}, {cart_products}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-waclient-abandoned_cart_message_m">{{ abandoned_cart_message }}</label>
+            <div class="col-sm-1 control-label">
+                    {{ entry_status }}  <input type="checkbox" name="module_waclient_abandoned_cart_message_m[status]" value="1" {% if module_waclient_abandoned_cart_message_m.status %}checked="checked"{% endif %} />
+            </div>
+                <div class="col-sm-9">
+                <div class="tabs-row">
+                <div id="languageTabs-{{ language.code }}">
+                <ul class="nav nav-tabs">
+                    {% for language in languages %}
+                        <li>
+                            <a href="#" data-lang="{{ language.code }}">
+                                <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                {{ language.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                </div>
+                {% for language in languages %}
+                    <div class="language-tab-content" data-lang="{{ language.code }}">
+                        <textarea name="module_waclient_abandoned_cart_message_m[text][{{ language.code }}]" id="module_waclient_abandoned_cart_message_m-text-[{{ language.code }}]" rows="5" class="form-control emoji">{{ module_waclient_abandoned_cart_message_m ? module_waclient_abandoned_cart_message_m.text[language.code] }}</textarea>
+                    </div>
+                {% endfor %}
+            </div>
+            </div>
+         </div>
+         
+    </div>
+</div>
+
+                        
+					    <div class="tab-pane" id="tab-otpverification">   
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                 <label class="col-sm-2 control-label" for="input-module_waclient_otpverifystatus">{{ entry_otpverification }}</label>
+                                <div class="col-sm-10">
+                                        <select name="module_waclient_otpverifystatus" id="input-module_waclient_otpverifystatus" class="form-control">
+                                            {% if module_waclient_otpverifystatus %}
+                                            <option value="1" selected="selected">{{ text_enabled }}</option>
+                                            <option value="0">{{ text_disabled }}</option>
+                                            {% else %}
+                                            <option value="1">{{ text_enabled }}</option>
+                                            <option value="0" selected="selected">{{ text_disabled }}</option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="input-module_waclient_loginbtnstatus">{{ entry_loginbtnstatus }}</label>
+                            <div class="col-sm-10">
+                            <select name="module_waclient_loginbtnstatus" id="input-module_waclient_loginbtnstatus" class="form-control">
+                                {% if module_waclient_loginbtnstatus %}
+                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                <option value="1">{{ text_enabled }}</option>
+                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                                </select>
+                            </div>
+                        </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-module_waclient_otpmsg">{{ entry_otpmsg }}</label>
+                            <div class="col-sm-9">
+                            <div class="tabs-row">
+                            <div id="languageTabs-{{ language.code }}">
+                            <ul class="nav nav-tabs">
+                                {% for language in languages %}
+                                    <li>
+                                        <a href="#" data-lang="{{ language.code }}">
+                                            <img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" style="vertical-align: middle;"> 
+                                            {{ language.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        {% for language in languages %}
+                            <div class="language-tab-content" data-lang="{{ language.code }}">
+                                <textarea name="module_waclient_otpmsg[text][{{ language.code }}]" id="module_waclient_otpmsg-text-{{ language.code }}" rows="5" class="form-control emoji">{{ module_waclient_otpmsg ? module_waclient_otpmsg.text[language.code] }}</textarea>
+                            </div>
+                        {% endfor %}
+
+                                 <span class="help-block">{{ entry_available_vars }}: {code}</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-module_waclient_resendtime"><span data-toggle="tooltip" title="" data-original-title="{{ help_resendtime }}">{{ entry_resendtimer }}</span></label>
+                            <div class="col-sm-10">
+                        <input type="text" name="module_waclient_resendtime" value="{{ module_waclient_resendtime }}" placeholder="{{ entry_resendtimer }}" id="input-module_waclient_resendtime" class="form-control" />
+                        </div>
+                    </div> 
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-ssl">{{ entry_otpdigit }}</label>
+                        <div class="col-sm-10">
+                        <select name="module_waclient_otpdigit_option" id="input-status" class="form-control">
+                            {% if module_waclient_otpdigit_option == '4' %}
+                            <option value="4" selected="selected">4</option>
+                            <option value="6">6</option>
+                            {% else %}
+                            <option value="4">4</option>
+                            <option value="6" selected="selected">6</option>
+                            {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="tab-telephone-settings">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ text_preferred_countries }}</label>
+                            <div class="col-sm-10">
+                                <div class="well well-sm" style="height: 150px; overflow: auto;"> 
+                                    {% for country in countries %}
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="module_waclient_preferred_countries[]" value="{{ country.country_id }}" {% if country.country_id in module_waclient_preferred_countries %}checked{% endif %}> {{ country.name }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <a href="javascript:void(0);" id="select-all-preferred">{{ text_select_all }}</a>
+                                <span style="padding-left:8px; padding-right:8px;">/</span>
+                                <a href="javascript:void(0);" id="unselect-all-preferred">{{ text_unselect_all }}</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ text_only_countries }}</label>
+                            <div class="col-sm-10">
+                                <div class="well well-sm" style="height: 150px; overflow: auto;"> 
+                                {% for country in countries %}
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="module_waclient_only_countries[]" value="{{ country.country_id }}" {% if country.country_id in module_waclient_only_countries %}checked{% endif %}> {{ country.name }}
+                                            </label>
+                                        </div>
+                                {% endfor %}
+                                </div>
+                                <a href="javascript:void(0);" id="select-all-only">{{ text_select_all }}</a>
+                                <span style="padding-left:8px; padding-right:8px;">/</span>
+                                <a href="javascript:void(0);" id="unselect-all-only">{{ text_unselect_all }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="tab-language">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-module_waclient_loginbtntext">{{ entry_btntext }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group" style="margin-bottom:6px;"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <input name="module_waclient_loginotp[{{ language.language_id }}][loginbtntext]" placeholder="{{ entry_btntext }}" value="{{ module_waclient_loginotp[language.language_id] ? module_waclient_loginotp[language.language_id].loginbtntext }}" class="form-control"/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-module_waclient_errormsg">{{ entry_errormsg }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group" style="margin-bottom:6px;"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <input name="module_waclient_loginotp[{{ language.language_id }}][errormsg]" placeholder="{{ entry_errormsg }}" value="{{ module_waclient_loginotp[language.language_id] ? module_waclient_loginotp[language.language_id].errormsg }}" class="form-control"/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-module_waclient_errormsg">{{ entry_errornotmatchmsg }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group" style="margin-bottom:6px;"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <input name="module_waclient_loginotp[{{ language.language_id }}][errornotmatch]" placeholder="{{ entry_errornotmatchmsg }}" value="{{ module_waclient_loginotp[language.language_id] ? module_waclient_loginotp[language.language_id].errornotmatch }}" class="form-control"/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-module_waclient_invalidotperrormsg">{{ entry_invalidotp }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group" style="margin-bottom:6px;"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <input name="module_waclient_loginotp[{{ language.language_id }}][invalidotperrormsg]" placeholder="{{ entry_invalidotp }}" value="{{ module_waclient_loginotp[language.language_id] ? module_waclient_loginotp[language.language_id].invalidotperrormsg }}" class="form-control"/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-module_waclient_submitbtntext">{{ entry_submitbtn }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group" style="margin-bottom:6px;"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <input name="module_waclient_loginotp[{{ language.language_id }}][submitbtntext]" placeholder="{{ entry_submitbtn }}" value="{{ module_waclient_loginotp[language.language_id] ? module_waclient_loginotp[language.language_id].submitbtntext }}" class="form-control"/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-module_waclient_resendotp">{{ entry_resend }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group" style="margin-bottom:6px;"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <input name="module_waclient_loginotp[{{ language.language_id }}][resendotp]" placeholder="{{ entry_resend }}" value="{{ module_waclient_loginotp[language.language_id] ? module_waclient_loginotp[language.language_id].resendotp }}" class="form-control"/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-module_waclient_success">{{ entry_success }}</label>
+                                <div class="col-sm-10">
+                                    {% for language in languages %}
+                                    <div class="input-group" style="margin-bottom:6px;"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                        <input name="module_waclient_loginotp[{{ language.language_id }}][successmsg]" placeholder="{{ entry_success }}" value="{{ module_waclient_loginotp[language.language_id] ? module_waclient_loginotp[language.language_id].successmsg }}" class="form-control"/>
+                                    </div>
+                                    {% endfor %}
+                            </div>
+                         </div>
+                    </div>
+                </div>
+
+
+                    <div class="tab-pane" id="tab-support">
+                        {{ text_support }}
+                    </div>
+                        </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ about_waclient }}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/emojionearea@3/dist/emojionearea.min.css">
+<script src="https://cdn.jsdelivr.net/npm/emojionearea@3/dist/emojionearea.min.js"></script>
+
+
+<script>
+function updateFileName(input) {
+    var fileName = input.files[0].name;
+    document.getElementById('file-name').innerText = fileName;
+}
+</script>
+<script>
+    $(document).ready(function() {
+        $('[id^=languageTabs]').each(function(event) {
+            var $tabs = $(this).find('li');
+    
+            // Show the content of the first tab
+            $tabs.first().addClass('active');
+            $(this).closest('.tabs-row').find('.language-tab-content').first().show();
+    
+            // Hide the content of the other tabs
+            $(this).closest('.tabs-row').find('.language-tab-content').not(':first').hide();
+    
+            // Add click event listeners to the language tabs within this group
+            $tabs.click(function(event) {
+                event.preventDefault();
+    
+                // Remove 'active' class from all tabs
+                $tabs.removeClass('active');
+    
+                // Add 'active' class to the clicked tab
+                $(this).addClass('active');
+    
+                // Hide all language tab content within this group
+                $(this).closest('.tabs-row').find('.language-tab-content').hide();
+    
+                // Get the data-lang attribute of the clicked tab
+                var lang = $(this).find('a').data('lang');
+    
+                // Show the content of the clicked tab within this group
+                $(this).closest('.tabs-row').find('.language-tab-content[data-lang=' + lang + ']').show();
+            });
+        });
+    });
+    
+</script>
+
+<script>
+    document.getElementById('select-all-preferred').addEventListener('click', function() {
+        document.querySelectorAll('input[name="module_waclient_preferred_countries[]"]').forEach(checkbox => checkbox.checked = true);
+    });
+    document.getElementById('unselect-all-preferred').addEventListener('click', function() {
+        document.querySelectorAll('input[name="module_waclient_preferred_countries[]"]').forEach(checkbox => checkbox.checked = false);
+    });
+    document.getElementById('select-all-only').addEventListener('click', function() {
+        document.querySelectorAll('input[name="module_waclient_only_countries[]"]').forEach(checkbox => checkbox.checked = true);
+    });
+    document.getElementById('unselect-all-only').addEventListener('click', function() {
+        document.querySelectorAll('input[name="module_waclient_only_countries[]"]').forEach(checkbox => checkbox.checked = false);
+    });
+</script>
+
+<script>
+    function copyValue() {
+      var copyText = document.getElementById("inputValue");
+      copyText.select();
+      document.execCommand("copy");
+      alert("Copied the value: " + copyText.value);
+    }
+  </script>
+
+<script>
+$(document).ready(function() {
+    // Initialize emojionearea when a textarea with the emoji class comes into focus
+    $('textarea.emoji').on('focus', function() {
+        $(this).emojioneArea();
+    });
+
+    // Destroy emojionearea when a textarea with the emoji class loses focus
+    $('textarea.emoji').on('blur', function() {
+        $(this).data("emojioneArea").destroy();
+    });
+});
+
+</script>
+
+{{ footer }}

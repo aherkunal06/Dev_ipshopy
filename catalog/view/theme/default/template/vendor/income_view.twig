@@ -1,0 +1,77 @@
+{{ header }}{{ column_left }}
+<style>
+.sub-header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+</style>
+
+<div id="content">
+  <div class="container-fluid">
+  {# Added new code for cancelbutton on 25-04-2025#}
+  <div class='sub-header'>
+   <div class="pull-right">
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+            <i class="fa fa-reply"></i>
+        </a>
+    </div>
+    <ul class="breadcrumb">
+      {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+      {% endfor %}
+    </ul>
+    {# <div class="buttons clearfix">
+        <div class="pull-right"><a href="{{ return }}" class="btn btn-primary">{{ button }}
+          <i class="fa fa-arrow-left"></i></a></div>
+    </div> #}
+    {# ------------------------------------------------------------- #}
+    <h1 style="margin-bottom: 0;">Seller Payment Details</h1>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>{{column_order_id}}</th>
+            <th>{{column_product_name}}</th>
+            <th>{{column_quantity}}</th>
+            <th>{{column_price}}</th>
+            <th>{{column_product_courier_charges}}</th>
+            <th>{{column_courier_rate}}</th>
+            <th>{{column_reverse_courier_charges}}</th>
+            <th>{{column_rto}}</th>
+            <th>{{column_total_deduction}}</th>
+            <th>{{column_net_settlement_amount}}</th>
+            <th>{{column_payment_status}}</th>
+            {# <th>{{column_reference_id}}</th> #}
+           
+          </tr>
+        </thead>
+        <tbody>
+          {# {% if payments %} #}
+            {% for pay in payments %}
+              <tr>
+                <td>{{ pay.order_id }}</td>
+                <td>{{ pay.product_name }}</td> {# ✅ Corrected line #}
+                <td>{{ pay.quantity }}</td>
+                <td>{{ pay.price }}</td>
+                <td>{{pay.product_courier_charges}}</td>
+                <td>{{ pay.courier_rate }}</td>
+                <td>{{ pay.reverse_courier_charges }}</td>
+                <td>{{ pay.rto_charges }}</td>
+                <td>{{ pay.total_deduction }}</td>
+                <td>{{ pay.net_settlement_amount }}</td>
+                <td>{{ pay.payment_status }}</td>
+                {# <td>{{ pay.reference_number }}</td> #}
+              </tr>
+
+          {% else %}
+            <tr><td colspan="11" class="text-center">No payment data found</td></tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{{ footer }}

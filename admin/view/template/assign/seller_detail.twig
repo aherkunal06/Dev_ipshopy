@@ -1,0 +1,53 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-user"></i> Seller Details</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Seller Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if sellers %}
+                {% for seller in sellers %}
+                  <tr>
+                    <td>{{ seller.name }}</td>
+                    <td>{{ seller.email }}</td>
+                    <td>{{ seller.status == '1' ? 'Enabled' : 'Disabled' }}</td>
+                    <td>
+                      <a href="index.php?route=catalog/vendor/edit&user_token={{ user_token }}&vendor_id={{ seller.seller_id }}" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="4" class="text-center">No sellers found.</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+        <a href="{{ back_url }}" class="btn btn-default">Back</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ footer }}

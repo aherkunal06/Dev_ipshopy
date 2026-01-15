@@ -1,0 +1,60 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content" style="background-color: #f5f7fa; min-height: 100vh;">
+  <div class="page-header" style="border-bottom: 1px solid #ddd;">
+    <div class="container-fluid">
+      <h1 style="display: inline-block; color: #333;"><i class="fa fa-users"></i> Vendor Details</h1>
+      <div class="pull-right" style="margin-top: 5px;">
+        <a href="{{ back }}" class="btn btn-default">
+          <i class="fa fa-reply"></i> 
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid" style="margin-top: 20px;">
+    <div class="panel panel-default" style="box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-radius: 8px;">
+      <div class="panel-heading" style="background-color: white; color: black; border-radius: 8px 8px 0 0;">
+        <h3 class="panel-title"><i class="fa fa-list"></i> Vendor List</h3>
+      </div>
+
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead style="background-color: #f1f1f1;">
+              <tr>
+                <th>Vendor ID</th>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Store Name</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for vendor in vendors %}
+                <tr>
+                  <td>{{ vendor.vendor_id }}</td>
+                  <td>{{ vendor.firstname }} {{ vendor.lastname }}</td>
+                  <td>{{ vendor.email }}</td>
+                  <td>{{ vendor.display_name }}</td>
+                  <td class="text-center">
+                    <a href="{{ vendor.edit }}" class="btn btn-sm btn-primary">
+                      <i class="fa fa-pencil"></i> 
+                    </a>
+                  </td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td colspan="5" class="text-center">No vendors found for this user and date.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ footer }}

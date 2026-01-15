@@ -1,0 +1,77 @@
+<div class="category-page">
+    <div class="sidebar">
+        {% for cat in categories %}
+            <div class="sidebar-item">
+                <a href="{{ cat.href }}">
+                    <img src="{{ cat.thumb }}" alt="{{ cat.name }}">
+                    <span>{{ cat.name }}</span>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="main-content">
+        <h2>Subcategories</h2>
+        <div class="subcategories">
+            {% for sub in subcategories %}
+                <div class="subcategory-card">
+                    <a href="{{ sub.href }}">
+                        <img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+                        <p>{{ sub.name }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+.category-page {
+    display: flex;
+    height: 100vh; /* पूर्ण viewport उंची */
+    overflow: hidden; /* main-content ला scroll मिळण्यासाठी */
+}
+
+.sidebar {
+    width: 80px;
+    background: #f5d9f5;
+    padding: 10px;
+    position: fixed; /* sidebar fix */
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-y: auto; /* जर sidebar मधे जास्त items असतील तर scroll */
+}
+
+.sidebar-item {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.sidebar-item img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 10px;
+    margin-left: 100px; /* sidebar साठी जागा */
+    height: 100%;
+    overflow-y: auto; /* इथे scroll */
+}
+
+.subcategories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
+    gap: 10px;
+}
+
+.subcategory-card {
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+</style>

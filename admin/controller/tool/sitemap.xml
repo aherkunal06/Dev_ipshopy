@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://localhost/dev/index.php?route=product/product&product_id=42</loc>
+  </url>
+  <url>
+    <loc>http://localhost/dev/index.php?route=product/product&product_id=43</loc>
+  </url>
+  <url>
+    <loc>http://localhost/dev/index.php?route=product/category&path=20</loc>
+  </url>
+</urlset>

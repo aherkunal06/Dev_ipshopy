@@ -1,0 +1,449 @@
+
+	/* ========== seller-grow-banner ========== */
+
+
+	.btn {
+		border: 2px solid transparent;
+	}
+
+	.btn:hover {
+		border: 2px solid transparent;
+	}
+
+
+	.seller-grow-banner {
+		padding: 50px 0;
+		position: relative;
+		background-image: url("https://img.freepik.com/premium-photo/pink-clean-paper-texture-background-closeup_125869-33.jpg?semt=ais_hybrid");
+
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+
+
+	.seller-grow-banner img {
+		width: 100%;
+	}
+
+
+	.seller-grow-banner .seller-grow-text .btn-pink {
+
+		background-color: #953A93;
+		color: white;
+	}
+
+	.seller-grow-banner .seller-grow-text .btn-custom {
+		padding: 10px 20px;
+		font-size: 1.2rem;
+		border-radius: 5px;
+
+	}
+
+	.seller-grow-banner .seller-grow-text .btn-start {
+		background-color: #ff9900;
+		color: black;
+		border: none;
+	}
+
+	.seller-grow-banner .seller-grow-btn .button-banner {
+		margin-left: 20px;
+	}
+
+	.seller-grow-banner .seller-grow-btn .button-banner p {
+		font-size: 14px;
+		text-align: center;
+		font-weight: 600;
+	}
+
+	.seller-grow-banner .seller-grow-text h1 {
+		font-size: 45px;
+
+
+	}
+
+	.seller-grow-banner .seller-grow-text .seller-grow-btn {
+		display: flex;
+		margin-bottom: 30px;
+
+	}
+
+	.seller-grow-text {
+		padding-top: 50px;
+	}
+
+	.seller-grow-banner .seller-grow-text h2 {
+		font-size: 25px;
+		padding: 10px 0;
+	}
+
+	.seller-grow-text p {
+		font-size: 18px;
+		font-weight: 600;
+	}
+
+	/* ========= seller-success-guide ========== */
+
+	.seller-success-guide {
+		padding: 50px 0;
+		position: relative;
+	}
+
+
+	.success-guide-img img {
+		width: 100%;
+	}
+
+
+	.seller-success-box {
+		padding: 40px;
+		box-shadow: 1px 1px 20px -7px;
+		border-radius: 15px;
+		border-right: 8px solid #953a93;
+	}
+
+	.seller-success-box h1 {
+		font-size: 25px;
+	}
+
+
+	.seller-guide-list {
+		padding: 18px;
+		box-shadow: 2px 2px 17px -11px;
+		border-radius: 15px;
+		background-color: #953a93;
+		color: white;
+		height: 310px;
+	}
+
+
+	.seller-guide-list .list-group-item {
+		position: relative;
+		display: block;
+
+		color: #ffffff;
+		text-decoration: none;
+		background-color: transparent;
+
+		margin-top: 3px;
+	}
+
+
+	/* ========== seller-success-guide-steps =========== */
+
+
+	.seller-success-guide-steps {
+
+		padding: 50px 0;
+		position: relative;
+
+
+	}
+
+
+	.seller-steps-manu .guide-steps-list a {
+		padding: 10px 18px;
+		background-color: #ffffff4a;
+		color: #000000;
+		text-decoration: none;
+		border-radius: 5px;
+		font-size: 15px;
+		font-weight: 700;
+
+		margin: 6px;
+		border: 3px solid #953a93;
+	}
+
+	.seller-steps-manu .guide-steps-list a:hover {
+		background-color: #953A93;
+		color: white;
+	}
+
+
+	.seller-success-guide-steps .seller-steps-manu {
+		text-align: center;
+	}
+
+
+	.seller-steps-manu h3 {
+		font-size: 30px;
+		font-weight: 700;
+	}
+
+
+	.seller-steps-manu .guide-steps-list {
+		margin: 40px 0;
+
+	}
+
+
+	.seller-success-guide-steps .guide-steps-boxes .steps-img img {
+		width: 100%;
+	}
+
+
+	.steps-text h4 {
+		padding: 12px 12px 12px 25px;
+		background-color: #953a93;
+		color: white;
+		font-size: 20px;
+		font-weight: 700;
+		border-radius: 10px;
+	}
+
+	.steps-text h5 {
+		padding-top: 3px;
+		font-size: 17px;
+		color: black;
+	}
+
+	.steps-text h1 {
+		padding-top: 20px;
+	}
+
+	.steps-text .steps-btn button {
+		margin: 15px 0 24px;
+		background-color: #953a93;
+		border: 2px solid transparent;
+	}
+
+	.steps-text .steps-btn button:hover {
+
+		border: 2px solid #953a93;
+		background-color: #ffffff;
+		color: #000000;
+
+
+	}
+
+
+	.steps-text {
+		padding-left: 35px;
+	}
+
+
+	.guide-steps-boxes {
+		padding: 50px;
+		box-shadow: 1px 1px 20px -7px;
+		border-radius: 20px;
+		margin-top: 70px;
+
+
+	}
+
+	.steps-img .text-box {
+		padding: 30px;
+		margin-top: 30px;
+		background-color: #953a93;
+		color: white;
+		border-radius: 10px;
+	}
+
+	.steps-img .text-box p {
+		font-size: 20px;
+		font-weight: 500;
+	}
+
+
+	.steps-img .text-box-two {
+		padding: 20px;
+		margin-top: 30px;
+		background-color: #953a9317;
+		color: #000000;
+		border-radius: 10px;
+		margin-bottom: 20px;
+	}
+
+	.text-box-two button {
+		margin-bottom: 20px;
+	}
+
+
+	/*  ===== Offer competitive prices - start ==== */
+
+	.guide-steps-boxes-two {
+		padding: 42px;
+		box-shadow: 1px 1px 20px -7px;
+		border-radius: 20px;
+		margin-top: 40px;
+	}
+
+	.seller-success-guide-steps .guide-steps-boxes-two .steps-img img {
+		width: 100%;
+	}
+
+
+	.guide-steps-boxes-two .steps-text h5 {
+		padding-top: 0;
+	}
+
+	.seller-success-guide-steps .guide-steps-boxes-two .steps-img img {
+		width: 100%;
+		padding-top: 60px;
+	}
+
+	/*  ===== Offer competitive prices - end ==== */
+
+
+	/* Choose the right Shipping Option  - start */
+	.guide-steps-boxes-Shipping {
+		padding: 42px;
+		box-shadow: 1px 1px 20px -7px;
+		border-radius: 20px;
+		margin-top: 40px;
+	}
+
+
+	.seller-success-guide-steps .guide-steps-boxes-Shipping .steps-img img {
+		width: 100%;
+	}
+
+	/* Choose the right Shipping Option  - end */
+
+
+	/* guide-steps-boxes-Advertise -start */
+
+	.guide-steps-boxes-Advertise {
+		padding: 42px;
+		box-shadow: 1px 1px 20px -7px;
+		border-radius: 20px;
+		margin-top: 40px;
+	}
+
+	.seller-success-guide-steps .guide-steps-boxes-Advertise .steps-img img {
+		width: 100%;
+	}
+
+	/* guide-steps-boxes-Advertise -end */
+
+
+	/* Brand Registry start  */
+
+	.guide-steps-boxes-Brand {
+		padding: 42px;
+		box-shadow: 1px 1px 20px -7px;
+		border-radius: 20px;
+		margin-top: 40px;
+	}
+
+	.seller-success-guide-steps .guide-steps-boxes-Brand .steps-img img {
+		width: 100%;
+	}
+
+
+	/* Brand Registry end */
+
+
+	/* benefits - start */
+
+
+	.benefits {
+		position: relative;
+		padding: 50px 0;
+		width: 100%;
+		background: linear-gradient(359deg, #953a939e, #f0b6ff12);
+		margin-bottom: 30px;
+	}
+
+	.benefits .benefits-img img {
+		width: 100%;
+	}
+
+	.benefits-text h1 {
+		font-size: 50px;
+	}
+
+	.benefits-text h5 {
+		padding: 25px 0;
+	}
+
+
+	.benefits-text button {
+		margin: 20px 0;
+		padding: 7px 38px;
+		font-size: 20px;
+		background-color: #953a93;
+	}
+
+	.benefits .btn:hover {
+		color: #000000;
+		background-color: #ffffff;
+		border-color: #953a93;
+	}
+
+	/* benefits - end */
+
+	@media only screen and (max-width: 768px) {
+
+		.seller-steps-manu .guide-steps-list {
+			margin: 40px 0;
+			display: flex;
+			overflow: auto;
+			/* white-space: nowrap; */
+			height: auto;
+		}
+
+		.seller-grow-text {
+
+			text-align: center;
+		}
+
+		.seller-grow-banner .seller-grow-text .seller-grow-btn {
+
+			padding-left: 45px;
+		}
+
+		.seller-guide-list {
+
+
+			height: auto;
+			margin-bottom: 25px;
+		}
+
+
+		.guide-steps-boxes {
+			padding: 20px;
+
+		}
+
+		.steps-text {
+			padding-left: 10px;
+		}
+
+		.guide-steps-boxes-Shipping {
+			padding: 20px;
+
+		}
+
+
+		.guide-steps-boxes-Advertise {
+			padding: 20px;
+
+		}
+
+		.guide-steps-boxes-two {
+			padding: 20px;
+
+		}
+
+		.guide-steps-boxes-Brand {
+			padding: 20px;
+
+		}
+
+		.benefits-text {
+			padding: 20px;
+		}
+
+		.benefits-text h1 {
+			font-size: 35px;
+		}
+
+		.seller-success-box {
+
+			border-right: none !important;
+			border-bottom: 8px solid #953a93 !important;
+		}
+
+
+	}
+

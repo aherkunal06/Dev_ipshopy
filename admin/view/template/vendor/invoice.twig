@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+<meta charset="UTF-8" />
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+<link href="view/javascript/bootstrap/css/bootstrap.css" rel="stylesheet" media="all" />
+<script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
+<link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+<link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="all" />
+</head>
+<body>
+<div class="container">
+  <div style="page-break-after: always;">
+  <h1>{{ text_invoice }} #{{ order_id }}</h1>
+  	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<td class="text-left" colspan="3">{{ text_details }}</td>
+			 </tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="text-left"><b>{{ text_order }}</b>: #{{ order_id }}</td>
+				<td class="text-left"><b>{{ text_Payment }}</b>: {{ payment_method }}</td>
+				<td class="text-left"><b>{{ text_telephone }}</b>: {{ telephone }}</td>
+			</tr>
+			<tr>
+				<td class="text-left"><b>{{ text_date }}</b>:</td>
+				<td class="text-left"><b>{{ text_shipping  }}</b>: {{ shipping_method }}</td>
+                <td class="text-left"><b>{{ text_email }}: {{ email }}</b></td>
+			</tr>
+		</tbody>
+	</table> 
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <td style="width: 50%;"><b>{{ text_payment_address }}</b></td>
+          <td style="width: 50%;"><b>{{ text_shipping_address }}</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><address>
+       {{ payment_address }}
+            </address></td>
+          <td><address>
+           {{ shipping_address }}
+            </address></td>
+        </tr>
+      </tbody>
+    </table>
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<td class="text-left">{{ column_product }}</td>
+				<td class="text-left">{{ column_model }}</td>
+				<td class="text-center">{{ column_quantity }}</td>
+				<td class="text-center">{{ column_orderstatus }}</td>
+				<td class="text-right hide">{{ column_tracking }}</td>
+				<!-- 07 04 2020 -->	
+				{% if chkshipcost==1 %}
+				<td class="text-center">{{ column_shipingamount }}</td>
+				{% endif %}
+				<!-- 07 04 2020 -->
+				<td class="text-center">{{ column_price }}</td>
+				<td class="text-right">{{ column_total }}</td>
+			</tr>
+		</thead>
+		<tbody>
+			{% for product in products %}		
+			<tr>
+				<td class="text-left">{{ product.name }}</td>
+				<td class="text-left">{{ product.model }}</td>
+				<td class="text-right">{{ product.quantity }}</td>
+				<td class="text-center">{{ product.statusname }} </td>
+				<td class="text-center add hide"></td>
+				<!-- 07 04 2020 -->
+				{% if chkshipcost==1 %}
+				<td class="text-center">{{ product.tmdshippingcost }}</td>
+				{% endif %}
+				<!-- 07 04 2020 -->
+				<td class="text-center">{{ product.price }}</td>
+				<td class="text-right">{{ product.total }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+  </div>
+</div>
+</body>
+</html>

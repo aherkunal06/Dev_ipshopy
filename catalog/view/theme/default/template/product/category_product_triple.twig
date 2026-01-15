@@ -1,0 +1,252 @@
+<!-- <link rel="stylesheet" href="catalog\view\theme\default\stylesheet\category_product.css" /> -->
+
+{#<link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">#}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+<!-- Inside your twig template -->
+<!-- <link rel="stylesheet" href="catalog/view/theme/your-theme/stylesheet/quickview.css">
+<script src="catalog/view/theme/your-theme/javascript/quickview.js"></script> -->
+
+<!-- <link href="catalog/view/javascript/so_theme/css/magnific/magnific-popup.css" rel="stylesheet" />
+<script src="catalog/view/javascript/so_theme/js/libs/magnific-popup/jquery.magnific-popup.min.js"></script> -->
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/customer/product/category_product.css" />
+
+
+
+{% if products|length > 0 %}
+<div class="product_list_container product_horizontal" style='margin-bottom:25px;'>
+
+    <div class="category-view-all-header mb-3">
+        <h3 class="mb-0">{{ category_name }}</h3>
+        <a href="{{ category.view_more }}" class="text-purple text-decoration-none">View All</a>
+    </div>
+
+    <div class="swiper-section position-relative">
+        <div class="swiper swiper-container"
+        {#id="swiper-combined"#}
+        >
+            <div class="swiper-wrapper" style='display: grid; grid-template-columns: 1fr 1fr; gap: 15px;'>
+
+                {% for product in products %}
+                {% if loop.first %}
+                <div class="swiper-slide" style='grid-column: 1 / span 2;'>
+                    <div
+                        class="product-card product_horizontal position-relative border rounded shadow-sm p-2 h-100 d-flex justify-content-between">
+                        <div class="position-relative">
+                            <div class="hover-icons first_product position-absolute top-0 end-0 m-2">
+                                <button type="button" class="icon-btn btn btn-sm btn-light"
+                                    title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');">
+                                    <i class="fa fa-heart"></i>
+                                </button>
+
+                                <a class="icon-btn btn quickview quickview_handler visible-lg"
+                                    href="{{ product.href2 }}" title="Quick View" data-toggle="tooltip"
+                                    data-title="Quick View" data-fancybox-type="iframe">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </div>
+
+                            <a href="{{ product.href }}" class="d-block product-image-wrapper position-relative">
+                                <img src="{{ product.thumb }}" alt="{{ product.name }}"
+                                    class="product-img img-fluid mx-auto d-block" />
+                            </a>
+                        </div>
+                        <div style='display: flex; justify-content: space-between; flex-direction: column;'>
+                            <div class="category-product-p-2">
+                                <h5 class="product-title mb-1" style="font-size: 15px;">
+                                    <a href="{{ product.href }}" class="text-dark text-decoration-none">
+                                        {{ product.name[:38] }}{% if product.name|length > 38 %}...{% endif %}
+                                    </a>
+                                </h5>
+    
+                                <div class="rating product_rating mb-1"> 
+                                {% if product.rating %}
+                                    {% for i in 1..5 %}
+                                        {% if product.rating < i %} 
+                                            <span class="fa fa-star-o text-warning"></span>
+                                        {% else %}
+                                            <span class="fa fa-star text-warning"></span>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                </div>
+    
+                                <p class="category-product-mb-2">
+                                  {% if product.special %}
+                                {#<span class="product-price">{{ product.special }}</span>#}
+                                {#<span class="old-price">{{ product.price }}</span>#}
+                                {% if product.discount and product.discount != '0%' %}
+                                <span class="product-price">{{ product.special }}</span>
+                                <span class="old-price">{{ product.price }}</span>
+                                    <span class="discount-badge">- {{ product.discount }}</span>
+                                {% else %}
+                                <span class="product-price">{{ product.price }}</span>
+                                {% endif %}
+                                {% endif %}
+                                </p>
+    
+                            </div>
+    
+                            <div class="pb-2 text-center">
+                                <button type="button" class="btn btn-primary btn-sm w-100"
+                                    onclick="cart.add('{{ product.product_id }}');">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="swiper-slide">
+                    <div
+                        class="product-card position-relative border rounded shadow-sm p-2 h-100 d-flex flex-column justify-content-between">
+                        <div class="position-relative">
+                            <div class="hover-icons position-absolute top-0 end-0 m-2">
+                                <button type="button" class="icon-btn btn btn-sm btn-light"
+                                    title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');">
+                                    <i class="fa fa-heart"></i>
+                                </button>
+
+                                <a class="icon-btn btn quickview quickview_handler visible-lg"
+                                    href="{{ product.href2 }}" title="Quick View" data-toggle="tooltip"
+                                    data-title="Quick View" data-fancybox-type="iframe">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </div>
+
+                            <a href="{{ product.href }}" class="d-block product-image-wrapper position-relative">
+                                <img src="{{ product.thumb }}" alt="{{ product.name }}"
+                                    class="product-img img-fluid mx-auto d-block" />
+                            </a>
+                        </div>
+
+                        <div class="category-product-p-2">
+                            <h5 class="product-title mb-1" style="font-size: 15px;">
+                                <a href="{{ product.href }}" class="text-dark text-decoration-none">
+                                    {{ product.name[:38] }}{% if product.name|length > 38 %}...{% endif %}
+                                </a>
+                            </h5>
+
+                            <div class="rating product_rating mb-1">
+                            {% if product.rating %}
+                                {% for i in 1..5 %}
+                                {% if product.rating < i %} <span class="fa fa-star-o text-warning"></span>
+                                    {% else %}
+                                    <span class="fa fa-star text-warning"></span>
+                                    {% endif %}
+                                    {% endfor %}
+                            {% endif %}
+                            </div>
+
+                            <p class="category-product-mb-2">
+                                {% if product.special %}
+                                <span class="product-price">{{ product.special }}</span>
+                                <span class="old-price">{{ product.price }}</span>
+                                <span class="discount-badge">- {{ product.discount }}</span>
+                                {% else %}
+                                <span class="product-price">{{ product.price }}</span>
+                                {% endif %}
+                            </p>
+
+                        </div>
+
+                        <div class="pb-2 text-center">
+                            <button type="button" class="btn btn-primary btn-sm w-100"
+                                onclick="cart.add('{{ product.product_id }}');">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- navigation -->
+            {#<div class="swiper-button-prev swiper-button-prev-combined"></div>#}
+            {#<div class="swiper-button-next swiper-button-next-combined"></div>#}
+        </div>
+    </div>
+</div>
+
+<script>
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const swiperCombined = new Swiper('#swiper-combined', {
+    //         slidesPerView: 5,
+    //         slidesPerGroup: 5,
+    //         spaceBetween: 20,
+    //         navigation: {
+    //             nextEl: '.swiper-button-next-combined',
+    //             prevEl: '.swiper-button-prev-combined'
+    //         },
+    //         breakpoints: {
+    //             0: { slidesPerView: 2, slidesPerGroup: 2 },
+    //             576: { slidesPerView: 2, slidesPerGroup: 2 },
+    //             768: { slidesPerView: 3, slidesPerGroup: 3 },
+    //             992: { slidesPerView: 4, slidesPerGroup: 4 },
+    //             1200: { slidesPerView: 5, slidesPerGroup: 5 }
+    //         }
+    //     });
+    // });
+
+</script>
+
+<script type="text/javascript">
+    function _SoMagnificPopup() {
+        $('.swiper-slide').magnificPopup({
+            delegate: '.quickview_handler',
+            preloader: true,
+            tLoading: '',
+            type: 'iframe',
+            mainClass: 'my-mfp-zoom-in',
+            removalDelay: 200,
+            gallery: { enabled: true },
+            callbacks: {
+                open: function () {
+                    // Will fire when this exact popup is opened
+                    // this - is Magnific Popup object
+                },
+                beforeOpen: function () {
+                    $('[data-toggle=\'tooltip\']').hover(
+                        function () {
+                        },
+                        function (e) {
+                            $('[data-toggle=\'tooltip\']').tooltip('hide');
+                        }
+                    );
+                },
+                afterClose: function () {
+                    $('[data-toggle=\'tooltip\']').tooltip('hide');
+                },
+
+            }
+        });
+
+    }
+    function _SoQuickView() {
+        var $item_class = $('{{ class_suffix }}');
+        if ($item_class.length > 0) {
+            for (var i = 0; i < $item_class.length; i++) {
+                //$($item_class[i]).addClass('quickview');
+                if ($($item_class[i]).find('.quickview_handler').length <= 0) {
+                    var producturlpath = $($item_class[i]).find('a', $(this)).attr('href');
+                    if (typeof producturlpath !== 'undefined' && producturlpath.length > 0) {
+                        var $product_id = $($item_class[i]).find('a', $(this)).attr('data-product');
+                        var _quickviewbutton = "<a class='visible-lg btn-button quickview quickview_handler' href='{{ our_url.link('extension/soconfig/quickview','product_id=') }}" + $product_id + "' title=\"{{ label_text }}\" data-toggle=\"tooltip\" data-title =\"{{ label_text }}\" data-fancybox-type=\"iframe\" ><i class=\"quickview fa fa-search\"></i></a>";
+                        $($item_class[i]).append(_quickviewbutton);
+                    }
+                }
+            }
+        }
+        _SoMagnificPopup();
+    }
+    jQuery(document).ready(function ($) {
+        setTimeout(function () { _SoQuickView() }, 500);
+        // Hide tooltip when clicking on it
+        var hasTooltip = $("[data-toggle='tooltip']").tooltip({ container: 'body' });
+        hasTooltip.on('click', function () {
+            $(this).tooltip('hide')
+        });
+    });
+</script>
+
+{% endif %}

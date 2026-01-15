@@ -1,0 +1,107 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/customer/account/sidebar.css">
+<style>
+.profile-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: inline-block;
+  border: 2px solid #953A93;
+}
+.profile-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
+<!-- Menu Icon: only for mobile -->
+
+<button class="menu-icon" onclick="toggleMenu()">
+  <i class="fa-solid fa-bars"></i>
+</button>
+<!-- Sidebar Menu -->
+<div class="sidebar-menu" id="accountMenu">
+
+  <!-- Close Button (mobile only) -->
+  <button class="close-btn" onclick="toggleMenu()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+
+  {% if not logged %} 
+    <a href="{{ login }}"><i class="fa-regular fa-user"></i> {{ text_login }}</a>  
+    <a href="{{ register }}"><i class="fa-solid fa-file"></i> {{ text_register }}</a>
+    <a href="{{ forgotten }}"><i class="fa-solid fa-key"></i> {{ text_forgotten }}</a>
+  {% endif %}
+{# <div class="account-profile text-center mb-3">
+  <img src="{{ profile_image }}" alt="Profile Image" class="img-fluid rounded-circle" width="100" height="100">
+</div> #}
+{# <div class="account-profile text-center mb-3">
+  <div class="profile-circle">
+    <img src="{{ profile_image }}" alt="Profile Image">
+  </div>
+  
+</div>
+
+<div class="text-center mb-3">
+  <h5 class="mt-2 mb-1" style="font-weight: 600;">{{ firstname }} {{ lastname }}</h5>
+  <p style="margin: 0; color: #666;">{{ email }}</p>
+  
+</div>
+  <hr style="width: 100%; max-width: 285px; height: 1px; background-color: #ccc; border: none; margin: 10px auto;"> #}
+
+  <div class="account-profile text-center mb-3">
+    <div class="profile-circle mx-auto">
+      <img src="{{ profile_image }}" alt="Profile Image" class="img-fluid rounded-circle" width="100" height="100">
+    </div>
+    <h5 class="mt-2 mb-1" style="font-weight: 600;">{{ firstname }} {{ lastname }}</h5>
+    <p style="margin: 0; color: #666;">{{ email }}</p>
+    <hr style="width: 100%; max-width: 285px; height: 1px; background-color: #ccc; border: none; margin: 10px auto;">
+  </div>
+
+
+  <a href="{{ account }}"><i class="fa-regular fa-user"></i> {{ text_account }}</a>
+
+  {% if logged %} 
+    <!-- <a href="{{ edit }}"><i class="fa-regular fa-pen-to-square"></i> {{ text_edit }}</a> -->
+    <a href="{{ password }}"><i class="fa-solid fa-lock"></i> {{ text_password }}</a>
+  {% endif %} 
+
+  <a href="{{ address }}"><i class="fa-regular fa-address-book"></i> {{ text_address }}</a>
+  <a href="{{ wishlist }}"><i class="fa-regular fa-heart"></i> {{ text_wishlist }}</a>
+  <a href="{{ order }}"><i class="fa-solid fa-truck"></i> {{ text_order }}</a>
+  {#<a href="{{ raise_ticket }}">Raise Ticket</a>#}
+  <a href="{{ download }}"><i class="fa-solid fa-download"></i> {{ text_download }}</a>
+  <a href="{{ reward }}"><i class="fa-solid fa-gift"></i> {{ text_reward }}</a>
+  <a href="{{ return }}"><i class="fa-solid fa-reply"></i> {{ text_return }}</a>
+  {% if Referral %}
+      <a href="{{ Referral }}"><i class="fa fa-link"></i> Referral</a>
+  {% endif %}
+  {% if ReferPoints %}
+      <a href="{{ ReferPoints }}"><i class="fa fa-link"></i> ReferPoints</a>
+  {% endif %}
+  <a href="{{ transaction }}"><i class="fa-solid fa-credit-card"></i> {{ text_transaction }}</a>
+  {#<a href="index.php?route=account/referral">Referral</a>#}
+  {#<a href="index.php?route=account/referpoints">Refer Points</a>#}
+  <a href="{{ newsletter }}"><i class="fa-regular fa-newspaper"></i> {{ text_newsletter }}</a>
+
+  {% if logged %} 
+    <a href="{{ logout }}" class="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> {{ text_logout }}</a>
+  {% endif %}
+  {% if credit_cards %}
+		<h2>{{ text_credit_card }}</h2>
+		<ul class="list-unstyled">
+			{% for credit_card in credit_cards %}
+				<li>
+					<a href="{{ credit_card.href }}">{{ credit_card.name }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+</div>
+
+<script>
+  function toggleMenu() {
+    document.getElementById("accountMenu").classList.toggle("active");
+  }
+</script>

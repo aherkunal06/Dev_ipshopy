@@ -1,0 +1,141 @@
+{{ header }}{{column_left}}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+        		<button type="submit" form="shiftproduct" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+    		</div>
+		 <h1>{{ heading_title }}</h1>
+		  <ul class="breadcrumb">
+		  {% for breadcrumb in breadcrumbs %}
+			<li><a href="{{ breadcrumb.href }}">{{breadcrumb.text}}</a></li>
+			{% endfor %}
+		  </ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+			  <button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		{% if success %}
+			<div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+			  <button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+			<div class="panel-title"><i class="fa fa-exchange" aria-hidden="true"></i> {{ heading_title }}</div>
+			</div>	
+			<div class="panel-body">
+				<form class="form-horizontal" action="{{ action }}" method="post" enctype="multipart/form-data" id="shiftproduct">
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-manufacture"><span data-toggle="tooltip" title="{{ help_manufacture }}">{{ entry_manufacture }}</span></label>
+						<div class="col-sm-10">
+						  <input type="text" name="manufacture" value="" placeholder="{{ entry_manufacture }}" id="input-manufacture" class="form-control" />
+							<div id="product-manufacture" class="well well-sm" style="height: 150px; overflow: auto;">
+								{% for product_manufacture in product_manufacturies %}
+								<div id="product-manufacture{{ product_manufacture.manufacturer_id }}"><i class="fa fa-minus-circle"></i> {{ product_manufacture.name }}
+									<input type="hidden" name="product_manufacture[]" value="{{ product_manufacture.manufacturer_id }}" />
+								</div>
+								{% endfor %}
+							</div>
+							{% if error_manufacture %}
+							  <div class="text-danger">{{ error_manufacture }}</div>
+							{% endif %}
+						</div>
+					</div>
+				  
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-vendors"><span data-toggle="tooltip" title="{{ help_vendors }}">{{ entry_vendors }}</span></label>
+						<div class="col-sm-10">
+						  	<input type="text" name="vendor" value="" placeholder="{{ entry_vendors }}" id="input-vendor" class="form-control" />
+							<input type="hidden" name="vendor_id" value="{{ vendor_id }}" />
+							{% if error_vendor %}
+							  <div class="text-danger">{{ error_vendor }}</div>
+							{% endif %}
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+						<div class="col-sm-10">
+							<select name="status" id="input-status" class="form-control">
+							{% if status %}
+								<option value="1" selected="selected">{{ text_enabled }}</option>
+								<option value="0">{{ text_disabled }}</option>
+							{% else %}
+								<option value="1">{{ text_enabled }}</option>
+								<option value="0" selected="selected">{{ text_disabled }}</option>
+							{% endif %}
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group hide">
+						<label class="col-sm-2 control-label">{{ entry_shiftproduct }}</label>
+						<div class="col-sm-10">
+							<input type="submit" class="btn btn-primary" value="{{ button_shiftproduct }}">
+						</div>
+					</div>
+					
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"><!--
+// Manufacture
+$('input[name=\'manufacture\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=vendor/shiftproduct/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						value: item['manufacturer_id'],
+						label: item['name']
+					}
+				}));
+			}
+		});
+	},
+	
+	'select': function(item) {
+		
+		$('input[name=\'manufacture\']').val('');
+		$('#product-manufacture' + item['value']).remove();
+		$('#product-manufacture').append('<div id="product-manufacture' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product_manufacture[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#product-manufacture').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// Vendor
+$('input[name=\'vendor\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=vendor/vendor/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						value: item['vendor_id'],
+						label: item['vendorname']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'vendor\']').val(item['label']);
+		$('input[name=\'vendor_id\']').val(item['value']);
+	}
+});
+</script>
+{{ footer }}

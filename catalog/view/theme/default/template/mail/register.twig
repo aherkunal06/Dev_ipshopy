@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ subject }}</title>
+</head>
+<body style="margin:0; padding:0; font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+  <div style="max-width:600px; margin:20px auto; border:1px solid #ddd; border-radius:8px; overflow:hidden; background:#fff;">
+    
+    <div style="background:#953a93; text-align:center; padding:20px;">
+      <a href="https://www.ipshopy.com" style="display:inline-block;">
+        {#<img src="https://www.ipshopy.com/image/catalog/A-Satyashil/Logo%20props.png" alt="{{ store }}" style="max-width:120px; background:white; border-radius:6px;">#}
+      </a>
+    </div>
+
+    <div style="padding:30px;">
+      <p style="font-size:16px; margin-top:0; color:#953a93;"><strong>{{ text_welcome }}<span style="color: black;"> {{firstname}},</span></strong></p>
+      {# <p style="font-size:16px; color:#953a93; margin-bottom: 0"><strong>{{ text_greetings }}</strong></p> #}
+
+      {% if not approval %}
+        <p>{{ text_login }}</p>
+        <p style="margin:20px 0;"><strong>{{ login }}</strong></p>
+        <p>{{ text_service }}</p>
+      {% else %}
+        <p>{{ text_approval }}</p>
+        <p style="margin:20px 0;"><strong>{{ login }}</strong></p>
+      {% endif %}
+
+      <p style="margin-top:30px;">{{ text_thanks }}<br><strong style="color:#953a93;">{{ store }}</strong></p>
+    </div>
+
+    <div style="background:#f9f9f9; padding:20px; text-align:center; font-size:12px; color:#777;">
+      <p>If you didn't request this email, please ignore it.</p>
+      <p>&copy; {{ "now"|date("Y") }} {{ store }}. All rights reserved.</p>
+      <p><a href="{{ unsubscribe_url }}" style="color:#777; text-decoration:underline;">Unsubscribe</a></p>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,253 @@
+{{ header }}{{column_left}}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+     
+	 <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+	  {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{breadcrumb.text}}</a></li>
+        {% endfor %}
+      </ul>
+   
+  </div>
+  <div class="container-fluid">
+	{% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+   {% endif %}
+   {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+   {% endif %}
+	<div class="panel panel-default">
+    <div class="panel-heading">
+			<div class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}
+      </div>
+    <div class="panel-body">
+	
+      <form class="form-horizontal" action="{{ restore }}" method="post" enctype="multipart/form-data" id="restore">
+		  <div class="row">
+            <div class="col-sm-6">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">{{ entry_vendors }}</label>
+				<div class="col-sm-8">
+					 <select name="vendor" class="form-control">
+					  <option value="" selected="selected">{{ text_all_vendors }}</option>
+					  {% for vendor in vendors %}              
+					 <option value="{{ vendor.vendor_id }}" >{{ vendor.firstname }} {{ vendor.lastname }}</option>
+					  {% endfor %}
+					</select>
+				</div>
+			</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_category }}</label>
+			<div class="col-sm-8">
+				 <select name="category" class="form-control">
+				  <option value="" selected="selected">{{ text_all_category }}</option>
+				  {% for cat in categories %}              
+				 <option value="{{ cat.category_id }}" >{{ cat.name }}</option>
+				  {% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_manufature }}</label>
+			<div class="col-sm-8">
+				  <select  class="form-control" name="manufacturer_id">
+				 <option value="">{{ text_all_manufacturer }}</option>
+				{% for product_manufacturer in product_manufacturers %}
+				 <option value="{{ product_manufacturer.manufacturer_id }}">{{ product_manufacturer.name }}</option>
+				{% endfor %}
+				 </select>
+				</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_stores }}</label>
+			<div class="col-sm-8">
+				  <select name="store_id" class="form-control" >
+				 <option value="">{{ text_all_stores }}</option>
+				 {% for  store in stores %}
+				 <option value="{{ store.store_id }}">{{ store.name }}</option>
+				{% endfor %}					
+				 </select>
+			</div>
+		</div>
+			
+		<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_stock_status }}</label>
+			<div class="col-sm-8">
+				 <select name="stock_status_id"  class="form-control" >
+					<option value="">{{ text_all_stockstatus }}</option>
+						{% for stock_status in stock_statuses %}
+                     <option value="{{ stock_status.stock_status_id }}">{{ stock_status.name }}</option>
+				 {% endfor %}
+				 </select>
+			</div>
+		</div>
+			
+		<div class="form-group">
+		<label class="col-sm-4 control-label">{{ entry_status }}</label>
+		<div class="col-sm-8">
+			  <select name="status" class="form-control">
+		<option value="">{{ text_all_status }}</option>
+		<option value="1">{{ text_enabled }}</option>
+		<option value="2">{{ text_disabled }}</option>
+		
+		</select>
+			</div>
+		</div>
+			
+			<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_language }}</label>
+			<div class="col-sm-8">
+				<select name="language_id" class="form-control">
+				 {% for language in languages %} 
+			 <option value="{{ language.language_id}}">{{ language.name }}</option>
+			{% endfor %}			 
+			 </select>
+				</div>
+			</div>
+			
+				
+				<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_review }}</label>
+			<div class="col-sm-8">
+				<select name="productreview" class="form-control">
+				<option value="0">{{ text_no }}</option>
+				<option value="1">{{ text_yes }}</option>
+				
+			 </select>
+			</div>
+			</div>
+			<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_extrafiled }}</label>
+			<div class="col-sm-8" style="padding-left:0px" >
+				 {% if cfiled %}
+				{% for filed in cfiled %}
+				<label class="col-sm-6 control-label" style="text-align:left"><input type="checkbox" value="{{ filed }} " name="cfiled[]"> {{ filed }} </label> 
+				{% endfor %}
+							
+				{% else %}
+				No custome filed present
+				{% endif %}
+				
+			</div>
+			</div>
+			
+			
+		</div>
+		 <div class="col-sm-6">
+			
+			
+			
+			
+			
+				<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_producturl }}</label>
+			<div class="col-sm-8">
+				<select name="productimage" class="form-control">
+				<option value="0">{{ text_no }}</option>
+				<option value="1">{{ text_yes }}</option>
+				
+			 </select>
+			</div>
+			</div>
+			<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_quantity }}</label>
+			<div class="col-sm-8">
+				 <input name="quantity" value=""  class="form-control" >
+				</div>
+			</div>
+			<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_productname }}</label>
+			<div class="col-sm-8">
+				 <input name="productname" value=""  class="form-control" >
+				</div>
+			</div>
+			
+			
+			<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_model }}</label>
+			<div class="col-sm-8">
+				 <input name="model" value=""  class="form-control" >
+				</div>
+			</div>
+			<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_number }}</label>
+			<div class="col-sm-8" style="padding-left:0px">
+				<div class="col-xs-6">
+				<input name="number" value="{{ number }}" class="form-control input-sm">  
+				</div>
+				<div class="col-xs-6" >
+				<input name="end" value="{{ end }}" class="form-control input-sm " >
+				</div>
+				</div>
+			</div>
+			<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_price }}</label>
+			<div class="col-sm-8" style="padding-left:0px">
+				<div class="col-xs-6">
+				<input name="price" value="" class="form-control input-sm"> 
+				</div>
+				<div class="col-xs-6">
+				<input name="price1" value="" class="form-control input-sm " >
+				</div>
+				</div>
+			</div>
+			<div class="form-group">
+			<label class="col-sm-4 control-label">{{ entry_exportxls }}</label>
+			<div class="col-sm-8">
+				<input type="submit" class="btn btn-primary col-sm-12" value="{{ button_export }}">
+			</div>
+		</div>
+		 </div>	
+      </form>
+    </div>
+  </div>
+</div>
+ <script type="text/javascript"><!--
+$('input[name=\'productname\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'productname\']').val(item['label']);
+	}
+});
+
+$('input[name=\'model\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_model=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['model'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'model\']').val(item['label']);
+	}
+});
+//--></script>
+
+{{ footer }}

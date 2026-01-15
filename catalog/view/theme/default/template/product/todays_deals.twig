@@ -1,0 +1,17 @@
+
+<link rel="stylesheet" href="catalog/view/theme/so-mobile/css/todays_deals.css" />
+
+<!-- catalog/view/theme/your-theme/template/common/mobile_deals.twig -->
+<div class="mobile-deals-container">
+  <h2 class="deals-title">Today's Best Deals</h2>
+  <div class="deals-wrapper">
+    {% for product in products %}
+      <div class="deal-card">
+        <img src="{{ product.thumb }}" alt="{{ product.name }}">
+        <h3 class="product-name">{{ product.name }}</h3>
+        <p class="product-price">{{ product.price}}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+

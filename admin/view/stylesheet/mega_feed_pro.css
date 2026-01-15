@@ -1,0 +1,295 @@
+#content .page-header {
+    border-bottom: 0px solid transparent !important;
+    margin: 20px 0 5px 0 !important;
+}
+
+#content .page-header .breadcrumb {
+    padding: 0px !important;
+}
+
+.no-gutters {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.no-margins {
+    margin: 0px !important;
+}
+
+.label-info2 {
+    background-color: #7cb624 !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    margin-bottom: 5px !important;
+}
+
+.mg-btn,
+.mg-btn:active,
+.mg-btn:focus,
+.mg-btn:hover {
+    color: #fff;
+    font-size: 14px !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 5px 13px !important;
+}
+
+.mg-btn:hover { opacity: 0.9 !important; }
+
+.mg-light-green,
+.mg-light-green:hover,
+.mg-light-green:focus,
+.mg-light-green:active { 
+    background-color: #83b726; 
+}
+
+.mg-green,
+.mg-green:hover,
+.mg-green:focus,
+.mg-green:active { 
+    background-color: #067834; 
+}
+
+.mg-gray,
+.mg-gray:hover,
+.mg-gray:focus,
+.mg-gray:active {
+    font-size: 13px !important;
+    text-transform: none !important;
+    font-weight: normal !important;
+    background-color: #f1f1f1;
+    color: #016087 !important;
+    border-color: #016087 !important;
+}
+
+
+.help-block .col-sm-offset-3,
+.help-block .col-sm-10 {
+    padding-left: 5px !important;
+    padding-right: 0px !important;
+    line-height: 20px !important;
+}
+
+.progress {
+    position: relative;
+    top: 8px;
+}
+
+.mg-checkbox {
+    padding-top: 0px !important;
+}
+
+/**** menu ****/
+#mg-menu {
+    display: block !important;
+    background-color: #eeeded;
+    padding: 5px 25px 0px 0px;
+    border-bottom: solid 2px #19222e;
+    border-top: solid 4px #7cb624;
+}
+
+#mg-menu h2 {
+    color: #7cb624;
+    font-weight: bold;
+    font-size: 25px;
+    padding: 25px 0px;
+}
+
+#mg-menu ul li a {
+    display: block !important;
+    color: #414448 !important;
+    font-weight: bold;
+    font-size: 14px !important;
+    margin-right: 20px !important;
+    padding: 6px 2px 1px 2px !important;
+    text-decoration: none !important;
+    background-color: transparent !important;
+    margin-left: 20px !important;
+    border-radius: 0 !important;
+}
+
+#mg-menu ul {
+    margin-bottom: 7px;
+}
+
+#mg-menu ul .active > a, #mg-menu ul li a:hover {
+    color: #000000 !important;
+    border-bottom: 0px solid #7cb624 !important;
+    border-radius: 0 !important;
+    font-weight: bold;
+}
+
+
+/**** home ****/
+#about-mega .mg-block {
+    background-color: #7cb624;
+    color: #fff;
+    font-size: 18px;
+    padding: 20px 0px 40px 0px;
+}
+
+#about-mega .mg-block p {
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 650px;
+    margin-bottom: 30px;
+}
+
+#mega-home-image {
+    display: block;
+    position: relative;
+}
+
+#mega-home-image img {
+    width: 80%;
+    max-width: 80%;
+}
+
+#about-mega .panel-default {
+    border: 0px solid transparent !important;
+    margin-bottom: 0px !important;
+}
+
+#about-mega .mg-block h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 1em 0px !important;
+    text-transform: uppercase;
+}
+
+#mg-header {
+    background-color: #19222e;
+    padding: 3px 25px 2px 25px !important;
+}
+
+#mg-header .mg-btn {
+    border: 0px solid transparent !important;
+    border-radius: 18px !important;
+    margin-right: 20px;
+}
+
+#mg-header .mg-buttons {
+    margin-top: 5px;
+}
+
+.mg-logo {
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+/**** Tabs ***/
+#settings-panel .nav-tabs li ,
+#settings-panel .nav-tabs li.active {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #808080 !important;
+    border-radius: 0px !important;
+    display: block !important;
+}
+
+#settings-panel .nav-tabs li.active > a {
+    color: #000000 !important;
+    border-top: 4px solid #7cb624;
+}
+
+/**** Advertising systems ****/
+.tab-content .nav-pills > li.active > a  {
+    color: #fff !important;
+    font-weight: bold !important;
+    background-color: #7cb624 !important;
+}
+
+.tab-content .nav-pills > li > a  {
+    color: #a5a5a5 !important;
+    font-weight: bold !important;
+    background-color: #eee !important;
+}
+
+.tab-content .nav-pills > li.active > a:hover,
+.tab-content .nav-pills > li.active > a:focus {
+    font-weight: bold !important;
+    color: #fff !important;
+    background-color: #7cb624 !important;
+}
+
+.tab-content .nav-pills > li > a:hover,
+.tab-content .nav-pills > li > a:focus {
+    color: #a5a5a5 !important;
+    font-weight: bold !important;
+    background-color: #ddd !important;
+}
+
+/**** News ****/
+#news .media-body p {
+    padding-top: 3px;
+}
+
+/**** News & rating Widget ****/
+#mega-rating-widget,
+#mega-news-widget {
+    margin-top: 20px;
+}
+
+#mega-rating-widget .media-body p,
+#mega-news-widget .media-body p {
+    padding-top: 3px;
+}
+
+#mega-rating-widget .btn,
+#mega-news-widget .btn {
+    position: relative;
+    top: -8px;
+}
+
+#mega-rating-widget .panel-title,
+#mega-news-widget .panel-title {
+    width: 80%;
+    font-size: 18px;
+}
+
+/**** rating modal ****/
+#ratingModal h4 {
+    color: #4cb64b !important;
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+#ratingModal .modal-body .number {
+    font-weight: bold !important;
+    color: #4cb64b !important;
+}
+
+#ratingModal .modal-body img {
+    display: block;
+    width: 60% !important;
+    margin: 10px auto !important;
+}
+
+#ratingModal .modal-body p {
+    display: block;
+    font-size: 16px !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+#ratingModal .btn-success {
+    display: block;
+    max-width: 200px !important;
+    margin: 10px auto !important;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #4cb64b !important;
+}
+
+#ratingModal .btn-success:hover,
+#ratingModal .btn-success:active,
+#ratingModal .btn-success:focus{
+    opacity: 0.9;
+}
+.alert-info {
+    background-color: #fefefe !important;
+    border-color: #7cb624 !important;
+    color: #214c61 !important;
+}

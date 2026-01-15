@@ -1,0 +1,76 @@
+  <!-- Rating Modal -->
+  <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModal" data-hide-rating-box="{{ hideRatingWidget }}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">{{ rating_popup_heading }}</h4>
+        </div>
+        <div class="modal-body">
+          <p>{{ rating_popup_text1 }}</p>
+          <img src="{{ rating_popup_img1 }}">
+          <p>{{ rating_popup_text2 }}</p>
+          <img src="{{ rating_popup_img2 }}">
+          <p>{{ rating_popup_text3 }}</p>
+          <img src="{{ rating_popup_img3 }}">
+        </div>
+        <div class="modal-footer">
+          <a href="{{ rating_url }}" class="btn btn-success" target="_blank" onClick="hideRatingBox('now')">{{ rating_popup_rate_btn }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ./Rating Modal -->
+
+  <script type="text/javascript"><!--
+  $(document).ready(function(){
+    $('#mergado-rating-close').on('click', function() {
+      hideRatingBox('30days');
+    });
+  });
+  
+  function showRatingModal() {
+    $('#ratingModal').modal('show');
+  }
+
+  function initRatingBoxInBanner() {
+    if ($('.review').length > 0) {
+      if (parseInt($('#ratingModal').attr('data-hide-rating-box')) == 1) {
+        $('.mg-bottom-banner .review').parent().hide();
+        $('.mg-sidebar .review').hide();
+      } else {
+        $('.mg-bottom-banner .review a').attr('target', '');
+        $('.mg-sidebar .review a').attr('target', '');
+      }
+    }
+  }
+
+  function hideRatingBoxInBanner() {
+    if ($('.review').length > 0) {
+        $('.mg-bottom-banner .review').parent().hide();
+        $('.mg-sidebar .review').hide();
+    }
+  }
+
+  function hideRatingBox(param){
+
+    if(param == 'now') {
+      $('#ratingModal').modal('hide');
+    }
+
+    hideRatingBoxInBanner();
+
+    $.ajax({
+    url: 'index.php?route={{ route }}/hide-rating&user_token={{ user_token }}',
+    data: {interval: param },
+    method: 'POST',
+    success : function(response){
+
+    },
+    error : function(){
+
+    }
+    });
+  }
+  //--></script>
+

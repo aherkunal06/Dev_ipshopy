@@ -1,0 +1,191 @@
+{{ header }}
+{{ column_left }}
+
+<style>
+/* Base alert styles */
+.alert-custom {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Success alert */
+.alert-success-custom {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+/* Error alert */
+.alert-danger-custom {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+/* Info alert */
+.alert-info-custom {
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+}
+
+/* Warning alert */
+.alert-warning-custom {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+
+/* Close button */
+.alert-custom .close {
+  float: right;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+  color: inherit;
+  background: none;
+  border: none;
+}
+
+/* Center and width customization */
+.center-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 70vh;
+  gap: 20px;
+}
+
+#vacation-form-wrapper,
+#terms-wrapper {
+  width: 60%;
+  min-width: 400px;
+  max-width: 700px;
+}
+
+@media (max-width: 768px) {
+  #vacation-form-wrapper,
+  #terms-wrapper {
+    width: 90%;
+  }
+}
+</style>
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+
+     
+
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+   <!-- Back Button -->
+      <a href="index.php?route=vendor/vacation_list" class="btn btn-default pull-right" style="margin-top: -40px;">
+        <i class="fa fa-reply"></i> 
+      </a>
+
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert-custom alert-danger-custom">
+      <button type="button" class="close" onclick="this.parentElement.style.display='none';">&times;</button>
+      <i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert-custom alert-success-custom">
+      <button type="button" class="close" onclick="this.parentElement.style.display='none';">&times;</button>
+      <i class="fa fa-check-circle"></i> {{ success }}
+    </div>
+    {% endif %}
+
+    <div class="center-wrapper">
+
+      <div class="panel panel-info" id="terms-wrapper">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{ text_terms_heading }}</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li>{{ text_term_clear_orders }}</li>
+            <li>{{ text_term_advance_notice }}</li>
+            <li>{{ text_term_max_duration }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel panel-default" id="vacation-form-wrapper">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{ text_apply_vacation }}</h3>
+        </div>
+        <div class="panel-body">
+          <form action="{{ action }}" method="post" class="form-horizontal" id="vacation-form">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{ text_vendor_name }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="vendor_name" value="{{ vendor_name }}" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{ text_display_name }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="display_name" value="{{ display_name }}" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{ entry_start_date }}</label>
+              <div class="col-sm-10">
+                <input type="date" name="start_date" value="{{ start_date }}" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{ entry_end_date }}</label>
+              <div class="col-sm-10">
+                <input type="date" name="end_date" value="{{ end_date }}" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{ entry_reason }}</label>
+              <div class="col-sm-10">
+                <textarea name="reason" class="form-control" disabled>{{ reason }}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="confirm_clear_orders" checked disabled />
+                    {{ text_confirm_orders_cleared }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('vacation-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+  });
+
+  const errorAlert = document.getElementById('vacation-error-alert');
+  if (errorAlert) {
+    errorAlert.style.display = 'none';
+  }
+</script>
+
+{{ footer }}

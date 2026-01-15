@@ -1,0 +1,1530 @@
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{{ header }}
+<style>
+	/* Ensure panels are responsive and aligned */
+	.panel {
+		margin-bottom: 20px;
+	}
+	.panel-heading {
+		border-top: 1px solid transparent;
+		border-right: 1px solid transparent;
+	}
+
+	.panel-group .panel {
+		margin-bottom: 20px;
+		border-radius: 4px;
+	}
+	/* Ensure input fields are full-width on small screens */
+	@media(max-width: 768px) {
+		.form-group input,
+		.form-group select {}
+		.table {
+			display: block;
+			overflow-x: auto;
+		}
+		.table th,
+		.table td {
+			width: 50px !important;
+			white-space: nowrap;
+		}
+		.panel-body {
+			padding: 10px;
+		}
+		.panel-title {
+			font-size: 16px;
+		}
+	}
+
+	/* Adjust margins and paddings for smaller screens */
+	@media(max-width: 576px) {
+		.container {
+			padding: 10px;
+		}
+		.panel-heading {
+			padding: 10px;
+		}
+		.panel-title {
+			font-size: 14px;
+		}
+		.form-group label {
+			font-size: 14px;
+		}
+		.form-group input,
+		.form-group select {
+			font-size: 14px;
+			padding: 8px;
+		}
+	}
+
+	.input-with-button {
+		position: relative;
+	}
+
+	.input-with-button input {
+		padding-right: 40px;
+	}
+
+	.input-with-button button {
+		position: absolute;
+		top: 50%;
+		right: 10px;
+		transform: translateY(-50%);
+		padding: 5px 10px;
+		border: none;
+		background: none;
+		color: #555;
+		font-size: 18px;
+		cursor: pointer;
+	}
+
+	.input-with-button button:hover {
+		color: #000;
+	}
+
+	/* Remove panel background, shadow, and padding */
+	.panel-default {
+		background: none;
+		box-shadow: none;
+		border: none;
+		padding: 0;
+	}
+
+	/* Section title */
+	.panel-heading h4 {
+		font-size: 24px;
+		font-weight: 600;
+		margin-bottom: 25px;
+	}
+
+	/* Form labels */
+	.form-group label {
+		font-size: 16px;
+		font-weight: 500;
+		margin-bottom: 8px;
+	}
+
+	/* Inputs and selects */
+	.form-control {
+		border-radius: 6px;
+		padding: 12px;
+		font-size: 15px;
+		border: 1px solid #ddd;
+		background-color: #f9f9f9;
+		box-shadow: none;
+	}
+
+	.form-control:focus {
+		border-color: #6f42c1;
+		background-color: #fff;
+		box-shadow: none;
+	}
+
+	.form-control::placeholder {
+		color: #aaa;
+	}
+
+	/* Radio options */
+	.radio label {
+		display: block;
+		font-size: 14px;
+		font-weight: 600;
+		margin-bottom: 10px;
+	}
+
+	/* Submit button (purple theme) */
+	#save_payment_address {
+		/* margin-top: 20px; */
+		background-color: #953A93; /* purple */
+		color: #fff;
+		font-weight: 500;
+		border-radius: 8px;
+		border: none;
+		padding: 12px 24px;
+		transition: 0.3s ease;
+		/* margin-inline-start: auto; */
+	}
+
+	#save_payment_address:hover {
+		background-color: #953A93; /* darker purple on hover */
+
+	}
+
+
+	#save_shipping_address {
+		/* margin-top: 20px; */
+		background-color: #953A93; /* purple */
+		color: #fff;
+		font-weight: 500;
+		border-radius: 8px;
+		border: none;
+		padding: 12px 24px;
+		transition: 0.3s ease;
+		/* margin-inline-start: auto; */
+	}
+	#save_shipping_address:hover {
+		background-color: #953A93; /* darker purple on hover */
+	}
+	.table-responsive {
+		min-height: .01%;
+		overflow-x: hidden;
+	}
+	.control-quantity {
+		width: 40px !important;
+		height: 30px;
+		text-align: center !important;
+		font-size: 14px !important;
+		padding: 0 !important;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: black;
+	}
+	.quantity_button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border: none;
+		background: gray;
+		font-size: 18px;
+		color: white;
+		width: 30px;
+		height: 30px;
+	}
+	.btn-cust {
+		background-color: #953A93;
+		/* width: 25%; */
+		color: white;
+		/* padding: 10px; */
+		display: inline-block;
+		border-radius: 5px;
+		line-height: 20px;
+		padding: 6px 15px !important;
+		width: fit-content;
+		cursor: pointer;
+	}
+	.hidden_input {
+		width: 0 !important;
+		padding: 0;
+		margin: 0;
+		border: none;
+		visibility: none;
+	}
+	.address_cancel {
+		cursor: pointer;
+		margin: 0;
+		font-size: 16px;
+		color: black;
+	}
+	.address_button_container {
+		display: flex;
+		justify-content: end;
+		align-items: center;
+		gap: 15px;
+
+	}
+	.address_button_container button {
+		margin: 0;
+	}
+	.address_rigght {
+		min-width: max-content;
+		margin: 0;
+		align-self: end;
+	}
+	.address_rigght label {
+		margin: 0
+	}
+	.address_left {
+		width: 100%;
+	}
+	.address_left select {
+		padding-block: 8px !important;
+    font-size: 13px;
+    width: 100%;
+	}
+	.address_left strong {
+		color: black;
+		font-size: 16px;
+	}
+	.address_existing_container {
+		display: flex;
+		gap: 15px;
+
+	}
+	.address_existing_container .form-group {
+		margin: 0;
+	}
+	/*#input-payment-address-2, #input-payment-address-1,#input-shipping-address2,#input-shipping-address {*/
+	/*    width:100%;*/
+	/*}*/
+	#new-shipping-address-form input,#new-shipping-address-form select{
+	    width:100%;
+	}
+	.address_title {
+		line-height: 20px;
+	}
+	.new_address_form {
+		margin-top: 15px;
+		box-shadow: 0 0 5px #9a9a9a;
+		padding: 20px;
+	}
+	.new_address_form label {
+		line-height: 20px;
+		font-size: 14px;
+		margin-bottom: 2px;
+	}
+	.new_address_form .form-group {
+		margin-bottom: 10px;
+	}
+	.address_card {
+		box-shadow: 0 0 3px #d0cfd1;
+		/* padding-top: 0; */
+	}
+	.price_section {
+		/* width: 320px; */
+		width: 100%;
+		box-shadow: 0 0 3px #9a9a9a;
+		padding: 20px;
+	}
+	.price_section .price_heading {
+		margin-inline: -20px;
+		border-bottom: 1px solid #eee;
+		color: #7d7d7d;
+		text-align: left;
+		margin-bottom: 15px;
+		padding-bottom: 10px;
+		padding-left: 20px;
+		font-weight: 600;
+		font-size: 16px;
+	}
+	.price_section .price_bottom {
+		margin-top: 15px;
+		padding-top: 10px;
+		border-top: 1px solid #eee;
+		color: #7d7d7d;
+		font-weight: 600;
+	}
+	.price_section .price_bottom .price_rows {
+		margin-bottom: 0;
+
+	}
+	.price_section {
+		margin-bottom: 20px;
+	}
+	.price_section .price_rows {
+		display: flex;
+		justify-content: space-between;
+		font-size: 16px;
+		color: black;
+		margin-bottom: 20px;
+	}
+	.price_section h5 {
+		font-weight: 500;
+
+	}
+	.cart_heading {
+		padding: 10px 15px;
+		background: #953A93;
+		color: white;
+	}
+	.coupon_button {
+		padding-block: 6px;
+		background: #953A93;
+		width: 150px;
+		border: 1px solid #953A93;
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
+	.coupon_button:hover {
+		background: white;
+		color: #953A93;
+		border: 1px solid #953A93;
+
+	}
+	.coupon_section {
+		padding: 0;
+	}
+	.coupon_section .form-control {
+		height: auto;
+		padding-block: 6px;
+		    font-size: 14px;
+    line-height: 24px;
+    border: none;
+    border-radius: 0px !important;
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+	}
+	.payment_option_label {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+	.payment_option_label input {
+		width: fit-content !important;
+	}
+	.payment_method_custom .radio,
+	.payment_method_custom .checkbox {
+		margin: 0;
+	}
+	.payment_method_custom .payment_option_label {
+		display: flex !important;
+		margin-block: 5px !important;
+		color: black;
+         font-weight: 500;
+	}
+	.payment_method_custom .payment_option_label b{
+	    color:black;
+	}
+	.payment_heading {
+		background-color: white !important;
+		border-top: none;
+		border-right: none;
+		font-weight: 600;
+		/* padding: 0; */
+		border-bottom: 1px solid #eee !important;
+		margin-inline: -15px;
+	}
+	.payment_heading h4 {
+		color: #7d7d7d;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		font-size: 16px;
+	}
+	.payment_method_container {
+		padding: 15px;
+
+		box-shadow: 0 0 5px #9a9a9a;
+	}
+	table th {
+		text-align: left;
+	}
+    .payment_method_custom textarea{
+        width:100%;
+    }	
+    .payment_method_custom .payment_option_label input{
+            margin-bottom: 5px;
+    }
+    .new-shipping-address-form input,.new-shipping-address-form select, .new_address_form input,.new_address_form select {
+    width: 100% !important;
+}
+table tbody tr td{
+    vertical-align: middle !important;
+    
+}
+.text-danger {
+    background-color: transparent;
+}
+select[name="country_id"] {
+    padding: 5px;
+}
+</style>
+
+{% if not logged %}
+	{{login}}
+{% else %}
+
+	<div
+		class="container" id="checkout-checkout" style="margin-top: 20px;">
+		 {#<ul class="breadcrumb">#}
+		{#{% for breadcrumb in breadcrumbs %}#}
+		{#<li>#}
+		{#<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>#}
+		{#</li>#}
+		{#{% endfor %}#}
+		{#</ul> #}
+
+		{% if error_warning %}
+			<div class="alert alert-danger alert-dismissible">
+				<i class="fa fa-exclamation-circle"></i>
+				{{ error_warning }}
+				<button id="confirm-order" type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+
+		{# <h2>{{ heading_title }}</h2> #}
+		<div class="panel-group" id="accordion">
+			<div class="row">
+				<div
+					class='col-sm-8'>
+					{# payment address starts  #}
+					<div class="">
+						<form action='{{payment_address_action}}' method="post" id="payment-form">
+
+							<div
+								class="panel panel-default">
+								 {#<div class="panel-heading">#}
+								{#<strong class="panel-title">{{ text_checkout_payment_address }}</strong>#}
+								{#</div> #}
+
+								<div id="collapse-payment-address">
+									<div
+										class="panel-body address_card">
+
+										<!-- Radio option for Existing (Cancel) -->
+										<div class="radio d-none">
+											<label>
+												<input type="radio" name="payment_address" id="billingAddressExisting" value="existing" checked>
+												Cancel
+											</label>
+										</div>
+										<div class="address_existing_container">
+											<div class="address_left">
+												<div class='address_title'>
+													<strong class="panel-title">{{ text_checkout_payment_address }}</strong>
+												</div>
+												<!-- Existing Address Section -->
+												<div id="existing-address">
+													{% if addresses %}
+														<div class="form-group mt-2">
+															<select id="existing_address_id" name="address_id" class="">
+																{% for address in addresses %}
+																	<option value="{{ address.address_id }}" {% if address.address_id == selected_address_id %} selected {% endif %}>
+																		{{ address.firstname }}
+																		{{ address.lastname }},
+																		{{ address.address_1 }},
+																		{{ address.city }},
+																		{{ address.postcode }}
+																	</option>
+																{% endfor %}
+															</select>
+														</div>
+													{% else %}
+														<p class="text-danger">{{ text_no_existing_address }}</p>
+													{% endif %}
+												</div>
+											</div>
+											<!-- Button-style radio for Add New Address -->
+											<div class="radio address_rigght">
+												<label class="btn-cust" style="color:white; cursor:pointer;" id='new_payment_address_button'>
+													<input type="radio" name="payment_address" id="billingAddressNew" value="new" class="hidden_input">
+													Add Address
+												</label>
+											</div>
+										</div>
+										<!-- New Address Form -->
+										<div id="new-address" class='new_address_form' style="display: none;">
+											<div class="row">
+												<div class="col-md-4">
+													<div class="form-group">
+														<label for="input-firstname">{{ entry_firstname }}</label>
+														<input type="text" name="firstname" id="input-firstname" class="form-control" value="{{ firstname }}" placeholder="{{ entry_firstname }}">
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="form-group">
+														<label for="input-lastname">{{ entry_lastname }}</label>
+														<input type="text" name="lastname" id="input-lastname" class="form-control" value="{{ lastname }}" placeholder="{{ entry_lastname }}">
+													</div>
+												</div>
+												<div class='col-md-4'>
+        												<div class="form-group">
+        													<label for="input-telephone">{{ entry_telephone }}</label>
+        													<input type="text" name="custom_field[address][3]" id="input-telephone" class="form-control" placeholder="{{ entry_telephone }}">
+        												</div>
+												</div>
+					
+											</div>
+
+											<!-- Address Lines -->
+											<div class="form-group">
+												<label for="input-payment-address-1">{{ entry_address_1 }}</label>
+												<input type="text" name="address_1" id="input-payment-address-1" class="form-control" value="{{ address_1 }}" placeholder="{{ entry_address_1 }}">
+											</div>
+											<div class="form-group">
+												<label for="input-payment-address-2">{{ entry_address_2 }}</label>
+												<input type="text" name="address_2" id="input-payment-address-2" class="form-control" value="{{ address_2 }}" placeholder="{{ entry_address_2 }}">
+											</div>
+
+											<!-- City & Postcode -->
+											<div class="row">
+											    <div class="col-md-6">
+													<div class="form-group">
+														<label for="input-country">{{ entry_country }}</label>
+														<select name="country_id" id="input-country" class="form-control">
+															{% for country in countries %}
+																{% if country.country_id == 99 %}
+																	<option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
+																{% else %}
+																	<option value="{{ country.country_id }}">{{ country.name }}</option>
+																{% endif %}
+															{% endfor %}
+														</select>
+													</div>
+												</div>
+												
+												<div class="col-md-6">
+													<div class="form-group">
+														<label for="input-postcode">{{ entry_postcode }}</label>
+														<input type="text" name="postcode" id="input-postcode" class="form-control" value="{{ postcode }}" placeholder="{{ entry_postcode }}">
+													</div>
+												</div>
+											</div>
+
+											<!-- Country & Zone -->
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label for="input-city">{{ entry_city }}</label>
+														<input type="text" name="city" id="input-city" class="form-control" value="{{ city }}" placeholder="{{ entry_city }}">
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label for="input-zone">{{ entry_zone }}</label>
+														<div class="">
+															<!-- Visible field for State Name -->
+															<input
+															type="text" placeholder="{{ entry_zone }}" id="input-payment-zone_name" class="form-control" readonly/>
+
+															<!-- Hidden input for Zone ID (important for database) -->
+															<input type="hidden" name="zone_id" id="input-payment-zone"/>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- Buttons -->
+											<div class="text-end mt-3 address_button_container">
+												<label for="billingAddressExisting" class="address_cancel" style="margin-right: 10px; cursor:pointer;">Cancel</label>
+												<button id="save_payment_address" type="submit" style="width: 150px;">Add Address</button>
+											</div>
+										</div>
+										<!-- End #new-address -->
+
+									</div>
+									<!-- End .panel-body -->
+								</div>
+								<!-- End #collapse-payment-address -->
+							</div>
+							<!-- End .panel -->
+						</form>
+					</div>
+
+					{# payment address ends  #}
+					{# shipping address starts  #}
+					<div class="">
+						{% if shipping_required %}
+							<form action='{{shipping_address_action}}' method="post" id="shipping-form">
+								<div class="panel panel-default">
+
+									<div class="" id="collapse-shipping-address">
+										<div class="panel-body address_card">
+
+											<div class="address_existing_container">
+
+
+												<div class='address_left'>
+													<label class="hidden_input" style='display:none;'>
+														<input
+														type="radio" id="shipping_address_option" name="shipping_address_option" value="same" class="hidden_input" checked>
+													<!-- {{ text_address_existing }} -->
+													</label>
+													<div class='address_title'>
+														<strong class="panel-title">{{ text_checkout_shipping_address }}</strong>
+													</div>
+													{% if addresses %}
+													<select name="shipping_address_id" id="shipping_address-select" class="mt-2" style="width:100%">
+													
+														{% for address in addresses %}
+															<option value="{{ address.address_id }}" {% if address.address_id == selected_shipping_address_id %} selected {% endif %}>
+																{{ address.firstname }}
+																{{ address.lastname }},
+																{{ address.address_1 }},
+																{{ address.city }},
+																{{ address.postcode }}
+															</option>
+														{% endfor %}
+													</select>
+														{% else %}
+														<p class="text-danger">{{ text_no_existing_address }}</p>
+													{% endif %}
+												</div>
+
+												<div
+													class="radio address_rigght">
+
+													{# $('#new_shipping_address_btn').show(); #}
+													<label class='btn-cust' class='new_shipping_address_button' id='new_shipping_address_btn'>
+														<input type="radio" name="shipping_address_option" value="new" class='hidden_input'>
+														Add Address
+													</label>
+												</div>
+
+											</div>
+
+											<div
+												id="new-shipping-address-form" class='new_address_form' style="display: none;">
+												{# <h4>{{ text_address_new }}</h4> #}
+
+												<div class="row">
+													<div class="col-md-4">
+														<div class="form-group">
+															<label for="input-shipping-firstname">{{ entry_firstname }}</label>
+															<input type="text" name="firstname" id="input-shipping-firstname" class="form-control" placeholder="{{ entry_firstname }}">
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label for="input-shipping-lastname">{{ entry_lastname }}</label>
+															<input type="text" name="lastname" id="input-shipping-lastname" class="form-control" placeholder="{{ entry_lastname }}">
+														</div>
+													</div>
+													    	<!-- Telephone full width -->
+													<div class='col-md-4'>
+        												<div class="form-group">
+        													<label for="input-telephone">{{ entry_telephone }}</label>
+        													<input type="text" name="custom_field[address][3]" id="input-telephone" class="form-control" placeholder="{{ entry_telephone }}">
+        												</div>
+													</div>
+												</div>
+
+												<input
+												style="display:none;" type="text" name="company" value="example">
+
+												<!-- Address 1 & Address 2 vertically stacked -->
+												<div class="form-group">
+													<label for="input-shipping-address">{{ entry_address_1 }}</label>
+													<input type="text" name="address_1" id="input-shipping-address" class="form-control" placeholder="{{ entry_address_1 }}">
+												</div>
+												<div class="form-group">
+													<label for="input-shipping-address2">{{ entry_address_2 }}</label>
+													<input type="text" name="address_2" id="input-shipping-address2" class="form-control" placeholder="{{ entry_address_2 }}">
+												</div>
+											
+												<!-- Postcode & City side by side -->
+												<div class="row">
+												    <div class="col-md-6">
+														<div class="form-group">
+															<label for="input-shipping-country">{{ entry_country }}</label>
+															<select name="country_id" id="input-shipping-country" class="form-control">
+															{% for country in countries %}
+																{% if country.country_id == 99 %}
+																	<option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
+																{% else %}
+																	<option value="{{ country.country_id }}">{{ country.name }}</option>
+																{% endif %}
+															{% endfor %}
+														    </select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="input-shipping-postcode">{{ entry_postcode }}</label>
+															<input type="text" name="postcode" id="input-shipping-postcode" class="form-control" placeholder="{{ entry_postcode }}">
+														</div>
+													</div>
+												
+												</div>
+
+
+												<!-- Country & Zone (State) side by side -->
+												<div class="row">
+													
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="input-shipping-city">{{ entry_city }}</label>
+															<input type="text" name="city" id="input-shipping-city" class="form-control" placeholder="{{ entry_city }}" readonly>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="input-shipping-zone">{{ entry_zone }}</label>
+																<div class="">
+															<!-- Visible field for State Name -->
+															<input
+															type="text" placeholder="{{ entry_zone }}" id="input-shipping-zone_name" class="form-control" readonly/>
+
+															<!-- Hidden input for Zone ID (important for database) -->
+															<input type="hidden" name="zone_id" id="input-shipping-zone"/>
+														</div>
+														</div>
+														<div class="address_button_container">
+															<label for="shipping_address_option" class="address_cancel">Cancel</label>
+															<button id='save_shipping_address' style='width:150px; display:none ' type='submit'>Add Address</button>
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</form>
+						{% endif %}
+						{# shipping address ends  #}
+						<div class="">
+							<div
+								class="panel panel-default border-0">
+								{# <div class="panel-heading"></div> #}
+								<div class="">
+									<div class='cart_heading'>
+										<h4 class="panel-title">
+											<i class="fa fa-shopping-cart"></i>
+											{{ text_cart }}
+										</h4>
+									</div>
+									<div class="table-responsive">
+										<table class="table  align-middle" style='font-size:14px;'>
+											<thead class="table-light">
+												<tr>
+													<th>{{ column_name }}</th>
+													<th style='width:115px;'>{{ column_quantity }}</th>
+													<th>{{ column_price }}</th>
+													<th style='width:95px;'>Sub-Total</th>
+													<th>Courier
+														<br>Charges</th>
+													<th>{{ column_total }}</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for product in products %}
+													<tr>
+														<td class="align-items-center" style='display: grid !important; grid-template-columns: 50px auto; gap: 5px; text-align:left;'>
+															<img src="{{ product.thumb }}" alt="{{ product.name }}" width="50">
+															{{ product.name }}
+														</td>
+
+														<td class="text-left">
+															<div class="input-group btn-block" style="max-width: 200px;">
+																<span class="input-group-btn"></span>
+
+																<div style="display: flex; align-items: center;">
+																	<button type="button" class="quantity_button" data-action="decrease" data-cart-id="{{ product.cart_id }}">-</button>
+
+																	<input type="number" id="{{ product.cart_id }}" name="quantity[{{ product.cart_id }}]" value="{{ product.quantity }}" min="1" class="control-quantity" data-cart-id="{{ product.cart_id }}"/>
+
+																	<button type="button" class="quantity_button" data-action="increase" data-cart-id="{{ product.cart_id }}">+</button>
+																</div>
+															</div>
+														</td>
+
+														<td>{{ product.price }}</td>
+														<td>{{ product.total }}</td>
+													<td>
+													    <input type="hidden" name="courier_charges" value="{{ (product.courier_charges==0 ? 80 : product.courier_charges)|number_format(0) }}">
+
+  {% if product.quantity > product.free_charges %}
+    <span style="font-weight: bold;margin-left:5px;">₹0</span>
+    <span style="text-decoration: line-through; color: gray;">
+  ₹{{ (product.courier_charges == 0 ? 80 : product.courier_charges)|number_format(0) }}
+
+    </span>
+  {% else %}
+    <span style="font-weight: bold;">{{ product.courier_charges ?product.courier_charges: 80 }}</span>
+  {% endif %}
+</td>
+
+														<td>{{ product.grand_total }}</td>
+														<td>
+															<span class="input-group-btn">
+
+																<button type="button" data-toggle="tooltip" title="{{ button_remove }}" class="btn remove_product" style='color:red; background:transparent; padding:0px; font-size:20px;' data-productid="{{ product.cart_id }}">
+																	<i class="fa fa-trash"></i>
+																</button>
+															</span>
+														</td>
+													</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+				<div class="col-sm-4">
+					<!-- shopping cart -->
+					{# <form action={{cart_edit_action}} method="post" enctype="multipart/form-data"> #}
+						<div>
+							<div class="text-right price_section"> <div class='price_heading'>
+								Price Details
+							</div>
+							<div class='price_rows'>
+								<span>{{ text_sub_total }}:</span>
+								{{ sub_total }}</div>
+							<div class='price_rows'>
+								<span>Courier Charges</span>
+								{{ courierCharges  }}</div>
+							<div class='price_bottom'>
+								<div class='price_rows'>
+									<span>{{ text_total }}:</span>
+									{{ grand_total  }}</div>
+							</div>
+						</div>
+
+
+						<div>
+							<div
+								class="">
+								<!-- Voucher Code Panel -->
+								<div
+									class="panel panel-default">
+									{# <div class="panel-heading">
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		Enter coupon Code
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	</div> #}
+									<div class="panel-body coupon_section">
+										<div class="input-group">
+											<input type="text" class="form-control" placeholder="coupon code">
+											<span class="input-group-btn">
+												<button class="btn btn-default coupon_button" type="button">Apply coupon</button>
+											</span>
+										</div>
+										<div class="input-group mt-2">
+											<input type="text" class="form-control" placeholder="Voucher code">
+											<span class="input-group-btn">
+												<button class="btn btn-default coupon_button" type="button">Apply Voucher</button>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						{# </form> #}
+
+						<div class="">
+
+							<form action='index.php?route=checkout/confirm' id="checkout_form" method="post">
+								<input type="hidden" name="payment_address" value="existing">
+								<input id='new_payment' type="hidden" name="payment_address_id" value="0">
+								<input type="hidden" name="shipping_address" value="existing">
+								<input id='new_shipping' type="hidden" name="shipping_address_id" value="0">
+
+								<div class="panel panel-default payment_method_container" style='margin-bottom:0px;'>
+									<div class="panel-heading payment_heading">
+										<h4
+											class="panel-title">
+											 {#<a data-toggle="collapse" data-parent="#accordion" href="#collapse-payment-method" class="accordion-toggle">#}
+											{#{{ text_checkout_payment_method }}#}
+											{#<i class="fa fa-caret-down"></i>#}
+											{#</a> #}
+											{{ text_checkout_payment_method }}
+										</h4>
+									</div>
+									<div id="collapse-payment-method" class="panel-collapse collapse in">
+										<div class=" payment_method_custom">
+												{% for key, payment_method in payment_methodsss %}
+													<div class="radio">
+														<label class='payment_option_label'>
+															<input type="radio" name="payment_method" value="{{ payment_method.code }}" {% if payment_method.code == 'cod' %} checked {% endif %}>
+															{{ payment_method.title }}
+														</label>
+													</div>
+												{% endfor %}
+											<!-- Add textarea if you want to get comments -->
+											<div
+												class="form-group">
+												{# <label>{{ text_agree }}</label> #}
+												<textarea name="comment" class="form-control" placeholder="Add any comments for your order..."></textarea>
+											</div>
+											<div class="form-group">
+												<div class="checkbox">
+													<label class='payment_option_label'>
+														<input type="checkbox" name="agree" value="1" id="agree">
+														<span style='font-size:14px;'>
+															<span style='line-height:16px;'>
+																I have read and agree to the
+															</span>
+															<a href="index.php?route=information/information/agree&information_id=3" class="agree">
+																<b>Terms & Conditions</b>
+															</a>
+														</span>
+													</label>
+												</div>
+											</div>
+
+										</div>
+									</div>
+									<div style='display:flex; justify-content:end; margin-top:5px;'>
+										<button id='checkout_confirm' 
+										        type="submit" 
+										        style="background-color:#953A93; color: white; border: none; width: 150px; height: 40px; border-radius:5px; width: 100%; font-weight: 600;"
+										>
+										    Confirm Order
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		{# <div id="confirm_section"></div> #}
+<script>
+function changeQuantity(cartId, delta) {
+const input = document.getElementById('quantityInput_' + cartId);
+let currentValue = parseInt(input.value) || 1;
+let newValue = currentValue + delta;
+
+if (newValue < parseInt(input.min)) 
+return;
+input.value = newValue;
+// Submit the corresponding form
+document.getElementById('quantityForm_' + cartId).submit();
+}
+</script>
+<script>
+function removeProduct(cartId) {
+
+const formData = new FormData();
+formData.append('key', cartId);
+
+fetch('index.php?route=checkout/cart/remove', {
+method: 'POST',
+body: new URLSearchParams(formData)
+}).then(res => res.json()).then(data => {
+if (data.success) {
+// Update each product row
+// alert('product updated');
+window.location.reload();
+} else {
+console.log(data);
+alert(data.error || 'Could not update cart.');
+}
+}).catch(err => {
+console.error('Error updating cart:', err);
+});
+}
+
+const products = document.querySelectorAll('.remove_product');
+products.forEach((product) => {
+
+product.addEventListener('click', () => {
+const product_id = product.getAttribute('data-productid');
+removeProduct(product_id);
+});
+});
+// remove product ends
+function updateProductQuandity(product_id) {
+const input = document.getElementById(product_id);
+const quantity = input.value;
+
+// Create FormData object for the updated quantity
+const formData = new FormData();
+formData.append('quantity[' + product_id + ']', quantity);
+
+// Send a request to update the cart quantity
+fetch('index.php?route=checkout/checkout_test/updateProductQuandity', {
+method: 'POST',
+body: new URLSearchParams(formData)
+}).then(res => res.json()).then(data => {
+if (data.success) { // Instead of reloading, you can update the UI here if needed
+console.log('Product updated successfully.');
+ location.reload();
+// Optionally update cart totals or product rows dynamically
+} else {
+console.log(data);
+alert(data.error || 'Could not update cart.');
+}
+}).catch(err => {
+console.error('Error updating cart:', err);
+});
+}
+
+// Handle input blur (user changes quantity directly)
+document.querySelectorAll('.control-quantity').forEach((input) => {
+ input.dataset.prev = input.value;
+input.addEventListener('input', () => {
+
+    const product_id = input.getAttribute('data-cart-id');
+        const quantity = parseInt(input.value);
+        const prev = parseInt(input.dataset.prev);
+
+        if (isNaN(quantity) || quantity <= 0) {
+            alert('Quantity cannot be 0 or less.');
+            input.value=prev;
+            return;
+        }
+
+        if (quantity === prev) {
+            // No change in quantity
+            return;
+        }
+
+    updateProductQuandity(product_id);
+   
+});
+
+});
+
+// Handle button click for +/- (increase or decrease quantity)
+document.querySelectorAll('.quantity_button').forEach((button) => {
+button.addEventListener('click', () => {
+const product_id = button.getAttribute('data-cart-id');
+const action = button.getAttribute('data-action');
+const input = document.getElementById(product_id);
+let currentValue = parseInt(input.value) || 1;
+
+// Increase or decrease quantity
+let newValue = action === 'increase' ? currentValue + 1 : currentValue - 1;
+
+// Prevent quantity from going below 1
+if (newValue < parseInt(input.min || 1)) 
+return;
+
+
+
+// Update the input field with the new value
+input.value = newValue;
+
+// Update the cart by calling the same update function
+updateProductQuandity(product_id);
+});
+});
+		</script>
+		<script>
+			// document.querySelectorAll(".control-quantity").forEach(function (input) {
+// input.addEventListener("blur", function () {
+
+// console.log('quantity updated');
+// this.closest("form").submit();
+// });
+// });</script><script>
+$('#save_payment_address').on('click', function (e) {
+e.preventDefault();
+
+const formData = $('#payment-form').serialize();
+
+$.post('index.php?route=checkout/payment_address/save', formData, function (response) {
+if (! response.error) { // Set the returned address_id to hidden field in confirm form
+$('input[name="payment_address_id"]').val(response.address_id);
+// $('input[name="shipping_address_id"]').val(response.address_id);
+confirm_button.disabled = false;
+console.log(response);
+location.reload();
+} else { // show error messages
+}
+}, 'json');
+});
+
+// new shipping address
+$('#save_shipping_address').on('click', function (e) {
+e.preventDefault();
+
+const formData = $('#shipping-form').serialize();
+
+$.post('index.php?route=checkout/shipping_address/save', formData, function (response) {
+if (! response.error) {
+// Set the returned address_id to hidden field in confirm form
+// $('input[name="shipping_address_id"]').val(response.address_id);
+confirm_button.disabled = false;
+console.log(response);
+location.reload();
+} else { // show error messages
+}
+}, 'json');
+});
+// adding default address id to hidden form
+document.getElementById("new_shipping").value = document.getElementById("shipping_address-select").value;
+document.getElementById("new_payment").value = document.getElementById("existing_address_id").value;
+
+// on change address id
+document.getElementById("shipping_address-select").addEventListener('change', () => {
+document.getElementById("new_shipping").value = document.getElementById("shipping_address-select").value;
+});
+document.getElementById("shipping_address-select").addEventListener('change', () => { // console.log(document.getElementById("existing_address_id").value);
+document.getElementById("new_payment").value = document.getElementById("existing_address_id").value;
+});
+// console.log(document.getElementById("new_shipping_method").value, document.getElementById("new_payment").value);</script><script type="text/javascript">
+
+const confirm_button = document.getElementById('checkout_confirm');
+const save_payment_address = document.getElementById('save_payment_address');
+const save_shipping_address = document.getElementById('save_shipping_address');
+const new_address = document.getElementById('new_address');
+console.log(save_shipping_address, "shipping button");
+<!--
+$('input[name="payment_address"]').on('change', function () {
+    if (this.value === 'new') {
+        save_payment_address.style.display = 'block';
+        confirm_button.style.cursor = 'no-drop';
+        confirm_button.disabled = true;
+
+        // $('#existing-address').hide();
+
+        // Always set both buttons
+        $('#shipping_address_option').prop('checked',true);
+        $('#new_payment_address_button').hide();
+        $('#new-shipping-address-form').hide();
+        $('#new-address').show();
+        $('#new_shipping_address_btn').show();
+    } else {
+        save_payment_address.style.display = 'none';
+        confirm_button.disabled = false;
+        confirm_button.style.cursor = 'pointer';
+
+        $('#new_payment_address_button').show();
+        $('#new-address').hide();
+        $('#existing-address').show();
+
+        // Reset shipping address button visibility
+        $('#new-shipping-address-form').hide();
+        $('#new_shipping_address_btn').show();
+    }
+});
+
+$('input[name="shipping_address_option"]').on('change', function () {
+    if (this.value === 'new') {
+        save_shipping_address.style.display = 'block';
+        $('#billingAddressExisting').prop('checked',true)
+
+        $('#new_shipping_address_btn').hide();
+        $('#new-address').hide();
+        $('#new-shipping-address-form').show();
+
+        // Always set both buttons
+        confirm_button.style.cursor = 'no-drop';
+        confirm_button.disabled = true;
+        $('#new_payment_address_button').show();
+    } else {
+        save_shipping_address.style.display = 'none';
+
+        $('#new_shipping_address_btn').show();
+        $('#shipping_address-select').show();
+        $('#new-shipping-address-form').hide();
+
+        confirm_button.disabled = false;
+        confirm_button.style.cursor = 'pointer';
+
+        // Reset payment address button visibility
+        $('#new_payment_address_button').show();
+    }
+});
+
+
+const payment_method_a = document.querySelector(`input[name="payment_method"]:checked`).value;
+$('#checkout_confirm').on('click', function (e) {
+    e.preventDefault();
+if(!document.getElementById("existing_address_id")){
+    alert('payment address is required!')
+    return
+}
+if(!document.getElementById("shipping_address-select")){
+    alert('shipping address is required!')
+    return
+}
+    
+
+
+    const formData = $('#checkout_form').serialize();
+    const rawForm = $('#checkout_form').serializeArray();
+    const formDataObj = {};
+
+    // Convert serialized array to object for easy manipulation
+    rawForm.forEach(item => {
+        formDataObj[item.name] = item.value;
+    });
+
+    // 1. Save Payment Address
+    const paymentData = { ...formDataObj };
+    paymentData.address_id = paymentData.payment_address_id;
+    $('#checkout_confirm').prop('disabled', true);
+    $('#checkout_confirm').text('Loading...');
+
+    $.post('index.php?route=checkout/payment_address/save', $.param(paymentData), function (response) {
+        if (!response.error) {
+            // 2. Save Shipping Address
+            const shippingData = { ...formDataObj };
+            shippingData.address_id = shippingData.shipping_address_id;
+
+            $.post('index.php?route=checkout/shipping_address/save', $.param(shippingData), function (response) {
+                if (!response.error) {
+                    $.post('index.php?route=checkout/payment_method/save', formData, function (response) {
+                        if (!response.error) {
+                             const testing = { ...formDataObj };
+            testing.testing = 'testing the data';
+                            $.post('index.php?route=checkout/confirm', $.param(testing), function (response) {
+                                if (!response.error) {
+                                            // alert('Order is confirmed');
+                                    $.post(`index.php?route=extension/payment/${payment_method_a}/confirm`, formData, function (response) {
+                                        if (!response.error) {
+                                            // alert('Order is confirmed');
+                                            console.log(response,'order response');
+                                            window.location.href = "https://www.ipshopy.com/index.php?route=checkout/success";
+                                            if (response.redirect) {
+                                                window.location.href = response.redirect;
+                                            } else {
+                                                console.log('No redirect provided.');
+                                            }
+                                        } else {
+                                            console.log('Final confirm error:', response.error);
+                                            alert('There was an error confirming the order.');
+                                        }
+                                    });
+                                } else {
+                                    alert('There was a problem confirming the order.');
+                                }
+                            });
+                        } else {
+                            alert('There was a problem saving the payment method.');
+                        }
+                    });
+                } else {
+                    alert('There was a problem saving the shipping address.');
+                }
+            });
+        } else {
+            alert('There was a problem saving the payment address.');
+        }
+    });
+});
+
+		</script>
+	
+
+	{% endif %}
+	
+	<script>
+				$(document).ready(function () {
+console.log("jQuery DOM Ready ✅");
+
+$(document).on('change', 'input[name="shipping_address_option"]', function () {
+if ($(this).val() === 'new') {
+console.log("User selected NEW address ✅");
+setupAddressHandlers();
+}
+});
+
+function setupAddressHandlers() {
+const pincodeInput = document.querySelector("#input-shipping-postcode");
+const cityInput = document.querySelector("#input-shipping-city");
+const zoneInput = document.querySelector("#input-shipping-zone_name"); // visible input (state name)
+const zoneIdInput = document.querySelector("#input-shipping-zone"); // hidden input (zone_id)
+const countrySelect = document.querySelector("#input-shipping-country");
+
+if (! pincodeInput) {
+console.error("Pincode input not found! ❌");
+return;
+}
+
+if (countrySelect) {
+countrySelect.value = "99"; // Set India
+}pincodeInput.removeEventListener('blur', pincodeBlurHandler);
+pincodeInput.addEventListener('blur', pincodeBlurHandler);
+
+function pincodeBlurHandler() {
+console.log("Pincode field blurred ✅", pincodeInput.value);
+
+let pincode = pincodeInput.value.trim();
+
+if (/^\d{6}$/.test(pincode)) {
+console.log("Valid 6-digit pincode ✅:", pincode);
+
+fetch(`https://api.postalpincode.in/pincode/${pincode}`).then(response => response.json()).then(data => {
+console.log("API Response:", data);
+
+if (data[0].Status === "Success") {
+let postOffice = data[0].PostOffice[0];
+let city = postOffice.District;
+let stateName = postOffice.State;
+
+if (cityInput) 
+cityInput.value = city;
+
+
+
+if (zoneInput) 
+zoneInput.value = stateName;
+
+
+// show state name
+
+if (stateName) {
+fetch('index.php?route=custom/zone&state=' + encodeURIComponent(stateName)).then(response => response.json()).then(zoneData => {
+if (zoneData.zone_id) {
+if (zoneIdInput) 
+zoneIdInput.value = zoneData.zone_id;
+
+
+// save real zone_id
+console.log("Fetched Zone ID ✅:", zoneData.zone_id);
+} else {
+console.warn("Zone ID not found ❗", stateName);
+if (zoneIdInput) 
+zoneIdInput.value = "";
+
+
+
+}
+}).catch(err => {
+console.error('Error fetching zone_id ❌', err);
+if (zoneIdInput) 
+zoneIdInput.value = "";
+
+
+
+});
+} else {
+if (zoneIdInput) 
+zoneIdInput.value = "";
+
+
+
+}
+} else {
+alert("Invalid Pincode. Please check and enter again.");
+if (cityInput) 
+cityInput.value = '';
+
+
+
+if (zoneInput) 
+zoneInput.value = '';
+
+
+
+if (zoneIdInput) 
+zoneIdInput.value = "";
+
+
+
+}
+}).catch(error => {
+console.error("API Fetch Error ❌", error);
+alert("Failed to fetch pincode details. Try again later.");
+});
+} else {
+console.warn("Invalid pincode format ❗", pincode);
+}
+}
+}
+});
+			</script>
+	<script>
+				$(document).ready(function () {
+console.log("jQuery DOM Ready ✅");
+
+$(document).on('change', 'input[name="payment_address"]', function () {
+if ($(this).val() === 'new') {
+console.log("User selected NEW address ✅");
+setupAddressHandlers();
+}
+});
+
+function setupAddressHandlers() {
+const pincodeInput = document.querySelector("#input-postcode");
+const cityInput = document.querySelector("#input-city");
+const zoneInput = document.querySelector("#input-payment-zone_name"); // visible input (state name)
+const zoneIdInput = document.querySelector("#input-payment-zone"); // hidden input (zone_id)
+const countrySelect = document.querySelector("#input-country");
+
+if (! pincodeInput) {
+console.error("Pincode input not found! ❌");
+return;
+}
+
+if (countrySelect) {
+countrySelect.value = "99"; // Set India
+}pincodeInput.removeEventListener('blur', pincodeBlurHandler);
+pincodeInput.addEventListener('blur', pincodeBlurHandler);
+
+function pincodeBlurHandler() {
+console.log("Pincode field blurred ✅", pincodeInput.value);
+
+let pincode = pincodeInput.value.trim();
+
+if (/^\d{6}$/.test(pincode)) {
+console.log("Valid 6-digit pincode ✅:", pincode);
+
+fetch(`https://api.postalpincode.in/pincode/${pincode}`).then(response => response.json()).then(data => {
+console.log("API Response:", data);
+
+if (data[0].Status === "Success") {
+let postOffice = data[0].PostOffice[0];
+let city = postOffice.District;
+let stateName = postOffice.State;
+
+if (cityInput) 
+cityInput.value = city;
+
+
+
+if (zoneInput) 
+zoneInput.value = stateName;
+
+
+// show state name
+
+if (stateName) {
+fetch('index.php?route=custom/zone&state=' + encodeURIComponent(stateName)).then(response => response.json()).then(zoneData => {
+if (zoneData.zone_id) {
+if (zoneIdInput) 
+zoneIdInput.value = zoneData.zone_id;
+
+
+// save real zone_id
+console.log("Fetched Zone ID ✅:", zoneData.zone_id);
+} else {
+console.warn("Zone ID not found ❗", stateName);
+if (zoneIdInput) 
+zoneIdInput.value = "";
+
+
+
+}
+}).catch(err => {
+console.error('Error fetching zone_id ❌', err);
+if (zoneIdInput) 
+zoneIdInput.value = "";
+
+
+
+});
+} else {
+if (zoneIdInput) 
+zoneIdInput.value = "";
+
+
+
+}
+} else {
+alert("Invalid Pincode. Please check and enter again.");
+if (cityInput) 
+cityInput.value = '';
+
+
+
+if (zoneInput) 
+zoneInput.value = '';
+
+
+
+if (zoneIdInput) 
+zoneIdInput.value = "";
+
+
+
+}
+}).catch(error => {
+console.error("API Fetch Error ❌", error);
+alert("Failed to fetch pincode details. Try again later.");
+});
+} else {
+console.warn("Invalid pincode format ❗", pincode);
+}
+}
+}
+});
+</script>
+<script>
+    document.getElementById("input-telephone").addEventListener("input", function () {
+        // Remove non-numeric characters
+        this.value = this.value.replace(/[^0-9]/g, "");
+
+        // Prevent number from starting with 0
+        if (this.value.startsWith("0")) {
+            this.value = this.value.replace(/^0+/, ""); // Remove leading zeros
+        }
+
+        // Enforce max length of 10 digits
+        this.value = this.value.slice(0, 10);
+    });
+</script>
+			
+	{{ footer }}

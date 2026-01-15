@@ -1,0 +1,130 @@
+{% if mainstatus is not empty or otpverifystatus is not empty %}
+
+<div class="otp-main">
+	<input type="hidden" class="loginotpstatus" value="{{ loginotpstatus }}"/>	
+	<div class="required waotpbox{{otplocation}}">
+		<label class="col-sm-2 control-label" for="input-telephone">{{ entry_telephone }}</label>
+		<div class="col-sm-10">
+			<div class="input-group telephoneerror{{otplocation}}">
+				<input type="text" name="telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="logintelephonechk" class="form-control telephonenew{{otplocation}}"/>
+				<span class="input-group-btn"><button type="button" class="btn btn-danger btnverify{{otplocation}}"><i class="fa fa-check" aria-hidden="true"></i> {{text_verify}}</button></span>
+			</div>
+		</div>
+		
+	</div>
+	<div class="inputotp otpverify{{otplocation}}" id="otplogin{{otplocation}}" style="display:none;">
+		<div class="otperror{{otplocation}} successmsg{{otplocation}}"></div>
+			<div class="text-center">
+			<div class="loadtelephone{{otplocation}}"></div>
+			<input name="otp" maxlength="{% if otpdigitoption == '4' %} 4 {% else %} 6 {% endif %}" class="otpinput{{otplocation}}">
+			<div class="counter{{otplocation}}"></div>
+			<br><button type="button" style="display:none;" class="btn btn-warning resendotp{{otplocation}}"><strong>{{text_security}}</strong></button>
+		</div>
+	</div>
+</div>
+
+
+	<script>
+	var otplocation='{{otplocation}}';
+	var resendtime='{{resendtime}}';
+	var loginotpstatus='{{loginotpstatus}}';
+	var chkloginotpstatus='{{chkloginotpstatus}}';
+//language var
+	var text_enterotp='{{text_enterotp}}';
+	var text_pleaswait='{{text_pleaswait}}';
+	var text_requesting='{{text_requesting}}';
+	</script>
+
+	<script src="catalog/view/javascript/jquery/verifyotp.js" type="text/javascript"></script>
+	
+<style>
+
+#waotpbox{{otplocation}} {margin-top: 20px;}
+.otpinput{{otplocation}} {
+  border: none;
+  width: {{otpdigitwidth}}ch;
+  background: 
+    repeating-linear-gradient(90deg, 
+        dimgrey 0, 
+        dimgrey 1ch, 
+        transparent 0, 
+        transparent 1.5ch) 
+      0 100%/100% 2px no-repeat;
+  color: dimgrey;
+  font: 5ch consolas, monospace;
+  letter-spacing: .47ch;
+  margin: 12px 0;
+}
+
+.telephoneerror{{otplocation}} {
+	display: inline-flex;
+}
+
+.inputotp {
+	margin: 15px auto;
+    display: inline-block;
+    width: 100%;
+}
+
+.otpsendto {
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+.counteraccountregister {
+	font-size: 14px;
+    margin-top: 12px;
+}
+.counteraccountlogin {
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+.otpinput{{otplocation}}:focus {
+  outline: none;
+  color: #23a1d1;
+}
+
+.waotpboxaccountregister {
+    display: flex;
+}
+
+.enter-otp {
+    color: #888;
+    text-align: center;
+    font-size: 14px;
+}
+
+.countstyle {
+	font-size:16px;
+}
+
+.counteraccountlogin {
+    font-size: 14px;
+}
+
+/* == New code start here 15/7/22 == */
+.waotpboxcheckoutregister,
+.waotpboxcheckoutlogin,
+.waotpboxaccountlogin {
+	margin-left:-15px;
+	margin-right:-15px;
+}
+
+.waotpboxcheckoutlogin,
+.waotpboxaccountlogin {
+	margin-top: 10px;
+	display: inline-block;
+}
+
+.waotpboxcheckoutregister .col-sm-2, 
+.waotpboxcheckoutregister .col-sm-10,
+.waotpboxcheckoutlogin .col-sm-2,
+.waotpboxcheckoutlogin .col-sm-10,
+.waotpboxaccountlogin .col-sm-2,
+.waotpboxaccountlogin .col-sm-10{
+	width: 100%;
+}
+/* == New code end here 15/7/22 == */
+</style>
+{% endif %}

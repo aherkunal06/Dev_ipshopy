@@ -1,0 +1,257 @@
+/* i{
+    color: rgb(37, 28, 28);
+} */
+#content.right_section{
+    width: 100%;
+    display: flex;
+    flex-direction:column;
+}
+.list-box {
+    list-style-type: none !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
+
+    border: none;
+}
+
+.module-content {
+    /* background: #fff; */
+    border: none;
+    padding: 0 20px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+.list-box li {
+    padding: 5px 0;
+}
+
+.account-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+
+}
+
+.account-menu a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: rgba(108, 117, 125, 1);
+    font-size: 16px;
+    padding: 8px 0px;
+    /* border-radius: 5px; */
+    transition: background 0.3s, color 0.3s;
+    gap: 10px;
+}
+
+.account-menu a i {
+    margin-right: 10px;
+    font-size: 18px;
+    color: rgba(108, 117, 125, 1);
+    transition: color 0.3s;
+}
+
+
+.logout:hover {
+    /* background: #d9534f; */
+    /* color: white; */
+}
+
+
+  .account-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #FFFFFF;
+    /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2); */
+
+  }
+  
+  .account-menu a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #6C757D;
+
+
+    font-size: 16px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+  }
+  
+  .account-menu a i {
+    margin-right: 10px;
+    font-size: 18px;
+    color: #6C757D;
+
+    transition: color 0.3s;
+  }
+
+  /* Hamburger Icon */
+.menu-icon {
+    /* position: fixed; */
+    top: 15px;
+    left: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    z-index: 1001;
+    color: #000;
+    cursor: pointer;
+    display: none;
+    margin-bottom: 20px;
+  }
+  
+ /* Hamburger icon (mobile only) */
+
+  /* Sidebar menu (base style) */
+  .sidebar-menu {
+      height: fit-content;
+    position: sticky;
+    top: 20px;
+    padding: 20px 15px;
+    min-width:250px;
+    width: 250px;
+    
+    background-color: #FFFFFF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: left 0.3s ease;
+  }
+  #accountMenu{
+    background-color: #FFFFFF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+  }
+  /* Menu items */
+  .sidebar-menu a {
+    display: flex;
+    align-items: center;
+    /* text-decoration: none; */
+    color: #6C757D;
+    font-size: 16px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+    /* flex-wrap: wrap; */
+  }
+  
+  .sidebar-menu a i {
+    margin-right: 10px;
+    font-size: 18px;
+    color: #6C757D;
+  }
+  .sidebar-menu a:hover, .sidebar-menu a i:hover {
+    background-color: #953A931A;
+    border-radius: 8px;
+    color: #953A93;
+  }
+  /* .sidebar-menu a:hover {
+    background: #007bff;
+    color: white;
+  } */
+  
+  /* .sidebar-menu a:hover i {
+    color: white;
+  } */
+  
+  /* .logout {
+    color: #d9534f;
+    font-weight: bold;
+  } */
+  
+  /* .logout:hover {
+    background: #d9534f;
+    color: white;
+  } */
+  
+  /* MOBILE view: hide sidebar by default, slide in when active */
+  /*@media(max-width:1024px){*/
+  /*  .sidebar-menu{*/
+  /*    width: 100%;*/
+  /*  }*/
+  /*}*/
+  @media(max-width:768px){
+    /*.sidebar-menu{*/
+    /*  width: 100%;*/
+    /*}*/
+    .col-xs-12{
+      width: 50%;
+  }
+  .sidebar-menu a:hover, .sidebar-menu a i:hover {
+    background-color: #953A931A;
+    border-radius: 8px;
+    color: #953A93;
+  }
+  }
+  
+  @media (max-width: 576px) {
+    .sidebar-menu{
+      width: 250px;
+    }
+    .menu-icon {
+      display: block;
+    }
+  
+    .sidebar-menu {
+      position: fixed;
+      top: 0;
+      left: -250px; /* hidden off-screen */
+      z-index: 1000;
+    }
+  
+    .sidebar-menu.active {
+      left: 0; /* slide in */
+    }
+  }
+  
+  /* DESKTOP view: sidebar always visible, static */
+  /*@media (min-width: 576px) {*/
+  /*  .sidebar-menu {*/
+  /*    position: relative;*/
+  /*    left: 0;*/
+  /*    height: auto;*/
+  /*    box-shadow: none;*/
+  /*  }*/
+  /*}*/
+
+  .close-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #333;
+    align-self: flex-end;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  /* Show close button only on mobile */
+  #account-info-container {
+    display: flex;
+    /*justify-content: space-between;*/
+    /* align-items: center; */
+    gap: 40px;
+    
+}
+  @media (max-width: 576px) {
+    .close-btn {
+      display: block;
+    }
+    #account-info-container {
+          display: flex;
+        /*justify-content: space-between;*/
+        align-items: start;
+        flex-direction: row;
+        gap:0px;
+        /*flex-direction: column;*/
+    }
+  }
+  
+ 
+  
+  

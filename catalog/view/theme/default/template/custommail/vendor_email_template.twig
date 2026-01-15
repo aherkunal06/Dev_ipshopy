@@ -1,0 +1,49 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>{{ subject }}</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; margin: 0; padding: 0;">
+  <div style="max-width: 90%; margin: 30px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
+    
+    <div style="background-color: #953a93; padding: 20px; color: white; text-align: center;">
+      <h2 style="margin: 0;">Order Status Update</h2>
+    </div>
+
+    <div style="padding: 30px;">
+      <p style="font-size: 16px; color: #953a93;"><strong>Dear {{ vendor_name }},</strong></p>
+      
+      <p style="margin-bottom: 16px; line-height: 1.6;">Your Related Order ID <strong>#{{ order_id }}</strong> has been updated to the status: <strong>{{ order_status }}</strong>.</p>
+
+      <h4 style="color: #953a93; margin-top: 30px;">Shipping Address:</h4>
+      <p style="margin: 0 0 16px 0; line-height: 1.5;">
+        {{ shipping_address_1 }}<br>
+        {{ shipping_city }}, {{ shipping_zone }} - {{ shipping_postcode }}<br>
+        {{ shipping_country }}
+      </p>
+
+      <h4 style="color: #953a93;">Products:</h4>
+      <ul style="padding-left: 20px; margin: 0 0 16px 0;">
+        {% for product in products %}
+          <li>{{ product.productname }} (Model: {{ product.model }})</li>
+        {% endfor %}
+      </ul>
+
+      <p style="margin-bottom: 16px;">Order Amount: <strong>₹{{ total }}</strong></p>
+      <p style="margin-bottom: 16px;">Shipping Method: {{ shipping_method }}</p>
+
+      {% if order_link %}
+      <p style="margin: 24px 0;">
+        <a href="{{ order_link }}" style="display: inline-block; background-color: #953a93; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">View Order</a>
+      </p>
+      {% endif %}
+
+      <p style="margin-top: 30px; font-size: 14px; color: #555;">Warm regards,<br><strong>Ipshopy</strong></p>
+    </div>
+
+    <div style="background-color: #f0f0f0; text-align: center; padding: 15px; font-size: 12px; color: #999;">
+      &copy; {{ "now"|date("Y") }} {{ store }}. All rights reserved.
+    </div>
+  </div>
+</body>
+</html>

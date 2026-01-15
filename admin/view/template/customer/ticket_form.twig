@@ -1,0 +1,48 @@
+<form action="{{ action }}" method="post" enctype="multipart/form-data">
+    <!-- Dynamic Order ID / Product Name field at the top -->
+    <div class="form-group" id="order-id-group" style="margin-bottom:15px; display:none;">
+        <label>Order ID</label>
+        <input type="text" name="order_id" class="form-control" style="width:100%;padding:8px;">
+    </div>
+    <div class="form-group" id="product-name-group" style="margin-bottom:15px; display:none;">
+        <label>Product Name</label>
+        <input type="text" name="product_name" class="form-control" style="width:100%;padding:8px;">
+    </div>
+    <!-- Rest of your fields -->
+    <div class="form-group" style="margin-bottom:15px;">
+        <label>{{ entry_subject }}</label>
+        <input type="text" name="subject" class="form-control" required style="width:100%;padding:8px;" value="{{ subject }}">
+    </div>
+    <div class="form-group" style="margin-bottom:15px;">
+        <label>{{ entry_category }}</label>
+        <select name="category" class="form-control" required style="width:100%;padding:8px;" id="category-select">
+            {% for cat in categories %}
+                <option value="{{ cat.category_id }}" {% if category == cat.category_id %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <!-- ...rest of your fields... -->
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var categorySelect = document.getElementById('category-select');
+    var orderIdGroup = document.getElementById('order-id-group');
+    var productNameGroup = document.getElementById('product-name-group');
+
+    function updateFields() {
+        var selectedText = categorySelect.options[categorySelect.selectedIndex].text.trim();
+        // Show Product Name only for "Product or Service Inquiries"
+        if (selectedText === 'Product or Service Inquiries') {
+            productNameGroup.style.display = 'block';
+            orderIdGroup.style.display = 'none';
+        } else {
+            productNameGroup.style.display = 'none';
+            orderIdGroup.style.display = 'block';
+        }
+    }
+
+    categorySelect.addEventListener('change', updateFields);
+    updateFields(); // Initial call
+});
+</script>

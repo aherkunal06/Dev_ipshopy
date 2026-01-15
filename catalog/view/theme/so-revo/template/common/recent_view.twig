@@ -1,0 +1,548 @@
+     <link rel="stylesheet" href="catalog\view\theme\default\stylesheet\customer\recent_view.css">
+{{header}}
+
+
+
+<style>
+ /* ===== Container / Title ===== */
+.container-related-products-container{margin:24px 0}
+.related-title{margin:0 31PX 12px;font-size:20PX;font-weight:600}
+
+/* ===== Carousel ===== */
+.related-carousel{
+  position:relative;
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+}
+.related-track{
+  --cards-per-view:6; --gap:12px;
+  display:flex; gap:var(--gap);
+  overflow:hidden; scroll-behavior:smooth; width:100%; padding:2px;
+}
+
+/* ===== Card (matches screenshot) ===== */
+.related-card{
+  flex:0 0 calc((100% - (var(--gap) * (var(--cards-per-view) - 1))) / var(--cards-per-view));
+  max-width:calc((100% - (var(--gap) * (var(--cards-per-view) - 1))) / var(--cards-per-view));
+  background:#fff; border:1px solid #e6e6e6; border-radius:12px; overflow:hidden;
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+  transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.related-card:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+  border-color:#e2e2e2;
+}
+
+/* Image well: square, light gray, centered contents like screenshot */
+.related-img-wrap{
+  display:block; width:100%; aspect-ratio:1/1;
+  /* background:#fafafa; border-bottom:1px solid #f0f0f0; */
+  position:relative; overflow:hidden;
+}
+.related-img-wrap img{
+  width:100%; height:100%; object-fit:contain; display:block;
+  /* small inner breathing space like screenshot */
+  padding:8px;
+}
+
+/* Name: two lines clamp, compact type */
+.related-name{
+  padding:10px 10px 4px;  line-height:1.25; font-size:.92rem;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}
+.related-name a{
+  color:#222; 
+  text-decoration:none;
+  font-size: 14PX;
+ }
+
+/* Price row: ₹ symbol, old MRP smaller/grey */
+.related-price{
+  padding:0 10px 12px; display:flex; align-items:baseline; gap:8px;
+}
+.related-price .price-normal,
+.related-price .price-new{
+  color:black; font-weight:700; font-size:15px;
+}
+.related-price .price-old{
+  color:#888; text-decoration:line-through; font-size:13px;
+}
+
+/* Arrows: circular, floating like screenshot */
+.related-nav{
+  min-width:36px;height:36px;border-radius:50%;
+  border:1px solid #ddd;background:#fff;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  transition:background .15s ease, transform .1s ease, opacity .15s ease;
+  position:absolute; top:50%; transform:translateY(-50%); opacity:1; pointer-events:auto;
+}
+.related-nav:hover{ background:#f6f6f6 }
+.related-nav:active{ transform:translateY(-50%) scale(.96) }
+.related-nav:disabled{ opacity:0; pointer-events:none }
+.related-prev{ left:6px }
+.related-next{ right:6px }
+
+/* Side-indicator behavior (JS toggles classes) */
+.related-carousel.show-left  .related-next{ opacity:0; pointer-events:none }
+.related-carousel.show-right .related-prev{ opacity:0; pointer-events:none }
+
+/* Accessibility focus */
+.related-track:focus{ outline:2px solid #d1e9ff; outline-offset:2px }
+
+/* Responsive cards-per-view */
+@media (max-width:1280px){ .related-track{ --cards-per-view:6 } }
+@media (max-width:1024px){ .related-track{ --cards-per-view:4 } }
+@media (max-width:820px) { .related-track{ --cards-per-view:3 } }
+@media (max-width:600px) { .related-track{ --cards-per-view:2 } }
+
+
+
+
+
+/* ====================== */
+/* 🏷️ Recently Viewed Categories */
+/* ====================== */
+/* ====================== */
+/* 🏷️ Recently Viewed Categories Background */
+/* ====================== */
+/* 🏷️ Background for Recently Viewed Categories Box */
+.container-recent-categories-container .recent-box {
+  border-radius: 16px;
+  padding: 25px 10px;
+  background: url('image/catalog/festival/download (2).jpeg') no-repeat center center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+/* Optional overlay (helps text/cards stand out if image is dark or bright) */
+.container-recent-categories-container .recent-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  z-index: 0;
+}
+
+/* Ensure content stays above overlay */
+.container-recent-categories-container .recent-box > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+.recent-categories-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.recent-categories-track {
+  --cards-per-view: 6;
+  --gap: 12px;
+  display: flex;
+  gap: var(--gap);
+  overflow: hidden;
+  scroll-behavior: smooth;
+  width: 100%;
+  padding: 2px;
+}
+
+.category-card {
+  flex: 0 0 calc((100% - (var(--gap) * (var(--cards-per-view) - 1))) / var(--cards-per-view));
+  max-width: calc((100% - (var(--gap) * (var(--cards-per-view) - 1))) / var(--cards-per-view));
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.08);
+}
+
+.category-card img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.category-card h4 {
+  font-size: 14px;
+  margin: 6px 8px 2px;
+  color: #222;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.category-card p {
+  font-size: 13px;
+  color: #666;
+  margin: 0 8px 10px;
+}
+
+/* Scroll Buttons */
+.recent-cat-nav {
+  min-width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: background .15s ease, opacity .15s ease;
+}
+
+.recent-cat-nav:hover { background: #f6f6f6; }
+.recent-cat-nav:disabled { opacity: 0; pointer-events: none; }
+.recent-cat-prev { left: 6px; }
+.recent-cat-next { right: 6px; }
+
+/* Responsive Cards */
+@media (max-width: 1280px) { .recent-categories-track { --cards-per-view: 5; } }
+@media (max-width: 1024px) { .recent-categories-track { --cards-per-view: 4; } }
+@media (max-width: 820px)  { .recent-categories-track { --cards-per-view: 3; } }
+@media (max-width: 600px)  { .recent-categories-track { --cards-per-view: 2; } }
+
+</style>
+<div class="container-recent-products">
+  <div class="recent-box">
+    <div class="recent-title" id="recent-title"></div>
+    <div class="slider-wrapper">
+      <button id="prevBtn" class="slider-btn prev" disabled>&lt;</button>
+      <div id="recent-view" class="product-slider"></div>
+      <button id="nextBtn" class="slider-btn next">&gt;</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Recent Products -->
+<div class="container-related-products-container">
+  <h3 class="related-title">Related Products</h3>
+
+  <div class="related-carousel" id="related-carousel">
+    <button class="related-nav related-prev" aria-label="Previous products" disabled>‹</button>
+
+    <div id="related-view" class="related-track" tabindex="0" aria-label="Related products"></div>
+
+    <button class="related-nav related-next" aria-label="Next products">›</button>
+  </div>
+</div>
+
+
+
+
+<div class="container-recent-categories-container">
+  <div class="recent-box">
+    <div class="recent-title">Recently Viewed Categories</div>
+
+    <div class="recent-categories-carousel" id="recent-categories-carousel">
+      <button class="recent-cat-nav recent-cat-prev" aria-label="Previous categories" disabled>‹</button>
+
+      <div id="recent-categories" class="recent-categories-track"></div>
+
+      <button class="recent-cat-nav recent-cat-next" aria-label="Next categories">›</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ======================
+// 🏷️ RECENTLY VIEWED PRODUCTS (show only if 6+)
+// ======================
+fetch('index.php?route=common/recent_view/loadView')
+  .then(res => res.json())
+  .then(data => {
+    const title     = document.getElementById("recent-title");
+    const container = document.getElementById("recent-view");
+    const section   = document.querySelector(".container-recent-products");
+    const prevBtn   = document.getElementById("prevBtn");
+    const nextBtn   = document.getElementById("nextBtn");
+
+    const items = (data && Array.isArray(data.products)) ? data.products : [];
+
+    // ❌ If fewer than 6 → hide entire section (no heading/carousel)
+    if (items.length < 6) {
+      if (section) section.style.display = "none";
+      return;
+    }
+
+    // ✅ 6 or more → render & show
+    if (section) section.style.display = "block";
+    title.textContent = (data.customer_name || "Guest") + ", still looking for these?";
+    container.innerHTML = "";
+
+    items.forEach(p => {
+      const card = document.createElement("div");
+      card.classList.add("product-card");
+      const name = p.name || "";
+      const shortName = name.length > 25 ? name.slice(0, 25) + "..." : name;
+      const priceNow = p.special ? p.special : p.price;
+
+      card.innerHTML = `
+        <a href="${p.href}">
+          <img src="${p.image}" alt="${name}" />
+          <h4 title="${name}">${shortName}</h4>
+          <div>
+            <span class="price">${priceNow ?? ""}</span>
+            ${p.special ? `<span class="old-price">${p.price ?? ""}</span>` : ""}
+          </div>
+        </a>
+      `;
+      container.appendChild(card);
+    });
+
+    // ----- Arrows & cursor visibility based on overflow -----
+    function canOverflow() {
+      return container.scrollWidth > container.clientWidth + 4;
+    }
+    function syncArrows() {
+      const maxScroll = container.scrollWidth - container.clientWidth - 5;
+      const scrollAtStart = container.scrollLeft <= 0;
+      const scrollAtEnd   = container.scrollLeft >= maxScroll;
+
+      prevBtn.disabled = scrollAtStart;
+      nextBtn.disabled = scrollAtEnd;
+
+      const showArrows = canOverflow();
+      prevBtn.style.display = showArrows ? "" : "none";
+      nextBtn.style.display = showArrows ? "" : "none";
+
+      container.style.cursor = showArrows ? "grab" : "default";
+    }
+
+    // initial sync after layout paints
+    requestAnimationFrame(syncArrows);
+
+    // controls
+    function scrollByCards(dir = 1) {
+      const w = container.querySelector(".product-card")?.offsetWidth || 200;
+      container.scrollBy({ left: dir * w * 3, behavior: "smooth" });
+      setTimeout(syncArrows, 350);
+    }
+    prevBtn.addEventListener("click", () => scrollByCards(-1));
+    nextBtn.addEventListener("click", () => scrollByCards(1));
+    container.addEventListener("scroll", syncArrows);
+    window.addEventListener("resize", () => setTimeout(syncArrows, 100));
+  })
+  .catch(err => {
+    console.error("Error loading recent products:", err);
+    const section = document.querySelector(".container-recent-products");
+    if (section) section.style.display = "none";
+  });
+
+
+
+
+// ======================
+// 🏷️ RELATED PRODUCTS (with 6+ show rule)
+// ======================
+(function(){
+  const section = document.querySelector(".container-related-products-container");
+  const track   = document.getElementById("related-view");
+  const root    = document.getElementById("related-carousel");
+  const prevBtn = root.querySelector(".related-prev");
+  const nextBtn = root.querySelector(".related-next");
+
+  function getPerView() {
+    const styles = getComputedStyle(track);
+    const v = parseInt(styles.getPropertyValue("--cards-per-view"), 10);
+    return isNaN(v) ? 6 : v;
+  }
+  function pageWidth() {
+    const card = track.querySelector(".related-card");
+    if (!card) return track.clientWidth;
+    const gap = parseFloat(getComputedStyle(track).getPropertyValue("--gap")) || 12;
+    const per = getPerView();
+    return card.getBoundingClientRect().width * per + gap * (per - 1);
+  }
+
+  function updateArrows(){
+    const maxScroll = track.scrollWidth - track.clientWidth - 1;
+    const canScroll = maxScroll > 1;
+    prevBtn.disabled = !canScroll || track.scrollLeft <= 1;
+    nextBtn.disabled = !canScroll || track.scrollLeft >= maxScroll;
+  }
+
+  function scrollByPage(dir){
+    track.scrollBy({ left: dir * pageWidth(), behavior: "smooth" });
+    setTimeout(updateArrows, 250);
+  }
+
+  prevBtn.addEventListener("click", ()=>scrollByPage(-1));
+  nextBtn.addEventListener("click", ()=>scrollByPage(1));
+  track.addEventListener("scroll", updateArrows);
+  window.addEventListener("resize", () => setTimeout(updateArrows, 50));
+
+  // Hover-side arrow hint
+  function updateSideClassByMouse(e){
+    const rect = track.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const leftPossible  = !prevBtn.disabled;
+    const rightPossible = !nextBtn.disabled;
+    root.classList.remove('show-left','show-right');
+    if (x < rect.width / 2 && leftPossible) {
+      root.classList.add('show-left');
+    } else if (x >= rect.width / 2 && rightPossible) {
+      root.classList.add('show-right');
+    }
+  }
+  track.addEventListener('mousemove', updateSideClassByMouse);
+  track.addEventListener('mouseleave', () => root.classList.remove('show-left','show-right'));
+
+  // Fetch related products
+  fetch('index.php?route=common/recent_view/loadRelated')
+    .then(res => res.json())
+    .then(data => {
+      if (!track || !section) return;
+
+      const items = (data && Array.isArray(data.related)) ? data.related : [];
+
+      // ❌ If fewer than 6 → hide whole section (no heading/bg)
+      if (items.length < 6) {
+        section.style.display = "none";
+        return;
+      }
+
+      // ✅ 6 or more → render and show section
+      section.style.display = "block";
+      track.innerHTML = "";
+
+      items.forEach(p => {
+        const name = p.name || '';
+        const shortName = name.length > 40 ? name.slice(0, 40) + "…" : name;
+
+        const card = document.createElement("div");
+        card.classList.add("related-card");
+        card.innerHTML = `
+          <a href="${p.href}" class="related-img-wrap">
+            <img src="${p.image}" alt="${name}" loading="lazy" />
+          </a>
+          <div class="related-name">
+            <a href="${p.href}" title="${name}">
+              ${(name || '').slice(0, 21)}${name && name.length > 14 ? '…' : ''}
+            </a>
+          </div>
+          <div class="related-price">
+            ${
+              p.special
+                ? `<span class="price-new">${p.special ?? ''}</span><span class="price-old">${p.price ?? ''}</span>`
+                : `<span class="price-normal">${p.price ?? ''}</span>`
+            }
+          </div>
+        `;
+        track.appendChild(card);
+      });
+
+      track.scrollLeft = 0;
+      updateArrows();
+
+      track.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") { e.preventDefault(); scrollByPage(1); }
+        if (e.key === "ArrowLeft")  { e.preventDefault(); scrollByPage(-1); }
+      });
+    })
+    .catch(err => {
+      console.error("Error loading related products:", err);
+      // On error, also hide the section (no UI flash)
+      if (section) section.style.display = "none";
+    });
+})();
+
+
+// ======================
+// 🏷️ RECENTLY VIEWED CATEGORIES
+// ======================
+// ======================
+// 🏷️ RECENTLY VIEWED CATEGORIES
+// ======================
+(function(){
+  const track = document.getElementById("recent-categories");
+  const root  = document.getElementById("recent-categories-carousel");
+  const prevBtn = root.querySelector(".recent-cat-prev");
+  const nextBtn = root.querySelector(".recent-cat-next");
+
+  function getPerView() {
+    const styles = getComputedStyle(track);
+    const v = parseInt(styles.getPropertyValue("--cards-per-view"), 10);
+    return isNaN(v) ? 6 : v;
+  }
+
+  function pageWidth() {
+    const card = track.querySelector(".category-card");
+    if (!card) return track.clientWidth;
+    const gap = parseFloat(getComputedStyle(track).getPropertyValue("--gap")) || 12;
+    const per = getPerView();
+    return card.getBoundingClientRect().width * per + gap * (per - 1);
+  }
+
+  function updateArrows(){
+    const maxScroll = track.scrollWidth - track.clientWidth - 1;
+    prevBtn.disabled = track.scrollLeft <= 1;
+    nextBtn.disabled = track.scrollLeft >= maxScroll;
+  }
+
+  function scrollByPage(dir){
+    track.scrollBy({ left: dir * pageWidth(), behavior: "smooth" });
+    setTimeout(updateArrows, 250);
+  }
+
+  prevBtn.addEventListener("click", ()=>scrollByPage(-1));
+  nextBtn.addEventListener("click", ()=>scrollByPage(1));
+  track.addEventListener("scroll", updateArrows);
+  window.addEventListener("resize", () => setTimeout(updateArrows, 50));
+
+  // Fetch categories
+  fetch('index.php?route=common/recent_view/loadCategoryId')
+    .then(res => res.json())
+    .then(data => {
+      if (!data.categories || data.categories.length === 0) {
+        document.querySelector(".container-recent-categories-container").style.display = "none";
+        return;
+      }
+
+      track.innerHTML = "";
+      data.categories.forEach(cat => {
+        const shortName = cat.category_name.length > 20 ? cat.category_name.slice(0, 20) + "…" : cat.category_name;
+        const card = document.createElement("div");
+        card.classList.add("category-card");
+        card.innerHTML = `
+          <a href="index.php?route=product/category&path=${cat.category_id}">
+            <img src="${cat.image}" alt="${cat.category_name}" loading="lazy" />
+            <h4 title="${cat.category_name}">${shortName}</h4>
+            <p>From: ${cat.lowest_price}</p>
+          </a>
+        `;
+        track.appendChild(card);
+      });
+
+      track.scrollLeft = 0;
+      updateArrows();
+    })
+    .catch(err => {
+      console.error("Error loading categories:", err);
+      track.innerHTML = "<p style='padding:8px;color:#c00;'>Could not load categories.</p>";
+      prevBtn.disabled = true; nextBtn.disabled = true;
+    });
+})();
+
+</script>
+

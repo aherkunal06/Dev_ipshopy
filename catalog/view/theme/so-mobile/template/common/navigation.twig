@@ -1,0 +1,105 @@
+<div class="main-navbar">
+  <ul class="nav-categories">
+    {% for category in categories %}
+      <li class="nav-item">
+        <a href="{{ category.href }}">
+          {% if category.image %}
+            <div class="nav-icon">
+              <img src="{{ category.image }}" alt="{{ category.name }}">
+            </div>
+          {% endif %}
+          <span class="nav-name">{{ category.name }}</span>
+        </a>
+
+        {% if category.subcategories %}
+          <ul class="dropdown">
+            {% for sub in category.subcategories %}
+              <li><a href="{{ sub.href }}">{{ sub.name }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<style>
+.main-navbar {
+  background: #fff;
+  padding: 15px 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.nav-categories {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  position: relative;
+  text-align: center;
+}
+
+.nav-item > a {
+  text-decoration: none;
+  color: #111;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.nav-item:hover > a {
+  color: #2874f0; /* Flipkart blue */
+}
+
+.nav-icon img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.nav-name {
+  margin-top: 6px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+  list-style: none;
+  padding: 10px 15px;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.dropdown li {
+  padding: 6px 0;
+}
+
+.dropdown li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 13px;
+  transition: color 0.2s ease;
+}
+
+.dropdown li a:hover {
+  color: #2874f0;
+}
+
+.nav-item:hover .dropdown {
+  display: block;
+}
+</style>

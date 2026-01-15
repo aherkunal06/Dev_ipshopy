@@ -1,0 +1,170 @@
+<link rel="stylesheet" href="catalog\view\theme\so-mobile\stylesheet\independence_day.css" />
+
+
+{{ header }}
+
+
+
+<div class="category-scroll-wrapper">
+    <ul class="category-list">
+        <!-- All category non-clickable -->
+        <li>
+            <span class="all-category {% if all_category.active %}active{% endif %}">All</span>
+        </li>
+
+        <!-- Other categories clickable -->
+        {% for cat in manual_categories %}
+            <li>
+                <a href="{{ cat.href }}" class="{% if cat.active %}active{% endif %}">{{ cat.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+
+
+
+
+<div class="first-tittle">{{ second_category.name }}</div>
+
+<div class="second-category-block">
+	{% for sub in second_category.subcategories %}
+		<div class="subcategory-card">
+			<a href="{{ sub.href }}">
+				<img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+				<div class="product-info">
+					<p class="product-name">{{ sub.name | slice(0, 25) }}
+						{% if sub.name|length > 15 %}...
+						{% endif %}
+					</p>
+					{% if sub.lowest_price %}
+						<div class="price-row">
+							<span class="new-price">from:
+								{{ sub.lowest_price }}</span>
+						{% endif %}
+						{% if sub.original_price %}
+							<span class="old-price">
+								{{ sub.original_price }}</span>
+						{% endif %}
+					</div>
+					{% if sub.discount_percent %}
+						<div class="discount-badge">{{ sub.discount_percent|round(0, 'floor') }}% OFF</div>
+					{% endif %}
+				</div>
+			</a>
+		</div>
+	{% endfor %}
+</div>
+
+
+
+
+
+
+{% for main in main_categories %}
+	<div class="category-header">
+		<div class="second-tittle">{{ main.name }}</div>
+		<a href="{{ main.href }}" class="view-all-btn">View All</a>
+	</div>
+    
+	<div class="category-scroller-container">
+		{# <button class="scroll-btn left" onclick="scrollCategories('{{ loop.index }}', -300)">&#10094;</button> #}
+
+		<div class="category-scroller" id="categoryScroller{{ loop.index }}">
+			{% for sub in main.subcategories %}
+				<div class="category-card flag-border">
+					<a href="{{ sub.href }}" style="text-decoration:none;">
+						<img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+						<h4>{{ sub.name | slice(0, 20) }}
+							{% if sub.name|length > 15 %}...
+							{% endif %}
+						</h4>
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+
+		{# <button class="scroll-btn right" onclick="scrollCategories('{{ loop.index }}', 300)">&#10095;</button> #}
+	</div>
+{% endfor %}
+
+
+	
+
+
+<script>
+	function scrollCategories(index, amount) {
+document.getElementById('categoryScroller' + index).scrollBy({left: amount, behavior: 'smooth'});
+}
+</script>
+
+
+<div class="category-tittle-third">{{ third_category.name }}</div>
+<div class="second-category-block">
+
+	{% for sub in third_category.subcategories %}
+		<div class="subcategory-card">
+			<a href="{{ sub.href }}">
+				<img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+				<div class="product-info">
+					<p class="product-name">{{ sub.name | slice(0, 30) }}
+						{% if sub.name|length > 15 %}...
+						{% endif %}
+					</p>
+					{% if sub.lowest_price %}
+						<div class="price-row">
+							<span class="new-price">from:
+								{{ sub.lowest_price }}</span>
+						{% endif %}
+						{% if sub.original_price %}
+							<span class="old-price">
+								{{ sub.original_price }}</span>
+						{% endif %}
+					</div>
+					{% if sub.discount_percent %}
+						<div class="discount-badge">{{ sub.discount_percent|round(0, 'floor') }}% OFF</div>
+					{% endif %}
+				</div>
+			</a>
+
+		</div>
+	{% endfor %}
+</div>
+
+
+
+<h2 class="tech-deals-title">{{ fourth_category.name }}</h2>
+
+<div class="tech-deals-container">
+	{% for sub in fourth_category.subcategories %}
+		<div class="tech-deal-card">
+			<a href="{{ sub.href }}">
+				<div class="tech-deal-image">
+					<img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+				</div>
+				<div class="tech-deal-details">
+					<h3 class="tech-deal-name">{{ sub.name }}</h3>
+
+
+					<div class="tech-deal-pricing">
+						{% if sub.lowest_price %}
+							<span class="tech-deal-price">{{ sub.lowest_price }}</span>
+						{% endif %}
+						{% if sub.original_price %}
+							<span class="tech-deal-old-price">{{ sub.original_price }}</span>
+						{% endif %}
+					</div>
+					{% if sub.discount_percent %}
+						<div class="tech-deal-offer">
+							{{ sub.discount_percent|round(0, 'floor') }}% OFF
+						</div>
+					{% endif %}
+				</div>
+			</a>
+		</div>
+	{% endfor %}
+</div>
+
+
+{{footer}}

@@ -1,0 +1,119 @@
+{#=====Get variable : Config Select Block on header=====#}
+{% set hidden_headertop = soconfig.get_settings('toppanel_type') =='1' or soconfig.get_settings('toppanel_type') =='2'? 'hidden-compact' : '' %}
+{% set hidden_headercenter = soconfig.get_settings('toppanel_type') =='2'? 'hidden-compact' : '' %}
+{% set hidden_headerbottom = soconfig.get_settings('toppanel_type') =='1'? 'hidden-compact' : '' %}
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/customer/header/header.css">
+<header id="header" class=" variant typeheader-{{ typeheader ? typeheader : '1'}}">
+	{#======	HEADER promotion	=======#}  
+	{% if soconfig.get_settings('promotion_status') and soconfig.get_settings('promotion') %}
+	<div class="header-promotion {{hidden_headertop}}" >
+		{{ soconfig.decode_entities( soconfig.get_settings('promotion') ) }}
+	</div>
+	{% endif %}
+	<!-- HEADER CENTER -->
+	<div class="header-center {{hidden_headercenter}}">
+		<div class="container">
+			<div class="row header_wrapper">
+			    {#menu toggle start #}
+			    <div class="responsive-menu-toggle" id="show-megamenu"
+					style="margin-left: 15px;">
+					<i class="fa fa-bars" style="font-size: 24px; color: black; margin-top: 8px;"></i>
+				</div>
+			    {#menu toggle ends #}
+				<!-- LOGO -->
+				<div class="navbar-logo col-lg-2 col-md-3 col-sm-3 col-xs-4">
+				   {{soconfig.get_logo()}}
+				</div>
+				<div class="header-center-right col-lg-10 col-md-9 col-sm-9 col-xs-8">
+					<!-- BOX CONTENT MENU -->
+					
+					<div class="header_search">
+						{{ search_block }} 
+					</div>
+					
+					<div class='business_center header_max_content max_md_display'>
+					     <a href='{{seller_home}}'>Business Center</a>
+					</div>
+					{#customer account start #}
+					        {% if logged %} 
+					<ul class="top-link list-inline">
+						    
+						    {#<li>#}
+						    {#    <a href='https://www.ipshopy.com/index.php?route=vendor/seller_pages/seller_landing'>Business Center</a>#}
+						    {#</li>#}
+							
+							
+							<li class="account" id="my_account">
+							    <a href="{{ account  }}" title="{{ text_account }}" class="btn-xs dropdown-toggle" data-toggle="dropdown"> 
+    							    <span class="header_max_content">
+                						    {{ customer_firstname|split(' ')[0] }}
+    							    </span>
+    							    <span class="fa fa-angle-down"></span>
+							    </a>
+							    
+								<ul class="dropdown-menu ">
+									{% if (logged) %}
+									<li><a href="{{ account  }}">{{ text_account  }}</a></li>
+									<li><a href="{{ order  }}">{{ text_order  }}</a></li>
+									<li><a href="{{ transaction  }}">{{ text_transaction  }}</a></li>
+									<li><a href="{{ download  }}">{{ text_download  }}</a></li>
+									<li><a href="{{ logout }}">{{ text_logout }}</a></li>
+									{% else %}
+									<li><a href="{{ register  }}"><i class="fa fa-user" style='margin-right:5px;'></i> {{ text_register  }}</a></li>
+									<li><a href="{{ login }}"><i class="fa fa-pencil-square-o " style='margin-right:5px;'></i>{{ text_login }}</a></li>
+									{% endif %}
+								</ul>
+							</li>
+							
+							
+						</ul>
+    					<div class="block_link hidden-sm max_md_display ">
+    						<a href="{{ wishlist }}" id="" class="top-link-wishlist" title="{{ text_wishlist }}"><i class="fa fa-heart-o"></i></a>
+    					</div>
+						{% else %}
+						<span class="header_max_content" >
+							<a href='{{ login }}' class='header_login'>
+							    <div class='header_login_wrapper' style='margin-right:5px;'>
+        						   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class='header_login_svg'><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z"/></svg>
+							    </div>
+							    Login
+							    </a>
+						</span>
+					    {% endif %}
+					{#customer account end #}
+					
+					<div class="block-cart">
+						<div class="shopping_cart">
+						     <span style='position:absolute; top:0; right0; visibility:hidden; background-color:#953a93; color: white; z-index: 99; border-radius: 50%;
+                                width: 25px; height: 25px; left: 18px; display: flex; justify-content: center; align-items: center; font-size: 12px;'>
+						         {{cart_product_count}}
+						     </span>
+						 	{{ cart }} 
+						</div>
+					</div>
+					<div class="phone-header pull-right hidden">
+						{% if soconfig.get_settings('phone_status') and soconfig.get_settings('contact_number') %}
+						<div class="telephone hidden-xs" >
+							{{ soconfig.decode_entities( soconfig.get_settings('contact_number') ) }}
+						</div>
+						{% endif %} 
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class='header_hidden_'></div>
+	<!-- HEADER BOTTOM -->
+	<div class="header-bottom {{hidden_headerbottom}} header_bottom_nav">
+		<div class="container">
+			<div class="header-bottom-inner">
+				<div class="responsive megamenu-style-dev megamenu-dev">
+				{{content_menu }}	
+				</div>
+			</div>
+		</div>
+	  
+	</div>
+	
+</header>

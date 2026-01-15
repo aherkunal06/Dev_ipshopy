@@ -1,0 +1,446 @@
+.body{
+    font-family: Arial, sans-serif;
+    
+}
+.hero-section {
+    background-color: white;
+    padding: 50px 20px;
+    text-align: center;
+    /* flex-direction: column;  */
+    display: flex;
+}
+h1 {
+    font-size: 48px;
+}
+
+/* .hero-img{
+    width: 200px;
+    height: 200px 
+ } */
+#start-selling{
+    background:#9C27B0;
+}
+#start-advertising{
+   color:#9C27B0;
+   background-color:white;
+}
+.testimonial {
+    background-color: #9C27B0;;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+.features-section {
+    background-color: #f3e8ff;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+}
+.seller-journey{
+    background-color:#F3E5F5;
+    color: #42005F;
+    padding: 20px;
+    text-align: center;
+    margin: 50px;
+    border-radius: 5px;
+    background: #F3E5F5;
+}
+.seller-journey h2{
+    color: #1A1A1A;
+}
+#Start-free-Trial{
+    background:#42005F ;
+}
+#Watch-Demo{
+    color: #d279fe;
+    background-color: white;
+}
+/* .journey-image{
+    width: 200px;
+    height: 200px
+} */
+
+
+
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* background-color: #f5f5f5; */
+    text-align: center;
+}
+
+header {
+    background: white;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 38px;
+    margin: 10px 0;
+}
+
+.get-started {
+    background-color:#42005F;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.get-started:hover {
+    background-color: #9C27B0;
+}
+
+/* Ads Container */
+.ads-container {
+    display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
+    gap: 16px;
+    padding: 50px;
+     max-width: 1200px; 
+    
+    margin: auto;
+    
+    
+}
+
+.ad-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    line-height: 25px;
+}
+
+.ad-box h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.ad-box p {
+    font-size: 14px;
+    color: #333;
+}
+
+.highlight {
+    background-color: #EEE2FF;
+    padding: 10px;
+    border-left: 5px solid #F3E5F5;
+    margin: 10px 0;
+}
+
+.ad-box a {
+    color: #42005F;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.ad-box a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ads-container {
+        grid-template-columns: 1fr;
+    }
+    
+    h1 {
+        font-size: 30px;
+    }
+    h2{
+        font-size: 24px;
+    }
+
+    .get-started {
+        font-size: 14px;
+    }
+    .hero-section{
+        text-align: center;
+        flex-direction: column;
+    }
+
+    .first-image{
+       width:100%;
+    }
+
+    /* .journey{
+
+         flex-direction: column; 
+    }  */
+  
+    
+    
+
+}
+.container {
+    background-color: white;
+     padding: 20px; 
+    border-radius: 10px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    /* max-width: 600px; */
+    margin: auto;
+}
+.text {
+    font-size: 16px;
+    color: #333;
+}
+
+.help {
+    margin-top: 20px;
+    font-size: 14px;
+}
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #42005F;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: #42005F;
+}
+
+
+
+
+
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    /* background-color: #f8f9fa; */
+}
+
+/* Trusted Companies Section */
+.trusted-companies {
+    padding: 40px 20px;
+    background-color: white;
+}
+
+.trusted-companies h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Company Logos */
+.company-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* Company Box */
+.company {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    min-width: 120px;
+    transition: transform 0.3s ease;
+}
+
+.company:hover {
+    transform: scale(1.05);
+}
+
+/* Company Categories */
+.tech {
+    /* color: blue; */
+}
+
+.finanseruic {
+    /* background-color: #2ca47c;
+    color: white; */
+    padding: 12px 20px;
+    border-radius: 5px;
+}
+
+.healltaltne {
+    /* background-color: #d4eefc;
+    color: #007ea7; */
+    padding: 12px 20px;
+    border-radius: 5px;
+}
+
+.eiucaiimherucetten {
+    padding: 12px 20px;
+    border-radius: 5px;
+}
+
+/* Features Section */
+.features {
+    padding: 60px 20px;
+    background: #f9f1fe;
+}
+
+.features h2 {
+    font-size: 28px;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.features p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Feature Boxes */
+.feature-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.feature-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.feature-box:hover {
+    transform: scale(1.05);
+}
+
+.feature-box img {
+    width: 50px;
+    margin-bottom: 10px;
+}
+
+.feature-box h3 {
+    font-size: 18px;
+    color: #222;
+    margin-bottom: 5px;
+}
+
+.feature-box p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Responsive Design  */
+
+@media (max-width: 768px) {
+    .trusted-companies h2 {
+        font-size: 24px;
+    }
+
+    .company-logos {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .company {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .feature-container {
+        gap: 15px;
+    }
+
+    .feature-box {
+        width: 90%;
+        text-align: center;
+    }
+
+     /* .first-image{
+     width: 100%;
+     } */
+    .second-image{
+        width: 100%;
+    }
+}
+
+@media (max-width: 375px) {
+    .trusted-companies h2 {
+        font-size: 20px;
+    }
+
+    .company {
+        font-size: 14px;
+        min-width: 100px;
+    }
+
+    .feature-box {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .first-image{
+        width: 100%;
+        height: 200px;
+    }
+
+    .second-image{
+        width:100%;
+        height: 400px;
+    }
+
+    /* .journey{
+       
+        flex-direction: box; 
+        /* flex-wrap: wrap; */
+}
+/* }  
+/* .btn-primar{
+    height: 200px;
+    color: red;
+} */
+
+.hero-section {
+    display: flex  !important;
+}
+.btn-primary{
+    height: 30px;
+    color: white;
+    background-color: #42005f;
+} 
+
+.Journey {
+    display:flex !important ;
+    padding: 80px; 
+    /* padding:40px; */
+    background-color: #f9f1fe;
+    gap:40px;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+}
+
+.btn-light{
+    height: 30px;
+    color: white;
+    background-color: #42005f;
+}
+
+

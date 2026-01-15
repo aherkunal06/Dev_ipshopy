@@ -1,0 +1,176 @@
+<div class="modal-header custom-header">
+  <h4 class="modal-title mb-0">Comment Thread</h4>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+<div class="modal-body">
+  {% if comments %}
+    {% for c in comments %}
+      <div class="comment-box">
+        <div class="comment-box-content">
+  <div class="fw-bold">{{ c.comment_by|capitalize }}</div>
+  <div class="text-muted small">{{ c.date_added }}</div>
+</div>
+
+        <p>{{ c.comment }}</p>
+
+        {% if c.media %}
+          <div class="mt-2">
+            {% for file in c.media %}
+              {% if file ends with '.jpg' or file ends with '.jpeg' or file ends with '.png' %}
+                <img src="image/{{ file }}" width="60" class="img-thumbnail">
+              {% elseif file ends with '.mp4' %}
+                <video width="150" controls><source src="image/{{ file }}"></video>
+              {% else %}
+                <a href="image/{{ file }}" target="_blank">Download File</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-muted">No comments found.</p>
+  {% endif %}
+
+  {% if allow_reply %}
+    <form method="post" action="{{ reply_action }}" enctype="multipart/form-data" class="reply-box">
+      <div class="form-group">
+        <label><strong>Your Reply</strong></label>
+        <textarea name="reply" class="form-control" rows="3" placeholder="Type your reply.." required>{{ last_vendor_reply.comment ?? '' }}</textarea>
+      </div>
+      <div class="form-group">
+        <label>Attach Files</label>
+        <input type="file" name="media[]" multiple class="form-control-file">
+        <small class="text-muted">Allowed: jpg, png, jpeg, mp4, pdf, zip, doc • Max size: 10MB each</small>
+      </div>
+      <div class="form-group d-flex gap-2">
+        <button type="submit" class="btn btn-primary btn-sm">Submit Reply</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+  {% endif %}
+</div>
+
+
+
+
+<style>
+/* Modal Header */
+.modal-header.custom-header {
+  background-color: #953A93;
+  color: #fff;
+  border-bottom: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0; 
+}
+
+.modal-header .close {
+  color: #fff;
+  opacity: 1;
+  text-shadow: none;
+  font-size: 24px;
+  margin-left: auto;
+}
+
+.modal-header .close:hover {
+  color: #ddd;
+}
+
+
+/* Modal Body */
+.modal-body {
+  background-color: #f8f9fa;
+  padding: 0;
+}
+
+/* Comment Box */
+.comment-box {
+  background-color: #fff;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  width: 100%;
+}
+
+.comment-box strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+}
+
+.comment-box-content{
+      display: flex;
+    justify-content: space-between;
+}
+.comment-box p {
+  margin: 5px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.comment-box small.text-muted {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Reply Box */
+.reply-box {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.reply-box label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.reply-box textarea {
+  font-size: 14px;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.reply-box input[type="file"] {
+  margin-top: 5px;
+}
+
+.reply-box small {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #953A93;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #7c2e7b;
+}
+
+.btn-secondary {
+  background-color:#ffffffff;
+  color: #000;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #bbb;
+}
+</style>
+
+
+

@@ -1,0 +1,111 @@
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/customer/common/first_categories.css" />
+
+<style>
+  .trapzone-wrapper {
+    width: 100px;
+    height: 90px;
+    filter: drop-shadow(1px 1px 2px rgba(225, 225, 225, 1));
+    flex: 0 0 auto;
+    margin-right: 10px;
+  }
+
+  .trapzone {
+    width: 100%;
+    height: 100%;
+    background: #f7f0fb;
+    position: relative;
+    -webkit-mask: url(#trapezoidMask);
+    mask: url(#trapezoidMask);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    overflow: hidden;
+  }
+
+  .trapzone::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 4px 4px 8px rgba(174, 144, 198, 0.1),
+                inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+  }
+
+  .category_scroll_wrapper {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .category_scroll_wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category_item {
+    flex: 0 0 auto;
+    text-align: center;
+    color: black;
+    scroll-snap-align: start;
+  }
+
+  .category_image_wrapper img {
+    width: 80px;
+    height: 80px;
+  }
+</style>
+
+<!-- SVG Mask -->
+<svg width="0" height="0">
+  <defs>
+    <mask id="trapezoidMask" x="0" y="0" width="1" height="1">
+      <rect width="100%" height="100%" fill="black" />
+      <path
+        d="M 30 0 Q 0 0 0 30 L 6 70 Q 10 90 28 90 L 72 90 Q 90 90 94 70 L 100 30 Q 100 0 70 0 Z"
+        fill="white" />
+    </mask>
+  </defs>
+</svg>
+
+<!-- HTML Markup -->
+<div class="py-3">
+  <div class="category_scroll_wrapper">
+    {% for category in categories %}
+    <div class="category_item">
+      <div class="trapzone-wrapper">
+        <div class="trapzone">
+          <a href="{{category.link}}" class="text-decoration-none" style="height:auto; background:transparent;">
+            <div class="category_image_wrapper">
+              <img src="{{category.src}}" alt="{{category.title}}">
+            </div>
+          </a>
+        </div>
+      </div>
+      <div style="padding-top:5px; white-space: nowrap;">{{ category.title }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+<script>
+
+  document.querySelectorAll('.category_name').forEach(el => {
+    const originalText = el.textContent.trim();
+    const words = originalText.split(/[\s\-]+/);
+    if (words.length >= 2) {
+      const firstTwo = words.slice(0, 2);
+      const combinedLength = firstTwo.join('').length;
+      el.textContent = combinedLength <= 10 ? firstTwo.join(' ') : words[0];
+    } else {
+      el.textContent = words[0];
+    }
+  });
+</script>

@@ -1,0 +1,408 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-manufacturer" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid"> {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-manufacturer" class="form-horizontal">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+            <li><a href="#tab-seo" data-toggle="tab">{{ tab_seo }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+              <div class="form-group required">
+                <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+                  {% if error_name %}
+                  <div class="text-danger">{{ error_name }}</div>
+                  {% endif %}</div>
+              </div>
+              <!-- new for seller name -->
+               <!-- Autocomplete Seller Input -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label" for="input-seller-name">{{ entry_vendor }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="seller_name" value="{{ seller_name }}" placeholder="{{ entry_vendor }}" id="input-seller-name" class="form-control" autocomplete="off" />
+                  <input type="hidden" name="vendor_id" value="{{ vendor_id }}" id="input-vendor-id" />
+                 
+                  {% if error_vendor_id %}
+                    <div class="text-danger">{{ error_vendor_id }}</div>
+                  {% endif %}
+                </div>
+              </div>
+
+               <!-- ------ -->
+              
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_store }}</label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;"> {% for store in stores %}
+                    <div class="checkbox">
+                      <label>{% if store.store_id in manufacturer_store %}
+                        <input type="checkbox" name="manufacturer_store[]" value="{{ store.store_id }}" checked="checked" />
+                        {{ store.name }}
+                        {% else %}
+                        <input type="checkbox" name="manufacturer_store[]" value="{{ store.store_id }}" />
+                        {{ store.name }}
+                        {% endif %}</label>
+                    </div>
+                    {% endfor %}</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-image">{{ entry_image }}</label>
+                <div class="col-sm-10"><a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="{{ thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                  <input type="hidden" name="image" value="{{ image }}" id="input-image" />
+                </div>
+              </div>
+              {#adding the code regarding to declaration on 12-07-2025--------------------------------------#}
+              <div class="form-group declaration">
+                    <label class="col-sm-2 control-label" for="input-image"></label>
+                    <div class="content-guidelines col-sm-10">
+                        <h5>Please upload the authorization letter if you have one. If not, kindly download the declaration form, fill it out, and reupload it. This is necessary for adding the manufacturer.<br>
+                            <a href="https://www.ipshopy.com/image/Self Declaration form for Sellers.pdf" target="_blank">Click here</a>
+                            to download the declaration form.</h5>
+                          <ul>
+                            <h6>Form Guidelines:<h6>
+                            <li>Only PDF files are accepted.</li>
+                            <li>Ensure all required fields are filled.</li>
+                            <li>The file size must be under 100 KB.</li>
+                        </ul>
+                    </div>
+                    <label class="col-sm-2 control-label" for="input-image">Declaration Form</label>
+                    
+    
+
+                    <!-- new code updated -->
+                      <div class="btn3 col-sm-10">
+                        <div class="file-upload-wrapper" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                            <!-- Choose File Button -->
+                            <button type="button" id="button-sing" class="btn btn-default">Choose File</button>
+
+                            <!-- File Name Display (Now in between) -->
+                            <span id="file-name-display" style="font-weight: 500; color: #333;">
+                                {% if declaration %}
+                                    declaration_form.pdf
+                                {% else %}
+                                    No file selected
+                                {% endif %}
+                            </span>
+
+                             {#View Button#}
+                            {#<p id="view-section" style="margin: 0; {% if not declaration %}display:none;{% endif %}">#}
+                            {#    <a id="view-declaration-link"#}
+                            {#      href="{% if declaration %}{{ base }}image/{{ declaration }}{% endif %}"#}
+                            {#      target="_blank"#}
+                            {#      class="btn {% if declaration %}btn-primary{% else %}btn-link{% endif %}"#}
+                            {#      style="padding: 6px 12px;">#}
+                            {#        View#}
+                            {#    </a>#}
+                            {#</p>#}
+                            
+                            {% if declaration %}
+                              <p id="view-section" style="margin: 0;">
+                                <a id="view-declaration-link"
+                                  href="https://www.ipshopy.com/image/{{ declaration }}"
+                                  target="_blank"
+                                  class="btn btn-primary"
+                                  style="padding: 6px 12px;">
+                                    View
+                                </a>
+                              </p>
+                            {% endif %}
+
+
+
+                        </div>
+
+                        <!-- Hidden Inputs -->
+                        <input type="hidden" name="declaration" value="{{ declaration }}" id="input-sing" />
+                        <input type="file" id="real-file-input" name="declaration_form_file" style="display: none;" accept=".pdf" />
+
+                        {% if error_file %}
+                            <div class="text-danger" id="error-declaration-form" style="margin-top: 5px;">
+                                {{ error_file }}
+                            </div>
+                        {% endif %}
+                    </div>
+               </div>
+                    
+              {#-----------------------------------------------------------------------------------------------#}
+              
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="sort_order" value="{{ sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+                </div>
+              </div>
+              <!-- new added changes for the status at 26-04-2025 -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="status" id="input-status" class="form-control">
+                    <option value="1" {% if status == 1 %}selected{% endif %}>{{ text_enabled }}</option>
+                    <option value="0" {% if status == 0 %}selected{% endif %}>{{ text_disabled }}</option>
+                    <option value="2" {% if status == 2 %}selected{% endif %}>{{ text_approvepending }}</option>
+                  </select>
+                </div>
+              </div>
+               <!-- new added------------------------ -->
+            </div>
+            
+            <div class="tab-pane" id="tab-seo">
+              <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_keyword }}</div>
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <td class="text-left">{{ entry_store }}</td>
+                      <td class="text-left">{{ entry_keyword }}</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for store in stores %}
+                  <tr>
+                    <td class="text-left">{{ store.name }}</td>
+                    <td class="text-left">{% for language in languages %}
+                      <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                          {# added id in the following input field 01-04-2025 ---#}
+                        <input type="text" id="seoUrlInput"  name="manufacturer_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{% if manufacturer_seo_url[store.store_id][language.language_id] %}{{ manufacturer_seo_url[store.store_id][language.language_id] }}{% endif %}" placeholder="{{ entry_keyword }}" class="form-control" />
+                      </div>
+                       
+                      {# added following line 01-04-2025 ------#}
+                        <small id="seoUrlError" style="color: red; display: none;">Spaces are not allowed in the SEO URL!</small>
+                      
+                      {% if error_keyword[store.store_id][language.language_id] %}
+                      <div class="text-danger">{{ error_keyword[store.store_id][language.language_id] }}</div>
+                      {% endif %} 
+                      {% endfor %}</td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{#added on 01-04-2025 ---------------------#}
+    <script>
+		document.getElementById("seoUrlInput").addEventListener("input", function() {
+		    let inputField = this;
+		    let errorText = document.getElementById("seoUrlError");
+		
+		    if (/\s/.test(inputField.value)) { 
+		        errorText.style.display = "block";
+		        inputField.value = inputField.value.replace(/\s/g, ''); 
+		    } else {
+		        errorText.style.display = "none";
+		    }
+		});
+		</script>
+	{#---------------------------------------------------#}
+
+    {# added on 11-04-2025-----------------#}
+    <script type="text/javascript">
+		$(document).ready(function () {
+		
+		
+		  $('#button-sing').on('click', function () {
+		    $('#real-file-input').click();
+			
+		  });
+		
+		  
+		  
+		  $('#real-file-input').on('change', function () {
+		    const file = this.files[0];
+		    const fileName = file ? file.name : '';
+		    const fileExt = fileName.split('.').pop().toLowerCase();
+		
+		    $('#file-error').hide(); 
+			
+		    $('#file-name-display').text(fileName || 'No file selected');
+		
+		     if (!file) return;
+		
+		     if (fileExt !== 'pdf') {
+		      $('#file-error').text('Only PDF files are allowed.').show();
+		      return;
+		    }
+		
+		    if (file.size > 102400) {
+		      $('#file-error').text('File size must be less than 100 KB.').show();
+		      return;
+		    }
+		
+		    const formData = new FormData();
+		    formData.append('file', file);
+		
+		    $.ajax({
+		      url: 'index.php?route=catalog/manufacturer/uploaddeclaration&user_token={{ user_token }}',
+		      type: 'POST',
+		      dataType: 'json',
+		      data: formData,
+		      cache: false,
+		      contentType: false,
+		      processData: false,
+		      beforeSend: function () {
+		        $('#button-sing').prop('disabled', true).text('Uploading...');
+		      },
+		      complete: function () {
+		        $('#button-sing').prop('disabled', false).text('Uploaded').css({
+            'background-color': 'green',      // Apply green background color
+            'color': 'white'                  // Change text color to white
+        });
+		      },
+		      success: function (json) {
+		        if (json.error) {
+		          $('#file-error').text(json.error).show();
+		        }
+		
+		        if (json.success) {
+		          const imageUrl = json.image_url || '';
+		          const imageLocation = json.location1 || '';
+		
+		          $('#input-sing').val(imageLocation);
+		          $('#thumb-sing').html(
+		            '<img src="' + imageUrl + 'image/' + imageLocation + '" alt="" width="130" class="thumbnail"/>'
+		          );
+		        }
+		      },
+		      error: function (xhr, ajaxOptions, thrownError) {
+		        console.error('AJAX Error:', thrownError, xhr.responseText);
+		        alert('An error occurred: ' + thrownError);
+		      }
+		    });
+		  });
+		
+		
+		
+		  $('#button_save').on('click', function (e) {
+		    const inputVal = $('#input-sing').val().trim();
+		
+		    if (inputVal === '') {
+		      e.preventDefault();
+		      $('#file-error').text('Please select a PDF file.').show();
+		    }
+		  });
+		});
+    </script>
+		
+		
+		
+    <script>
+		  // Hide file input error when a file is selected
+		  const fileInput = document.getElementById("real-file-input");
+		  if (fileInput) {
+		    fileInput.addEventListener("change", function () {
+		      const fileError = document.querySelector("#error-declaration-form");
+		      if (this.files.length > 0 && fileError) {
+		        fileError.style.display = "none";
+		      }
+		    });
+		  }
+		
+		  // Hide name field error when valid input is entered
+		  const nameInput = document.querySelector("input[name='name']");
+		  if (nameInput) {
+		    nameInput.addEventListener("input", function () {
+		      const nameError = document.querySelector("#error-name");
+		      if (this.value.length >= 2 && this.value.length <= 64 && nameError) {
+		        nameError.style.display = "none";
+		      }
+		    });
+		  }
+	</script>
+    {#----------------------------------------#}
+
+    <script>
+    // 	document.getElementById('real-file-input').addEventListener('change', function () {
+    // 	const hiddenInput = document.getElementById('input-sing');
+    // 	if (this.files.length > 0) {
+    // 		hiddenInput.value = ''; // only clear if new file selected
+    // 	}
+    // });
+    
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const chooseBtn = document.getElementById('button-sing');
+            const fileInput = document.getElementById('real-file-input');
+            const fileNameDisplay = document.getElementById('file-name-display');
+            const viewSection = document.getElementById('view-section');
+            const viewLink = document.getElementById('view-declaration-link');
+        
+            
+        
+            fileInput.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const fileName = file.name;
+                    fileNameDisplay.textContent = fileName;
+        
+                    const objectURL = URL.createObjectURL(file);
+                    viewLink.href = objectURL;
+                    viewLink.classList.remove('btn-link');
+                    viewLink.classList.add('btn-primary');
+        
+                    viewSection.style.display = 'block';
+                }
+            });
+        });
+    </script>
+
+<!-- for seller name  ----------------->
+     <script type="text/javascript">
+        $('#input-seller-name').autocomplete({
+          'source': function (request, response) {
+            $.ajax({
+              url: 'index.php?route=catalog/manufacturer/autocompleteSeller&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+              dataType: 'json',
+              success: function (json) {
+                response($.map(json, function (item) {
+                  return {
+                    label: item.name,
+                    value: item.vendor_id
+                  }
+                }));
+              }
+            });
+          },
+          'select': function (item) {
+            $('#input-seller-name').val(item.label);
+            $('#input-vendor-id').val(item.value);
+          }
+        });
+    </script>
+
+ <!-- -------========= -->
+
+{#----------------------------------------------------------------------------------#}
+{{ footer }}

@@ -1,0 +1,81 @@
+.category-section.category-Section{
+        padding-inline: 25px;
+        margin-top:25px;
+}
+.category-Section .infinite-scroll-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  background: #fff;
+  /*padding: 10px 0;*/
+  padding: 25px;
+    border-radius: 10px;
+}
+.category-Section .infinite-scroll-container h3{
+    color:black;
+}
+
+.category-Section .infinite-scroll-track {
+  display: flex;
+  width: max-content;
+  /*animation: scroll-left 15s linear infinite;*/
+}
+
+.category-Section .category-card {
+  width: 200px;
+  /* height: 260px; */
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px #953a9378;
+  margin-right: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  padding: 12px;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.category-Section .category-card img {
+  /*height: 120px;*/
+  width: 100%;
+  object-fit: contain;
+  margin-bottom: 10px;
+ 
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.category-Section .name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #111;
+  height:18px;
+  overflow-y:hidden;
+}
+
+.category-Section .price {
+  font-size: 14px;
+  font-weight: bold;
+  color: #d32f2f;
+  margin-bottom:0px;
+}
+
+/* Auto-scrolling keyframe */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.category-Section .infinite-scroll-container:hover .infinite-scroll-track {
+  animation-play-state: paused;
+}

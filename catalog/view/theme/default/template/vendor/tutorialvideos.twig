@@ -1,0 +1,86 @@
+{{ header }}
+{{ column_left }}
+
+<style>
+	.tutorial-video-container {
+		margin: 50px 50px 0 100px;
+	}
+	.tutorial-video-hindi,
+	.tutorial-video-english {
+		width: 100%;
+		display: flex;
+		justify-content: start;
+		gap: 10px;
+	}
+	.tutorial-video-hindi div,
+	.tutorial-video-english div {
+		width: 24%;
+	}
+
+	.video-title {
+		font-size: 16px;
+		color: black;
+		margin: 8px 0px;
+	}
+	.language-btns {
+		margin-bottom: 30px;
+	}
+	.language-btns button {
+		padding: 8px 16px;
+		cursor: pointer;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		background-color: #f2f2f2;
+	}
+	.language-btns button.active {
+		background-color: #007bff;
+		color: #fff;
+	}
+</style>
+
+<div class="tutorial-video-container">
+    <h1>{{heading_title}}</h1>
+	<div class='language-btns'>
+	 <button id="btn-hindi" class="active">{{hindi}}</button>
+	 <button id="btn-english">{{english}}</button>
+	</div>
+	<div class='tutorial-video-hindi' id="section-hindi">
+		<div>
+			<iframe width='100%' height='200' src="https://www.youtube.com/embed/W_GQPzYhYio?si=1IWabS_6K1Kajhag" allowfullscreen></iframe>
+			<p class='video-title'>{{videos_title_1}}</p>
+		</div>
+		<div>
+			<iframe width='100%' height='200' src="https://www.youtube.com/embed/yhYaEGk4hkQ?si=L8Bp07otLryJtJX8" allowfullscreen></iframe>
+			<p class='video-title'>{{videos_title_4}}</p>
+		</div>
+	</div>
+
+	<div class='tutorial-video-english' id="section-english" style="display:none;">
+		<div>
+			<iframe width='100%' height='200' src="https://www.youtube.com/embed/y9wij7METe4?si=6wd2yFnjFRNKI777" allowfullscreen></iframe>
+			<p class='video-title'>{{videos_title_2}}</p>
+		</div>
+		<div>
+			<iframe width='100%' height='200' src="https://www.youtube.com/embed/LFWks8pOluw?si=ksU0bb6sX4UhLDRr" allowfullscreen></iframe>
+			<p class='video-title'>{{videos_title_3}}</p>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.getElementById('btn-hindi').addEventListener('click', function() {
+		document.getElementById('section-hindi').style.display = 'flex';
+		document.getElementById('section-english').style.display = 'none';
+		this.classList.add('active');
+		document.getElementById('btn-english').classList.remove('active');
+	});
+
+	document.getElementById('btn-english').addEventListener('click', function() {
+		document.getElementById('section-hindi').style.display = 'none';
+		document.getElementById('section-english').style.display = 'flex';
+		this.classList.add('active');
+		document.getElementById('btn-hindi').classList.remove('active');
+	});
+</script>
+
+{{ footer }}

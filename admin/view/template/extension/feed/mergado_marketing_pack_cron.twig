@@ -1,0 +1,144 @@
+<div class="tab-pane" id="cron">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+
+            <div class="alert alert-info" role="alert"><span class="icon fa fa-info-circle"></span>&nbsp;{{ cron_text }}</div>
+
+            <!-- stores -->
+            <div>
+                <ul class="nav nav-tabs" id="cron-store-tabs">
+                {% for store in stores %}
+                    <li><a href="#cron-store-{{ store.store_id }}" data-toggle="tab"><i class="fa fa-shopping-cart"></i>&nbsp;{{ store.name }}</a></li>
+                {% endfor %}
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    {% for store in stores %}
+                    <div class="tab-pane" id="cron-store-{{ store.store_id }}">
+
+                      <!-- product cron -->
+
+                      <div class="panel panel-default">
+                        <div class="panel-heading"><strong>{{ product_cron_heading }}</strong></div>
+                        <div class="panel-body">
+
+                          <table class="table table-striped table-bordered">
+                            <tr>
+                              <th style="width:120px;"><strong>{{ cron_lang }}</strong></th>
+                              <th><strong>{{ cron_url }}</strong></th>
+                            </tr>
+                            {% for lang in languages %}
+                              {% for currency in currencies %}
+                              <tr>
+                                <td>{{ lang.name ~ " - " ~ currency.code }}</td>
+                                <td>
+                                  <div class="input-group">
+                                    <input type="url" class="form-control" value="{{ stores[0].url }}index.php?route={{ route }}&a=pf&s={{ store.store_id }}&l={{ lang.code }}&c={{ currency.code|lower }}&h={{ product_feeds[store.store_id][lang.code][currency.code|lower].cron_hash }}" readonly >
+                                    <div class="input-group-btn">
+                                      <a href="javascript:void(0);" data-clipboard-text="{{ stores[0].url }}index.php?route={{ route }}&a=pf&s={{ store.store_id }}&l={{ lang.code }}&c={{ currency.code|lower }}&h={{ product_feeds[store.store_id][lang.code][currency.code|lower].cron_hash }}" class="btn btn-primary btn-copy" data-label="{{ copy_cron_btn }}" data-toggle="tooltip" data-placement="top" title="{{ copy_cron_btn }}">
+                                        <i class="fa fa-clipboard"></i>
+                                      </a>
+                                      <a href="javascript:void(0);" onclick="exportFeed(this)" data-url="{{ stores[0].url }}index.php?route={{ route }}&a=pf&s={{ store.store_id }}&l={{ lang.code }}&c={{ currency.code|lower }}&h={{ product_feeds[store.store_id][lang.code][currency.code|lower].cron_hash }}"  class="btn btn-success" data-toggle="tooltip" data-placement="top" title="{{ run_cron_btn }}">
+                                        <i class="fa fa-play"></i>
+                                      </a>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                              {% endfor %}
+                            {% endfor %}
+                          </table>
+
+                        </div>
+                      </div>
+
+                      <!-- ./product cron -->
+
+                      <!-- category cron -->
+
+                      <div class="panel panel-default">
+                        <div class="panel-heading"><strong>{{ category_cron_heading }}</strong></div>
+                        <div class="panel-body">
+
+                          <table class="table table-striped table-bordered">
+                            <tr>
+                              <th style="width:120px;"><strong>{{ cron_lang }}</strong></th>
+                              <th><strong>{{ cron_url }}</strong></th>
+                            </tr>
+                            {% for lang in languages %}
+                              {% for currency in currencies %}
+                              <tr>
+                                <td>{{ lang.name ~ " - " ~ currency.code }}</td>
+                                <td align="left">
+                                  <div class="input-group">
+                                    <input type="url" class="form-control" value="{{ stores[0].url }}index.php?route={{ route }}&a=cf&s={{ store.store_id }}&l={{ lang.code }}&c={{ currency.code|lower }}&h={{ category_feeds[store.store_id][lang.code][currency.code|lower].cron_hash }}" readonly >
+                                    <div class="input-group-btn">
+                                      <a href="javascript:void(0);" data-clipboard-text="{{ stores[0].url }}index.php?route={{ route }}&a=cf&s={{ store.store_id }}&l={{ lang.code }}&c={{ currency.code|lower }}&h={{ category_feeds[store.store_id][lang.code][currency.code|lower].cron_hash }}" class="btn btn-primary btn-copy" data-label="{{ copy_cron_btn }}" data-toggle="tooltip" data-placement="top" title="{{ copy_cron_btn }}">
+                                        <i class="fa fa-clipboard"></i>
+                                      </a>
+                                      <a href="javascript:void(0);" onclick="exportFeed(this)" data-url="{{ stores[0].url }}index.php?route={{ route }}&a=cf&s={{ store.store_id }}&l={{ lang.code }}&c={{ currency.code|lower }}&h={{ category_feeds[store.store_id][lang.code][currency.code|lower].cron_hash }}"  class="btn btn-success" data-toggle="tooltip" data-placement="top" title="{{ run_cron_btn }}">
+                                        <i class="fa fa-play"></i>
+                                      </a>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                              {% endfor %}
+                            {% endfor %}
+                          </table>
+
+                        </div>
+                      </div>
+
+                      <!-- ./category cron -->
+
+                      <!-- heureka availability cron -->
+
+                      <div class="panel panel-default">
+                        <div class="panel-heading"><strong>{{ heureka_availability_cron_heading }}</strong></div>
+                        <div class="panel-body">
+
+                          <table class="table table-striped table-bordered">
+                            <tr>
+                              <th style="width:120px;"></th>
+                              <th><strong>{{ cron_url }}</strong></th>
+                            </tr>
+                              <tr>
+                                <td></td>
+                                <td align="left">
+                                  <div class="input-group">
+                                    <input type="url" class="form-control" value="{{ stores[0].url }}index.php?route={{ route }}&a=haf&s={{ store.store_id }}&h={{ heureka_availability_feeds[store.store_id].cron_hash }}" readonly >
+                                    <div class="input-group-btn">
+                                      <a href="javascript:void(0);" data-clipboard-text="{{ stores[0].url }}index.php?route={{ route }}&a=haf&s={{ store.store_id }}&h={{ heureka_availability_feeds[store.store_id].cron_hash }}" class="btn btn-primary btn-copy" data-toggle="tooltip" data-placement="top" title="{{ copy_cron_btn }}">
+                                        <i class="fa fa-clipboard"></i>
+                                      </a>
+                                      <a href="javascript:void(0);" onclick="exportFeed(this)" data-url="{{ stores[0].url }}index.php?route={{ route }}&a=haf&s={{ store.store_id }}&h={{ heureka_availability_feeds[store.store_id].cron_hash }}"  class="btn btn-success" data-toggle="tooltip" data-placement="top" title="{{ run_cron_btn }}">
+                                        <i class="fa fa-play"></i>
+                                      </a>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                          </table>
+
+                        </div>
+                      </div>
+
+                      <!-- ./heureka availability cron -->
+                    
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- ./stores -->
+
+        </div>
+
+    </div>
+    <div class="row">
+      <!-- bottom banner -->
+      {{ bottom_banner_view }}
+      <!-- ./bottom banner -->
+    </div>
+</div>

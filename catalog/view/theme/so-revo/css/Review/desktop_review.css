@@ -1,0 +1,260 @@
+
+/*.rating-star:hover,*/
+/*.rating-star:hover ~ .rating-star {*/
+/*    color: #ffc107 !important;*/
+/*  }*/
+
+
+
+  
+  
+/*.popup-body {*/
+  max-height: 70vh; /* Adjust height as needed */
+/*  overflow-y: auto;*/
+  padding-right: 10px; /* prevent content cutoff */
+/*}*/
+
+
+
+  /* General Styles for Image Upload Section */
+/*.form-group {*/
+/*  margin-bottom: 20px;*/
+/*}*/
+
+/*#image-upload-wrapper {*/
+/*  display: flex;*/
+/*  flex-wrap: wrap;*/
+/*  gap: 0;*/
+/*}*/
+
+/*.img-thumbnail {*/
+/*  width: 90px;*/
+/*  height: 90px;*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*  cursor: pointer;*/
+/*  position: relative;*/
+/*  overflow: hidden;*/
+/*}*/
+
+/*.remove-btn {*/
+/*  position: absolute;*/
+/*  top: 2px;*/
+/*  right: 6px;*/
+/*  background: red;*/
+/*  color: white;*/
+/*  border: none;*/
+/*  border-radius: 50%;*/
+/*  width: 20px;*/
+/*  height: 20px;*/
+/*  font-size: 14px;*/
+/*}*/
+
+/*button {*/
+/*  margin-top: 20px;*/
+/*}*/
+
+
+/*#review-txt{*/
+
+/*  font-family: 'Inter', sans-serif;*/
+/*  font-weight: 400;*/
+/*  font-size: 16px;*/
+/*  line-height: 24px;*/
+/*}*/
+
+/*#review-img{*/
+
+/*  font-family: 'Inter', sans-serif;*/
+/*  font-weight: 400;*/
+/*  font-size: 16px;*/
+/*  line-height: 24px;*/
+
+/*}*/
+
+/*#review-name{*/
+
+/*  font-family: 'Inter', sans-serif;*/
+/*  font-weight: 400;*/
+/*  font-size: 16px;*/
+/*  line-height: 24px;*/
+
+
+/*}*/
+
+/*#review-rating{*/
+
+/*  font-family: 'Inter', sans-serif;*/
+/*  font-weight: 400;*/
+/*  font-size: 16px;*/
+/*  line-height: 24px;*/
+/*}*/
+
+/*.form-group.required .control-label::after{*/
+
+/*  content:  ' *';*/
+/*  color: #FF0000;*/
+/*}*/
+
+
+/*#button-review{*/
+
+/*  background-color: #953A93;*/
+/*  color: #FFFFFF;*/
+
+/*  width: 602px;*/
+/*  height: 35px;*/
+    /* padding: 16px 8px; */
+/*  border-radius: 8px;*/
+/*display: flex;*/
+/*justify-content: center;*/
+/*align-items: center;*/
+/*margin: 20px auto 0;*/
+/*text-align: center;*/
+
+/*font-family: 'Inter', sans-serif;*/
+/*font-size: 16px;*/
+/*font-weight: 500;*/
+
+  
+/*}*/
+
+
+
+/*.popup-overlay {*/
+/*  display: none;*/
+/*  position: fixed;*/
+/*  top: 0; left: 0;*/
+/*  width: 100%; height: 100%;*/
+/*  background: rgba(0, 0, 0, 0.5);*/
+/*  z-index: 1050;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
+/*}*/
+
+/*.popup-header {*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  align-items: center;*/
+/*  border-bottom: 1px solid #ddd;*/
+/*  padding-bottom: 10px;*/
+/*}*/
+
+/*.popup-close {*/
+/*  background: none;*/
+/*  border: none;*/
+/*  font-size: 24px;*/
+/*  cursor: pointer;*/
+/*}*/
+
+
+
+/*  .popup-close {*/
+/*    font-size: 24px;*/
+/*    background: none;*/
+/*    border: none;*/
+/*    float: right;*/
+/*    cursor: pointer;*/
+/*  }*/
+
+
+
+
+/*.popup-overlay.active {*/
+  /* display: flex; */
+   /* display: block; */
+/*   position: fixed;*/
+/*   top:0;*/
+/*   left:0;*/
+/*   right:0;*/
+
+/*  }*/
+
+/*.popup-content {*/
+/* background: #fff;*/
+/*  padding: 20px;*/
+/*  width: 100%;*/
+/*  max-width: 700px;*/
+/*  border-radius: 10px;*/
+/*  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);*/
+/*  margin: auto;*/
+/*  display: block;*/
+/*  position: fixed;*/
+  
+ 
+
+ 
+/*}*/
+
+
+
+/*div.desc-collapse.showdown {*/
+/*    max-height: 350px;*/
+/*    display: block;*/
+/*    overflow: hidden;*/
+/*    transition: 0.3s all ease-in-out;*/
+/*    position: relative;*/
+/*    z-index: 0;*/
+  
+/*  }*/
+
+/*  .popup-title {*/
+/*  font-family: Inter, sans-serif;*/
+/*  font-weight: 400;*/
+/*  font-size: 30px;*/
+/*  line-height: 72px;*/
+/*  color: #1F2937;*/
+/*}*/
+
+
+/*.label-style {*/
+/*  font-family: Inter, sans-serif;*/
+/*  font-weight: 400;*/
+/*  font-size: 16px;*/
+/*  line-height: 24px;*/
+/*}*/
+
+
+/*body.no-scroll {*/
+/*  overflow: hidden;*/
+/*  position: fixed;*/
+/*  width: 100%;*/
+/*}*/
+
+
+/* 
+Validations */
+
+/*.text-danger {*/
+/*  color: red;*/
+/*}*/
+/*.text-success {*/
+/*  color: green;*/
+/*}*/
+
+
+
+/*.rating-star.fa-solid {*/
+  color: #ffc107; /* Gold */
+/*}*/
+/*.rating-star.fa-regular {*/
+  color: #ccc;    /* Grey */
+/*}*/
+
+
+
+
+/*.fa-solid { color: #ffc107; }*/
+/*.fa-regular { color: #ccc; }*/
+
+
+
+/* General error message styling */
+/*.error {*/
+  color: #dc3545; /* Bootstrap's red (danger) color */
+  font-size: 15px; /* Smaller font for error */
+/*  font-weight: 500;*/
+/*  margin-top: 4px;*/
+/*  display: block;*/
+/*}*/

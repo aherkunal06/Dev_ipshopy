@@ -1,0 +1,240 @@
+@font-face {
+    font-family: 'Commissioner-Black';
+    src: url('/catalog/view/theme/so-revo/fonts/Commissioner-Black.ttf');
+}
+
+@font-face {
+    font-family: 'Commissioner-Bold';
+    src: url('/catalog/view/theme/so-revo/fonts/Commissioner-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Commissioner-ExtraBold';
+    src: url('/catalog/view/theme/so-revo/fonts/Commissioner-ExtraBold.ttf');
+}
+
+@font-face {
+    font-family: 'Commissioner-ExtraLight';
+    src: url('/catalog/view/theme/so-revo/fonts/Commissioner-ExtraLight.ttf');
+}
+
+@font-face {
+    font-family: 'Commissioner-Light';
+    src: url('/catalog/view/theme/so-revo/fonts/Commissioner-Light.ttf');
+}
+
+@font-face {
+    font-family: 'Commissioner-Medium';
+    src: url('/catalog/view/theme/so-revo/fonts/Commissioner-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'Commissioner-Regular';
+    src: url('/catalog/view/theme/so-revo/fonts/Commissioner-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Commissioner-SemiBold';
+    src: url('/catalog/view/theme/so-revo/fonts/Commissioner-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: 'Commissioner-Thin';
+    src: url('/catalog/view/theme/so-revo/fonts/Commissioner-Thin.ttf');
+}
+
+html,
+body {
+
+    /* height: 100%; */
+
+    margin: 0;
+
+    padding: 0;
+
+    font-family: 'Commissioner-Regular', sans-serif;
+
+    font-size: 14px;
+
+    color: #666666;
+
+    text-rendering: optimizeLegibility;
+
+    background: #F7F8FF;
+
+}
+footer{
+    width:100%;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+
+    margin-top: 0;
+
+}
+
+a {
+    text-decoration : none !important;
+}
+
+
+.Commissioner-Black {
+    font-family: 'Commissioner-Black', sans-serif !important;
+}
+
+.Commissioner-Bold {
+    font-family: 'Commissioner-Bold', sans-serif !important;
+}
+
+.Commissioner-ExtraBold {
+    font-family: 'Commissioner-ExtraBold', sans-serif !important;
+}
+
+.Commissioner-ExtraLight {
+    font-family: 'Commissioner-ExtraLight', sans-serif !important;
+}
+
+.Commissioner-Light {
+    font-family: 'Commissioner-Light', sans-serif !important;
+}
+
+.Commissioner-Medium {
+    font-family: 'Commissioner-Medium', sans-serif !important;
+}
+
+.Commissioner-Regular {
+    font-family: 'Commissioner-Regular', sans-serif !important;
+}
+
+.Commissioner-SemiBold {
+    font-family: 'Commissioner-SemiBold', sans-serif !important;
+}
+
+.Commissioner-Thin {
+    font-family: 'Commissioner-Thin', sans-serif !important;
+}
+
+
+  /*footer*/
+  
+  .footer {
+.footer {
+    background-color: #000000;  /* Dark background */
+    color: #ffffff;
+    font-family: "Inter", sans-serif;
+}
+
+.footer h5 {
+    font-size: 16px;
+    margin-bottom: 20px;
+    margin-left: 16px;
+    margin-right: 48px;
+}
+
+.footer ul {
+    padding: 0;
+    margin-left: 16px;
+    margin-right: 48px;
+}
+
+.footer ul li {
+    list-style: none;
+    margin-bottom: 9px;
+    width: 288px;
+    /* height: 228px; */}
+
+.footer ul li a {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s ease-in-out;
+}
+
+.footer ul li a:hover {
+    color: #ffffff;
+}
+
+.footer hr {
+    margin-bottom: 20px;
+    border-color: rgba(255, 255, 255, 0.2);
+    width: 100%;
+}
+
+.footer .text-center {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.footer .footer-bottom {
+	padding-top: 20px;
+	margin-top: 30px;
+	text-align: center;
+    font-weight: 600;
+  
+  }
+  
+  .footer-bottom {
+      text-align : center;
+  }
+
+  .footer .footer-bottom p{
+    font-size: 14px;
+    font-weight: 400;
+  }
+  
+  
+  .mb-9px {
+      margin-bottom : 9px;
+  }
+  
+  @media (max-width:768px) {
+  
+  .footer .col-md-3 {
+	  flex: 1 1 50%;
+  }
+  .footer{
+	  height: 100%;
+  }
+  .container{
+	  height: 100%;
+	  width: 100%;
+	  display: grid;
+	  align-items: center;
+	  justify-content: center;
+
+  }
+  .footer-bottom{
+	  font-size: 12px;
+  }
+
+}
+
+@media (max-width:480px) {
+  
+  .footer .col-md-3 {
+	  flex: 1 1 100%;
+  }
+  .container{
+	  height: 100%;
+	  width: 100%;
+	  display: grid;
+	  align-items: center;
+	  justify-content: center;
+
+  }
+  .footer-bottom{
+	  font-size: 13px;
+  }
+  .footer-bottom{
+	  text-align: left;
+      
+  }
+
+
+}

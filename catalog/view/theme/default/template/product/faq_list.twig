@@ -1,0 +1,569 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<style>
+  /* FAQ Main Container */
+  .faq-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 30px;
+    display: flex;
+    gap: 40px;
+    background-color: #fdfdfd;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  /* Left Panel – Product Info */
+  .faq-left-product {
+    width: 280px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .faq-left-product img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    object-fit: contain;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .faq-left-product h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+  }
+
+  .faq-left-product .price {
+    color: #388e3c;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .faq-left-product .old-price {
+    text-decoration: line-through;
+    color: #888;
+    margin-right: 8px;
+  }
+
+  .faq-left-product .btn {
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+
+  /* Right Panel – FAQ Content */
+  .faq-right-content {
+    flex: 1;
+  }
+
+  .faq-right-content h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #953A93;
+    margin-bottom: 25px;
+    position: relative;
+  }
+
+  /* 
+.faq-right-content h2::after {
+  content: '';
+  width: 60px;
+  height: 3px;
+  background: #953A93;
+  display: block;
+  margin-top: 8px;
+} */
+
+  /* Individual FAQ Entry */
+  .faq-item {
+    padding: 18px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .faq-question {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 6px;
+    color: #111;
+  }
+
+  .faq-answer {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+  }
+
+  .faq-meta {
+    font-size: 13px;
+    color: #666;
+    margin-top: 8px;
+  }
+
+  .faq-actions {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #999;
+  }
+
+  .faq-actions i {
+    cursor: pointer;
+    margin-right: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .faq-container {
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .faq-left-product {
+      width: 100%;
+      /* text-align: left; */
+      /* margin-bottom: 20px; */
+    }
+
+    .faq-right-content h2 {
+      font-size: 20px;
+    }
+
+    .faq-right-content h2::after {
+      width: 50px;
+    }
+  }
+
+  .faq-left-product .btn-outline-primary {
+
+    background-color: #953A93;
+    color: #fff;
+  }
+
+
+  .faq-left-product .btn-outline-primary:hover {
+    border-color: #953A93;
+    background-color: #953A93;
+    color: #fff;
+  }
+
+  .faq-search-box {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 25px;
+  }
+
+  .faq-search-box input {
+    width: 100% !important;
+    padding: 12px 45px 12px 15px !important;
+    border-radius: 30px !important;
+    border: 1px solid #ccc !important;
+    font-size: 15px !important;
+    transition: 0.3s ease all !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+    background: none !important;
+  }
+
+  .faq-search-box input:focus {
+    border-color: #953A93;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(149, 58, 147, 0.2);
+  }
+
+  /* Optional: Add a search icon inside the box */
+  .faq-search-box::before {
+    content: "\f002";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+    font-size: 16px;
+  }
+
+
+  /* Ask Question Modal – Overall Style */
+  .ask-question-modal {
+    border-radius: 10px !important;
+    max-width: 700px;
+    margin: auto;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15) !important;
+    padding: 20px;
+    background-color: #fff;
+
+  }
+
+  /* Modal Layout */
+  .ask-question-modal-body {
+    display: flex;
+    /* flex-wrap: wrap; */
+  }
+
+  /* Left Panel */
+  .ask-left-panel {
+    /* background-color: #f7f5f9; */
+    border-right: 1px solid #e0e0e0;
+    height: 100%;
+    margin-top: 20px;
+
+  }
+
+  .ask-guidelines {
+    font-size: 14px;
+    color: #333;
+    padding-left: 0;
+  }
+
+  .ask-guidelines li {
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  /* Right Panel */
+  .ask-right-panel {
+    background-color: #fff;
+    height: 100%;
+  }
+
+  .ask-right-panel h5 {
+    font-size: 18px;
+    color: #212121;
+    font-weight: bold;
+  }
+
+  .ask-right-panel textarea {
+    resize: vertical;
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  /* Submit Button */
+  .ask-submit-btn {
+    background-color: #953A93 !important;
+    border: none;
+    padding: 10px 30px;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+  }
+
+  .ask-submit-btn:hover {
+    background-color: #b86db7 !important;
+    color: #fff !important;
+
+  }
+
+  /* Modal Close Buttons */
+  .modal-header .close,
+  .ask-right-panel .close {
+    font-size: 24px;
+    color: #000;
+    opacity: 0.6;
+    margin-top: -15px;
+  }
+
+  .modal-header .close:hover,
+  .ask-right-panel .close:hover {
+    opacity: 1;
+  }
+
+  /* Login Required Section */
+  .ask-login-required {
+    background-color: #fdf9fd;
+    border: 1px solid #eee;
+    padding: 30px 20px;
+    border-radius: 10px !important;
+    text-align: center;
+  }
+
+  .ask-login-required p {
+    font-size: 16px;
+    color: #000 !important;
+    font-weight: 500;
+  }
+
+  .faq-login-link {
+    color: #953A93;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .faq-login-link:hover {
+    color: #721b72;
+    text-decoration: underline;
+  }
+
+  /* Responsive Behavior */
+  @media (max-width: 767px) {
+    .ask-left-panel {
+      display: none;
+    }
+
+    .ask-right-panel {
+      padding: 20px;
+      width: 100%;
+    }
+
+    .ask-question-modal {
+      border-radius: 0;
+    }
+  }
+
+  #ask-question-btn {
+    background-color: #953A93;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+  }
+
+  #ask-question-btn:hover {
+    background-color: #721b72;
+  }
+
+  .modal-title {
+    color: #000;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .faq-load-more-btn {
+    padding: 10px 25px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    border: 2px solid #953A93 !important;
+    background-color: white !important;
+    color: #953A93 !important;
+    transition: all 0.3s ease !important;
+    margin-top: 10px;
+  }
+
+  .faq-load-more-btn:hover {
+    background-color: #953A93 !important;
+    color: #fff !important;
+    border-color: #953A93 !important;
+  }
+</style>
+{{ header }}
+
+<div class="container-fluid">
+  <div class="faq-container">
+    <!-- Product Info -->
+    <div class="faq-left-product">
+      <a href="{{ product.href }}">
+        <img src="{{ product.thumb }}" alt="{{ product.name }}">
+      </a>
+      <h4>{{ product.name }}</h4>
+      {% if product.price %}
+      <div class="price">{{ product.price }}</div>
+      {% endif %}
+      <a href="{{ product.href }}" class="btn btn-sm btn-outline-primary mt-2">Back to Product</a>
+    </div>
+
+    <!-- FAQ List -->
+    <div class="faq-right-content">
+      <h2>Questions and Answers</h2>
+
+      <!-- Search Box -->
+      <div class="faq-search-box mb-4">
+        <input type="text" id="faq-search-input" placeholder="Search for answers..." class="form-control" />
+      </div>
+
+      {% if product_faqs %}
+      <div id="faq-list">
+        {% for faq in product_faqs %}
+        <div class="faq-item" data-index="{{ loop.index0 }}" style="{% if loop.index > 4 %}display:none;{% endif %}">
+          <div class="faq-question">Q: {{ faq.question }}</div>
+          <div class="faq-answer">A: {{ faq.answer }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if product_faqs|length > 4 %}
+      <div class="text-center mt-3">
+        <button id="load-more-faqs" class="btn btn-outline-primary faq-load-more-btn pull-right">Show More</button>
+      </div>
+      {% endif %}
+
+
+      {% else %}
+      <p>No FAQs found for this product.</p>
+      {% endif %}
+    </div>
+    <div id="no-results-box" style="display: none; text-align: center; margin-top: 20px;">
+      <p class="text-muted mb-2">No matching questions found.</p>
+      <button id="ask-question-btn" class="btn btn-primary">Ask a Question</button>
+    </div>
+  </div>
+</div>
+
+{{ footer }}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const faqItems = document.querySelectorAll('#faq-list .faq-item');
+    const loadMoreBtn = document.getElementById('load-more-faqs');
+    const searchInput = document.getElementById('faq-search-input');
+    const noResultsBox = document.getElementById('no-results-box');
+    let visibleCount = 4;
+
+    function showInitialFaqs() {
+      faqItems.forEach((item, index) => {
+        item.style.display = index < visibleCount ? 'block' : 'none';
+      });
+
+      if (loadMoreBtn) {
+        loadMoreBtn.style.display = visibleCount < faqItems.length ? 'inline-block' : 'none';
+      }
+    }
+
+    // Show initial set
+    showInitialFaqs();
+
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', function () {
+        visibleCount += 4;
+        showInitialFaqs();
+      });
+    }
+
+    searchInput.addEventListener('input', function () {
+      const query = this.value.trim().toLowerCase();
+      let matchCount = 0;
+
+      if (query === '') {
+        visibleCount = 4;
+        showInitialFaqs();
+        if (noResultsBox) noResultsBox.style.display = 'none';
+        return;
+      }
+
+      faqItems.forEach(item => {
+        const answer = item.querySelector('.faq-answer').innerText.toLowerCase();
+        const matches = answer.includes(query);
+        item.style.display = matches ? 'block' : 'none';
+        if (matches) matchCount++;
+      });
+
+      // Show Ask Question only if nothing matches
+      if (noResultsBox) {
+        noResultsBox.style.display = matchCount === 0 ? 'block' : 'none';
+      }
+
+      // Hide Show More during search
+      if (loadMoreBtn) {
+        loadMoreBtn.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<!-- ask question modal  -->
+
+<div id="askQuestionModal" class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content ask-question-modal">
+      {% if logged %}
+      <div class="modal-body p-0">
+        <div class="row ask-question-modal-body">
+          <div class="col-md-5 ask-left-panel p-4 d-flex flex-column justify-content-center">
+            <ul class="ask-guidelines list-unstyled">
+              <li>• Be specific, ask questions only about the product.</li>
+              <li class="mt-2">• Review product specs before posting.</li>
+              <li class="mt-2">• For orders/offers, contact customer support.</li>
+            </ul>
+          </div>
+
+          <div class="col-md-7 ask-right-panel p-4 position-relative">
+            <button type="button" class="close position-absolute" style="top:10px; right:10px;"
+              data-dismiss="modal">&times;</button>
+            <h5 class="mb-3 font-weight-bold">Post your question</h5>
+            <form id="ask-question-form">
+              <textarea name="question" id="faq-question" class="form-control mb-3" required
+                placeholder="Type your question here..." rows="5"></textarea>
+              <input type="hidden" name="product_id" value="{{ product_id }}">
+              <div class="text-right">
+                <button type="submit" class="btn ask-submit-btn">SUBMIT</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="modal-header">
+        <h5 class="modal-title">Login Required</h5>
+        <button type="button" class="close" data-dismiss="modal" style="margin-top: -30px;">&times;</button>
+      </div>
+      <div class="modal-body text-center p-4">
+        <p class="mb-0">{{ text_login2|raw }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Open modal
+    document.getElementById('ask-question-btn')?.addEventListener('click', function () {
+      $('#askQuestionModal').modal('show');
+    });
+
+    // Submit form via AJAX
+    document.getElementById('ask-question-form')?.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      $.ajax({
+        url: 'index.php?route=product/product/submitFaq',
+        type: 'POST',
+        data: $(this).serialize(),
+        dataType: 'json',
+        success: function (json) {
+          if (json.success) {
+            alert('Your question has been submitted.');
+            $('#faq-question').val('');
+            $('#askQuestionModal').modal('hide');
+          } else {
+            alert(json.error || 'Submission failed.');
+          }
+        },
+        error: function () {
+          alert('An error occurred. Please try again.');
+        }
+      });
+    });
+
+    // Redirect login link (if not logged in)
+    $(document).on('click', '.faq-login-link', function (e) {
+      e.preventDefault();
+      const href = $(this).attr('href');
+      $('#askQuestionModal').one('hidden.bs.modal', function () {
+        window.location.href = href;
+      });
+      $('#askQuestionModal').modal('hide');
+    });
+  });
+</script>

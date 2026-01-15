@@ -1,0 +1,43 @@
+<div class="latest-seller">
+<h3>{{ heading_title }}</h3>
+<div class="row">
+  {% for vendor in vendors %}
+		<div class="product-layout col-lg-4 col-md-4 col-sm-6 col-xs-12">
+			<div class="product-thumb transition allseller">
+			  <div class="image">
+				<a href="{{ vendor.href }}"><img src="{{ vendor['thumb'] }}" alt="{{ vendor.firstname }}" title="{{ vendor.firstname }}" class="img-responsive" /></a>
+				<div class="smalimage hide">
+				  <img src="{{ vendor.smallthumb }}" class="img-responsive" />
+				</div>
+			  </div>
+			  <div class="caption">
+				<h4><i class="fa fa-home"></i> {{ vendor.storename }}</h4>
+				<ul class="list-unstyled user-links">
+				    {% if vendor_hidevname %}
+					<li><i class="fa fa-user"></i> {{ vendor.firstname }}</li>
+					{% endif %}
+					{% if vendor_hidevemail %}
+				  <li><i class="fa fa-envelope"></i> {{ vendor.email }}</li>
+				  {% endif %}
+				  {% if vendor_hidevponeno %}
+				  <li><i class="fa fa-phone"></i> {{ vendor.telephone }}</li>
+				   {% endif %}
+				</ul>
+				<div class="total">
+					{% if vendor_hidevsocialicon %}
+					  <ul class="list-inline social-icons pull-left">
+						<li><a href="{{ vendor.facebookurl }}" target="new"><i class="fa fa-facebook"></i></a></li>
+						<li><a href="{{ vendor.googleurl }}" target="new"><i class="fa fa-google"></i></a></li>
+					  </ul>
+				    {% endif %}
+				   <p> {{ text_sellertotal }}
+					<span class="label {% if vendor.totalproduct == 0  %} label-danger {% else %} label-success {% endif %} countproduct">{{ vendor.totalproduct }}</span>
+					
+					</p>
+				</div>
+			  </div>
+			</div>
+		</div>
+{% endfor %}
+</div>
+</div>

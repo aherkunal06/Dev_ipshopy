@@ -1,0 +1,481 @@
+<!-- {{header}} -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Responsive Navbar with Sidebar</title>
+
+<style>
+
+
+.navbar {
+  background: #953a93;
+  padding: 0;
+}
+.nav-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+.nav-item {
+  position: relative;
+}
+.nav-item > a {
+  padding: 10px 20px; 
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  text-decoration: none;
+  display: flex;             
+  align-items: center;        
+  justify-content: center;   
+  gap: 5px;                
+  transition: background 0.2s ease;
+}
+
+
+.dropdown, 
+.sub-dropdown {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+}
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  min-width: 220px;
+  z-index: 9999;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  border-radius: 3px;
+}
+.dropdown li {
+  position: relative;
+}
+.dropdown li a {
+  padding: 10px 10px;
+  display: block;
+  color: #333;
+  font-size: 15px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.dropdown li a:hover {
+  background: #f5f5f5;
+  color: #7d2c91;
+}
+.sub-dropdown {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%; 
+  background: #fff;
+  min-width: 220px;
+  padding: 8px 0;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  border-radius: 3px;
+}
+.nav-item:hover > .dropdown {
+  display: block;
+}
+.dropdown li:hover > .sub-dropdown {
+  display: block;
+}
+.nav-item:last-child .sub-dropdown {
+  left: auto;
+  right: 100%;
+}
+.toggle-icon {
+  display: none !important;
+}
+
+.nav-item:has(.dropdown) > a::after {
+  content: "⮟";            
+  font-size: 12px;
+  display: inline-block;    
+  transition: transform 0.3s ease;
+  margin-top: 0; 
+}
+.nav-item:hover:has(.dropdown) > a::after {
+  transform: rotate(180deg);
+}
+@media (max-width: 768px) {
+  .nav-item:has(.dropdown) > a::after {
+    content: none;
+  }
+}
+@media (max-width: 1440px) and (min-width: 1024px) {
+  .nav-item > a {
+    padding: 10px 10px;
+    font-size: 13px;   
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: background 0.2s ease;
+    white-space: nowrap;  
+  }
+
+  .nav-menu {
+    flex-wrap: nowrap;  
+  
+  }
+}
+
+/* Default style (if needed) */
+.nav-item > a {
+    font-size: 11px;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+}
+
+/* For screen width <= 1024px */
+@media (max-width: 1024px) {
+    .nav-item > a {
+        font-size: 11px;
+        font-weight: 500;
+        color: #fff;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* padding removed/commented as per your original code */
+        /* padding: 10px 10px; */
+        /* gap removed/commented */
+        /* gap: 5px; */
+        transition: background 0.2s ease;
+        white-space: nowrap;
+    }
+}
+
+/* For screen width <= 1017px */
+@media (max-width: 1017px) {
+    .nav-item > a {
+        padding: 5px 5px;
+        color: #fff;
+        font-weight: 500;
+        font-size: 12px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        transition: background 0.2s ease;
+    }
+}
+
+/* For screen width <= 1040px */
+@media (max-width: 1040px) {
+    .nav-item > a {
+        padding: 10px 8px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #fff;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        transition: background 0.2s ease;
+        white-space: nowrap;
+    }
+}
+
+
+@media (max-width: 1330px) and (min-width: 1024px) {
+  .nav-item > a {
+    padding: 10px 10px;
+    font-size: 12px;   
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: background 0.2s ease;
+    white-space: nowrap;  
+  }
+
+  .nav-menu {
+    flex-wrap: nowrap;  
+  
+  }
+}
+
+@media (max-width: 1015px) and (min-width: 768px) {
+  .nav-item > a {
+    padding: 8px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .nav-menu {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+}
+
+
+.menu-toggle {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle { 
+    display: block !important;
+    background: #fff; 
+    border: none;
+    font-size: 20px; 
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 10001;
+    position: relative;
+  }
+
+@media (max-width: 768px) {
+  .toggle-icon {
+    display: inline-block !important;
+    font-weight: bold;
+    color: #7d2c91;
+    margin-left: auto;
+  }
+}
+}
+
+
+
+@media (max-width: 900px) and (min-width: 769px) {
+  .nav-menu {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;        
+    white-space: nowrap;     
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+
+  .nav-menu::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .nav-item > a {
+    padding: 8px 10px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+
+  .nav-menu .dropdown {
+    position: absolute !important;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 99999; 
+    overflow: visible; 
+  }
+
+  .nav-menu .sub-dropdown {
+    position: absolute !important;
+    top: 0;
+    left: 100%;
+    min-width: 220px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 99999;
+  }
+}
+
+
+
+@media (max-width: 768px) {
+  .navbar {
+    background: transparent !important;
+  }
+  .nav-menu { 
+    display: block;
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 260px;
+    height: 100%;
+    background: #fff;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+    flex-direction: column;
+    padding-top: 50px;
+    z-index: 10000;
+  }
+  .nav-menu.open { left: 0; }
+  .nav-item > a { 
+    color: #7d2c91; 
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-item > a.active {
+    background: #7d2c91;
+    color: #fff !important;
+  }
+  .dropdown, .sub-dropdown { 
+    position: static; 
+    background: #fff;
+    display: none;
+    padding-left: 15px;
+  }
+  .dropdown li a.active {
+    background: #7d2c91;
+    color: #fff !important;
+  }
+}
+.menu-toggle.hidden {
+  display: none !important;
+}
+</style>
+</head>
+<body>
+
+
+<nav class="navbar">
+  <div class="container">
+    <button id="menu-toggle" class="menu-toggle">☰</button>
+    <ul class="nav-menu">
+    <li></li>
+    </ul>
+  </div>
+</nav>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+
+  fetch('index.php?route=common/navigation/categoriesJson')
+    .then(response => response.json())
+    .then(data => {
+      document.querySelector('.nav-menu').innerHTML = buildMenu(data);
+    });
+
+  function buildMenu(categories) {
+    let html = "";
+     html += `<li class="nav-item">
+             <a href="index.php?route=common/home">Home</a>
+           </li>`;
+    categories.forEach(cat => {
+      html += `<li class="nav-item">
+                <a href="${cat.href}">
+                  ${cat.name}
+                  ${cat.children && cat.children.length > 0 ? '<span class="toggle-icon">+</span>' : ''}
+                </a>`;
+      if (cat.children && cat.children.length > 0) {
+        html += `<ul class="dropdown">`;
+        cat.children.forEach(subcat => {
+          html += `<li>
+                    <a href="${subcat.href}">
+                      ${subcat.name.slice(0, 20)}${subcat.name.length > 30 ? '...' : ''}
+                    </a>`;
+          if (subcat.children && subcat.children.length > 0) {
+            html += `<ul class="sub-dropdown">`;
+            subcat.children.forEach(child => {
+              html += `<li><a href="${child.href}">${child.name}</a></li>`;
+            });
+            html += `</ul>`;
+          }
+          html += `</li>`;
+        });
+        html += `</ul>`;
+      }
+      html += `</li>`;
+    });
+    return html;
+  }
+
+  const navMenu = document.querySelector(".nav-menu");
+  const toggleBtn = document.querySelector("#menu-toggle");
+
+
+toggleBtn.addEventListener("click", function (e) {
+  e.stopPropagation(); 
+  navMenu.classList.add("open");
+  toggleBtn.classList.add("hidden"); 
+});
+
+
+document.addEventListener("click", function (e) {
+
+  if (!e.target.closest('.nav-menu')) {
+    navMenu.classList.remove("open");
+    toggleBtn.classList.remove("hidden");
+  }
+});
+
+
+toggleBtn.addEventListener('click', function(e) {
+  e.stopPropagation();
+});
+
+  document.addEventListener("click", function (e) {
+    const link = e.target.closest(".nav-item > a");
+    if (link) {
+      const submenu = link.parentElement.querySelector(".dropdown");
+      const icon = link.querySelector(".toggle-icon");
+
+      if (submenu) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        document.querySelectorAll(".nav-item .dropdown").forEach(drop => {
+          if (drop !== submenu && drop.style.display === "block") {
+            drop.style.display = "none";
+            const otherLink = drop.parentElement.querySelector("a");
+            const otherIcon = otherLink.querySelector(".toggle-icon");
+            if (otherIcon) otherIcon.textContent = "+";
+            otherLink.classList.remove("active");
+          }
+        });
+
+        if (submenu.style.display === "block") {
+          submenu.style.display = "none";
+          if (icon) icon.textContent = "+";
+          link.classList.remove("active");
+        } else {
+          submenu.style.display = "block";
+          if (icon) icon.textContent = "–";
+          link.classList.add("active");
+        }
+      }
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>

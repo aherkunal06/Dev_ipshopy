@@ -1,0 +1,381 @@
+ <script src="catalog/view/theme/so-revo/js/visualsearch.js"></script>
+{#<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">#}
+ 
+ <link rel="stylesheet" href="catalog/view/theme/so-revo/css/visualsearch.css">
+
+<div id="sosearchpro" class="sosearchpro-wrapper {{ additional_class }} ">
+	{% if disp_title_module %} 
+		<h3>{{ head_name }} </h3>
+	{% endif %} 
+	
+	<form method="GET" action="index.php">
+		<div id="search{{ module }}" class="search input-group form-group">
+			{% if categories %} 
+			<div class="select_category filter_type  icon-select">
+				<select class="no-border" name="category_id">
+					<option value="0">{{ text_category_all  }} </option>
+					{% for category in categories %} 
+						
+						{% if category.category_id  ==  category_id %} 
+							<option value="{{ category.category_id }} " selected="selected">{{ category.name }} </option>
+						{% else %}   
+							<option value="{{ category.category_id }} ">{{ category.name }} </option>
+						{% endif %} 
+						
+						{% for category_lv2 in category.children %} 
+							
+							{% if category_lv2.category_id  ==  category_id %} 
+								<option value="{{ category_lv2.category_id }} " selected="selected">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ category_lv2.name }} </option>
+							{% else %}   
+								
+								<option value="{{ category_lv2.category_id }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{category_lv2.name}} </option>
+							{% endif %} 
+							
+							{% for category_lv3 in category_lv2.children %} 
+								{% if category_lv3.category_id  ==  category_id %} 
+									<option value="{{ category_lv3.category_id }} " selected="selected">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_lv3.name }} </option>
+								{% else %}   
+									<option value="{{ category_lv3.category_id }} ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_lv3.name }} </option>
+								{% endif %} 
+							{% endfor %}
+						{% endfor %}
+					{% endfor %}
+				</select>
+			</div>
+			{% endif %}  
+			<input class="autosearch-input form-control" type="text" value="" size="50" autocomplete="off" placeholder="{{ text_search  }}" name="search">
+			<span class="input-group-btn">
+			    {#<input class="autosearch-input form-control" type="text" value="" size="50" autocomplete="off" placeholder="{{ text_search  }}" name="search">#}
+			<button type="button" class="btn btn-primary search-camera" id='visualSearch_button'>
+				{#<i class="fa fa-camera"></i>#}
+				{#<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="Gdd5U" focusable="false" viewBox="0 0 192 192" width="30" height="30"><rect fill="none" height="192" width="192"/><g><circle fill="#953a93" cx="144.07" cy="144" r="16"/><circle fill="#953a93" cx="96.07" cy="104" r="24"/><path fill="#953a93" d="M24,135.2c0,18.11,14.69,32.8,32.8,32.8H96v-16l-40.1-0.1c-8.8,0-15.9-8.19-15.9-17.9v-18H24V135.2z"/><path fill="#953a93" d="M168,72.8c0-18.11-14.69-32.8-32.8-32.8H116l20,16c8.8,0,16,8.29,16,18v30h16V72.8z"/><path fill="#953a93" d="M112,24l-32,0L68,40H56.8C38.69,40,24,54.69,24,72.8V92h16V74c0-9.71,7.2-18,16-18h80L112,24z" style="&#10;"/></g></svg>#}
+				<svg class="Y2Svj PABRJ qI43S" width="30" height="30" viewBox="0 0 24 24" version="1.1" aria-hidden="false" style="flex-shrink: 0;"><desc lang="en-US">Visual search</desc><path d="M5 15H3v4c0 1.1.9 2 2 2h4v-2H5v-4ZM5 5h4V3H5c-1.1 0-2 .9-2 2v4h2V5Zm14-2h-4v2h4v4h2V5c0-1.1-.9-2-2-2Zm0 16h-4v2h4c1.1 0 2-.9 2-2v-4h-2v4ZM12 8c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4Zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2Z" style="
+    fill: #9C27B0;
+"></path></svg>
+			</button>
+				<button type="submit" class="button-search btn btn-default btn-lg" name="submit_search"><i class="fa fa-search"></i></button>
+			</span>
+		</div>
+
+		{% if show_keyword %} 
+		<div class="text-keyword hidden-sm hidden-md hidden-xs">
+			<span class="title-key"><b>{{ str_keyword }} :</b></span>
+			
+			<span class="item-key">
+				{% set dem = 0%}
+				{% for item in list_products %}
+					{% set dem = dem + 1%}
+					<a href="{{ item.href }}" target="_blank" title="{{ item.nameFull }}">{{ item.name_maxlength }}</a> {% if dem < list_products|length %} | {% endif %}	
+				{% endfor %}
+			</span>
+		</div>
+	{% endif %}
+
+		<input type="hidden" name="route" value="product/search"/>
+	</form>
+</div>
+
+
+
+  <!-- Visual Search Modal -->
+  <div class="modal fade" id="visualSearchModal" tabindex="-1" role="dialog" aria-labelledby="visualSearchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" id='sample_modal_close'><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+        <div class="modal-body">
+          <h5 class="modal-title" id="visualSearchModalLabel">{{ text_visual_search|default('Try Visual Search') }}</h5>
+          <p class="modal-subtitle">{{ text_search_with_image|default('Search with a picture instead of text') }}</p>
+
+          <form id="visual-search-form" method="post" enctype="multipart/form-data">
+            <div class="visual-interaction-box">
+              <i class="fa fa-info-circle info-icon" aria-hidden="true" title="Drag and drop images here to search"></i>
+              <div class="visual-drop-zone-prompt">
+                <i class="fa fa-cloud-upload-alt mr:1px"></i>
+                <span>
+                  Drag one or more images here or 
+                  <span class="visual-browse-text" onclick="document.getElementById('fileInput').click()">browse</span>
+                </span>
+                <input type="file" id="fileInput" name="file" style="display: none;" accept="image/">
+              </div>
+
+              <div class="divider">OR</div>
+
+              <div class="visual-action-buttons">
+                 
+              <div id="take-photo-container">
+    <button type="button" id="take-photo-btn" class="btn" style="width: 315px;">
+      <i class="fa fa-camera"></i> Take photo
+    </button>
+  </div>
+
+              </div>
+            </div>
+
+            <input type="hidden" name="image_base64" id="image-base64" />
+
+            <video id="video" class="video-feed" style="display: none;" autoplay></video>
+            <canvas id="canvas" class="canvas-feed" style="display: none;"></canvas>
+            <canvas id="capture-canvas" width="640" height="480" style="display: none;"></canvas>
+
+            <p class="visual-sample-images-title">Click a sample image to try it</p>
+
+            <div class="visual-sample-images">
+              <div class="row" style="margin-bottom: 15px;">
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample9.jpg" class="img-responsive visual-sample-img" alt="Sample 1" data-url="catalog/view/theme/so-revo/images/bg/sample9.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample10.jpg" class="img-responsive visual-sample-img" alt="Sample 2" data-url="catalog/view/theme/so-revo/images/bg/sample10.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample11.jpg" class="img-responsive visual-sample-img" alt="Sample 3" data-url="catalog/view/theme/so-revo/images/bg/sample11.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample12.jpg" class="img-responsive visual-sample-img" alt="Sample 4" data-url="catalog/view/theme/so-revo/images/bg/sample12.jpg">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample13.jpg" class="img-responsive visual-sample-img" alt="Sample 5" data-url="catalog/view/theme/so-revo/images/bg/sample13.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample14.jpg" class="img-responsive visual-sample-img" alt="Sample 6" data-url="catalog/view/theme/so-revo/images/bg/sample14.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample15.jpg" class="img-responsive visual-sample-img" alt="Sample 7" data-url="catalog/view/theme/so-revo/images/bg/sample15.jpg">
+                </div>
+                <div class="col-xs-3">
+                  <img src="catalog/view/theme/so-revo/images/bg/sample16.jpg" class="img-responsive visual-sample-img" alt="Sample 8" data-url="catalog/view/theme/so-revo/images/bg/sample16.jpg">
+                </div>
+              </div>
+            </div>
+          </form>
+
+          {#<div class="visual-learn-more-link">#}
+          {#  <a href="#">{{ text_learn_more|default('Learn more') }}</a>#}
+          {#</div>#}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {#<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>#}
+
+  <script type="text/javascript">
+  // Use jQuery and Bootstrap 3.3.5 modal methods
+  $(document).ready(function() {
+    // Visual search button click handler
+    $('#visualSearch_button').on('click', function() {
+      $('#visualSearchModal').modal('show');
+    });
+    
+    // Close button click handler
+    $('#sample_modal_close').on('click', function() {
+      $('#visualSearchModal').modal('hide');
+    });
+  });
+  
+  if (typeof jQuery == 'undefined') {
+    document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>');
+  }
+
+  
+</script>
+
+
+<script type="text/javascript">
+// Autocomplete */
+(function($) {
+	$.fn.Soautocomplete = function(option) {
+		return this.each(function() {
+			this.timer = null;
+			this.items = new Array();
+
+			$.extend(this, option);
+
+			$(this).attr('autocomplete', 'off');
+
+			// Focus
+			$(this).on('focus', function() {
+				this.request();
+			});
+
+			// Blur
+			$(this).on('blur', function() {
+				setTimeout(function(object) {
+					object.hide();
+				}, 200, this);
+			});
+
+			// Keydown
+			$(this).on('keydown', function(event) {
+				switch(event.keyCode) {
+					case 27: // escape
+						this.hide();
+						break;
+					default:
+						this.request();
+						break;
+				}
+			});
+
+			// Click
+			this.click = function(event) {
+				event.preventDefault();
+
+				value = $(event.target).parent().attr('data-value');
+
+				if (value && this.items[value]) {
+					this.select(this.items[value]);
+				}
+			}
+
+			// Show
+			this.show = function() {
+				var pos = $(this).position();
+
+				$(this).siblings('ul.dropdown-menu').css({
+					top: pos.top + $(this).outerHeight(),
+					left: pos.left
+				});
+
+				$(this).siblings('ul.dropdown-menu').show();
+			}
+
+			// Hide
+			this.hide = function() {
+				$(this).siblings('ul.dropdown-menu').hide();
+			}
+
+			// Request
+			this.request = function() {
+				clearTimeout(this.timer);
+
+				this.timer = setTimeout(function(object) {
+					object.source($(object).val(), $.proxy(object.response, object));
+				}, 200, this);
+			}
+
+			// Response
+			this.response = function(json) {
+				html = '';
+
+				if (json.length) {
+					for (i = 0; i < json.length; i++) {
+						this.items[json[i]['value']] = json[i];
+					}
+
+					for (i = 0; i < json.length; i++) {
+						if (!json[i]['category']) {
+						html += '<li class="media" data-value="' + json[i]['value'] + '" title="' + json[i]['label'] + '">';
+						if(json[i]['image'] && json[i]['show_image'] && json[i]['show_image'] == 1 ) {
+							html += '	<a class="media-left" href="' + json[i]['link'] + '"><img class="pull-left" src="' + json[i]['image'] + '"></a>';
+						}
+
+						html += '<div class="media-body">';
+						html += '<a href="' + json[i]['link'] + '" title="' + json[i]['label'] + '"><span>' +json[i]['cate_name'] + json[i]['label'] + '</span></a>';
+						if(json[i]['price'] && json[i]['show_price'] && json[i]['show_price'] == 1){
+							html += '	<div class="box-price">';
+							if (!json[i]['special']) {
+								html += '<span class="price">'+json[i]['price']+'</span>';;
+							} else {
+								html += '</span><span class="price-new">' + json[i]['special'] + '</span>'+'<span class="price-old" style="text-decoration:line-through;">' + json[i]['price']  ;
+							}
+							
+							html += '	</div>';
+						}
+						html += '</div></li>';
+						html += '<li class="clearfix"></li>';
+						}
+					}
+
+					// Get all the ones with a categories
+					var category = new Array();
+
+					for (i = 0; i < json.length; i++) {
+						if (json[i]['category']) {
+							if (!category[json[i]['category']]) {
+								category[json[i]['category']] = new Array();
+								category[json[i]['category']]['name'] = json[i]['category'];
+								category[json[i]['category']]['item'] = new Array();
+							}
+
+							category[json[i]['category']]['item'].push(json[i]);
+						}
+					}
+
+					for (i in category) {
+						html += '<li class="dropdown-header">' + category[i]['name'] + '</li>';
+
+						for (j = 0; j < category[i]['item'].length; j++) {
+							html += '<li data-value="' + category[i]['item'][j]['value'] + '"><a href="#">&nbsp;&nbsp;&nbsp;' + category[i]['item'][j]['label'] + '</a></li>';
+						}
+					}
+				}
+
+				if (html) {
+					this.show();
+				} else {
+					this.hide();
+				}
+
+				$(this).siblings('ul.dropdown-menu').html(html);
+			}
+
+			$(this).after('<ul class="dropdown-menu"></ul>');
+
+		});
+	}
+})(window.jQuery);
+
+$(document).ready(function() {
+	var selector = '#search{{ module }}';
+	var total = 0;
+	var showimage = {{ showimage }};
+	var showprice = {{ showprice }};
+	var character = {{ character }};
+	var height = {{ height }};
+	var width = {{ width }};
+
+	$(selector).find('input[name=\'search\']').Soautocomplete({
+		delay: 500,
+		source: function(request, response) {
+			var category_id = $(".select_category select[name=\"category_id\"]").first().val();
+			if(typeof(category_id) == 'undefined')
+				category_id = 0;
+				var limit = {{limit}};
+			if(request.length >= character){
+				$.ajax({
+					url: 'index.php?route=extension/module/so_searchpro/autocomplete&filter_category_id='+category_id+'&limit='+limit+'&width='+width+'&height='+height+'&filter_name='+encodeURIComponent(request),
+					dataType: 'json',
+					success: function(json) {
+						response($.map(json, function(item) {
+							total = 0;
+							if(item.total){
+								total = item.total;
+							}
+
+							return {
+								price:   item.price,
+								special: item.special,
+								tax		:     item.tax,
+								label:   item.name,
+								cate_name:   (item.category_name) ? item.category_name + ' > ' : '',
+								image:   item.image,
+								link:    item.link,
+								minimum:    item.minimum,
+								show_price:  showprice,
+								show_image:  showimage,
+								value:   item.product_id,
+							}
+						}));
+					}
+				});
+			}
+		},
+	});
+});
+
+</script>

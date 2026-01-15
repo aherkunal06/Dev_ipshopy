@@ -1,0 +1,59 @@
+<style>
+    .medium_banners_wrapper{
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap:10px;
+        margin-inline:25px;
+        margin-top:5px;
+        margin-bottom:30px;
+    }
+    .medium_banners_wrapper .medium_banner a{
+        display:block;
+        border-radius:10px;
+        width:100%;
+        overflow:hidden;
+        transition: box-shadow 0.3s ease-in-out;
+
+    }
+    .medium_banners_wrapper .medium_banner img{
+        width:100%;
+    }
+    .medium_banners_wrapper .medium_banner a:hover{
+        box-shadow: 0 2px 4px #953a93;
+    }
+    .medium_banners_wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-inline: 25px;
+    margin-top: 5px;
+    margin-bottom: 30px;
+}
+
+/* Medium screens (tablets) */
+@media (max-width: 1024px) {
+    .medium_banners_wrapper {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Small screens (phones) */
+@media (max-width: 600px) {
+    .medium_banners_wrapper {
+        grid-template-columns: 1fr;
+        margin-inline: 10px;
+    }
+}
+
+</style>
+
+<div class='medium_banners_wrapper'>
+    {% for banner in medium_banners %}
+    <div class='medium_banner' >
+        <a href='{{banner.link}}' style='width:100%;'>
+            
+        <img src='{{banner.src}}' href='{{banner.title}}' />
+        </a>
+    </div>
+    {% endfor %}
+</div>

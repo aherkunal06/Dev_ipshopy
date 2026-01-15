@@ -1,0 +1,243 @@
+{{header}}
+{{column_left}}
+
+<style>
+  .is-invalid {
+    border-color: red;
+}
+  .input-error {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+  }
+  
+</style>
+
+<div id="content">
+  <div class="container-fluid">
+      <div class="pull-right">
+          <div class="pull-right">
+    		<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-info">
+    		    <i class="fa fa-reply"></i>
+    	    </a>
+    	  </div>
+	  </div>
+
+
+
+<!-- {% if success %}
+<div class="alert alert-success">{{ success }}</div>
+{% endif %}
+
+
+{% if error_warning %}
+<div class="alert alert-danger alert-dismissible">
+  <i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+</div>
+{% endif %} -->
+
+
+
+      {% if success %}
+    <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+
+{% if form_submitted and error_warning %}
+<div class="alert alert-danger alert-dismissible">
+  <i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+
+</div>
+{% endif %}
+
+
+      <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{heading_title}}</h3>
+      </div>
+       
+
+       <div class="panel-body">
+             <form id="form-hsn-code" class="form-horizontal">
+              <!-- <form id="form-hsn-code" method="post"> -->
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-hsn-code">{{entry_hsn_code}}</label>
+            <div class="col-sm-10">
+              <input type="number" name="hsn_code" value="" placeholder="Enter HSN Code" id="input-hsn-code" class="form-control"  />
+             <div id="hsn-error" style="color: red;"></div>
+
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-description">{{entry_description}}</label>
+            <div class="col-sm-10">
+              <textarea name="description" rows="5" placeholder="Enter Description" id="input-description" class="form-control" ></textarea>
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-gst-rate">{{entry_gst_rate}}</label>
+            <div class="col-sm-10">
+              <input type="number" name="gst_rate" value="" placeholder="Enter GST Rate" id="input-gst-rate" class="form-control" min="0" max="100" step="0.01"  />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button id="hsnformbtn" class="btn btn-primary">{{button_submit}}</button>
+
+
+              <button type="reset" class="btn btn-default">
+                        <a href="{{ cancel }}" id="close-btn1"
+                          data-toggle="tooltip" 
+                          title="Cancel">
+                        {{button_cancel}}  
+                        </button>
+                      </a>
+            </div>
+          </div>
+        </form>
+         </div> 
+        
+        
+      
+        </div>
+
+           </div>
+            </div>
+
+
+ 
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('form-hsn-code');
+    const hsnInput = document.getElementById('input-hsn-code');
+    const descInput = document.getElementById('input-description');
+    const gstInput = document.getElementById('input-gst-rate');
+    const errorBox = document.getElementById('hsn-error');
+
+    let hsnExists = false;
+
+    // function clearErrors() {
+    //     document.querySelectorAll('.input-error').forEach(el => el.remove());
+    //     [hsnInput, descInput, gstInput].forEach(input => input.classList.remove('is-invalid'));
+    // }
+      function clearErrors() {
+        document.querySelectorAll('.input-error').forEach(el => el.remove());
+        hsnInput.classList.remove('is-invalid');
+        descInput.classList.remove('is-invalid');
+        gstInput.classList.remove('is-invalid');
+    }
+
+    function showFieldError(input, message) {
+        input.classList.add('is-invalid');
+        const error = document.createElement('div');
+        error.className = 'input-error';
+        error.style.color = 'red';
+        error.innerText = message;
+        input.parentNode.appendChild(error);
+    }
+
+    document.getElementById('hsnformbtn').addEventListener('click', function (e) {
+        e.preventDefault();
+        // console.log('Button clicked',descInput.value.length);
+        clearErrors();
+        if (hsnInput.value.length<4 && gstInput.value.length<1 && descInput.value.length<4) { 
+          showFieldError(hsnInput,'hsn code is required');
+          showFieldError(gstInput,'gst rate is required');
+          showFieldError(descInput,'description is required');
+        }else if (hsnInput.value.length<1 && gstInput.value.length<1 ) {
+           showFieldError(hsnInput,'hsn code is required');
+          showFieldError(gstInput,'gst rate is required');
+        }else if (hsnInput.value.length<4 && descInput.value.length<4) { 
+          showFieldError(hsnInput,'hsn code is required');
+          showFieldError(descInput,'description is required');
+        }else if (gstInput.value.length<1 && descInput.value.length<4) { 
+          showFieldError(gstInput,'gst rate is required');
+          showFieldError(descInput,'description is required');
+        }else if (descInput.value.length<3){ 
+          showFieldError(descInput,'description is required');}
+                else if (hsnInput.value.length<4){showFieldError(hsnInput, 'hsn code is required');}
+                else if (gstInput.value.length<1) {showFieldError(gstInput, 'gst rate is required');}
+                else{
+
+                  
+        const formData = new FormData(form);
+
+        fetch('index.php?route=vendor/hsn_request_form/save&user_token={{ user_token }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert(data.success);
+            form.reset();
+          } else if (data.error) {
+            if (data.error.hsn_code) showFieldError(hsnInput, data.error.hsn_code);
+            if (data.error.description) showFieldError(descInput, data.error.description);
+            if (data.error.gst_rate) showFieldError(gstInput, data.error.gst_rate);
+          }
+        })
+        .catch(err => {
+          console.error('Submission failed:', err);
+        });
+      }
+      });
+      
+    hsnInput.addEventListener('input', function () {
+        const hsnCode = hsnInput.value.trim();
+
+    errorBox.innerText = '';
+
+        hsnInput.classList.remove('is-invalid');
+        descInput.classList.remove('is-invalid');
+        gstInput.classList.remove('is-invalid');
+        document.querySelectorAll('.input-error').forEach(el => el.remove());
+    
+        if (hsnCode.length > 0) {
+            fetch('index.php?route=api/hsn/check&hsn_code=' + hsnCode)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        hsnExists = true;
+                        errorBox.innerText = data.message ;
+                        
+                        descInput.value = data.description;
+                         let cleanGstRate = data.gst_rate;
+                    if (typeof cleanGstRate === 'string') {
+                      cleanGstRate = cleanGstRate.replace('%', '').trim();
+                       }
+                 gstInput.value = cleanGstRate;
+                 gstInput.readOnly = true;
+                        // gstInput.value = data.gst_rate;
+                        descInput.readOnly = true;
+                        gstInput.readOnly = true;
+                    } else {
+                        hsnExists = false;
+                        errorBox.innerText = '';
+                        descInput.value = '';
+                        gstInput.value = '';
+                        descInput.readOnly = false;
+                        gstInput.readOnly = false;
+                    }
+                });
+        }
+    });
+
+    const closeBtn = document.getElementById('close-btn1');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const userToken = '{{ user_token }}';
+            window.location.href = 'index.php?route=vendor/hsn_code_list&user_token=' + userToken;
+        });
+    }
+});
+</script>
+

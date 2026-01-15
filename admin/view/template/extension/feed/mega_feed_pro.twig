@@ -1,0 +1,378 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  {{ header_view }}
+  <!-- mega home -->
+  {{ home_view }}
+  <!-- ./mega home -->
+  <!-- mega menu -->
+  {{ menu_view }}
+  <!-- ./mega menu -->
+
+  <div class="container-fluid" id="settings-panel">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+     {% if text_success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ text_success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+      {% endif %}    
+    <div class="page-header">
+        <div class="pull-right">
+            <button type="submit" form="form-{{ extension_fullname }}" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary" style="background: #7cb624 !important; border-color: #5c8d12 !important;"><i class="fa fa-save"></i></button>
+            <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default mg-cancel-btn"><i class="fa fa-reply"></i></a>
+        </div>
+
+        <!--<ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+            <li><a style="color:#7cb624 !important;" href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+        </ul>-->
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-{{ extension_fullname }}" class="form-horizontal">
+            <div class="tab-content">
+
+<!--  Settings tab:-->
+              {{ settings_view }}
+<!-- ./ Settings tab:-->
+
+<!--  Adverts tab:-->
+              {{ systems_view }}
+<!-- ./ Adverts tab:-->
+
+<!--  Cron tab: -->
+              {{ cron_view }}         
+<!-- ./ Cron tab:-->
+
+<!--  XML feeds tab: -->
+              {{ xml_view }} 
+<!-- ./ XML feeds tab:-->
+
+<!--  Support tab: -->
+              {{ support_view }} 
+<!-- ./ Support tab:-->
+              
+<!--  License tab: -->
+<!--               {{ license_view }} -->
+<!-- ./License tab:-->
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  rating modal -->
+{{ rating_view }}
+<!-- ./rating modal:-->
+
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>  
+<script type="text/javascript"><!--
+
+var refreshSite = false;
+var timer;
+var n = 0;
+var str = '';
+var currentURLQuery = '';
+var currentPosAdTab = 0;
+var currentPosStoreTab = 0;
+var somethingChanged = false;
+
+function switchTab(tab) {
+
+  //show picked tab
+  if(tab != '') {
+    $('#config a[href="#' + tab + '"]').tab('show');
+    //$('#about-mega').hide();
+    $('#mg-menu').show();
+    $('#settings-panel').show();
+  } else {
+    $('#config a:first').tab('show');
+    $('#about-mega').show();
+    $('#settings-panel').show();
+    $('#mg-menu').show();
+  }
+
+  refreshMenu(tab);
+}
+
+function setUrlBasedOnActiveTab(tab) {
+
+  var queryParams = window.location.search.split('&');
+  var newQuery = [];
+  var hasTab = false;
+  for(var i=0; i < queryParams.length; i++) {
+    var param = queryParams[i].split('=');
+    if(decodeURIComponent(param[0]) == 'tab') {
+      newQuery.push(decodeURIComponent(param[0]) + '=' + tab);
+      hasTab = true;
+    } else {
+      newQuery.push(decodeURIComponent(param[0]) + '=' + param[1]);
+    }
+  }
+
+  if(!hasTab) {
+    newQuery.push('tab=' + tab);
+  }
+
+  currentURLQuery = newQuery.join('&');
+
+}
+
+function refreshMenu(tab) {
+
+  $('#menu-mega ul li').removeClass('active');
+
+  var tabs = ['','settings', 'cron', 'feeds', 'systems', 'support'];
+  var index = tabs.indexOf(tab);
+
+  $('#menu-mega ul li').eq(index).addClass('active');
+
+}
+
+function initPreloader(){
+
+    timer = setInterval(function(){
+
+    str += '=';
+     
+    $('#{{ extension_fullname }}_loader').html(str);
+    
+    n = n < 50 ? (n+1) : 0;
+    str = n == 0 ? '' : str;
+
+    }, 50);
+
+}
+
+function resetPreloader(){
+    clearInterval(timer);
+    str = '';
+    n = 0;
+    $('#{{ extension_fullname }}_loader').html('');
+}
+
+
+$(document).ready(function() {
+
+  //init rating box in bottom banner or sidebar
+  initRatingBoxInBanner();
+
+  //init main tab
+  switchTab('{{ tab_name }}');
+
+  //init sub tabs
+  $('#systems-store-tabs a:first').tab('show');
+  $('#systems-0-ad-tabs a:first').tab('show');
+  $('#cron-store-tabs a:first').tab('show');
+  $('#xml-store-tabs a:first').tab('show');
+  $('#support-store-tabs a:first').tab('show');
+
+  $('#clear-logs-btn').on('click', function(){
+    clearAllLogs();
+  });
+
+  $('#config a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    var tab = $(e.target).attr("href").replace('#','');
+
+    refreshMenu(tab);
+    setUrlBasedOnActiveTab(tab);
+  });
+
+  $('#systems-store-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      currentPosStoreTab =  $(e.target).attr('data-store');
+      console.log('store:' + currentPosStoreTab.toString() + ', ad: ' + currentPosAdTab.toString());
+      $('#systems-' + currentPosStoreTab + '-ad-tabs a').eq(currentPosAdTab).tab('show');
+  });
+
+  for(var ad_index = 0; ad_index < 8; ad_index++) {
+      $('#systems-' + ad_index + '-ad-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+          currentPosAdTab = $(e.target).attr('data-ad');
+          console.log('store:' + currentPosStoreTab.toString() + ', ad: ' + currentPosAdTab.toString());
+          $('#systems-' + currentPosStoreTab + '-ad-tabs a').eq(currentPosAdTab).tab('show');
+      });
+  }
+
+  $('#modal-extension').on('hidden.bs.modal', function (e) {
+      $('#modal-title').html('');
+      $('#modal-body').html('');
+
+      if(refreshSite){
+        refreshSite = false;
+
+        if(currentURLQuery == '') {
+          location.reload(); 
+        } else {
+          location.search = currentURLQuery;
+        }
+      }
+  })
+
+});
+
+function clearAllLogs(){
+
+  $('#modal-close-btn').attr('disabled','disabled');
+  $('#modal-extension').modal('show');
+  setModalTitle('{{ warn_modal_title }}');
+  
+  $.ajax({
+   url: 'index.php?route={{ route }}/clear-all-logs&user_token={{ user_token }}',
+   data: { },
+   method: 'POST',
+   success : function(response){
+
+     var message;
+     message = '{{ logs_clear_succ_msg }}';
+
+     $('#modal-body').html(message);
+     $('#modal-close-btn').removeAttr('disabled');
+   },
+   error : function(){
+     $('#modal-body').html('{{ logs_clear_err_msg }}');
+     $('#modal-close-btn').removeAttr('disabled');
+   }
+ });
+}
+
+function exportFeed(elm){
+  $('#modal-delete-btn').addClass('hidden');
+
+  $('#modal-close-btn').attr('disabled','disabled');
+  $('#modal-extension').modal('show');
+  setModalTitle('{{ feed_generator_modal_title }}');
+  refreshSite = true;
+
+  initPreloader();
+
+  $.ajax({
+   url: $(elm).attr('data-url'),
+   data: { },
+   method: 'POST',
+   success : function(response){
+
+     resetPreloader();
+
+     var message;
+     var code = parseInt(response);
+     if(code == 1){
+       message = '{{ feed_succ_msg }}';
+     }else if(code == -1){
+       setModalTitle('{{ err_modal_title }}');
+       message = '{{ feed_err_msg }}';
+     }else if(code == -2){
+       setModalTitle('{{ err_modal_title }}');
+       message = '{{ feed_invalid_token_msg }}';
+     }else{
+       setModalTitle('{{ err_modal_title }}');
+     }
+
+     $('#modal-body').html(message);
+     $('#modal-close-btn').removeAttr('disabled');
+   },
+   error : function(){
+     resetPreloader();
+     setModalTitle('{{ err_modal_title }}');
+     $('#modal-body').html('{{ feed_err_msg }}');
+     $('#modal-close-btn').removeAttr('disabled');
+   }
+ });
+}
+
+function deleteFeedDialog(elm) {
+    $('#modal-delete-btn').removeClass('hidden');
+    setModalTitle('{{ delete_feed_title }}');
+
+    var feed_abs_path = $(elm).attr('data-abs-path');
+    var feed_path = $(elm).attr('data-path');
+    var feed_hash = $(elm).attr('data-hash');
+
+    function deleteHander() {
+        deleteFeed(feed_abs_path, feed_hash);
+    }
+
+    $('#modal-delete-btn').on('click', deleteHander);
+
+    $('#modal-close-btn').on('click', function() {
+        $('#modal-delete-btn').off('click',deleteHander);
+    });
+
+    $('#modal-body').html('{{ really_delete_feed }}' + ' ' + feed_path + '?');
+    $('#modal-extension').modal('show');
+
+}
+
+function deleteFeed(path, hash) {
+    $('#modal-delete-btn').addClass('hidden');
+    $('#modal-body').html('');
+    $('#modal-close-btn').attr('disabled','disabled');
+    refreshSite = true;
+    initPreloader();
+
+    $.ajax({
+        url: 'index.php?route={{ route }}/delete-feed&user_token={{ user_token }}',
+        data: {path :  path, hash: hash},
+        method: 'POST',
+        success : function(response) {
+            resetPreloader();
+
+            var message;
+            var code = parseInt(response);
+            if(code == 1){
+                message = '{{ feed_delete_succ_msg }}';
+            }else if(code == 0) {
+                setModalTitle('{{ err_modal_title }}');
+                message = '{{ feed_delete_err_msg }}';
+            }
+            $('#modal-body').html(message);
+            $('#modal-close-btn').removeAttr('disabled');
+        },
+        error : function(){
+            resetPreloader();
+            setModalTitle('{{ err_modal_title }}');
+            $('#modal-body').html('{{ delete_feed_err_msg }}');
+            $('#modal-close-btn').removeAttr('disabled');
+        }
+    });
+
+}
+
+function showExitModal(href) {
+    $('#modal-delete-btn').addClass('hidden');
+    $('#modal-continue-btn').removeClass('hidden');
+    setModalTitle('{{ exit_title }}');
+    $('#modal-close-btn').html('{{ modal_stay_btn }}');
+    $('#modal-body').html('{{ exit_msg }}');
+    $('#modal-extension').modal('show');
+
+    $('#modal-continue-btn').on('click', function() {
+        $('#modal-extension').modal('hide');
+        $('#modal-continue-btn').addClass('hidden');
+        location.href = href;
+    });
+
+    $('#modal-close-btn').on('click', function() {
+        $('#modal-close-btn').off('click', null);
+        $('#modal-extension').modal('hide');
+        $('#modal-continue-btn').addClass('hidden');
+        $('#modal-close-btn').html('{{ modal_close_btn }}');
+    });
+}
+
+function setModalTitle(title) {
+  $('#modal-title').html('<span class="icon fa fa-info-circle"></span>&nbsp;' + title);
+}
+
+//--></script></div>
+{{ footer }}
+

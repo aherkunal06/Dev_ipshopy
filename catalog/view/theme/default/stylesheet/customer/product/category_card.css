@@ -1,0 +1,118 @@
+.category-card-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  /*max-width: 1280px;*/
+  /*margin: 0 auto;*/
+  padding: 20px;
+  margin-inline:10px;
+}
+
+.category-card-row .category-card-section {
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  box-sizing: border-box;
+  transition: box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 370px;
+  min-width:300px;
+  /*width: 100%;*/
+  /*flex: 1 1 calc(33.333% - 30px); */
+  flex: 1 1 calc(25% - 30px); 
+}
+
+/* Title and Subtitle left aligned */
+.category-card-row .category-card-section .category-title,
+.category-card-row .category-card-section .category-subtitle {
+  text-align: left;
+  width: 100%;
+  color:black;
+}
+
+.category-card-row .category-card-section .category-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.category-card-row .category-card-section .category-subtitle {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.category-card-row .category-card-section .main-image img {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  border-radius: 14px;
+  margin: 12px 0;
+}
+
+.category-card-row .category-card-section .related-thumbs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.category-card-row .category-card-section .related-thumbs img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.category-card-row .category-card-section .related-thumbs img:hover {
+  transform: scale(1.05);
+}
+
+/* Tablet: 3 cards */
+@media (min-width: 576px) {
+    .category-card-row {
+          margin-inline:30px;
+    }
+}
+@media (max-width: 1024px) {
+  .category-card-row .category-card-section {
+    flex: 1 1 calc(33.333% - 30px);
+  }
+  .category-card-row{
+      justify-content:center;
+  }
+}
+
+/* Mobile: 1 card per row */
+@media (max-width: 768px) {
+
+  .category-card-row .category-card-section {
+    flex: 1 1 calc(33.333% - 30px);
+  }
+}
+
+
+  .category-card-row .category-card-section .related-thumbs img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .category-card-row .category-card-section .category-title {
+    font-size: 18px;
+  }
+
+  .category-card-row .category-card-section .category-subtitle {
+    font-size: 14px;
+  }
+
+@media (max-width: 425px) {
+  .category-card-row .category-card-section {
+    flex: 1 1 100%;
+  }
+}

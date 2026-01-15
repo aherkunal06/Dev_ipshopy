@@ -1,0 +1,211 @@
+{% if mainstatus == 1 %}
+  {% if loginotpstatus == 1 %}
+    <!--otp code start here-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          {{ entry_loginotp }}
+        </h4>
+        <!-- Add this line for the title -->
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body text-center" id="waotpbox2">
+        <form class="form-horizontal mobilebox">
+            <div class="text-left">
+              <label class="padd0 control-label">
+                {{ entry_telephone }}
+              </label>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <input class="form-control" name="telephone" type="text" id="logintelephonechk" placeholder="{{ entry_telephone }}">
+                  <input type="button" value="{{ text_verify }}" class="btn btn-primary chk-telephone" />
+                </div>
+              <div class="telephoneerror"></div>
+            </div>
+          </form>
+          <form class="form-horizontal showotpbox" style="display:none">
+            <div class="form-group">
+                <label class="control-label">
+                  {{ entry_label2 }}
+                </label>
+                <input type="text" name="otp" value="{{ otp }}" placeholder="{{ entry_label2 }}" id="loginotpchk" class="login-input form-control"></div>
+              <div class="buttons">
+                <input type="button" value="{{ entry_submitbtn }}" class="btn btn-primary add-otp" />
+                <input type="button" value="{{ entry_resendotp }}" class="btn btn-primary resend-otp" />
+              </div>
+            </form>
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+    <script type="text/javascript">
+
+$('.chk-telephone').bind('click', function() {
+  var telephone = $("#logintelephonechk").val();
+  $.ajax({
+  url: 'index.php?route=extension/waclient/verifytelephone/loginchkphonenumber&telephone='+telephone,
+  type: 'post',
+  data: $('#waotpbox2 input[type=\'text\']'),
+  dataType: 'json',
+  beforeSend: function() {
+     $('.chk-telephone').button('loading');
+  },
+  complete: function() {
+    $('.chk-telephone').button('reset');
+  },
+
+  success: function(json) {
+  $('.alert, .alert-success, .text-danger').remove();
+
+      if (json['error']) {
+        $('.telephoneerror').append('<div class="text-danger">'+ json['error'] + '</div>');
+      }
+
+      if (json['success']) {
+        $('#waotpbox2').prepend('<div class="success-box"><div class="alert alert-success" style="padding:10px;">'+ json['success'] +'</div></div>');
+        $('.mobilebox').hide();
+        setTimeout(function(){
+        $('.success-box').hide();
+        $('.showotpbox').show();
+        }, 4000);
+      }
+    }
+    });
+  });
+
+
+$('.add-otp').bind('click', function() {
+  var telephone = $("#logintelephonechk").val();
+  var otp = $("#loginotpchk").val();
+  $.ajax({
+  url: 'index.php?route=extension/waclient/verifytelephone/loginaddotp&telephone='+telephone+'&otp='+otp,
+  type: 'post',
+  data: $('#waotpbox2 input[type=\'text\']'),
+  dataType: 'json',
+  beforeSend: function() {
+     $('.add-otp').button('loading');
+  },
+  complete: function() {
+    $('.add-otp').button('reset');
+  },
+
+  success: function(json) {
+  $('.alert, .alert-success, .text-danger1').remove();
+
+      if (json['error']) {
+        $('.login-input').after('<div class="text-danger">'+ json['error'] + '</div>');
+      }
+
+      if (json['success']) {
+        $('#waotpbox2').prepend('<div class="alert alert-success">'+ json['success'] +'<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+        $('input[name=otp]').val('');
+        if(json['redirect']){
+        location=json['redirect'];
+        }
+      }
+    }
+    });
+  });
+
+  $('.resend-otp').bind('click', function() {
+    $.ajax({
+      url: 'index.php?route=extension/waclient/verifytelephone/resendotp',
+      type: 'post',
+      data: $('#waotpbox2 input[type=\'text\']'),
+      dataType: 'json',
+      beforeSend: function() {
+      $('.resend-otp').button('loading');
+      },
+    complete: function() {
+      $('.resend-otp').button('reset');
+    },
+      success: function(json) {
+      $('.alert, .alert-success, .text-danger').remove();
+         $('#waotpbox2').prepend('<div class="success-box"><div class="alert alert-success">'+ json['success'] + '</div></div>');
+         setTimeout(function(){
+          $('.success-box').hide();
+          }, 4000);
+
+      }
+    });
+  });
+</script>
+    <style>
+
+.intl-tel-input {
+  direction: ltr !important;
+  margin: 0 5px;
+}
+input#logintelephonechk {
+  text-align: left !important;
+  height: 38px;
+}
+
+div#waotpbox {
+    width: 100%;
+}
+        
+#mobilelogin .modal-header{
+  border-bottom: none;
+}
+#mobilelogin .modal-sm{
+    width: 340px !important;
+}
+#mobilelogin .btn-primary{
+  background: #e31e24;
+  border: 1px solid #e31e24;
+  line-height: 42px;
+    padding: 0 20px;
+    text-transform: uppercase;
+    display: inline-block;
+    font-size: 116.67%;
+    color: #fff;
+    font-weight: bold;
+}
+    @media(min-width:800px){
+        .padd0{padding: 0 1px; }
+    }
+/* == New code start here 3/8/22 == */
+#verify i {
+	position: initial;
+	transform: none;
+}
+
+.buttons .pull-right:only-child .btn {
+    width: auto;
+}
+
+.form-horizontal .control-label {
+    margin-bottom: 10px;
+}
+
+.modal-title {
+    font-size: 16px;
+}
+
+.showotpbox .buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-header {
+    padding: 12px 15px;
+    position:relative;
+}
+
+.alert {
+  margin-bottom:6px !important;
+}
+
+.modal .modal-header .close {
+    top: -24px;
+}
+/* == New code end here 3/8/22 == */
+
+</style>
+    <!--otp code end here-->
+    

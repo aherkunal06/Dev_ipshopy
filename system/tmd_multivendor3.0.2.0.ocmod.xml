@@ -1,0 +1,2628 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<name>TMD Vendor System</name>
+	<version>3.x</version>
+	<code>#tmdcsp</code>
+	<author>TMD(opencartextensions.in)</author>
+	<link>http://opencartextensions.in/</link>
+    
+	<file path="admin/view/template/design/layout_form.twig">
+		<operation error="skip">
+			<search><![CDATA[<table id="module-content-bottom" class="table table-striped table-bordered table-hover">]]></search>
+			<add position="before"><![CDATA[
+			<table id="module-column-inpro" class="table table-striped table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <td class="text-center">{{ text_column_inpro }}</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for layout_module in layout_modules %}
+                    {% if layout_module.position == 'column_inpro' %}
+                    <tr id="module-row{{ module_row }}">
+                      <td class="text-left"><div class="input-group">
+                          <select name="layout_module[{{ module_row }}][code]" class="form-control input-sm">
+                            {% for extension in extensions %}
+                            <optgroup label="{{ extension.name }}">
+                            {% if not extension.module %}
+                            {% if extension.code == layout_module.code %}
+                            <option value="{{ extension.code }}" selected="selected">{{ extension.name }}</option>
+                            {% else %}
+                            <option value="{{ extension.code }}">{{ extension.name }}</option>
+                            {% endif %}
+                            {% else %}
+                            {% for module in extension.module %}
+                            {% if module.code == layout_module.code %}
+                            <option value="{{ module.code }}" selected="selected">{{ module.name }}</option>
+                            {% else %}
+                            <option value="{{ module.code }}">{{ module.name }}</option>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            </optgroup>
+                            {% endfor %}
+                          </select>
+                          <input type="hidden" name="layout_module[{{ module_row }}][position]" value="{{ layout_module.position }}" />
+                          <input type="hidden" name="layout_module[{{ module_row }}][sort_order]" value="{{ layout_module.sort_order }}" />
+                          <div class="input-group-btn"> <a href="{{ layout_module.edit }}" type="button" data-toggle="tooltip" title="{{ button_edit }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+                            <button type="button" onclick="$('#module-row{{ module_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger btn-sm"><i class="fa fa fa-minus-circle"></i></button>
+                          </div>
+                        </div></td>
+                    </tr>
+                    {% set module_row = module_row + 1 %}
+                    {% endif %}
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td class="text-left"><div class="input-group">
+                          <select class="form-control input-sm">
+                            <option value=""></option>
+                            {% for extension in extensions %}
+                            <optgroup label="{{ extension.name }}">
+                            {% if not extension.module %}
+                            <option value="{{ extension.code }}">{{ extension.name }}</option>
+                            {% else %}
+                            {% for module in extension.module %}
+                            <option value="{{ module.code }}">{{ module.name }}</option>
+                            {% endfor %}
+                            {% endif %}
+                            </optgroup>
+                            {% endfor %}
+                          </select>
+                          <div class="input-group-btn">
+                            <button type="button" onclick="addModule('column-inpro');" data-toggle="tooltip" title="{{ button_module_add }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i></button>
+                          </div>
+                        </div></td>
+                    </tr>
+                  </tfoot>
+                </table>
+				<!-- xml -->
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[$('#module-column-left, #module-column-right, #module-content-top, #module-content-bottom').delegate('select[name*=\'code\']', 'change', function() {]]></search>
+			<add position="replace"><![CDATA[$('#module-column-left, #module-column-right, #module-content-top, #module-content-bottom, #module-column-inpro').delegate('select[name*=\'code\']', 'change', function() {]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[$('#module-column-left, #module-column-right, #module-content-top, #module-content-bottom').trigger('change');]]></search>
+			<add position="replace"><![CDATA[$('#module-column-left, #module-column-inpro, #module-column-right, #module-content-top, #module-content-bottom').trigger('change');]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/language/*/design/layout.php">
+		<operation error="skip">
+			<search><![CDATA[// Text]]></search>
+			<add position="after"><![CDATA[
+			/* xml */
+			$_['text_column_inpro']         = 'In Product';
+			/* xml */
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/language/*/common/header.php">
+		<operation error="skip">
+			<search><![CDATA[// Text]]></search>
+			<add position="after"><![CDATA[
+			/* xml */
+			$_['text_selleraccount'] = 'Seller';
+			$_['text_allseller']     = 'Sellers List';
+			$_['text_loginseller']   = 'Login Seller';
+			$_['text_dashboard']     = 'Dashboard';
+			$_['text_products']      = 'Products';
+			$_['text_review']        = 'Review';
+			$_['text_managestore']   = 'Manage Store';
+			$_['text_manageprofile'] = 'Manage Profile';
+			$_['text_manufacture']   = 'Manufacture';
+			$_['text_profile']       = 'Seller Profile';
+			$_['text_sellerlogout']  = 'Logout';		
+			$_['text_sellerdownload']= 'Download';	
+			/* xml */]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/common/header.php">
+		<operation error="skip">
+			<search><![CDATA[// Wishlist]]></search>
+			<add position="before"><![CDATA[
+			/* xml start */
+			/* 03 10 2019 */
+			$allalbles = $this->config->get('vendor_languages');	
+			
+			if(!empty($allalbles[$this->config->get('config_language_id')]['loginseller'])) {
+			$data['text_loginseller']	= $allalbles[$this->config->get('config_language_id')]['loginseller'];
+			} else {
+			$data['text_loginseller'] = $this->language->get('text_loginseller');
+			}
+			
+			if(!empty($allalbles[$this->config->get('config_language_id')]['sellerlist'])) {
+			$data['text_allseller']	= $allalbles[$this->config->get('config_language_id')]['sellerlist'];
+			} else {
+			$data['text_allseller'] = $this->language->get('text_allseller');
+			}
+			
+			if(!empty($allalbles[$this->config->get('config_language_id')]['afterloginseller'])) {
+			$data['text_selleraccount']	= $allalbles[$this->config->get('config_language_id')]['afterloginseller'];
+			} else {
+			$data['text_selleraccount'] = $this->language->get('text_selleraccount');
+			}
+			
+			if(!empty($allalbles[$this->config->get('config_language_id')]['sellerdash'])) {
+			$data['text_dashboard']	= $allalbles[$this->config->get('config_language_id')]['sellerdash'];
+			} else {
+			$data['text_dashboard'] = $this->language->get('text_dashboard');
+			}
+			
+			if(!empty($allalbles[$this->config->get('config_language_id')]['sellerproduct'])) {
+			$data['text_products']	= $allalbles[$this->config->get('config_language_id')]['sellerproduct'];
+			} else {
+			$data['text_products'] = $this->language->get('text_products');
+			}
+			
+			
+			if(!empty($allalbles[$this->config->get('config_language_id')]['sellerreview'])) {
+			$data['text_review']	= $allalbles[$this->config->get('config_language_id')]['sellerreview'];
+			} else {
+			$data['text_review'] = $this->language->get('text_review');
+			}
+			
+			if(!empty($allalbles[$this->config->get('config_language_id')]['managestore'])) {
+			$data['text_managestore']	= $allalbles[$this->config->get('config_language_id')]['managestore'];
+			} else {
+			$data['text_managestore'] = $this->language->get('text_managestore');
+			}
+			
+			if(!empty($allalbles[$this->config->get('config_language_id')]['manageprofile'])) {
+			$data['text_manageprofile']	= $allalbles[$this->config->get('config_language_id')]['manageprofile'];
+			} else {
+			$data['text_manageprofile'] = $this->language->get('text_manageprofile');
+			}
+			
+			if(!empty($allalbles[$this->config->get('config_language_id')]['download'])) {
+			$data['text_sellerdownload']	= $allalbles[$this->config->get('config_language_id')]['download'];
+			} else {
+			$data['text_sellerdownload'] = $this->language->get('text_sellerdownload');
+			}
+			
+			if(!empty($allalbles[$this->config->get('config_language_id')]['manufacture'])) {
+			$data['text_manufacture']	= $allalbles[$this->config->get('config_language_id')]['manufacture'];
+			} else {
+			$data['text_manufacture'] = $this->language->get('text_manufacture');
+			}
+			
+			if(!empty($allalbles[$this->config->get('config_language_id')]['sellerprofile'])) {
+			$data['text_profile']	= $allalbles[$this->config->get('config_language_id')]['sellerprofile'];
+			} else {
+			$data['text_profile'] = $this->language->get('text_profile');
+			}
+			if(!empty($allalbles[$this->config->get('config_language_id')]['sellerlogout'])) {
+			$data['text_sellerlogout']	= $allalbles[$this->config->get('config_language_id')]['sellerlogout'];
+			} else {
+			$data['text_sellerlogout'] = $this->language->get('text_sellerlogout');
+			}
+			
+			$data['vendorlogged'] = $this->vendor->isLogged();		
+			$data['sellerlogin'] = $this->url->link('vendor/login', '', true);
+			$data['allseller'] = $this->url->link('vendor/allseller', '', true);
+			$data['dashboard'] = $this->url->link('vendor/dashboard', '', true);
+			$data['products'] = $this->url->link('vendor/product', '', true);
+			$data['review'] = $this->url->link('vendor/review', '', true);
+			$data['managestore'] = $this->url->link('vendor/store', '', true);
+			$data['manageprofile'] = $this->url->link('vendor/edit', '', true);
+			$data['vdownload'] = $this->url->link('vendor/download', '', true);
+			$data['manufacture'] = $this->url->link('vendor/manufacturer', '', true);
+			$data['logouts'] = $this->url->link('vendor/logout', '', true);
+			
+			$this->load->model('vendor/vendor');	
+			$vendorinfo =  $this->model_vendor_vendor->getVendor($this->vendor->getId());
+		
+			if(!empty($vendorinfo['keyword'])){
+			$vendorkeyword = $vendorinfo['keyword'];
+			} else{
+			$vendorkeyword = $this->url->link('vendor/vendor_profile', '&vendor_id=' . $this->vendor->getId(), true);
+			}
+			$data['vendor_profile'] = $vendorkeyword;
+
+			/* tmd vendor2 seler condtion  */
+			/* #####13 02 2021##### */
+				$vlbles = $this->config->get('vendor_languages');	
+				if(!empty($vlbles[$this->config->get('config_language_id')]['byseller'])) {
+				$data['text_byseller']= $vlbles[$this->config->get('config_language_id')]['byseller'].': ';
+				} else {			
+				$data['text_byseller'] = $this->language->get('text_byseller');
+				}
+			/* #####13 02 2021##### */	
+			$data['customer2vendor'] = $this->config->get('vendor_customer2vendor');
+			/* tmd vendor2 seler condtion  */
+			
+			/* 03 10 2019 */
+		
+		/* xml end */]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/startup/startup.php">
+		<operation error="skip">
+			<search><![CDATA[// Customer Group]]></search>
+			<add position="before"><![CDATA[
+			// vendor
+		    $vendor = new Cart\Vendor($this->registry);
+		    $this->registry->set('vendor', $vendor);]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/product/product.php">
+		<operation error="skip">
+			<search><![CDATA[$data['column_left'] = $this->load->controller('common/column_left');]]></search>
+			<add position="before"><![CDATA[
+		
+			$this->load->model('vendor/vendor');
+			$vendorproduct_id = $this->model_vendor_vendor->getSellerProduct($this->request->get['product_id']);
+			
+			if(!empty($vendorproduct_id['vendor_id'])){
+			$vendor_ids = $vendorproduct_id['vendor_id'];
+			} else {
+			$vendor_ids = '';
+			}
+			$vendorchat_ids = $this->model_vendor_vendor->getChatid($vendor_ids);
+
+			if(!empty($vendorchat_ids['message'])){
+			$data['vendorchat_id'] = $vendorchat_ids['message'];
+			} else {
+			$data['vendorchat_id'] = '';
+			}
+			
+			/*############ 13 02 2021  ############*/
+			
+			if(!empty($vendorproduct_id['vendor_id'])){
+			$vendornameinfo = $this->model_vendor_vendor->getInProductSellerName($this->request->get['product_id'], $vendorproduct_id['vendor_id']);
+			}
+			
+			$vlbles = $this->config->get('vendor_languages');
+			
+			if(!empty($vlbles[$this->config->get('config_language_id')]['selernameinpro'])) {
+			$data['text_vendorname']= $vlbles[$this->config->get('config_language_id')]['selernameinpro'].': ';
+			} else {			
+			$data['text_vendorname'] = $this->language->get('text_vendorname');
+			}
+			
+			if(!empty($vendorproduct_id['vendor_id'])){
+			$data['chkvendor_ids'] = $vendorproduct_id['vendor_id'];
+			} else {
+			$data['chkvendor_ids'] = 0;
+			}
+			
+			if(!empty($vendornameinfo['firstname'])){					
+			    $vendornames = $vendornameinfo['firstname'].' '.$vendornameinfo['lastname'];
+			} else {				
+				$vendornames = '';
+			}
+
+			if(!empty($vendornameinfo['display_name'])){					
+			    $vendordisplay_name = $vendornameinfo['display_name'];
+			} else {				
+				$vendordisplay_name = '';
+			}
+
+			if(!empty($vendornameinfo['company'])){					
+			    $vendorcompany = $vendornameinfo['company'];
+			} else {				
+				$vendorcompany = '';
+			}
+			
+			if(!empty($vendornameinfo['storename'])){					
+			    $vendorstorename = $vendornameinfo['storename'];
+			} else {				
+				$vendorstorename = '';
+			}
+					
+			$find = array(
+				'{vendorname}',			
+				'{display_name}',
+				'{company}',
+				'{storename}'			
+			);
+			
+			$replace = array(
+				'vendorname' => $vendornames,	
+				'display_name' => $vendordisplay_name,
+				'company' => $vendorcompany,			
+				'storename' => $vendorstorename			
+			);			
+			
+			if(!empty($vlbles[$this->config->get('config_language_id')]['sellershortcut'])) {
+			$sellershortcut= $vlbles[$this->config->get('config_language_id')]['sellershortcut'];
+			} else {			
+			$sellershortcut = '';
+			}
+			if(!empty(strip_tags(html_entity_decode($vlbles[$this->config->get('config_language_id')]['sellershortcut'])))){
+				$data['vendorname'] = str_replace($find, $replace, strip_tags(html_entity_decode($sellershortcut, ENT_QUOTES, 'UTF-8')));
+			} else {
+				$data['vendorname'] = $vendornames;
+			}
+		
+		 /*############ 13 02 2021  ############*/
+			
+			$data['sellerlink'] = $this->url->link('vendor/vendor_profile&vendor_id='.$vendor_ids, '', true);
+			/* 23 04 2020 */
+			
+		
+		$data['column_inpro'] = $this->load->controller('common/column_inpro');
+		// vendor
+		]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/*/template/product/product.twig">
+		<operation error="skip">
+			<search><![CDATA[<!-- AddThis Button END -->]]></search>
+			<add position="after" offset="1"><![CDATA[{{ column_inpro }}]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA[{{ footer }}]]></search>
+			<add position="before"><![CDATA[
+			<!--08-03-2019-->
+			{% if vendorchat_id %}
+				<script type="text/javascript">
+					var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+					(function(){
+					var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+					s1.async=true;
+					s1.src='https://embed.tawk.to/{{vendorchat_id}}';
+					s1.charset='UTF-8';
+					s1.setAttribute('crossorigin','*');
+					s0.parentNode.insertBefore(s1,s0);
+					})();
+				</script>
+			{% endif %}
+			<!--08-03-2019-->]]></add>
+		</operation>
+		
+		<operation error="skip">
+			<search><![CDATA[<li>{{ text_stock }} {{ stock }}</li>]]></search>
+			<add position="after"><![CDATA[
+			 {% if chkvendor_ids !=0 %}
+			 <li>{{ text_vendorname}} {{ vendorname }}</li>
+			 {% endif %}
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/default/template/common/header.twig">
+		<operation error="skip">
+			<search><![CDATA[</head>]]></search>
+			<add position="before"><![CDATA[
+			<link href="catalog/view/theme/default/stylesheet/vendor/vendor.css" rel="stylesheet">
+				{% if lang=='ar' %}
+                 <link href="catalog/view/theme/default/stylesheet/vendor/bootstrap-rtl.css" rel="stylesheet">
+                 <link href="catalog/view/theme/default/stylesheet/vendor/bootstrap-rtl.min.css" rel="stylesheet">
+                 <link href="catalog/view/theme/default/stylesheet/vendor/rtl.css" rel="stylesheet">
+            {% endif %}
+			]]></add>
+		</operation>
+        <operation error="skip">
+			<search><![CDATA[<li><a href="{{ contact }}"><i class="fa fa-phone"></i></a> <span class="hidden-xs hidden-sm hidden-md">{{ telephone }}</span></li>]]></search>
+			<add position="before"><![CDATA[
+			<!--xml start-->
+			{% if customer2vendor==1 %}
+			<li class="tmd-menubox"><a href="{{ allseller }}"><i class="fa fa-users fa-fw"></i> <span class="hidden-xs hidden-sm hidden-md"> {{ text_allseller }}</span></a></li>
+			{% endif %}
+			{% if vendorlogged %}
+			<li class="dropdown tmdseller"><a href="#" title="{{ text_selleraccount }}" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_selleraccount }}</span> <span class="caret"></span></a>
+			<ul class="dropdown-menu dropdown-menu-right ">
+				<li><a href="{{ vendor_profile }}"><i class="fa fa-user fa-fw"></i> {{ text_profile }}</a></li>
+				<li><a href="{{ dashboard }}"><i class="fa fa-dashboard fa-fw"></i> {{ text_dashboard }}</a></li>
+				<li><a href="{{ products }}"><i class="fa fa-list fa-fw"></i> {{ text_products }}</a></li>
+				<li><a href="{{ review }}"><i class="fa fa-star fa-fw"></i> {{ text_review }}</a></li>
+				<li><a href="{{ managestore }}"><i class="fa fa-cog fa-fw"></i> {{ text_managestore }}</a></li>
+				<li><a href="{{ manageprofile }}"><i class="fa fa-user fa-fw"></i> {{ text_manageprofile }}</a></li>
+				<li><a href="{{ vdownload }}"><i class="fa fa-cloud-download fa-fw"></i> {{ text_sellerdownload }}</a></li>
+				<li><a href="{{ manufacture }}"><i class="fa fa-thumb-tack fa-fw"></i> {{ text_manufacture }}</a></li>
+				<li><a href="{{ logouts }}"><i class="fa fa-sign-out fa-fw"></i> {{ text_sellerlogout }}</a></li>
+			</ul>
+			</li>
+			{% else %}
+				<li class="tmd-menubox"><a href="{{ sellerlogin }}"><i class="fa fa-sign-in fa-fw"></i> <span class="hidden-xs hidden-sm hidden-md"> {{ text_loginseller }}</span></a></li>
+			{% endif %}
+			<!--xml end-->]]></add>
+		</operation>
+    </file>
+
+	<file path="system/library/cart/cart.php">
+		<operation error="skip">
+			<search><![CDATA[$product_data[] = array(]]></search>
+			<add position="before"><![CDATA[
+			/// Get Product By Seller Name ///
+				$seller_query = $this->db->query("SELECT v.display_name,v.vendor_id FROM " . DB_PREFIX . "vendor_to_product v2p LEFT JOIN " . DB_PREFIX . "vendor v ON (v2p.vendor_id = v.vendor_id) WHERE v2p.product_id = '" . (int)$cart['product_id'] . "' ");
+
+				if(isset($seller_query->row['display_name'])){
+					$sellerdisplay = $seller_query->row['display_name'];
+				} else{
+					$sellerdisplay ='';
+				}
+				if(isset($seller_query->row['vendor_id'])){
+					$vendor_ids = $seller_query->row['vendor_id'];
+				} else{
+					$vendor_ids ='';
+				}
+
+			/// Get Product By Seller Name ///
+
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA['option'          => $option_data,]]></search>
+			<add position="after"><![CDATA[/// Get Product By Seller Name ///
+					'sellerdisplay'   => $sellerdisplay,
+					'vendor_ids'      => $vendor_ids,
+					/// Get Product By Seller Name ///]]></add>
+		</operation>
+	</file>
+	
+	<file path="admin/controller/common/column_left.php">
+		<operation error="skip">
+			<search><![CDATA[// Extension]]></search>
+			<add position="after"><![CDATA[
+			// Seller
+			$this->load->language('vendor/menu');
+			$seller = array();
+			
+			/* 03 10 2019 s */
+			if ($this->user->hasPermission('access', 'vendor/vendor')) {		
+				$seller[] = array(
+					'name'	   => $this->language->get('text_vendorsetting'),
+					'href'     => $this->url->link('vendor/vendor/setting', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()		
+				);					
+			}	
+			
+			/* 03 10 2019 e */
+			
+			if ($this->user->hasPermission('access', 'vendor/vendor')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_manageseller'),
+					'href'     => $this->url->link('vendor/vendor', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+			
+		
+			
+			/* if ($this->user->hasPermission('access', 'vendor/store')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_store'),
+					'href'     => $this->url->link('vendor/store', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			} */
+
+			if ($this->user->hasPermission('access', 'vendor/commission')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_commission'),
+					'href'     => $this->url->link('vendor/commission', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($this->user->hasPermission('access', 'vendor/commission_report')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_commission_report'),
+					'href'     => $this->url->link('vendor/commission_report', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+			if ($this->user->hasPermission('access', 'vendor/product')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_sellerproduct'),
+					'href'     => $this->url->link('vendor/product', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+			if ($this->user->hasPermission('access', 'vendor/report')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_sellerorder'),
+					'href'     => $this->url->link('vendor/report', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+			if ($this->user->hasPermission('access', 'vendor/review')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_sellerreview'),
+					'href'     => $this->url->link('vendor/review', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+			if ($this->user->hasPermission('access', 'vendor/review_field')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_reviewfield'),
+					'href'     => $this->url->link('vendor/review_field', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($this->user->hasPermission('access', 'vendor/mail')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_sellermail'),
+					'href'     => $this->url->link('vendor/mail', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($this->user->hasPermission('access', 'vendor/income')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_income'),
+					'href'     => $this->url->link('vendor/income', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+			
+			if ($this->user->hasPermission('access', 'vendor/seller_payments')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_seller_payments'),
+					'href'     => $this->url->link('vendor/seller_payments', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+			
+			/* if ($this->user->hasPermission('access', 'vendor/notification')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_notification'),
+					'href'     => $this->url->link('vendor/notification', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			} */
+
+
+			if ($this->user->hasPermission('access', 'vendor/shipping')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_shippingrate'),
+					'href'     => $this->url->link('vendor/shipping', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($this->user->hasPermission('access', 'vendor/enquiry')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_enquire'),
+					'href'     => $this->url->link('vendor/enquiry', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($this->user->hasPermission('access', 'vendor/import')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_import'),
+					'href'     => $this->url->link('vendor/import', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($this->user->hasPermission('access', 'vendor/export')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_export'),
+					'href'     => $this->url->link('vendor/export', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+		
+			if ($this->user->hasPermission('access', 'vendor/shiftproduct')) {
+				$seller[] = array(
+					'name'	   => $this->language->get('text_shiftproduct'),
+					'href'     => $this->url->link('vendor/shiftproduct', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($seller) {
+				$data['menus'][] = array(
+					'id'       => 'menu-seller',
+					'icon'	   => 'fa-users fw',
+					'name'	   => $this->language->get('text_seller'),
+					'href'     => '',
+					'children' => $seller
+				);
+			}
+
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/language/*/en-gb.php">
+		<operation error="skip">
+			<search><![CDATA[// Text]]></search>
+			<add position="after"><![CDATA[
+			/* xml */
+			$_['text_byseller']         = 'By Seller';
+			/* xml */
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/controller/sale/order.php">
+		<operation error="skip">
+			<search><![CDATA[$data['breadcrumbs'] = array();]]></search>
+			<add position="before"><![CDATA[
+			/* xml */
+			/* #####13 02 2021##### */
+				$vlbles = $this->config->get('vendor_languages');	
+				if(!empty($vlbles[$this->config->get('config_language_id')]['byseller'])) {
+				$data['text_byseller']= $vlbles[$this->config->get('config_language_id')]['byseller'].': ';
+				} else {			
+				$data['text_byseller'] = $this->language->get('text_byseller');
+				}
+				/* #####13 02 2021##### */
+			/* xml */
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA[$data['products'][] = array(]]></search>
+			<add position="before"><![CDATA[
+			/* xml */
+				$this->load->model('vendor/vendor');
+				$seller_infos=$this->model_vendor_vendor->getVendorid($product['product_id']);
+				if(isset($seller_infos['vendor_id'])){
+				$seller_info=$this->model_vendor_vendor->getVendor($seller_infos['vendor_id']);
+				}
+				
+				
+				if(isset($seller_info['display_name'])){
+					$sellername = $seller_info['display_name'];
+				} else {
+					$sellername ='';
+				}
+				if(isset($seller_info['vendor_id'])){
+					$ids = $seller_info['vendor_id'];
+				} else {
+					$ids ='';
+				}
+				/* xml */
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA['option'   		   => $option_data,]]></search>
+			<add position="after"><![CDATA[
+			/* xml */
+			'sellername'   	   => $sellername,
+			'sellerhref'       => $this->url->link('vendor/vendor/edit', 'user_token=' . $this->session->data['user_token'] . '&vendor_id=' . $ids, true),
+			/* xml */
+			]]></add>
+		</operation>
+	</file>	
+
+	<file path="admin/view/template/sale/order_info.twig">
+		<operation error="skip">
+			<search><![CDATA[<td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a>]]></search>
+			<add position="replace"><![CDATA[
+			<td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a>
+			{% if product.sellername %}
+			{{ text_byseller }} <a href="{{ product.sellerhref }}"> {{ product.sellername }} </a>
+			{% endif %}
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/checkout/cart.php">
+		<operation error="skip">
+			<search><![CDATA[$data['products'][] = array(]]></search>
+			<add position="before"><![CDATA[
+				/* xml */
+				/* tmd vendor2 seler condtion  */
+				/* #####13 02 2021##### */
+				$vlbles = $this->config->get('vendor_languages');	
+				if(!empty($vlbles[$this->config->get('config_language_id')]['byseller'])) {
+				$data['text_byseller']= $vlbles[$this->config->get('config_language_id')]['byseller'].': ';
+				} else {			
+				$data['text_byseller'] = $this->language->get('text_byseller');
+				}
+				/* #####13 02 2021##### */
+				$data['customer2vendor'] = $this->config->get('vendor_customer2vendor');
+				/* tmd vendor2 seler condtion  */
+				if(isset($product['sellerdisplay'])){
+				$sellerdisplay = $product['sellerdisplay'];
+				} else {
+				$sellerdisplay = '';
+				}
+
+				if(isset($product['vendor_ids'])){
+				$vendor_ids = $product['vendor_ids'];
+				} else {
+				$vendor_ids = '';
+				}
+				/* xml */
+				]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA['name'      => $product['name'],]]></search>
+			<add position="after"><![CDATA[
+				/* xml */
+					'sellerdisplay'   => $sellerdisplay,
+					'vendor_ids'      => $this->url->link('vendor/vendor_profile', 'vendor_id=' .$vendor_ids),
+					/* xml */
+				]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/common/cart.php">
+		<operation error="skip">
+			<search><![CDATA[$data['products'][] = array(]]></search>
+			<add position="before"><![CDATA[				
+				/* xml tmd vendor2 seler condtion  */
+				/* #####13 02 2021##### */
+				$vlbles = $this->config->get('vendor_languages');	
+				if(!empty($vlbles[$this->config->get('config_language_id')]['byseller'])) {
+				$data['text_byseller']= $vlbles[$this->config->get('config_language_id')]['byseller'].': ';
+				} else {			
+				$data['text_byseller'] = $this->language->get('text_byseller');
+				}
+				/* #####13 02 2021##### */
+				$data['customer2vendor'] = $this->config->get('vendor_customer2vendor');
+				/* tmd vendor2 seler condtion  */
+				if(isset($product['sellerdisplay'])){
+				$sellerdisplay = $product['sellerdisplay'];
+				} else {
+				$sellerdisplay = '';
+				}
+
+				if(isset($product['vendor_ids'])){
+				$vendor_ids = $product['vendor_ids'];
+				} else {
+				$vendor_ids = '';
+				}
+				/* xml */
+				]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA['name'      => $product['name'],]]></search>
+			<add position="after"><![CDATA[
+				/* xml */
+				'sellerdisplay'   => $sellerdisplay,
+				'vendor_ids'      => $this->url->link('vendor/vendor_profile', 'vendor_id=' .$vendor_ids),
+				/* xml */
+				]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/*/template/checkout/cart.twig">
+		<operation error="skip">
+			<search><![CDATA[<td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a> {% if not product.stock %} <span class="text-danger">***</span> {% endif %}]]></search>
+			<add position="replace"><![CDATA[
+			<!-- xml -->
+			<td class="text-left">
+				<a href="{{ product.href }}">{{ product.name }}</a> {% if not product.stock %} <span class="text-danger">***</span> {% endif %}
+				{% if customer2vendor==1 %}
+					{% if product.sellerdisplay %}
+					{{ text_byseller }}
+					<a href="{{ product.vendor_ids }}">{{ product.sellerdisplay }}</a>
+					{% endif %}
+				{% endif %}
+				<!-- xml -->
+				]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/*/template/common/cart.twig">
+		<operation error="skip">
+			<search><![CDATA[<td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a> {% if product.option %}]]></search>
+			<add position="replace"><![CDATA[
+				  <!-- xml -->
+				   <td class="text-left td-name"><a href="{{ product.href }}">{{ product.name }}</a>
+				{% if customer2vendor==1 %}
+					{% if product.sellerdisplay %}
+					{{ text_byseller }}
+					<a href="{{ product.vendor_ids }}">{{ product.sellerdisplay }}</a>
+					{% endif %}
+				{% endif %}
+				 {% if product.option %}
+				<!-- xml -->
+				]]></add>
+		</operation>
+	</file>
+
+    <file path="catalog/view/theme/*/template/checkout/confirm.twig">
+		<operation error="skip">
+			<search><![CDATA[<td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a> {% for option in product.option %} <br />]]></search>
+			<add position="replace"><![CDATA[
+				<!-- xml -->
+				<td class="text-left">
+				<a href="{{ product.href }}">{{ product.name }}</a>
+				{% if customer2vendor==1 %}
+					{% if product.sellerdisplay %}
+					 &nbsp; {{ text_byseller }}
+					<a href="{{ product.vendor_ids }}">{{ product.sellerdisplay }}</a>
+					{% endif %}
+				{% endif %}
+				{% for option in product.option %} <br />
+				<!-- xml -->
+				]]></add>
+		</operation>
+	</file>
+    <file path="catalog/controller/checkout/confirm.php">
+		<operation error="skip">
+			<search><![CDATA[$data['products'][] = array(]]></search>
+			<add position="before"><![CDATA[				
+				/* xml tmd vendor2 seler condtion  */
+				/* #####13 02 2021##### */
+				$vlbles = $this->config->get('vendor_languages');	
+				if(!empty($vlbles[$this->config->get('config_language_id')]['byseller'])) {
+				$data['text_byseller']= $vlbles[$this->config->get('config_language_id')]['byseller'].': ';
+				} else {			
+				$data['text_byseller'] = $this->language->get('text_byseller');
+				}
+				/* #####13 02 2021##### */
+				$data['customer2vendor'] = $this->config->get('vendor_customer2vendor');
+				/* tmd vendor2 seler condtion  */
+				if(isset($product['sellerdisplay'])){
+				$sellerdisplay = $product['sellerdisplay'];
+				} else {
+				$sellerdisplay = '';
+				}
+
+				if(isset($product['vendor_ids'])){
+				$vendor_ids = $product['vendor_ids'];
+				} else {
+				$vendor_ids = '';
+				}
+				/* xml */
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA['cart_id'    => $product['cart_id'],]]></search>
+			<add position="after"><![CDATA[
+				/* xml */
+					'sellerdisplay'   => $sellerdisplay,
+					'vendor_ids'      => $this->url->link('vendor/vendor_profile', 'vendor_id=' .$vendor_ids),
+					/* xml */
+				]]></add>
+		</operation>
+	</file>
+
+    <file path="catalog/view/theme/*/template/checkout/cart.twig">
+		<operation error="skip">
+			<search><![CDATA[<td class="text-left td-name"><a href="{{ product.href }}">{{ product.name }}</a> {% if not product.stock %} <span class="text-danger">***</span> {% endif %}]]></search>
+			<add position="replace"><![CDATA[
+			<!-- xml -->
+			<td class="text-left">
+				<a href="{{ product.href }}">{{ product.name }}</a> {% if not product.stock %} <span class="text-danger">***</span> {% endif %}
+				{% if customer2vendor==1 %}
+					{% if product.sellerdisplay %}
+					{{ text_byseller }}
+					<a href="{{ product.vendor_ids }}">{{ product.sellerdisplay }}</a>
+					{% endif %}
+				{% endif %}
+				<!-- xml -->
+				]]></add>
+		</operation>
+	</file>
+	<file path="catalog/view/theme/*/template/mail/order_add.twig">
+		<operation error="skip">
+			<search><![CDATA[{% for option in product.option %}]]></search>
+			<add position="before"><![CDATA[
+				<!-- xml -->
+				{% if customer2vendor==1 %}
+					{% if product.sellerdisplay %}
+					 {{ text_byseller }}
+					<a href="{{ product.vendor_ids }}">{{ product.sellerdisplay }}</a>
+					{% endif %}
+				{% endif %}
+				<!-- xml -->
+				]]></add>
+		</operation>
+	</file>
+	<file path="catalog/language/*/en-gb.php">
+		<operation error="skip">
+			<search><![CDATA[// Text]]></search>
+			<add position="after"><![CDATA[
+			/* xml */
+			$_['text_byseller']         = 'By Seller';
+			$_['button_add']            = 'Add';
+			$_['button_save']           = 'Save';
+			$_['button_parent']         = 'Parent';
+			$_['button_folder']         = 'New Folder';
+			$_['button_refresh']        = 'Refresh';
+
+			/* xml */
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/language/*/ar.php">
+		<operation error="skip">
+			<search><![CDATA[// Text]]></search>
+			<add position="after"><![CDATA[
+			/* xml */
+			$_['text_byseller']         = 'بواسطة البائع';
+			$_['button_add']            = 'أضف';
+			$_['button_save']           = 'حفظ';
+			$_['button_parent']         = 'الأبوين';
+			$_['button_folder']         = 'ملف جديد';
+			$_['button_refresh']        = 'تحديث';
+
+			/* xml */
+			]]></add>
+		</operation>
+	</file>
+
+
+	<file path="catalog/controller/account/order.php">
+		<operation error="skip">
+			<search><![CDATA[$voucher_total = $this->model_account_order->getTotalOrderVouchersByOrderId($result['order_id']);]]></search>
+			<add position="after"><![CDATA[
+			/* xml */
+			$this->load->model('vendor/vendor');
+			$orderstatus_info = $this->model_vendor_vendor->getCustomerOrder($result['order_id']);
+			if(isset($orderstatus_info['order_status_id'])){
+			$order_status_id = $orderstatus_info['order_status_id'];
+			} else {
+			$order_status_id =0;
+			}
+			$status_info = $this->model_vendor_vendor->getCustomerOrderStatus($order_status_id);
+			if(isset($status_info['name'])) {
+				$statusname = $status_info['name'];
+			} else {
+				$statusname='';
+			}
+			
+			/* 03-10-2019 */
+			$this->load->model('vendor/vendor');
+			$data['column_productname'] = $this->language->get('column_productname');
+			
+			$productnameinfos = $this->model_vendor_vendor->getOrderProductsNames($result['order_id']);			
+			$productnames = array();
+			
+			foreach ($productnameinfos as $productnameinfo) {				
+				
+				$vendorstatusinfo = $this->model_vendor_vendor->getOrderProductstatus($productnameinfo['order_product_id']);
+				
+				$status_infos='';
+				
+				if(isset($vendorstatusinfo['status'])) {
+					$status_infos=$vendorstatusinfo['status'];
+				} else {
+					$status_infos=$result['status'];
+				}
+							 
+				$productnames[] = array (
+					'productname'=> $productnameinfo['name'],				
+					'vstatus'    => $status_infos
+				);				
+			}
+			/* 03-10-2019 */
+			/* xml */
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA['name'       => $result['firstname'] . ' ' . $result['lastname'],]]></search>
+			<add position="after"><![CDATA[
+			/* xml */
+			'statusname' => $statusname,
+			'order_status_id' => $order_status_id,
+			/* 03-10-2019 */
+				'productname' 	 => $productnames,
+			/* 03-10-2019 */
+			/* xml */
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[if (isset($this->session->data['error'])) {]]></search>
+			<add position="before"><![CDATA[
+			/* xml */
+			$data['column_tracking'] = $this->language->get('column_tracking');
+			/* 03-10-2019 */
+			$data['column_productname'] = $this->language->get('column_productname');
+			$data['column_updatedstatus'] = $this->language->get('column_updatedstatus');			
+			/* 03-10-2019 */
+			/* xml */
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA[$data['products'][] = array(]]></search>
+			<add position="before"><![CDATA[
+			/* xml */
+			$this->load->model('vendor/vendor');
+			$tracking_info = $this->model_vendor_vendor->getSellerOrdertrack($order_info['order_id']);
+			
+			if(!empty($tracking_info['tracking'])) {
+			$tracking = $tracking_info['tracking'];
+			$data['tracking_code'] = $tracking_info['tracking'];
+			} else {
+			$tracking = '';
+			$data['tracking_code'] = '';
+			}
+			
+			/* xml */
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA['quantity' => $product['quantity'],]]></search>
+			<add position="before"><![CDATA[
+			/* xml */
+			'tracking' => $tracking,
+			/* xml */
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[$results = $this->model_account_order->getOrderHistories($this->request->get['order_id']);]]></search>
+			<add position="replace"><![CDATA[
+				/* 06 102 2020 update */		
+				$this->load->model('vendor/vendor');			
+				$chkvendor_id = $this->model_vendor_vendor->getVOrderHistories($this->request->get['order_id']);
+				$data['chkvendor_id'] = $this->model_vendor_vendor->getVOrderHistories($this->request->get['order_id']);
+				if(!empty($chkvendor_id)){
+					$results = $this->model_vendor_vendor->getVOrderHistories($this->request->get['order_id']);
+				} else {
+					$results = $this->model_account_order->getOrderHistories($this->request->get['order_id']);
+				}
+				/* 06 102 2020 update */			
+			]]></add>
+		</operation>
+		
+		<operation error="skip">
+			<search><![CDATA[$data['histories'][] = array(]]></search>
+			<add position="before"><![CDATA[
+				/* 06 102 2020 update */
+				if(!empty($chkvendor_id)){
+					$this->load->model('vendor/vendor');
+					$orderstatus_info = $this->model_vendor_vendor->getCustomerOrder($result['order_status_id']);
+					
+						$order_status_id = $orderstatus_info['order_status_id'];
+						$status_info = $this->model_vendor_vendor->getCustomerOrderStatus($orderstatus_info['order_status_id']);
+						
+						if(isset($status_info['name'])) {
+							$statusname = $status_info['name'];
+						} else {
+							$statusname='';
+						}
+						 
+						$productname = $this->model_vendor_vendor->getOrderProductsName($result['order_product_id']);
+						if(!empty($productname['name'])) {
+						$productname = $productname['name'];
+						} else{
+						$productname ='';
+						}
+						$data['histories'][] = array(
+							'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
+							'status' => $statusname,
+							'order_status_id'=> $order_status_id,
+							'productname'    => $productname,
+							'updatedstatus'  => $result['updateby'],	
+							'comment'        => nl2br($result['comment'])				
+					);
+				} else {
+				/* 06 102 2020 update */
+			]]></add>
+		</operation>
+		
+		<operation error="skip">
+			<search><![CDATA[$data['continue'] = $this->url->link('account/order', '', true);]]></search>
+			<add position="before"><![CDATA[
+				/* 06 102 2020 update */			
+				}
+				/* 06 102 2020 update */			
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/*/template/account/order_info.twig">
+		<operation error="skip">
+			<search><![CDATA[<td class="text-right">{{ column_quantity }}</td>]]></search>
+			<add position="after"><![CDATA[
+			 <!-- xml -->
+              {% if tracking_code %}
+              <td class="text-right">{{ column_tracking }}</td>
+              </td>
+              {% endif %}
+          <!-- 09 06 2018 -->
+		  ]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA[<td class="text-right">{{ product.quantity }}</td>]]></search>
+			<add position="after"><![CDATA[
+			 <!-- xml -->
+				{% if product.tracking %}
+				<td class="text-right">
+                {{ product.tracking }}
+				</td>
+			   {% endif %}
+          <!-- 09 06 2018 -->
+		  ]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[<td class="text-left">{{ history.quantity }}</td>]]></search>
+			<add position="replace"><![CDATA[
+			 <!--xml -->
+            <td class="text-left">
+              {% if history.order_status_id =='1' %}
+              {{ history.status }}
+              {% else %}
+              {{ history.statusname }}
+              {% endif %}
+            </td>
+            <!-- xml -->
+		  ]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[<td colspan="3">]]></search>
+			<add position="replace"><![CDATA[
+			{% if tracking_code %}
+			<td colspan="4">
+			 {% else %}
+			 <td colspan="3">
+			{% endif %}
+			]]></add>
+		</operation>
+		
+		<operation error="skip">
+			<search><![CDATA[<td class="text-left">{{ column_comment }}</td>]]></search>
+			<add position="before"><![CDATA[
+			<!--03-10-2020-->
+			{% if chkvendor_id %}
+              <td class="text-left">{{ column_productname }}</td>
+              <td class="text-left">{{ column_updatedstatus }}</td>
+			{% endif %}  
+			<!--03-10-2020-->]]></add>
+		</operation>
+		
+		<operation error="skip">
+			<search><![CDATA[<td class="text-left">{{ history.comment }}</td>]]></search>
+			<add position="before"><![CDATA[
+			   <!--03-10-2019-->
+			   {% if chkvendor_id %}
+			   <td class="text-left">{{ history.productname }}</td>
+			   <td class="text-left">{{ history.updatedstatus }}</td>
+			   {% endif %}
+				<!--03-10-2019-->
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/*/template/account/order_list.twig">
+		<operation error="skip">
+			<search><![CDATA[<td class="text-right">{{ column_product }}</td>]]></search>
+			<add position="after"><![CDATA[
+			<!--03-10-2019-->
+              <td class="text-left">{{ column_productname }}</td>
+			<!--03-10-2019-->]]></add>
+		</operation>
+		
+		<operation error="skip">
+			<search><![CDATA[ <td class="text-right">{{ order.products }}</td>]]></search>
+			<add position="after"><![CDATA[
+			 <!--03-10-2019-->
+			    <td class="text-left">
+					<table class="table table-bordered table-hover">
+						<tbody>	 
+						   {% for productnam in order.productname %}
+						    <tr>
+								<td class="text-left">{{ productnam.productname }}</td>							
+								<td class="text-left">{{ productnam.vstatus }}</td>						
+						    </tr>
+						   {% endfor %}
+						</tbody>
+					</table>
+			    </td>
+			<!--03-10-2019-->
+			]]></add>
+		</operation>	
+	</file>
+
+	<file path="catalog/language/*/account/order.php">
+		<operation error="skip">
+			<search><![CDATA[// Column]]></search>
+			<add position="after"><![CDATA[
+			/* xml */
+			$_['column_tracking']       = 'Tracking No';
+			/* 03-10-2019 */
+			$_['column_productname']    = 'Product Info';
+			$_['column_updatedstatus']  = 'Status Updated By';
+			/* 03-10-2019 */
+			/* xml */
+		  ]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/startup/seo_url.php">
+		<operation error="skip">
+			<search><![CDATA[if (!isset($this->request->get['route'])) {]]></search>
+			<add position="before"><![CDATA[
+			/////////////// TMD vendor SEO work
+			$query1 = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE keyword = '" . $this->db->escape($part) . "'");
+
+			if($query1->num_rows) {
+			$url = explode('=', $query1->row['query']);
+				unset($this->request->get['route']);
+					if ($url[0] == 'vendor_id') {
+						$this->request->get['vendor_id'] = $url[1];
+						$this->request->get['route'] = 'vendor/vendor_profile';
+					}
+
+			}
+			/////////////// TMD vendor SEO work
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA[} elseif ($key == 'path') {]]></search>
+			<add position="replace"><![CDATA[
+			/////////////////////tmd xml
+			} else if(($data['route'] == 'vendor/vendor_profile' && $key == 'vendor_id')) {
+					$url=str_replace('/vendor/vendor_profile','',$url);
+					$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE `query` = '" . $this->db->escape($key . '=' . (int)$value) . "'");
+					if ($query->num_rows && $query->row['keyword']) {
+
+						$url .= '/' . $query->row['keyword'];
+
+						unset($data[$key]);
+					}
+				}
+				 elseif ($key == 'path') {
+				/////////////////////tmd xml]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/mail/order.php">
+		<operation error="skip">
+			<search><![CDATA[$mail->setTo($email);]]></search>
+			<add position="after" offset="3"><![CDATA[
+			/* xml */
+				/* tmd vendor2 customer condtion  */
+				$vendor2customers = $this->config->get('vendor_vendor2customer');
+				/* tmd vendor2 customer condtion  */
+				$emailtemplete = $this->db->query("SELECT * from " . DB_PREFIX . "vendor_mail vm left join " . DB_PREFIX . "vendor_mail_language vml on vml.mail_id=vm.mail_id WHERE vm.sellertype = 'customer_to_seller_order_email' and vml.language_id='".$this->config->get('config_language_id')."' and vm.status='1'");
+				if(!empty($emailtemplete->row['sellertype'])) {
+				if($emailtemplete->row['sellertype']=='customer_to_seller_order_email') {
+				$subject=$emailtemplete->row['subject'];
+				$message=$emailtemplete->row['message'];
+				$orderss_query = $this->db->query("SELECT vendor_id FROM " . DB_PREFIX . "vendor_order_product WHERE order_id = '" .$order_info['order_id'] . "' group by vendor_id");
+
+				if(!empty($orderss_query->rows)) {
+
+				foreach($orderss_query->rows as $vendorids) {
+
+					$vendor_id=$vendorids['vendor_id'];
+					$vendorinfo = $this->db->query("SELECT * from " . DB_PREFIX . "vendor WHERE vendor_id = '" .$vendor_id. "'");
+					if(!empty($vendorinfo->row['email'])) {
+						// Products
+						$seller_product_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_product  op LEFT JOIN " . DB_PREFIX . "vendor_order_product vop ON (op.order_id = vop.order_id) WHERE op.order_id = '" . (int)$order_info['order_id'] . "' and vop.vendor_id='".$vendor_id."' GROUP BY vop.order_product_id");
+
+
+					$sellerproduct['products'] = array();
+
+					foreach ($seller_product_query->rows as $product) {
+						$option_data = array();
+
+						$order_option_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_option WHERE order_id = '" . (int)$order_info['order_id'] . "' AND order_product_id = '" . (int)$product['order_product_id'] . "'");
+
+						foreach ($order_option_query->rows as $option) {
+							if ($option['type'] != 'file') {
+								$value = $option['value'];
+							} else {
+								$upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
+
+								if ($upload_info) {
+									$value = $upload_info['name'];
+								} else {
+									$value = '';
+								}
+							}
+
+							$option_data[] = array(
+								'name'  => $option['name'],
+								'value' => (utf8_strlen($value) > 20 ? utf8_substr($value, 0, 20) . '..' : $value)
+							);
+							}
+
+
+
+							$this->load->model('vendor/vendor');
+							$seller_info = $this->model_vendor_vendor->getVendor($product['vendor_id']);
+
+							if ($this->request->server['HTTPS']) {
+							$server = $this->config->get('config_ssl');
+							} else {
+							$server = $this->config->get('config_url');
+							}
+
+							if(isset($seller_info['display_name'])){
+							$sellerdisplay = $seller_info['display_name'];
+							} else{
+								$sellerdisplay ='';
+							}
+						if(isset($seller_info['vendor_id'])){
+							$vendor_ids = $server .'index.php?route=vendor/vendor_profile&'.'&vendor_id=' . $seller_info['vendor_id'];
+						} else{
+							$vendor_ids ='';
+						}
+
+							$customer2vendors = $this->config->get('vendor_customer2vendor');
+							if($customer2vendors==1){
+							 $data['customer2vendor'] = $customer2vendors;
+							} else {
+							 $data['customer2vendor']= false;
+							}
+
+						$sellerproduct['products'][] = array(
+							'name'     => $product['name'],
+							'sellerdisplay'   => $sellerdisplay,
+							'vendor_ids'      => $vendor_ids,
+							'model'    => $product['model'],
+							'option'   => $option_data,
+							'quantity' => $product['quantity'],
+							'price'    => $this->currency->format($product['price'] + ($this->config->get('config_tax') ? $product['tax'] : 0), $order_info['currency_code'], $order_info['currency_value']),
+							'total'    => $this->currency->format($product['total'] + ($this->config->get('config_tax') ? ($product['tax'] * $product['quantity']) : 0), $order_info['currency_code'], $order_info['currency_value'])
+						);
+						}
+
+						$language = new Language($order_info['language_code']);
+						$language->load($order_info['language_code']);
+						$language->load('vendor/seller_order');
+
+						$sellerproduct['text_shipping_address']= $language->get('text_shipping_address');
+						$sellerproduct['text_payment_address']=$language->get('text_payment_address');
+						$sellerproduct['text_product']= $language->get('text_product');
+						$sellerproduct['text_model']=$language->get('text_model');
+						$sellerproduct['text_quantity']=$language->get('text_quantity');
+						$sellerproduct['text_price']=$language->get('text_price');
+						$sellerproduct['text_total']=$language->get('text_total');
+						$sellerproduct['text_order_detail']=$language->get('text_order_detail');
+						$sellerproduct['text_order_detail']=$language->get('text_order_detail');
+						$sellerproduct['text_email']=$language->get('text_email');
+						$sellerproduct['text_shipping_method']=$language->get('text_shipping_method');
+						$sellerproduct['text_payment_method']=$language->get('text_payment_method');
+						$sellerproduct['text_telephone']=$language->get('text_telephone');
+						$sellerproduct['text_ip']=$language->get('text_ip');
+						$sellerproduct['title'] = sprintf($language->get('text_subject'), $order_info['store_name'], $order_info['order_id']);
+
+						if($vendor2customers==1){
+						 $sellerproduct['vendor2customer'] = $vendor2customers;
+						} else {
+						 $sellerproduct['vendor2customer']= false;
+						}
+
+
+						$sellerproduct['order_id'] = $order_info['order_id'];
+						$sellerproduct['email'] = $order_info['email'];
+						$sellerproduct['date_added'] = date($language->get('date_format_short'), strtotime($order_info['date_added']));
+						$sellerproduct['shipping_method'] = $order_info['shipping_method'];
+						$sellerproduct['payment_method'] = $order_info['payment_method'];
+						$sellerproduct['telephone'] = $order_info['telephone'];
+						$sellerproduct['ip'] = $order_info['ip'];
+						// Order Totals
+							$sellerproduct['sellrtotals'] = array();
+							$sellerproductorder_totals = $this->model_checkout_order->getOrderTotals($order_info['order_id']);
+
+							foreach ($sellerproductorder_totals as $sellerorder_total) {
+								$sellerproduct['sellrtotals'][] = array(
+									'title' => $sellerorder_total['title'],
+									'text'  => $this->currency->format($sellerorder_total['value'], $order_info['currency_code'], $order_info['currency_value']),
+								);
+							}
+
+
+						/* payment address start */
+						if ($order_info['payment_address_format']) {
+						$format = $order_info['payment_address_format'];
+						} else {
+							$format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
+						}
+
+						$find = array(
+							'{firstname}',
+							'{lastname}',
+							'{company}',
+							'{address_1}',
+							'{address_2}',
+							'{city}',
+							'{postcode}',
+							'{zone}',
+							'{zone_code}',
+							'{country}'
+						);
+
+						$replace = array(
+							'firstname' => $order_info['payment_firstname'],
+							'lastname'  => $order_info['payment_lastname'],
+							'company'   => $order_info['payment_company'],
+							'address_1' => $order_info['payment_address_1'],
+							'address_2' => $order_info['payment_address_2'],
+							'city'      => $order_info['payment_city'],
+							'postcode'  => $order_info['payment_postcode'],
+							'zone'      => $order_info['payment_zone'],
+							'zone_code' => $order_info['payment_zone_code'],
+							'country'   => $order_info['payment_country']
+						);
+
+						$sellerproduct['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+
+					/* payment address end */
+
+					/* shipping address start */
+						if ($order_info['shipping_address_format']) {
+							$format = $order_info['shipping_address_format'];
+						} else {
+							$format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
+						}
+
+						$find = array(
+							'{firstname}',
+							'{lastname}',
+							'{company}',
+							'{address_1}',
+							'{address_2}',
+							'{city}',
+							'{postcode}',
+							'{zone}',
+							'{zone_code}',
+							'{country}'
+						);
+
+						$replace = array(
+							'firstname' => $order_info['shipping_firstname'],
+							'lastname'  => $order_info['shipping_lastname'],
+							'company'   => $order_info['shipping_company'],
+							'address_1' => $order_info['shipping_address_1'],
+							'address_2' => $order_info['shipping_address_2'],
+							'city'      => $order_info['shipping_city'],
+							'postcode'  => $order_info['shipping_postcode'],
+							'zone'      => $order_info['shipping_zone'],
+							'zone_code' => $order_info['shipping_zone_code'],
+							'country'   => $order_info['shipping_country']
+						);
+
+						$sellerproduct['shipping_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+
+						/* shipping address end */
+
+						$selerhtmldata=$this->load->view('vendor/seller_order', $sellerproduct);
+
+						$find = array(
+							'{order_id}',
+							'{display_name}',
+							'{email}',
+							'{seller_telephone}',
+							'{address_1}',
+							'{seller_lastname}'	,
+							'{seller_firstname}',
+							'{product_info}',
+							'{productname}',
+							/* 01 10 2020 */
+							'{customername}',
+							'{customeremail}',
+							'{customertelephone}',
+							'{customer_id}',
+							/* 01 10 2020 */
+						);
+						$replace = array(
+							'order_id' => $order_info['order_id'],
+							'display_name'=> $vendorinfo->row['display_name'],
+							'email' 	=> $vendorinfo->row['email'],
+							'seller_telephone' => $vendorinfo->row['telephone'],
+							'address_1' => $vendorinfo->row['address_1'],
+							'seller_lastname' => $vendorinfo->row['lastname'],
+							'seller_firstname' => $vendorinfo->row['firstname'],
+							'product_info' => $selerhtmldata,
+							'productname' =>  $product['name'],
+							/* 01 10 2020 */
+							'customername' =>  $order_info['firstname'].' '. $order_info['lastname'],
+							'customeremail' =>  $order_info['email'],
+							'customertelephone' =>  $order_info['telephone'],
+							'customer_id' =>  $order_info['customer_id']
+							/* 01 10 2020 */
+						);
+
+						$subject= str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $subject))));
+						$message= str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $emailtemplete->row['message']))));
+
+
+						$mail = new Mail($this->config->get('config_mail_engine'));
+						$mail->parameter = $this->config->get('config_mail_parameter');
+						$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
+						$mail->smtp_username = $this->config->get('config_mail_smtp_username');
+						$mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+						$mail->smtp_port = $this->config->get('config_mail_smtp_port');
+						$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+
+
+						$mail->setTo($vendorinfo->row['email']);
+						$mail->setFrom($this->config->get('config_email'));
+						$mail->setSender(html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'));
+						$mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
+						$mail->setHtml(html_entity_decode($message, ENT_QUOTES, 'UTF-8'));
+						$mail->send();
+
+					}
+
+				}
+			}
+			} 
+		}
+		
+		/// xml Seller Alert Mail ////
+		]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[$mail->setText($this->load->view('mail/order_edit', $data));]]></search>
+			<add position="replace" offset="1"><![CDATA[
+			$mail->setText($this->load->view('mail/order_edit', $data));
+			$mail->send();
+			/* xml */
+			$vendor2customers = $this->config->get('vendor_vendor2customer');
+			$emailtemplete = $this->db->query("SELECT * from " . DB_PREFIX . "vendor_mail vm left join " . DB_PREFIX . "vendor_mail_language vml on vml.mail_id=vm.mail_id WHERE vm.sellertype = 'seller_order_status_update_email' and vml.language_id='".$this->config->get('config_language_id')."' and vm.status='1'");
+			
+			if(!empty($emailtemplete->row['sellertype'])) {
+				if($emailtemplete->row['sellertype']=='seller_order_status_update_email') {
+				$subject=$emailtemplete->row['subject'];
+				$message=$emailtemplete->row['message'];
+				$orderss_query = $this->db->query("SELECT vendor_id FROM " . DB_PREFIX . "vendor_order_product WHERE order_id = '" .$order_info['order_id'] . "' group by vendor_id");
+
+				if(!empty($orderss_query->rows)) {
+
+				foreach($orderss_query->rows as $vendorids) {
+
+					$vendor_id=$vendorids['vendor_id'];
+					$vendorinfo = $this->db->query("SELECT * from " . DB_PREFIX . "vendor WHERE vendor_id = '" .$vendor_id. "'");
+					if(!empty($vendorinfo->row['email'])) {
+						// Products
+						$seller_product_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_product  op LEFT JOIN " . DB_PREFIX . "vendor_order_product vop ON (op.order_id = vop.order_id) WHERE op.order_id = '" . (int)$order_info['order_id'] . "' and vop.vendor_id='".$vendor_id."' GROUP BY vop.order_product_id");
+
+
+					$sellerproduct['products'] = array();
+
+					foreach ($seller_product_query->rows as $product) {
+						$option_data = array();
+
+						$order_option_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_option WHERE order_id = '" . (int)$order_info['order_id'] . "' AND order_product_id = '" . (int)$product['order_product_id'] . "'");
+
+						foreach ($order_option_query->rows as $option) {
+							if ($option['type'] != 'file') {
+								$value = $option['value'];
+							} else {
+								$upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
+
+								if ($upload_info) {
+									$value = $upload_info['name'];
+								} else {
+									$value = '';
+								}
+							}
+
+							$option_data[] = array(
+								'name'  => $option['name'],
+								'value' => (utf8_strlen($value) > 20 ? utf8_substr($value, 0, 20) . '..' : $value)
+							);
+							}
+
+
+
+							$this->load->model('vendor/vendor');
+							$seller_info = $this->model_vendor_vendor->getVendor($product['vendor_id']);
+
+							if ($this->request->server['HTTPS']) {
+							$server = $this->config->get('config_ssl');
+							} else {
+							$server = $this->config->get('config_url');
+							}
+
+							if(isset($seller_info['display_name'])){
+							$sellerdisplay = $seller_info['display_name'];
+							} else{
+								$sellerdisplay ='';
+							}
+						if(isset($seller_info['vendor_id'])){
+							$vendor_ids = $server .'index.php?route=vendor/vendor_profile&'.'&vendor_id=' . $seller_info['vendor_id'];
+						} else{
+							$vendor_ids ='';
+						}
+
+							$customer2vendors = $this->config->get('vendor_customer2vendor');
+							if($customer2vendors==1){
+							 $data['customer2vendor'] = $customer2vendors;
+							} else {
+							 $data['customer2vendor']= false;
+							}
+
+						$sellerproduct['products'][] = array(
+							'name'     => $product['name'],
+							'sellerdisplay'   => $sellerdisplay,
+							'vendor_ids'      => $vendor_ids,
+							'model'    => $product['model'],
+							'option'   => $option_data,
+							'quantity' => $product['quantity'],
+							'price'    => $this->currency->format($product['price'] + ($this->config->get('config_tax') ? $product['tax'] : 0), $order_info['currency_code'], $order_info['currency_value']),
+							'total'    => $this->currency->format($product['total'] + ($this->config->get('config_tax') ? ($product['tax'] * $product['quantity']) : 0), $order_info['currency_code'], $order_info['currency_value'])
+						);
+						}
+
+						$language = new Language($order_info['language_code']);
+						$language->load($order_info['language_code']);
+						$language->load('vendor/seller_order');
+
+						$sellerproduct['text_shipping_address']= $language->get('text_shipping_address');
+						$sellerproduct['text_payment_address']=$language->get('text_payment_address');
+						$sellerproduct['text_product']= $language->get('text_product');
+						$sellerproduct['text_model']=$language->get('text_model');
+						$sellerproduct['text_quantity']=$language->get('text_quantity');
+						$sellerproduct['text_price']=$language->get('text_price');
+						$sellerproduct['text_total']=$language->get('text_total');
+						$sellerproduct['text_order_detail']=$language->get('text_order_detail');
+						$sellerproduct['text_order_detail']=$language->get('text_order_detail');
+						$sellerproduct['text_email']=$language->get('text_email');
+						$sellerproduct['text_shipping_method']=$language->get('text_shipping_method');
+						$sellerproduct['text_payment_method']=$language->get('text_payment_method');
+						$sellerproduct['text_telephone']=$language->get('text_telephone');
+						$sellerproduct['text_ip']=$language->get('text_ip');
+						$sellerproduct['title'] = sprintf($language->get('text_subject'), $order_info['store_name'], $order_info['order_id']);
+
+						if($vendor2customers==1){
+						 $sellerproduct['vendor2customer'] = $vendor2customers;
+						} else {
+						 $sellerproduct['vendor2customer']= false;
+						}
+
+
+						$sellerproduct['order_id'] = $order_info['order_id'];
+						$sellerproduct['email'] = $order_info['email'];
+						$sellerproduct['date_added'] = date($language->get('date_format_short'), strtotime($order_info['date_added']));
+						$sellerproduct['shipping_method'] = $order_info['shipping_method'];
+						$sellerproduct['payment_method'] = $order_info['payment_method'];
+						$sellerproduct['telephone'] = $order_info['telephone'];
+						$sellerproduct['ip'] = $order_info['ip'];
+						// Order Totals
+							$sellerproduct['sellrtotals'] = array();
+							$sellerproductorder_totals = $this->model_checkout_order->getOrderTotals($order_info['order_id']);
+
+							foreach ($sellerproductorder_totals as $sellerorder_total) {
+								$sellerproduct['sellrtotals'][] = array(
+									'title' => $sellerorder_total['title'],
+									'text'  => $this->currency->format($sellerorder_total['value'], $order_info['currency_code'], $order_info['currency_value']),
+								);
+							}
+
+
+						/* payment address start */
+						if ($order_info['payment_address_format']) {
+						$format = $order_info['payment_address_format'];
+						} else {
+							$format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
+						}
+
+						$find = array(
+							'{firstname}',
+							'{lastname}',
+							'{company}',
+							'{address_1}',
+							'{address_2}',
+							'{city}',
+							'{postcode}',
+							'{zone}',
+							'{zone_code}',
+							'{country}'
+						);
+
+						$replace = array(
+							'firstname' => $order_info['payment_firstname'],
+							'lastname'  => $order_info['payment_lastname'],
+							'company'   => $order_info['payment_company'],
+							'address_1' => $order_info['payment_address_1'],
+							'address_2' => $order_info['payment_address_2'],
+							'city'      => $order_info['payment_city'],
+							'postcode'  => $order_info['payment_postcode'],
+							'zone'      => $order_info['payment_zone'],
+							'zone_code' => $order_info['payment_zone_code'],
+							'country'   => $order_info['payment_country']
+						);
+
+						$sellerproduct['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+
+					/* payment address end */
+
+					/* shipping address start */
+						if ($order_info['shipping_address_format']) {
+							$format = $order_info['shipping_address_format'];
+						} else {
+							$format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
+						}
+
+						$find = array(
+							'{firstname}',
+							'{lastname}',
+							'{company}',
+							'{address_1}',
+							'{address_2}',
+							'{city}',
+							'{postcode}',
+							'{zone}',
+							'{zone_code}',
+							'{country}'
+						);
+
+						$replace = array(
+							'firstname' => $order_info['shipping_firstname'],
+							'lastname'  => $order_info['shipping_lastname'],
+							'company'   => $order_info['shipping_company'],
+							'address_1' => $order_info['shipping_address_1'],
+							'address_2' => $order_info['shipping_address_2'],
+							'city'      => $order_info['shipping_city'],
+							'postcode'  => $order_info['shipping_postcode'],
+							'zone'      => $order_info['shipping_zone'],
+							'zone_code' => $order_info['shipping_zone_code'],
+							'country'   => $order_info['shipping_country']
+						);
+
+						$sellerproduct['shipping_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+
+						/* shipping address end */
+
+						$selerhtmldata=$this->load->view('vendor/seller_order', $sellerproduct);
+
+						$find = array(
+							'{order_id}',
+							'{display_name}',
+							'{email}',
+							'{seller_telephone}',
+							'{address_1}',
+							'{seller_lastname}'	,
+							'{seller_firstname}',
+							'{product_info}',
+							'{productname}'
+						);
+						$replace = array(
+							'order_id' => $order_info['order_id'],
+							'display_name'=> $vendorinfo->row['display_name'],
+							'email' 	=> $vendorinfo->row['email'],
+							'seller_telephone' => $vendorinfo->row['telephone'],
+							'address_1' => $vendorinfo->row['address_1'],
+							'seller_lastname' => $vendorinfo->row['lastname'],
+							'seller_firstname' => $vendorinfo->row['firstname'],
+							'product_info' => $selerhtmldata,
+							'productname' =>  $product['name'],
+
+
+						);
+
+						$subject= str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $subject))));
+						$message= str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $emailtemplete->row['message']))));
+
+
+						$mail = new Mail($this->config->get('config_mail_engine'));
+						$mail->parameter = $this->config->get('config_mail_parameter');
+						$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
+						$mail->smtp_username = $this->config->get('config_mail_smtp_username');
+						$mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+						$mail->smtp_port = $this->config->get('config_mail_smtp_port');
+						$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+
+
+						$mail->setTo($vendorinfo->row['email']);
+						$mail->setFrom($this->config->get('config_email'));
+						$mail->setSender(html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'));
+						$mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
+						$mail->setHtml(html_entity_decode($message, ENT_QUOTES, 'UTF-8'));
+						$mail->send();
+
+					}
+
+				}
+			}
+		} 
+		}
+		/// xml Seller Alert Mail ////
+			]]></add>
+		</operation>
+	</file>
+	
+	<file path="catalog/model/journal3/order.php">		
+		
+		<operation error="skip">
+			<search><![CDATA[$order_product_id = $this->db->getLastId();]]></search>
+			<add position="after"><![CDATA[
+			/// xml start ///
+				$commisioninfo=$this->getOrderCommission($product['product_id'],$product['total']+($product['tax']*$product['quantity']),$product['quantity']);
+				if(isset($commisioninfo)){
+
+			
+				$seller_info = $this->db->query("SELECT vendor_id FROM " . DB_PREFIX . "vendor_to_product WHERE product_id = '" . (int)$product['product_id'] . "'");
+
+				if(isset($seller_info->row['vendor_id'])) {
+					$vendor_ids = $seller_info->row['vendor_id'];
+				} else {
+					$vendor_ids =0;
+				}
+
+				if(!empty($commisioninfo['vendor_id'])){
+				$vendor_idss = $commisioninfo['vendor_id'];
+				} else {
+				$vendor_idss =$vendor_ids;
+				}
+				
+				$shippingcost=0;
+					if($data['shipping_code']=='shippingcost.shippingcost'){
+						if(!empty($this->session->data['tmdshippingcost'][$product['product_id']]))
+						{
+							 $shippingcost=$this->session->data['tmdshippingcost'][$product['product_id']];
+						}
+					}
+			
+			
+				$this->db->query("INSERT INTO " . DB_PREFIX . "vendor_order_product SET order_product_id='".(int)$order_product_id."',order_id = '" . (int)$order_id . "',product_id = '" . (int)$product['product_id'] . "',name = '" . $this->db->escape($product['name']) . "', model = '" . $this->db->escape($product['model']) . "', quantity = '" . (int)$product['quantity'] . "', price = '" . (float)$product['price'] . "', total = '" . (float)$product['total'] . "', tax = '" . (float)$product['tax'] . "', reward = '" . (int)$product['reward'] . "',commissionper='".$commisioninfo['commissionper']."',vendor_id='".$vendor_idss."',commissionfix='".$commisioninfo['commissionfix']."',totalcommission='".$commisioninfo['totalcommission']."',  tmdshippingcost='".$shippingcost."',  date_added = NOW()");
+				
+				}
+				
+				/// xml End ///
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA[public function load($order_id) {]]></search>
+			<add position="before"><![CDATA[
+			/// XML Start ///
+		public function getOrderCommission($product_id,$total,$quantity) {
+			$data=array(
+				'vendor_id'=>'',
+				/* update code 24-05-2019 */
+				'commissionper'=>'0',
+				'commissionfix'=>'0',
+				'totalcommission'=>'0'
+			);
+			$commissionstatus = false;
+
+			$seller_info = $this->db->query("SELECT vendor_id FROM " . DB_PREFIX . "vendor_to_product WHERE product_id = '" . (int)$product_id . "'");
+			if(isset($seller_info->row['vendor_id'])) {
+				$vendor_id = $seller_info->row['vendor_id'];
+			}
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product_id . "'");
+
+			if(isset($query->row['category_id'],$vendor_id)){
+				/* 04 08 2020 */
+				$commission_info = $this->db->query("SELECT * FROM " . DB_PREFIX . "vendor_commission WHERE category_id = '" . $query->row['category_id'] . "'");
+
+				if(empty($commission_info->row['category_id'])){
+				$category = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_path WHERE category_id = '" . (int)$query->row['category_id'] . "' AND level=0");
+				$query->row['category_id']=$category->row['path_id'];
+				}
+				/* 04 08 2020 */
+				$commission_info = $this->db->query("SELECT * FROM " . DB_PREFIX . "vendor_commission WHERE category_id = '" . $query->row['category_id'] . "'");
+
+				if(isset($commission_info->row['category_id'])){
+					$commissionper = $commission_info->row['percentage'];
+					if(!empty($commissionper)){
+						$commissionfix = $commission_info->row['fixed'];
+						$totalcommission=($total * $commissionper/100)+$commissionfix*$quantity;
+						$data=array(
+							'vendor_id'=>$vendor_id,
+							'commissionper'=>$commissionper,
+							'commissionfix'=>$commissionfix,
+							'totalcommission'=>$totalcommission
+						);
+					}
+					$commissionstatus = true;
+				}
+
+			}
+			if(!$commissionstatus){
+
+				$vendorinfo = $this->db->query("SELECT v2p.vendor_id, vs.commission FROM " . DB_PREFIX . "vendor_to_product v2p LEFT JOIN " . DB_PREFIX . "vendor vs ON (v2p.vendor_id = vs.vendor_id) WHERE v2p.product_id = '" .$product_id. "'");
+
+				/* update code 24-05-2019 isset to !empty */
+
+				if(!empty($vendorinfo->row['commission'])){
+				$vendorcomision = $vendorinfo->row['commission'];
+				} else {
+				$vendorcomision = 0;
+				}
+				if(isset($vendorinfo->row['vendor_id'])){
+				$vendor_ids = $vendorinfo->row['vendor_id'];
+				} else {
+				$vendor_ids = '';
+				}
+
+				$commissionper = $vendorcomision;
+				if(!empty($commissionper)){
+					$vendor_id = $vendor_ids;
+					$commissionfix = 0;
+					$totalcommission=($total * $commissionper/100)+$commissionfix*$quantity;
+					$data=array(
+						'vendor_id'=>$vendor_id,
+						'commissionper'=>$commissionper,
+						'commissionfix'=>$commissionfix,
+						'totalcommission'=>$totalcommission
+					);
+				}
+			}
+			return $data;
+		}
+		/// xml End ///
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA[$this->db->query("DELETE FROM " . DB_PREFIX . "order_product WHERE order_id = '" . (int)$order_id . "'");]]></search>
+			<add position="before"><![CDATA[$this->db->query("DELETE FROM " . DB_PREFIX . "vendor_order_product WHERE order_id = '" . (int)$order_id . "'");]]></add>
+		</operation>
+
+	</file>
+
+	<file path="catalog/model/checkout/order.php">
+		<operation error="skip">
+			<search><![CDATA[$this->db->query("DELETE FROM " . DB_PREFIX . "order_option WHERE order_id = '" . (int)$order_id . "'");]]></search>
+			<add position="after"><![CDATA[
+			/* 03 10 2020 start */
+			$this->db->query("DELETE FROM `" . DB_PREFIX . "vendor_order_product` WHERE order_id = '" . (int)$order_id . "'");
+			/* 03 10 2020 end */
+			]]></add>
+		</operation>
+		
+		<operation error="skip">
+			<search><![CDATA[$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_product WHERE order_id = '" . (int)$order_id . "'");]]></search>
+			<add position="repalce"><![CDATA[$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_product  op LEFT JOIN " . DB_PREFIX . "vendor_order_product vop ON (op.order_id = vop.order_id) WHERE op.order_id = '" . (int)$order_id . "' GROUP BY vop.order_product_id");]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA[$this->db->query("DELETE FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "'");]]></search>
+			<add position="after"><![CDATA[
+				/* xml start */
+				$this->db->query("DELETE FROM `" . DB_PREFIX . "vendor_order_product` WHERE order_id = '" . (int)$order_id . "'");				
+				$this->db->query("DELETE FROM `" . DB_PREFIX . "order_vendorhistory` WHERE order_id = '" . (int)$order_id . "'");
+				/* xml end */
+				]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA[// Update the DB with the new statuses]]></search>
+			<add position="before"><![CDATA[
+				/* xml */
+				$this->db->query("UPDATE `" . DB_PREFIX . "vendor_order_product` SET order_status_id='".(int)$order_status_id."', date_modified=now() WHERE order_id = '" . (int)$order_id . "'");
+				/* xml */
+				]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA[$order_product_id = $this->db->getLastId();]]></search>
+			<add position="after"><![CDATA[
+			/// xml start ///
+				$commisioninfo=$this->getOrderCommission($product['product_id'],$product['total']+($product['tax']*$product['quantity']),$product['quantity']);
+				if(isset($commisioninfo)){
+
+				
+				$seller_info = $this->db->query("SELECT vendor_id FROM " . DB_PREFIX . "vendor_to_product WHERE product_id = '" . (int)$product['product_id'] . "'");
+
+				if(isset($seller_info->row['vendor_id'])) {
+					$vendor_ids = $seller_info->row['vendor_id'];
+				} else {
+					$vendor_ids =0;
+				}
+				
+				if(!empty($commisioninfo['vendor_id'])){
+				$vendor_idss = $commisioninfo['vendor_id'];
+				} else {
+				$vendor_idss =$vendor_ids;
+				}				
+				
+				$shippingcost=0;
+					if($data['shipping_code']=='shippingcost.shippingcost'){
+						if(!empty($this->session->data['tmdshippingcost'][$product['product_id']]))
+						{
+							 $shippingcost=$this->session->data['tmdshippingcost'][$product['product_id']];
+						}
+					}
+					
+				$this->db->query("INSERT INTO " . DB_PREFIX . "vendor_order_product SET order_product_id='".(int)$order_product_id."',order_id = '" . (int)$order_id . "',product_id = '" . (int)$product['product_id'] . "',name = '" . $this->db->escape($product['name']) . "', model = '" . $this->db->escape($product['model']) . "', quantity = '" . (int)$product['quantity'] . "', price = '" . (float)$product['price'] . "', total = '" . (float)$product['total'] . "', tax = '" . (float)$product['tax'] . "', reward = '" . (int)$product['reward'] . "',commissionper='".$commisioninfo['commissionper']."',vendor_id='".$vendor_idss."',commissionfix='".$commisioninfo['commissionfix']."',totalcommission='".$commisioninfo['totalcommission']."',  tmdshippingcost='".$shippingcost."', date_added = NOW()");
+				
+				}
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[public function editOrder($order_id, $data) {]]></search>
+			<add position="before"><![CDATA[
+					/// XML Start ///
+		public function getOrderCommission($product_id,$total,$quantity) {
+			$data=array(
+				'vendor_id'=>'',
+				'commissionper'=>'',
+				'commissionfix'=>'',
+				'totalcommission'=>''
+			);
+			$commissionstatus = false;
+
+			$seller_info = $this->db->query("SELECT vendor_id FROM " . DB_PREFIX . "vendor_to_product WHERE product_id = '" . (int)$product_id . "'");
+			if(isset($seller_info->row['vendor_id'])) {
+				$vendor_id = $seller_info->row['vendor_id'];
+			}
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product_id . "'");
+
+			if(isset($query->row['category_id'],$vendor_id)){
+				
+				/* 04 08 2020 */
+				$commission_info = $this->db->query("SELECT * FROM " . DB_PREFIX . "vendor_commission WHERE category_id = '" . $query->row['category_id'] . "'");
+
+				if(empty($commission_info->row['category_id'])){
+				$category = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_path WHERE category_id = '" . (int)$query->row['category_id'] . "' AND level=0");
+				$query->row['category_id']=$category->row['path_id'];
+				}
+				/* 04 08 2020 */
+				
+				$commission_info = $this->db->query("SELECT * FROM " . DB_PREFIX . "vendor_commission WHERE category_id = '" . $query->row['category_id'] . "'");
+
+				if(isset($commission_info->row['category_id'])){
+					$commissionper = $commission_info->row['percentage'];
+					if(!empty($commissionper)){
+					$commissionfix = $commission_info->row['fixed'];
+					$totalcommission=($total * $commissionper/100)+$commissionfix*$quantity;
+					$data=array(
+						'vendor_id'=>$vendor_id,
+						'commissionper'=>$commissionper,
+						'commissionfix'=>$commissionfix,
+						'totalcommission'=>$totalcommission
+					);
+					}
+					$commissionstatus = true;
+				}
+			}
+			if(!$commissionstatus){
+
+				$vendorinfo = $this->db->query("SELECT v2p.vendor_id, vs.commission FROM " . DB_PREFIX . "vendor_to_product v2p LEFT JOIN " . DB_PREFIX . "vendor vs ON (v2p.vendor_id = vs.vendor_id) WHERE v2p.product_id = '" .$product_id. "'");
+
+				if(isset($vendorinfo->row['commission'])){
+				$vendorcomision = $vendorinfo->row['commission'];
+				} else {
+				$vendorcomision = '0';
+				}
+
+
+				$commissionper = $vendorcomision;
+				if(!empty($commissionper)){
+					$commissionfix = 0;
+					$totalcommission=($total * $commissionper/100)+$commissionfix*$quantity;
+					$data=array(
+						'vendor_id'=>$vendor_id,
+						'commissionper'=>$commissionper,
+						'commissionfix'=>$commissionfix,
+						'totalcommission'=>$totalcommission
+					);
+				}
+			}
+			return $data;
+		}
+		/// xml End ///
+		]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[// If old order status is the processing or complete status but new status is not then commence restock, and remove coupon, voucher and reward history]]></search>
+			<add position="before"><![CDATA[
+			/* 03 10 2019 start */
+			$sql2 = "SELECT * FROM " . DB_PREFIX . "vendor_order_product where order_id='".(int)$order_id."' ";
+			$query2 = $this->db->query($sql2);
+			foreach($query2->rows as $row){
+				if(!empty($row['vendor_id'])){
+					
+				$this->db->query("INSERT INTO " . DB_PREFIX . "order_vendorhistory SET order_id = '" . (int)$order_id . "', order_status_id = '" . (int)$order_status_id . "', vendor_id = '".(int)$row['vendor_id']."',  order_product_id = '".(int)$row['order_product_id']."', comment = '" . $this->db->escape($comment) . "', updateby='admin', date_added = NOW()");
+				}
+			}
+			/* 03 10 2019 end */
+			]]></add>
+		</operation>
+	</file>
+
+    <file path="catalog/view/theme/journal2/template/product/product.twig">
+		<operation error="skip">
+			<search><![CDATA[{% for tab in journal2.settings.get('additional_product_description_bottom', []) %}]]></search>
+			<add position="before"><![CDATA[{{ column_inpro }}]]></add>
+		</operation>
+		<operation error="skip">
+			<search><![CDATA[{{ footer }}]]></search>
+			<add position="before"><![CDATA[
+			<!--08-03-2019-->
+			{% if vendorchat_id %}
+				<script type="text/javascript">
+					var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+					(function(){
+					var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+					s1.async=true;
+					s1.src='https://embed.tawk.to/{{vendorchat_id}}/default';
+					s1.charset='UTF-8';
+					s1.setAttribute('crossorigin','*');
+					s0.parentNode.insertBefore(s1,s0);
+					})();
+				</script>
+			{% endif %}
+			<!--08-03-2019-->]]></add>
+		</operation>
+	</file>
+
+    <file path="catalog/view/theme/journal2/template/common/header.twig">
+		<operation error="skip">
+			<search><![CDATA[</head>]]></search>
+			<add position="before"><![CDATA[
+			<link href="catalog/view/theme/journal2/css/vendor.css" rel="stylesheet">
+			 {% if lang=='ar' %}
+                 <link href="catalog/view/theme/default/stylesheet/vendor/bootstrap-rtl.css" rel="stylesheet">
+                 <link href="catalog/view/theme/default/stylesheet/vendor/bootstrap-rtl.min.css" rel="stylesheet">
+                 <link href="catalog/view/theme/default/stylesheet/vendor/rtl.css" rel="stylesheet">
+            {% endif %}
+			{% if lang=='he' %}
+                 <link href="catalog/view/theme/default/stylesheet/vendor/bootstrap-rtl.css" rel="stylesheet">
+                 <link href="catalog/view/theme/default/stylesheet/vendor/bootstrap-rtl.min.css" rel="stylesheet">
+                 <link href="catalog/view/theme/default/stylesheet/vendor/rtl.css" rel="stylesheet">
+            {% endif %}
+		 ]]></add>
+		</operation>
+    </file>
+
+    <file path="catalog/view/theme/journal3/template/common/header.twig">
+		<operation error="skip">
+			<search><![CDATA[</head>]]></search>
+			<add position="before"><![CDATA[
+			<link href="catalog/view/theme/journal3/css/vendor.css" rel="stylesheet">
+			 {% if lang=='ar' %}
+				 <link href="catalog/view/theme/default/stylesheet/vendor/bootstrap-rtl.css" rel="stylesheet">
+				 <link href="catalog/view/theme/default/stylesheet/vendor/bootstrap-rtl.min.css" rel="stylesheet">
+				 <link href="catalog/view/theme/default/stylesheet/vendor/rtl.css" rel="stylesheet">
+			{% endif %}
+
+			{% if lang=='he' %}
+				 <link href="catalog/view/theme/default/stylesheet/vendor/bootstrap-rtl.css" rel="stylesheet">
+				 <link href="catalog/view/theme/default/stylesheet/vendor/bootstrap-rtl.min.css" rel="stylesheet">
+				 <link href="catalog/view/theme/default/stylesheet/vendor/rtl.css" rel="stylesheet">
+			{% endif %}
+			]]></add>
+		</operation>
+    </file>
+
+    <file path="catalog/view/theme/journal2/template/journal2/headers/*.twig">
+		<operation error="skip">
+			<search><![CDATA[<ul class="top-menu">]]></search>
+			<add position="after"><![CDATA[
+			<!--xml start-->
+			{% if customer2vendor==1 %}
+			<li class="seller"><a href="{{ allseller }}"><i class="fa fa-users fa-fw"></i> <span class="m-text"  style="padding-left:6px;">{{ text_allseller }}</span></a></li>
+			{% endif %}
+			 {% if vendorlogged %}
+				<li class="seller dropdown"><a href="#" title="{{ text_selleraccount }}" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users"></i> <span class="m-text" style="padding-left:6px;"> {{ text_selleraccount }} </span> <span class="caret"></span></a>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a href="{{ vendor_profile }}"><i class="fa fa-user fa-fw"></i> {{ text_profile }}</a></li>
+					<li><a href="{{ dashboard }}"><i class="fa fa-dashboard fa-fw"></i> {{ text_dashboard }}</a></li>
+					<li><a href="{{ products }}"><i class="fa fa-list fa-fw"></i> {{ text_products }}</a></li>
+					<li><a href="{{ review }}"><i class="fa fa-star fa-fw"></i> {{ text_review }}</a></li>
+					<li><a href="{{ managestore }}"><i class="fa fa-cog fa-fw"></i> {{ text_managestore }}</a></li>
+					<li><a href="{{ manageprofile }}"><i class="fa fa-user fa-fw"></i> {{ text_manageprofile }}</a></li>
+					<li><a href="{{ vdownload }}"><i class="fa fa-cloud-download fa-fw"></i> {{ text_download }}</a></li>
+					<li><a href="{{ manufacture }}"><i class="fa fa-thumb-tack fa-fw"></i> {{ text_manufacture }}</a></li>
+					<li><a href="{{ logouts }}"><i class="fa fa-sign-out fa-fw"></i> {{ text_logout }}</a></li>
+			  </ul>
+			</li>
+			{% else %}
+				<li class="seller"><a href="{{ sellerlogin }}"><i class="fa fa-sign-in fa-fw"></i> <span class="m-text">{{ text_loginseller }}</span></a></li>
+            {% endif %}
+		<!--xml end-->]]></add>
+		</operation>
+	</file>
+
+    <file path="catalog/view/theme/journal3/template/journal3/headers/*/*.twig">
+		<operation error="skip">
+			<search><![CDATA[<div class="language-currency top-menu">]]></search>
+			<add position="after"><![CDATA[
+			<!--xml start-->
+			 <div class="top-menu">
+				<ul class="j-menu seller">
+				<!--/* tmd vendor2 seler condtion  */-->
+				{% if customer2vendor==1 %}
+				<li class="tmd-menubox"><a href="{{ allseller }}"><i class="fa fa-users fa-fw"></i> <span class="m-text">{{ text_allseller }}</span></a></li>
+				{% endif %}
+				{% if vendorlogged %}
+				<li class="dropdown tmd_vendorsub"><a href="#" title="{{ text_selleraccount }}" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users"></i> <span class="m-text">{{ text_selleraccount }}</span></a>
+				  <ul class="dropdown-menu dropdown-menu-right ">
+
+					<li><a href="{{ vendor_profile }}"><i class="fa fa-user fa-fw"></i> {{ text_profile }}</a></li>
+					<li><a href="{{ dashboard }}"><i class="fa fa-dashboard fa-fw"></i> {{ text_dashboard }}</a></li>
+					<li><a href="{{ products }}"><i class="fa fa-list fa-fw"></i> {{ text_products }}</a></li>
+					<li><a href="{{ review }}"><i class="fa fa-star fa-fw"></i> {{ text_review }}</a></li>
+					<li><a href="{{ managestore }}"><i class="fa fa-cog fa-fw"></i> {{ text_managestore }}</a></li>
+					<li><a href="{{ manageprofile }}"><i class="fa fa-user fa-fw"></i> {{ text_manageprofile }}</a></li>
+					<li><a href="{{ vdownload }}"><i class="fa fa-cloud-download fa-fw"></i> {{ text_download }}</a></li>
+					<li><a href="{{ manufacture }}"><i class="fa fa-thumb-tack fa-fw"></i> {{ text_manufacture }}</a></li>
+					<li><a href="{{ logouts }}"><i class="fa fa-sign-out fa-fw"></i> {{ text_logout }}</a></li>
+
+				  </ul>
+				 </li>
+				{% else %}
+				 <li class="tmd-menubox"><a href="{{ sellerlogin }}"><i class="fa fa-sign-in fa-fw"></i> <span class="m-text">{{ text_loginseller }}</span></a></li>
+				{% endif %}
+				</ul>
+				</div>
+				<style>
+					.language-currency .top-menu{
+					 pointer-events: all;
+					}
+					.tmd_vendorsub::after{display:none;}
+				</style>
+			<!--xml end-->]]></add>
+		</operation>
+	</file>
+
+    <file path="catalog/controller/journal3/checkout.php">
+		<operation error="skip">
+			<search><![CDATA['cart_id'    => $product['cart_id'],]]></search>
+			<add position="before" offset="1"><![CDATA[
+				/* xml */
+
+				if(isset($product['vendor_ids'])){
+				$vendor_ids = $product['vendor_ids'];
+				} else {
+				$vendor_ids = '';
+				}
+
+				$vendor_idss = str_replace('&amp;', '&', $this->url->link('vendor/vendor_profile', 'vendor_id='.$vendor_ids));
+				$customer2vendor = $this->config->get('vendor_customer2vendor');
+				if($customer2vendor==1){
+					if(!empty($product['sellerdisplay'])){
+					$sellerdisplay = $this->language->get('text_byseller'). ' <a href="'.$vendor_idss.'">'.$product['sellerdisplay'].' </a>';
+					} else {
+					$sellerdisplay = '';
+					}
+				} else {
+				$sellerdisplay = '';
+				}
+				/* xml */
+				]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA['product_id' => $product['product_id'],]]></search>
+			<add position="before"><![CDATA[
+				/* xml */
+				'sellerdisplay'   => $sellerdisplay,
+				'vendor_ids'      => str_replace('&amp;', '&', $this->url->link('vendor/vendor_profile', 'vendor_id='.$vendor_ids)),
+				/* xml */
+				]]></add>
+		</operation>
+	</file>
+
+    <file path="catalog/view/theme/journal3/template/common/cart.twig">
+		<operation error="skip">
+			<search><![CDATA[<td class="text-left td-name"><a href="{{ product.href }}">{{ product.name }}</a><br /> {% if product.option %}]]></search>
+			<add position="replace"><![CDATA[
+				  <!-- xml -->
+				   <td class="text-left td-name"><a href="{{ product.href }}">{{ product.name }}</a>
+					{% if customer2vendor %}
+					{% if product.sellerdisplay %}
+					{{ text_byseller }}
+					<a href="{{ product.vendor_ids }}">{{ product.sellerdisplay }}</a>
+					{% endif %}
+					{% endif %}
+				 {% if product.option %}
+				<!-- xml -->
+				]]></add>
+		</operation>
+	</file>
+
+    <file path="catalog/view/theme/journal3/template/journal3/checkout/cart.twig">
+		<operation error="skip">
+			<search><![CDATA[<a :href="product.href" v-html="product.name"></a>]]></search>
+			<add position="after"><![CDATA[
+				<!-- xml -->
+				<span v-html="product.sellerdisplay" ></span>
+				<!-- xml -->
+				]]></add>
+		</operation>
+	</file>
+
+    <file path="catalog/view/theme/journal2/template/checkout/cart.twig">
+		<operation error="skip">
+			<search><![CDATA[<td class="text-left name"><a href="{{ product.href }}">{{ product.name }}</a> {% if not product.stock %} <span class="text-danger">***</span> {% endif %}]]></search>
+			<add position="after"><![CDATA[
+			<!-- xml -->
+
+				 {% if customer2vendor %}
+					{% if product.sellerdisplay %}
+					{{ text_byseller }}
+					<a href="{{ product.vendor_ids }}">{{ product.sellerdisplay }}</a>
+					{% endif %}
+				{% endif %}
+				<!-- xml -->
+				]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/journal2/template/common/cart.twig">
+		<operation error="skip">
+			<search><![CDATA[<td class="text-left name"><a href="{{ product.href }}">{{ product.name }}</a>]]></search>
+			<add position="replace"><![CDATA[
+				  <!-- xml -->
+
+					<td class="text-left name"><a href="{{ product.href }}">{{ product.name }}</a>
+					{% if customer2vendor %}
+					{% if product.sellerdisplay %}
+					 &nbsp; {{ text_byseller }}
+					<a href="{{ product.vendor_ids }}">{{ product.sellerdisplay }}</a>
+					{% endif %}
+				{% endif %}
+
+				<!-- xml -->
+				]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/view/theme/journal2/template/journal2/checkout/cart.twig">
+		<operation error="skip">
+			<search><![CDATA[{% for option in product.option %}]]></search>
+			<add position="before"><![CDATA[
+				<!-- xml -->
+				 {% if customer2vendor %}
+					{% if product.sellerdisplay %}
+					 &nbsp; {{ text_byseller }}
+					<a href="{{ product.vendor_ids }}">{{ product.sellerdisplay }}</a>
+					{% endif %}
+				{% endif %}
+				<!-- xml -->
+				]]></add>
+		</operation>
+	</file>
+
+   <file path="catalog/model/journal2/checkout.php">
+		<operation error="skip">
+			<search><![CDATA['key'        => isset($product['key']) ? $product['key'] : '',]]></search>
+			<add position="before" offset="1"><![CDATA[/* xml */
+
+				if(isset($product['vendor_ids'])){
+				$vendor_ids = $product['vendor_ids'];
+				} else {
+				$vendor_ids = 0;
+				}
+
+				$vendor_idss = str_replace('&amp;', '&', $this->url->link('vendor/vendor_profile', 'vendor_id='.$vendor_ids));
+
+				if(!empty($product['sellerdisplay'])){
+				$sellerdisplay = '<a href="'.$vendor_idss.'">'.$product['sellerdisplay'].' </a>';
+				} else {
+				$sellerdisplay = '';
+				}
+				/* xml */
+				]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search><![CDATA['cart_id'    => isset($product['cart_id']) ? $product['cart_id'] : '',]]></search>
+			<add position="after"><![CDATA[
+				/* xml */
+				'sellerdisplay'   => $sellerdisplay,
+				'vendor_ids'      => str_replace('&amp;', '&', $this->url->link('vendor/vendor_profile', 'vendor_id='.$vendor_ids)),
+				/* xml */
+				]]></add>
+		</operation>
+	</file>
+	
+	<file path="admin/view/template/catalog/product_form.twig">
+		<operation error="skip">
+			<search><![CDATA[<div class="tab-pane" id="tab-links">]]></search>
+			<add position="after"><![CDATA[
+			<!--03-10-2019-->
+			<!--added change for the required and validation of seller on 28-04-2025-->
+			<div class="form-group required">
+				<label class="col-sm-2 control-label" for="input-vendor"><span data-toggle="tooltip" title="{{ help_vendor }}">{{ entry_vendor }}</label>
+				<div class="col-sm-10">
+					<input type="text" name="vendor" value="{{ vendor }}" placeholder="{{ entry_vendor }}" id="input-vendor" class="form-control" required />
+					<input type="hidden" name="vendor_id" value="{{ vendor_id }}" />  
+					<!-- added changes for the validation on the 28-04-2025-->
+					 {% if error_vendor %}
+                        <div class="text-danger">{{ error_vendor }}</div>
+                    {% endif %}      
+				</div>
+			</div>
+			<!--03-10-2019-->]]></add>
+		</operation>
+		
+		<operation error="skip">
+			<search><![CDATA[// Manufacturer]]></search>
+			<add position="before"><![CDATA[
+			<!--03-10-2019-->			 
+			// Seller
+			$('input[name=\'vendor\']').autocomplete({
+				'source': function(request, response) {
+					$.ajax({
+						url: 'index.php?route=vendor/vendor/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+						dataType: 'json',
+						success: function(json) {
+							json.unshift({
+								vendor_id: 0,
+								/* 13 02 2020 vendorname */
+								vendorname: '{{ text_none }}'
+							});
+
+							response($.map(json, function(item) {
+								return {
+									label: item['vendorname'],
+									value: item['vendor_id']
+								}
+							}));
+						}
+					});
+				},
+				'select': function(item) {
+					$('input[name=\'vendor\']').val(item['label']);
+					$('input[name=\'vendor_id\']').val(item['value']);
+				}
+			});			
+			<!--03-10-2019-->]]></add>
+		</operation>
+	</file>
+	
+	<file path="admin/controller/catalog/product.php">
+		<operation error="skip">
+			<search><![CDATA[$data['cancel'] = $this->url->link('catalog/product', 'user_token=' . $this->session->data['user_token'] . $url, true);]]></search>
+			<add position="before"><![CDATA[
+				/* 03-10-2019*/
+				$data['entry_vendor'] 		= $this->language->get('entry_vendor');		
+				$data['help_vendor'] 		= $this->language->get('help_vendor');		
+				/* 03-10-2019*/
+			]]></add>
+		</operation>
+		
+		<operation error="skip">
+			<search><![CDATA[// Categories]]></search>
+			<add position="before"><![CDATA[
+			/* 03-10-2019*/
+			$this->load->model('vendor/vendor');
+				
+			if(isset($this->request->get['product_id'])) {										 	$vendorid_info=$this->model_vendor_vendor->getVendorid($this->request->get['product_id']);
+			}
+				
+				if (isset($this->request->post['vendor_id'])) {
+				$data['vendor_id'] = $this->request->post['vendor_id'];
+				} elseif (isset($vendorid_info['vendor_id'])){
+					$data['vendor_id'] = $vendorid_info['vendor_id'];
+				} else {
+					$data['vendor_id'] = '';
+				}
+				/* 12 02 2020 vname */
+				if(!empty($data['vendor_id'])){	
+					
+					$vendor_info=$this->model_vendor_vendor->getVendor($data['vendor_id']);
+					if(isset($vendor_info['vname'])){
+						$data['vendor']=$vendor_info['vname'];
+					} else {
+						$data['vendor']='';
+					}
+				} else {
+					$data['vendor']='';
+				}
+				/* 03-10-2019*/ 
+			]]></add>
+		</operation>
+	</file>
+	
+	<file path="admin/model/catalog/product.php">		
+		<operation error="skip">
+			<search><![CDATA[if (isset($data['product_layout'])) {]]></search>
+			<add position="before"><![CDATA[
+				/* 03-10-2019*/
+			$this->db->query("DELETE FROM " . DB_PREFIX . "vendor_to_product WHERE product_id = '" . (int)$product_id . "'");
+			$this->db->query("INSERT INTO " . DB_PREFIX . "vendor_to_product SET product_id = '" . (int)$product_id . "', vendor_id = '" . $data['vendor_id'] . "'");
+				/* 03-10-2019*/ 
+			]]></add>
+		</operation>
+		
+		<operation error="skip">
+			<search><![CDATA[$this->db->query("DELETE FROM " . DB_PREFIX . "product_to_layout WHERE product_id = '" . (int)$product_id . "'");]]></search>
+			<add position="before"><![CDATA[
+			/* 03-10-2019*/
+			$this->db->query("DELETE FROM " . DB_PREFIX . "vendor_to_product WHERE product_id = '" . (int)$product_id . "'");
+			/* 03-10-2019*/ 
+			]]></add>
+		</operation>
+	</file>
+	
+	<file path="admin/language/*/catalog/product.php">		
+		<operation error="skip">
+			<search><![CDATA[// Column]]></search>
+			<add position="before"><![CDATA[
+			/* 03-10-2019*/
+			$_['entry_vendor']            = 'Seller';
+			$_['help_vendor']             = '(Autocomplete)';
+			/* 03-10-2019 */ 
+			]]></add>
+		</operation>
+	</file>
+	
+	<file path="catalog/language/ar/common/header.php">
+		<operation error="skip">
+			<search><![CDATA[// Text]]></search>
+			<add position="after"><![CDATA[
+			/* xml */	
+			$_['text_selleraccount'] = 'تاجر';
+			$_['text_loginseller']   = 'تسجيل الدخول البائع';
+            $_['text_allseller']     = 'قائمة البائعين';
+			$_['text_dashboard']     = 'لوحة القيادة';
+			$_['text_products']      = 'منتجات';
+			$_['text_review']        = 'مراجعة';
+			$_['text_managestore']   = 'إدارة المتجر';
+			$_['text_manageprofile'] = 'إدارة الملف الشخصي';
+			$_['text_manufacture']   = 'صناعة';
+			$_['text_profile']       = 'البائع الشخصي';
+			$_['text_logout']        = 'البائع تسجيل الخروج';
+			/* xml */]]></add>
+		</operation>
+	</file>	
+	
+	<file path="catalog/view/theme/journal3/template/account/order_list.twig">
+		<operation error="skip">
+			<search><![CDATA[<td class="text-center">{{ column_product }}</td>]]></search>
+			<add position="after"><![CDATA[
+			<!--03-10-2019-->
+              <td class="text-center">{{ column_productname }}</td>
+			<!--03-10-2019-->]]></add>
+		</operation>
+		
+		<operation error="skip">
+			<search><![CDATA[<td class="text-center">{{ order.products }}</td>]]></search>
+			<add position="after"><![CDATA[
+			 <!--03-10-2019-->
+			    <td class="text-left">
+					<table class="table table-bordered table-hover">
+						<tbody>	 
+						   {% for productnam in order.productname %}
+						    <tr>
+								<td class="text-center">{{ productnam.productname }}</td>							
+								<td class="text-center">{{ productnam.vstatus }}</td>						
+						    </tr>
+						   {% endfor %}
+						</tbody>
+					</table>
+			    </td>
+			<!--03-10-2019-->
+			]]></add>
+		</operation>	
+	</file>
+	
+	<file path="admin/model/sale/order.php">
+		<operation error="skip">
+			<search><![CDATA[$this->db->query("DELETE FROM `" . DB_PREFIX . "order_product` WHERE order_id = '" . (int)$order_id . "'");]]></search>
+			<add position="after"><![CDATA[
+			/* xml */
+			$this->db->query("DELETE FROM `" . DB_PREFIX . "vendor_order_product` WHERE order_id = '" . (int)$order_id . "'");
+			$this->db->query("DELETE FROM `" . DB_PREFIX . "order_vendorhistory` WHERE order_id = '" . (int)$order_id . "'");
+			/* xml */
+			]]></add>
+		</operation>				
+	</file>
+	
+	
+	<file path="catalog/language/*/product/product.php">
+		<operation error="skip">
+			<search><![CDATA[// Entry]]></search>
+			<add position="after"><![CDATA[
+			/* xml */
+			$_['text_vendorname']       = 'Seller Name: ';			
+			/* xml */
+		  ]]></add>
+		</operation>
+	</file>
+	
+	<file path="catalog/view/theme/journal3/template/product/product.twig">
+			<operation error="skip">
+			<search><![CDATA[{% if manufacturer and j3.settings.get(stylePrefix ~ 'ProductManufacturer') and (j3.settings.get(stylePrefix ~ 'ProductManufacturerDisplay') == 'image') %}]]></search>
+			<add position="before"><![CDATA[
+			 {% if chkvendor_ids !=0 %}
+			 <li class="product-vendor"><b>{{ text_vendorname}}:</b> <span>{{ vendorname }}</span></li>
+			 {% endif %}
+			]]></add>
+		</operation>
+	</file>
+	
+	<file path="catalog/view/theme/*/template/mail/order_alert.twig">
+			<operation error="skip">
+			<search><![CDATA[{% if option %}]]></search>
+			<add position="replace"><![CDATA[{% if product.option %}]]></add>
+		</operation>
+	</file>
+	
+	
+</modification>

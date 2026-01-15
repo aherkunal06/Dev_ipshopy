@@ -1,0 +1,555 @@
+{{ header }}
+<style>
+    p{
+      font-size: 14px;
+    }
+    li{
+      font-size: 14px;
+    }
+ 
+         .privacy-policy-section {
+                display: flex;
+                  gap: 40px;
+                 color:#000;
+         }
+ 
+         .privacy-container {
+             display: flex;
+            
+  
+             background-color: #fff;
+          
+             border-radius: 5px;
+             overflow: hidden;
+             padding-top:10px;
+             flex-direction: column;
+         }
+ 
+         .sidebar-container {
+             background-color: #f0f0f0;
+             padding: 20px;
+             width: 250px;
+             border-right: 1px solid #ddd;
+             transition: transform 0.3s ease-in-out;
+             position: fixed;
+             top: 0px;
+             left: 0;
+             height: fit-content;
+             overflow-y: auto;
+             position:relative;
+         }
+ 
+         .sidebar-container.closed {
+             transform: translateX(-250px);
+         }
+ 
+         .sidebar-menu {
+             list-style: none;
+             padding: 0;
+             margin: 0;
+         }
+ 
+         .sidebar-menu li {
+             margin-bottom: 10px;
+         }
+ 
+         .sidebar-menu a {
+             display: block;
+             text-decoration: none;
+             color: #333;
+             padding: 5px 10px;
+             border-radius: 3px;
+             transition: background-color 0.2s ease;
+            font-weight:600;
+         }
+ 
+         .sidebar-menu a:hover {
+             background-color: #ddd;
+         }
+         h3{
+      font-size: 20px;}
+         .content-area {
+             padding: 20px;
+             flex: 1;
+             overflow-y:auto;
+ max-height: calc(220vh - 40px);
+             scrollbar-width:none;
+             position: relative;
+      margin-top: 10px;
+         }
+
+         .content-area h2 {
+             color: purple;
+             margin-top: 0;
+             padding-bottom: 10px;
+             border-bottom: 1px solid #eee;
+             margin-bottom: 15px;
+         }
+ 
+         .content-area p {
+             line-height: 1.6;
+             margin-bottom: 15px;
+         }
+ 
+         .close-menu-button {
+             position: absolute;
+             top: 10px;
+             right: 10px;
+             font-size: 20px;
+             color: #777;
+             cursor: pointer;
+             display: none;
+         }
+        .privacy-heading{
+            text-align: center;
+        }
+    
+
+ .content-area ul{
+list-style:disc;
+      padding-left: 20px;}
+         @media (max-width: 768px) {
+             .container {
+                 flex-direction: column;
+             }
+ 
+             .sidebar-container {
+                 width: 100%;
+                 transform: translateX(0);
+                 z-index: 10;
+                 position: fixed;
+                 top: 0;
+                 left: 0;
+                 height: 100%;
+                 overflow-y: auto;
+                 box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+                 display:none;
+             }
+ 
+             .sidebar-container.closed {
+                 transform: translateX(-100%);
+             }
+ 
+             .content-area {
+                 padding-top: 60px;
+             }
+ 
+             .close-menu-button {
+                 display: block;
+                 background-color: #f0f0f0;
+                 padding: 10px;
+                 border-bottom: 1px solid #ddd;
+                 text-align: right;
+             }
+         }
+         p{
+             text-align:justify;
+         }
+</style>
+ <div class="container">
+
+     <div class="privacy-heading"><h2>Interest-Based Ads Policy for ipshopy.com</h2></div>
+         
+    <div class="privacy-policy-section">
+  
+         <aside class="sidebar-container">
+             <ul class="sidebar-menu">
+                 <li><a href="#information-we-collect">Introduction to Interest-Based Ads</a></li>
+
+                 <li><a href="#how-we-use-your-information">Information We Use for Interest-Based Ads</a></li>
+
+                 <li>
+                 <a href="#cookies-and-similar-technologies">How We Collect Interest-Based Advertising Data</a></li>
+
+                 <li><a href="#how-we-share-your-information">How We Use Your Information</a></li>
+
+                 <li><a href="#data-retention">How ipshopy Works with Third Parties</a></li>
+
+                 <li><a href="#cross-border-data-transfers">Cookies and Advertising Technologies</a></li>
+
+                 <li><a href="#how-we-protect-your-information"> Types of Interest-Based Ads</a></li>
+
+                 <li><a href="#your-rights-and-choices">Your Advertising Choices</a></li>
+
+                 <li><a href="#advertising-and-marketing">Data Security in Advertising</a></li>
+
+                 <li><a href="#data-security-breach-notification">No Sale of Personal Information</a></li>
+
+                 <li><a href="#childrens-privacy">Children's Privacy and Advertising</a></li>
+
+                 <li><a href="#updates-to-privacy-policy">Transparency and Accountability</a></li>
+                  <li><a href="#grievance-officer-details">Updates to This Policy</a></li>
+                 <li><a href="#contact-us">Contact Us</a></li>
+                  {# <li><a href="#examples-of-information-collected">Examples of Information Collected</a></li> #}
+             </ul>
+         </aside>
+
+     <main class="content-area">
+              <p><b>Effective Date:</b> April 25, 2025</p>
+         <p>At ipshopy, we are committed to enhancing your shopping experience by offering you relevant content and personalized advertising. This Interest-Based Ads Policy explains how we deliver interest-based advertising, what technologies we use, your rights and how you can control the way we interact with you through advertising.</p>
+
+         <p>By using ipshopy Services you agree to the practices described in this Policy.</p>
+         <p>This Policy forms part of our overall Privacy Framework including our Privacy Policy and Cookies Policy.</p>
+      
+         <section id="information-we-collect">
+             <h2>1. Introduction to Interest-Based Ads</h2>
+              <p>Interest-based ads also known as personalized or targeted ads are advertisements that are displayed to you based on your browsing behavior interests and previous interactions with websites, products and content.</p>
+               <p>Rather than showing generic ads we aim to show you promotions that are more meaningful, useful and aligned with your preferences.</p>
+
+             
+             <h3>Our goal is to offer:</h3>
+            
+             <ul>
+                 <li>A better browsing experience</li>
+                 <li>Personalized promotions</li>
+                 <li>Relevant product suggestions</li>
+                  
+              </ul>
+
+                <h3>ipshopy follows:</h3>
+            
+             <ul>
+                 <li>Applicable Indian laws</li>
+                 <li>Code for Self-Regulation in Advertising by the Advertising Standards Council of India (ASCI)</li>
+                 <li>Self-Regulatory Principles for Online Behavioral Advertising developed by the Digital Advertising  Alliance     (DAA)</li> 
+                  
+              </ul>
+             
+         <section id="how-we-use-your-information">
+             <h2>2. Information We Use for Interest-Based Ads</h2>
+             <p>We do not use information that directly identifies you such as your name, email address or phone number for interest-based advertising purposes.</p>
+             <p>Instead, we use the following types of information:</p>
+             <h3>a. Browsing Behavior</h3>
+             <ul>
+                 <li>Pages you visit on ipshopy</li>
+                 <li>Products you search for or add to your cart</li>
+                 <li>Categories you explore</li>
+                 <li>Duration and frequency of visits</li>
+                 <li>Links clicked</li>
+             </ul>
+             <h3>b. Purchase History</h3>
+             <ul>
+                 <li>Past purchases help us infer potential interests</li>
+                 <li>Recently viewed products are considered for retargeting ads</li>
+             </ul>
+             <h3>c. Device Information</h3>
+        	
+
+             <ul>
+                 <li>Browser type and settings</li>
+                 <li>Resolving disputes and technical issues</li>
+                 <li>IP address (approximate geolocation only)</li>
+             </ul>
+         
+	
+
+             <h3>d. Interaction with Ads</h3>
+             <ul>
+                 <li>Ads clicked or viewed</li>
+                 <li>Response to promotions</li>
+                 <li>Frequency of engagement</li>
+             </ul>
+             
+             <h3>e. Cookies and Similar Technologies</h3>
+             <ul>
+                 <li>Session cookies, persistent cookies, tracking pixels, device identifiers
+                       All data is anonymized or pseudonymized whenever possible.</li>
+                 
+             </ul>
+            
+         </section>      
+         <section id="cookies-and-similar-technologies">
+             <h2>3. How We Collect Interest-Based Advertising Data</h2>
+             <p>We collect information using: </p>
+            
+             <ul>
+                 <li>Cookies</li>
+                 <li>Pixel tags</li>
+                 <li>Device and browser identifiers</li>
+                 <li>Analytics scriptsnt</li>
+
+                  <li>First-party tracking technologies</li>
+                 <li>Approved third-party tracking tools</li>
+                 
+                
+             </ul>
+
+             <p>These technologies collect and store data whenever you:</p>
+
+               <ul>
+
+                 <li>Visit ipshopy.com</li>
+                 <li>Log in to your account</li>
+
+                  <li>Search for products</li>
+                 <li>Interact with our ads on third-party sites</li>
+                 <li>Use mobile apps related to ipshopy</li>
+
+                 </ul>
+           
+         </section>
+         <section id="how-we-share-your-information">
+             <h2>4. How We Use Your Information</h2>
+             <p> We use the collected information to:</p>
+
+             <h3>a. Display Personalized Ads</h3>
+             <p>We show you ads that match your interests such as:</p>
+
+
+             <ul>
+                 <li>Recommended gadgets based on your browsing history</li>
+                 <li>Fashion deals if you recently visited the clothing section</li>
+                 <li>Offers related to previous purchases</li>
+                
+              </ul>
+             
+             <h3>b. Improve Advertising Performance</h3>
+
+             <p>We analyze:</p>
+                   <ul>
+
+                 <li>Which ads perform well</li>
+                 <li>Which user segments respond best</li>
+                 <li>How frequently users click or ignore ads</li>
+                
+                  </ul>
+            
+             <h3>c. Prevent Overexposure</h3>
+             <p>We limit the number of times you see the same ad to avoid repetition and irritation</p>
+            
+             <h3>d. Measure Ad Effectiveness</h3>
+             <p>We track:</p>
+	
+                <ul>
+
+                 <li>How many people viewed an ad</li>
+                 <li>How many people clicked through</li>
+                 <li>Whether the ad led to a purchase or other action</li>
+                
+                  </ul>
+
+                       <h3>e. Enhance Customer Experience</h3>
+                       <p>We study ad interactions to:</p>
+	
+                <ul>
+
+                 <li>Improve targeting</li>
+                 <li>Create better offers</li>
+                 <li>Avoid irrelevant promotions</li>
+                
+                  </ul>
+
+
+         </section>
+          
+         <section id="data-retention">
+             <h2>5. How ipshopy Works with Third Parties</h2>
+             <p>We collaborate with:</p>
+             
+             <ul>
+                 <li>Advertising networks</li>
+                 <li>Social media platforms</li>
+                 <li>Search engines</li>
+                  <li>Analytics service providers</li>
+                 <li>Data aggregators</li>
+              </ul>
+              <p>These third parties help us:</p>
+              <ul>
+                 <li>Serve relevant ads across multiple platforms</li>
+                 <li>Measure the success of advertising campaigns</li>
+                 <li>Understand user interests betters</li>
+                  <li>	Understand user interests better</li>
+                 <li>Improve cross-device advertising (e.g., showing relevant ads across your laptop and mobile)</li>
+              </ul>
+
+               <p>When you interact with ads:</p>
+              <ul>
+                 <li>	We do not share your name, email address or phone number with advertisers.</li>
+                 <li>We only use anonymized identifiers like cookie IDs or device tokens.</li>
+                 <li>We require third parties to follow strict privacy practices and comply with data protection laws.</li>
+                 
+              </ul>
+         </section>
+ 
+         <section id="cross-border-data-transfers">
+             <h2>6. Cookies and Advertising Technologies</h2>
+             <p>We and our third-party partners use cookies and technologies such as:</p>
+              <ul>
+                 <li>Persistent cookies: Stored in your browser even after you leave ipshopy.</li>
+                 <li>Session cookies: Deleted once you close the browser.</li>
+                 <li>Pixel tags: Invisible images embedded in pages or emails to track behavior.</li>
+                  <li>Device identifiers: Unique IDs on smartphones and tablets.</li>
+                 
+              </ul>
+              <p>You can learn more about our cookie practices in the Cookies Policy.</p>
+         </section>
+
+         <section id="how-we-protect-your-information">
+             <h2>7. Types of Interest-Based Ads</h2>
+             <p>On ipshopy and affiliated platforms you may see:.</p>
+             <h3>a. On-site Targeted Promotions</h3>
+             <ul>
+                 <li>Product banners based on your recent searches</li>
+                 <li>Suggested offers when you browse a category</li>
+                 
+             </ul>
+              <h3>b. Off-site Retargeting Ads</h3>
+                <ul>
+                 <li>Ads displayed on third-party websites based on your interaction with ipshopy</li>
+             </ul>
+              <h3>c. Email-Based Promotions</h3>
+                <ul>
+                 <li>Emails suggesting products similar to your wishlist or cart contents</li>
+                 <li>Emails suggesting products similar to your wishlist or cart contents</li>
+             </ul>
+
+              <h3>d. Social Media Ads</h3>
+                <ul>
+                 <li>Promotions shown when you visit platforms like Facebook, Instagram, YouTube</li>
+                 <ul>
+         </section>
+         <section id="your-rights-and-choices">
+             <h2>8. Your Advertising Choices</h2>
+             <p>We believe in giving users control over how their information is used for advertising.</p>
+             <p>You have the right to:</p>
+
+             <h3>a. Manage ipshopy Advertising Preferences</h3>
+              <ul>
+                 <li>You can opt-out of personalized ads from ipshopy by adjusting settings in Your Account.</li>
+                 <li>Even after opting out, you will still see ads, but they will not be customized based on your interests.</li>
+                 </ul>
+
+                  <h3>b. Manage Third-Party Advertising Preferences</h3>
+                  <ul>
+                 <li>Visit Network Advertising Initiative (NAI) Opt-Out Page</li>
+                 <li>Visit Digital Advertising Alliance (DAA) Opt-Out Page</li>
+                  </ul>
+                  <p>Note:</p>
+                  <ul>
+                 <li>You must opt out separately for each device and browser you use.</li>
+                 <li>Clearing cookies may reset your preferences.</li>
+             </ul>
+
+              <h3>c. Device and App Settings</h3>
+              <p>On mobile devices you can:</p>
+                  <ul>
+                 <li>Limit Ad Tracking through your device settings</li>
+
+                 <li>Reset your Advertising ID to unlink behavior from previous browsing</li>
+                  </ul>
+                  <p>Please refer to your mobile operating system's help center for specific steps.:</p>
+
+         </section>
+ 
+         <section id="advertising-and-marketing">
+             <h2>9. Data Security in Advertising</h2>
+             <p>We take the following steps to protect your data:</p>
+             
+             <ul>
+                 <li>Encrypt data whenever possible</li>
+                 <li>Use secure servers for ad delivery</li>
+                  <li>Anonymize or pseudonymize data wherever feasible</li>
+                 <li>Maintain strict access controls</li>
+                  <li>Require third-party ad networks to comply with industry security standards</li>
+             </ul>
+             <p>We regularly audit our advertising practices to ensure they meet security and privacy obligations.</p>
+         </section>
+         <section id="data-security-breach-notification">
+             <h2>10. No Sale of Personal Information</h2>
+             <p>ipshopy does not sell your personal information to advertisers or third parties.</p>
+             <p>We use information only to enhance user experience and serve relevant ads without compromising your privacy.</p>
+           
+         </section>
+ 
+         <section id="childrens-privacy">
+             <h2>11. Children's Privacy and Advertising</h2>
+             <p>ipshopy does not knowingly collect personal data for advertising purposes from children under the age of 18.</p>
+           
+             <p>If we become aware that we have inadvertently collected such data, we will delete it promptly.</p>
+         </section>
+ 
+         <section id="updates-to-privacy-policy">
+             <h2>12. Transparency and Accountability</h2>
+             <p>We are committed to:</p>
+              <ul>
+                 <li>Providing clear explanations of our advertising practices</li>
+                 <li>Offering accessible privacy and ad preference options</li>
+                 <li>Complying with all applicable laws and self-regulatory codes</li>
+                
+               </ul>
+
+               <p>We encourage you to review our:</p>
+              <ul>
+                 <li>Privacy Policy</li>
+                 <li>Cookies Policy</li>
+                
+               </ul>
+            
+         </section>
+         <section id="examples-of-information-collected">
+             <h2>13. Updates to This Policy</h2>
+           <p>We may revise this Interest-Based Ads Policy periodically. Changes will be posted on this page with a revised "Last Updated" date.</p>
+
+
+            <p>Significant changes may also be communicated through notifications on ipshopy or via email.</p>
+
+
+             <p>We encourage you to review this policy regularly.</p>
+
+              <p>Your continued use of ipshopy Services after changes are made constitutes acceptance of the revised policy.</p>
+         </section>
+ 
+         <section id="contact-us">
+             <h2>14. Contact Us</h2>
+             <p>If you have any
+             questions about this Privacy Policy or wish to exercise your rights you can
+             contact us at:</p>
+              <p>IP SUPER SHOPPEE PVT. LTD.</p>
+             <p><b>Website</b>: www.ipshopy.com</p>
+             <p><b>Email</b>: info@ipshopy.com</p>
+             <p><b>Contact Number</b> : 9342525252</p>
+             <p>Registered Office: ipshopy, ‘Dnyanpeeth Campus’ T-18’ Opp. Garrware Stadium, STPI, 
+           Naregaon Road, Chhatrapati Sambhaji Nagar, (Aurangabad), Maharashtra, India. 431007
+          </p>
+         </section>
+     </main>
+ </div>
+</div>
+
+
+ <script>
+     document.addEventListener('DOMContentLoaded', function() {
+         const closeButton = document.querySelector('.close-menu-button');
+         const sidebar = document.querySelector('.sidebar-container');
+         const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+         const contentArea = document.querySelector('.content-area');
+ 
+         if (closeButton && sidebar) {
+             closeButton.addEventListener('click', function() {
+                 sidebar.classList.toggle('closed');
+             });
+         }
+ 
+         sidebarLinks.forEach(link => {
+             link.addEventListener('click', function(event) {
+                 event.preventDefault();
+                 const targetId = this.getAttribute('href').substring(1);
+                 const targetElement = document.getElementById(targetId);
+ 
+                 if (targetElement) {
+                     const offsetTop = targetElement.offsetTop;
+                      contentArea.scrollTo({
+                         top: offsetTop,
+                         behavior: 'smooth'
+                     });
+ 
+                     if (window.innerWidth <= 768) {
+                         sidebar.classList.add('closed');
+                     }
+                 }
+             });
+         });
+     });
+ </script>
+
+{{ footer }}

@@ -1,0 +1,155 @@
+{{ header }}
+{#<div id="account-address" class="container">#}
+{#  <ul class="breadcrumb">#}
+{#    {% for breadcrumb in breadcrumbs %}#}
+{#    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>#}
+{#    {% endfor %}#}
+{#  </ul>#}
+{#  {% if success %}#}
+{#  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}</div>#}
+{#  {% endif %}#}
+{#  {% if error_warning %}#}
+{#  <div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>#}
+{#  {% endif %}#}
+{#  <div class="row">{{ column_left }}#}
+{#    {% if column_left and column_right %}#}
+{#    {% set class = 'col-sm-6' %}#}
+{#    {% elseif column_left or column_right %}#}
+{#    {% set class = 'col-sm-9' %}#}
+{#    {% else %}#}
+{#    {% set class = 'col-sm-12' %}#}
+{#    {% endif %}#}
+{#    <div id="content" class="{{ class }}">{{ content_top }}#}
+{#      <h2>{{ text_address_book }}</h2>#}
+{#      {% if addresses %}#}
+{#      <div class="table-responsive">#}
+{#        <table class="table table-bordered table-hover">#}
+{#          {% for result in addresses %}#}
+{#          <tr>#}
+{#            <td class="text-left">{{ result.address }}</td>#}
+{#            <td class="text-right"><a href="{{ result.update }}" class="btn btn-info">{{ button_edit }}</a> &nbsp; <a href="{{ result.delete }}" class="btn btn-danger">{{ button_delete }}</a></td>#}
+{#          </tr>#}
+{#          {% endfor %}#}
+{#        </table>#}
+{#      </div>#}
+{#      {% else %}#}
+{#      <p>{{ text_empty }}</p>#}
+{#      {% endif %}#}
+{#      <div class="buttons clearfix">#}
+{#        <div class="pull-left"><a href="{{ back }}" class="btn btn-default">{{ button_back }}</a></div>#}
+{#        <div class="pull-right"><a href="{{ add }}" class="btn btn-primary">{{ button_new_address }}</a></div>#}
+{#      </div>#}
+{#      {{ content_bottom }}</div>#}
+{#    {{ column_right }}</div>#}
+{#</div>#}
+
+<style>
+  @media (max-width: 768px) {
+    #content {
+      padding: 0 15px;
+    }
+    #content div[style*="grid-template-columns"] {
+      grid-template-columns: 1fr !important;
+    }
+    .address_buttons .btn-sm {
+      font-size: 14px;
+    }
+  }
+  .address_buttons .button .fa,
+.address_buttons .btn .fa {
+	margin: 0;
+}
+.address_buttons .btn {
+	background-color: transparent !important;
+	font-weight: 600;
+	font-size: 14px;
+	/* transition: color 0.3s ease-in-out; */
+}
+.address_buttons .btn:hover {
+	background-color: #a93cc6 !important;
+	color: white !important;
+}
+.address_buttons .btn.delete:hover {
+	background-color: red !important;
+}.address_container{
+    display:flex;
+    gap:40px;
+}
+.address_section{
+    width:100%;
+}
+</style>
+<div id="account-address" class="container-fluid">
+  <div class="row address_container">
+    {#{{ column_left }}#}
+    {#{% if column_left and column_right %}#}
+    {#  {% set class = 'col-sm-6' %}#}
+    {#{% elseif column_left or column_right %}#}
+    {#  {% set class = 'col-sm-9' %}#}
+    {#{% else %}#}
+    {#  {% set class = 'col-sm-12' %}#}
+    {#{% endif %}#}
+{{column_left_account}}
+    <div id="content" class="{{ class }} address_section">
+      <h2 style="font-weight: 600; font-size: 22px; margin-bottom: 20px;">Manage Addresses</h2>
+
+      {% if addresses %}
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        {% for result in addresses %}
+        <div style="border: 1px solid #eee; border-radius: 10px; padding: 20px; box-sizing: border-box; background: #fff; position: relative;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-weight: 600; display: flex; align-items: center; gap: 6px;"></div>
+            {% if result.default %}
+            <span style="background-color: #a93cc6; color: #fff; font-size: 12px; padding: 3px 10px; border-radius: 999px;">Default</span>
+            {% endif %}
+          </div>
+
+          <div style="margin-top: 15px; font-size: 14px; color: #333;">
+            <div style="font-weight: 600;">{{ result.firstname }} {{ result.lastname }}</div>
+            <div style="font-weight: 600; color: #000;">{{ result.telephone }}</div>
+            <div style="color: #888; margin-top: 5px;">
+              {{ result.address }}<br>
+              {{ result.city }} {{ result.postcode }}<br>
+              {{ result.country }}
+            </div>
+          </div>
+
+          <div class='address_buttons' style="margin-top: 15px; display: flex; gap: 15px;">
+            <a href="{{ result.update }}" class="btn btn-sm" style="color: #a93cc6;"><i class="fa fa-edit"></i> Edit</a>
+            <a href="{{ result.delete }}" class="btn btn-sm delete" style="color: #888;"><i class="fa fa-trash"></i> Delete</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>{{ text_empty }}</p>
+      {% endif %}
+
+      <div style="margin-top: 25px; display: flex; justify-content: center;">
+        <div style="height: fit-content; border: 2px dashed #e0e0e0; border-radius: 12px; padding: 30px 20px; text-align: center; box-sizing: border-box; background: #fff; width: 100%; max-width: 300px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #f0f0f0; margin: 0 auto;">
+            {#<span style="font-size: 20px; line-height: 36px; display: inline-block;">#}
+                <a href="{{ add }}" style="font-size: 20px; line-height: 36px; display: inline-block; color: #953A93; font-weight: 900;">+</a>
+            {#</span>#}
+          </div>
+          <div style="margin-top: 10px; font-weight: 600; font-size: 16px; color: #222;">
+            Add New Address
+          </div>
+          {#<div style="margin-top: 4px; font-size: 14px; color: #888;">#}
+          {#  Add Address#}
+          {#</div>#}
+          {#<div style="margin-top: 12px;">#}
+          {#  <a href="{{ add }}" style="color: #a93cc6; font-weight: 500; font-size: 14px; text-decoration: none;">Add Address</span>#}
+          {#</div>#}
+        </div>
+      </div>
+
+      {#<div style="margin-top: 30px;">#}
+      {#  <a href="{{ back }}" class="btn btn-default">{{ button_back }}</a>#}
+      {#</div>#}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+
+{{ footer }}

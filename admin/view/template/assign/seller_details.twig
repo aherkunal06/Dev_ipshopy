@@ -1,0 +1,114 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content" style="background-color: #f5f7fa; min-height: 100vh;">
+  <div class="page-header" style="border-bottom: 1px solid #ddd;">
+    <div class="container-fluid">
+      <h1 style="color: #333;">{{ heading_title }}</h1>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="panel panel-default" style="box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-radius: 8px;">
+      <div class="panel-heading" style="background-color: white; color: black; border-radius: 8px 8px 0 0;">
+        <h3 class="panel-title">
+          <i class="fa fa-user"></i> Seller Details
+        </h3>
+      </div>
+
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover" style="background-color: white;">
+            <thead style="background-color: #f1f3f5;">
+              <tr style="color: #333;">
+                <th>Seller ID</th>
+                <th>Seller Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if sellers %}
+                {% for seller in sellers %}
+                  <tr>
+                    <td>{{ seller.seller_id }}</td>
+                    <td>{{ seller.seller_name }}</td>
+                    <td>{{ seller.email }}</td>
+                    <td>
+                      <a href="{{ seller.toggle_status_url }}"
+                         class="btn btn-{{ seller.status == '1' ? 'success' : 'danger' }} btn-sm"
+                         data-toggle="tooltip" title="Toggle Status">
+                        {{ seller.status == '1' ? 'Enabled' : 'Disabled' }}
+                      </a>
+                    </td>
+                    <td class="text-center">
+                      <a href="{{ seller.edit_url }}" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Edit Seller">
+                        <i class="fa fa-pencil"></i>
+                      </a>
+                      <button type="button"
+                              class="btn btn-danger btn-sm btn-unassign"
+                              data-toggle="tooltip"
+                              title="Unassign Seller"
+                              data-seller-id="{{ seller.seller_id }}">
+                        <i class="fa fa-times"></i>
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="5" class="text-center text-muted">
+                    No sellers found for <strong>{{ assign_date }}</strong>.
+                  </td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Back Button -->
+        <a href="{{ back_url }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"
+           style="position: absolute; top: 10px; right: 20px; width: 34px; height: 34px; padding: 0;
+                  display: flex; align-items: center; justify-content: center; border: 1px solid #ccc;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-radius: 5px;">
+          <i class="fa fa-reply" style="font-size: 18px; color: #333;"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('.btn-unassign').on('click', function() {
+      var seller_id = $(this).data('seller-id');
+      if (confirm('Are you sure you want to unassign this seller?')) {
+        $.ajax({
+          url: 'index.php?route=assign/assign_work/unassignSeller&user_token={{ user_token }}',
+          type: 'post',
+          data: { 
+            seller_id: seller_id,
+            user_id: {{ user_id }}
+          },
+          dataType: 'json',
+          success: function(json) {
+            if (json.success) {
+              alert('Seller unassigned successfully.');
+              location.reload();
+            } else if (json.error) {
+              alert('Error: ' + json.error);
+            }
+          },
+          error: function() {
+            alert('An error occurred while unassigning the seller.');
+          }
+        });
+      }
+    });
+  });
+</script>
+
+{{ footer }}

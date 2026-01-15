@@ -1,0 +1,299 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {#{% if error_warning %}#}
+    {#<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}#}
+    {#  <button type="button" class="close" data-dismiss="alert">&times;</button>#}
+    {#</div>#}
+    {#{% endif %}#}
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><i class="fa fa-list"></i> {{ text_list }}</div>
+      <div class="panel-body">
+
+	<div class="well">
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="form-group">
+						<!-- 05 02 2020 -->  
+							<label class="control-label" for="input-filter_name">{{ entry_sellername }} </label>
+							<input type="text" name="filter_name" value="{{ filter_name }}" placeholder="{{ entry_sellername }}" id="input-filter_name" class="form-control" />
+						</div>
+						 
+						<div class="form-group">
+							<label class="control-label" for="input-filter_date">{{ column_date }}</label>
+							<div class="input-group date">						
+								<input type="text" name="filter_date" value="{{ filter_date }}" placeholder="{{ column_date }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" />
+								<span class="input-group-btn">
+								<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+								</span>
+							</div>
+						</div>
+					<!-- 05 02 2020 --> 
+					</div>
+					
+					<!-- <div class="col-sm-4">
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="input-filter_approved">{{ column_approve }} </label>
+							<select name="filter_approved" id="input-filter_approved" class="form-control">
+								<option value=""></option>      
+								{% if filter_approved == '1' %}            
+								<option value="1" selected="selected">{{ text_yes }}</option>
+								  {% else %}        
+								<option value="1">{{ text_yes }}</option>
+								  {% endif %}
+								  {% if filter_approved == '0' %}    
+								<option value="0" selected="selected">{{ text_no }}</option>
+								 {% else %}
+								 <option value="0">{{ text_no }}</option>
+								  {% endif %}
+							  </select>
+						</div>
+						<div class="text-center" style="margin-top:40px;">
+							<button type="button" id="button-filter" class="btn btn-primary col-sm-12"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+						</div>
+					</div> -->
+					
+					<!-- <div class="col-sm-4">
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="input-filter_status">{{ entry_status }} </label>
+							<select name="filter_status" id="input-status" class="form-control">
+								<option value=""></option>      
+								{% if filter_status == '1' %}            
+								<option value="1" selected="selected">{{ text_enabled }}</option>
+								  {% else %}        
+								<option value="1">{{ text_enabled }}</option>
+								  {% endif %}
+								  {% if filter_status == '0' %}    
+								<option value="0" selected="selected">{{ text_disabled }}</option>
+								 {% else %}
+								 <option value="0">{{ text_disabled }}</option>
+								  {% endif %}
+							  </select>
+						</div>
+					</div> -->
+				
+					<div class="col-sm-4">
+						<div class="form-group">
+							<label class="control-label" for="input-filter_status">{{ entry_status }} </label>
+							<select name="filter_status" id="input-status" class="form-control">
+								<option value="">-- Select Status --</option>   
+								{% if filter_status == 'Approved' %}  
+									<option value="Approved" selected="selected">{{ text_approved }}</option>
+								{% else %}
+									<option value="Approved">{{ text_approved }}</option>
+								{% endif %}
+								
+								{% if filter_status == 'Pending' %}  
+									<option value="Pending" selected="selected">{{ text_pending }}</option>
+								{% else %}
+									<option value="Pending">{{ text_pending }}</option>
+								{% endif %}
+								
+								{% if filter_status == 'Rejected' %}  
+									<option value="Rejected" selected="selected">{{ text_rejected }}</option>
+								{% else %}
+									<option value="Rejected">{{ text_rejected }}</option>
+								{% endif %}
+							</select>
+						</div>
+						<div class="text-center" style="margin-top:40px;">
+							<button type="button" id="button-filter" class="btn btn-primary col-sm-12"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+						</div>
+					</div>
+					
+				</div>			
+			</div>   
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>{{column_vendor}}</th>
+                <th>{{column_total_products}}</th>
+                <th>{{column_processing_order_count}} </th>
+                <th>{{column_vacation_start_date}}</th>
+                <th>{{column_vacation_end_date}}</th>
+                <th>{{column_vacation_reason}}</th>
+                <th>{{column_status}}</th>
+                <th>{{column_Approval_date}}</th>
+                <th class="text-center">{{column_action}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if vacations %}
+              {% for vacation in vacations %}
+              <tr>
+         
+                <td>{{ vacation.vendor_name }}</td>
+                    <td>{{ vacation.processing_order_count }}</td>
+             <td>{{ vacation.total_products }}</td>
+                <td>{{ vacation.start_date }}</td>
+                <td>{{ vacation.end_date }}</td>
+                <td>{{ vacation.reason }}</td>
+                <td>
+                  <span class="label label-{% if vacation.status == 'Approved' %}success{% elseif vacation.status == 'Rejected' %}danger{% else %}warning{% endif %}">
+                    {{ vacation.status }}
+                  </span>
+                </td>
+                <td>{{ vacation.date_added }}</td>
+                <td class="text-center">
+                  <a href="{{ vacation.view }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
+                  
+                  <!-- {% if vacation.status == 'Pending' %}
+                  <a href="{{ approve }}&vacation_id={{ vacation.vacation_id }}" class="btn btn-success btn-sm"><i class="fa fa-check"></i></a>
+                  <a href="{{ reject }}&vacation_id={{ vacation.vacation_id }}" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
+                  {% endif %} -->
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <td colspan="8" class="text-center">No vacation requests found.</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+
+        {% if pagination %}
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+	// $('#button-filter').on('click', function() {
+	// 	var url = 'index.php?route=vendor/vacation_list&user_token={{ user_token }}';
+		
+	// 	var filter_name = $('input[name=\'filter_name\']').val();
+	
+	// 	if (filter_name) {
+	// 		url += '&filter_name=' + encodeURIComponent(filter_name);
+	// 	}
+		
+	// 	var filter_status = $('select[name=\'filter_status\']').val();
+	
+	// 	if (filter_status !== '') {
+	// 		url += '&filter_status=' + encodeURIComponent(filter_status);
+	// 	}
+	
+	// 	var filter_date = $('input[name=\'filter_date\']').val();
+	
+	// 	if (filter_date) {
+	// 		url += '&filter_date=' + encodeURIComponent(filter_date);
+	// 	}
+		
+	// 	var filter_approved = $('select[name=\'filter_approved\']').val();
+	
+	// 	if (filter_approved !== '') {
+	// 		url += '&filter_approved=' + encodeURIComponent(filter_approved);
+	// 	}
+			
+	//   location = url;
+// });
+	$('#button-filter').on('click', function() {
+    var url = 'index.php?route=vendor/vacation_list&user_token={{ user_token }}';
+
+    var filter_name = $('input[name="filter_name"]').val();
+    if (filter_name) {
+        url += '&filter_name=' + encodeURIComponent(filter_name);
+    }
+
+    var filter_date = $('input[name="filter_date"]').val();
+    if (filter_date) {
+        url += '&filter_date=' + encodeURIComponent(filter_date);
+    }
+
+    var filter_approved = $('select[name="filter_approved"]').val();
+    if (filter_approved !== '') {
+        url += '&filter_approved=' + encodeURIComponent(filter_approved);
+    }
+
+    // var filter_status = $('select[name="filter_status"]').val();
+    // if (filter_status !== '') {
+    //     url += '&filter_status=' + encodeURIComponent(filter_status);
+    // }
+
+	var filter_status = $('select[name="filter_status"]').val();
+    if (filter_status !== '') {
+        url += '&filter_status=' + encodeURIComponent(filter_status);
+    }
+
+    location = url;
+});
+
+	</script>
+	
+	  <script type="text/javascript"><!--
+	$('.date').datetimepicker({
+		pickTime: false
+	});
+	
+	$('.time').datetimepicker({
+		pickDate: false
+	});
+	
+	$('.datetime').datetimepicker({
+		pickDate: true,
+		pickTime: true
+	});
+	/* new code vendor filter */
+	
+	$('input[name=\'filter_name\']').autocomplete({
+		'source': function(request, response) {
+			$.ajax({
+				url: 'index.php?route=vendor/vacation_list/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+				dataType: 'json',
+				success: function(json) {
+					json.unshift({
+						vendor_id: 0,
+						vendorname: '{{ text_none }}'
+					});
+	
+					response($.map(json, function(item) {
+						return {
+							label: item['vendorname'],
+							value: item['vendor_id']
+						}
+					}));
+				}
+			});
+		},
+		'select': function(item) {
+			$('input[name=\'filter_name\']').val(item['label']);
+			$('input[name=\'rf_id\']').val(item['value']);
+		}
+	});
+	/* new code vendor filter */
+	//--></script>
+	<!--18 02 2020-->
+	<style>
+	.vendor-list .label{font-size:12px;}
+	</style>
+{{ footer }}

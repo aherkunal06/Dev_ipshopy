@@ -1,0 +1,161 @@
+<div class="latestorderbox col-sm-12">
+	<h3 class="panel-title pull-left">
+		{{ heading_title }}</h3>
+	<div class="pull-right btn btn-success">
+		<a href="{{ viewallorder }}">{{ text_viewallorders }}</a>
+	</div>
+</div>
+<div class="clearfix"></div>
+<div id="gethight" class="panel panel-default mainboxlatestorder">
+	<div class="table-responsive">
+		<table class="table table-bordered fs-12px">
+			<thead>
+				<tr>
+					<td class="text-left" style='width : 75px;'>{{ column_order_id }}</td>
+					<!--  tmd vendor2 customer condtion  -->
+						<td style='width : 180px;'>{{ column_customer }}</td>  {##}
+					<!--  tmd vendor2 customer condtion  -->
+					<!--03 10 2019-->
+					 {#<td style='width : 150px;'>{{ column_customer }}</td>#}
+					<td class="text-left" style='width : 400px'>Product name</td>
+
+					<td class="text-left" style='width : 75px;'>{{ column_noofproduct }}</td>
+					<!--03 10 2019-->
+					<td class="text-left">Image</td>
+					<td>{{ column_date_added }}</td>
+					<td class="text-left">{{ column_total }}</td>
+					<td class="text-left">{{ column_action }}</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for order in orders %}
+					<tr>
+						<td class="text-left">{{ order.order_id }}</td>
+						{# {% if customer2vendor==1 %}
+							{% if order.customer_id==0 %}
+							<td><span class="label label-info">Guest name</span></td>
+							 {% else %} #}
+							<td><span style='margin-right : 5px;'>{{ order.firstname }}</span><span>{{order.lastname}}</span></td>
+							{# {% endif %}
+						{% endif %} #}
+						<td class="text-left">
+							{% if order.products|length > 0 %}
+								{% for product in order.products %}
+									<p class='latest-order_product_name'>{{ product.name }}</p>
+								{% endfor %}
+							{% else %}
+								<span class="label label-warning">No Products</span>
+							{% endif %}
+						</td>
+
+						<td>
+							<!--20 02 2020-->
+							{% if order.noofproduct == 1  %}
+								<span class="label label-info">{{ order.noofproduct }}</span>
+							{% else %}
+								<span class="label label-success">{{ order.noofproduct }}</span>
+							{% endif %}
+							<!--20 02 2020-->
+						</td>
+						<td class="text-left">
+							{% if order.products|length > 0 %}
+								{% for product in order.products %}
+									<img src="{{ product.image }}" alt="{{ product.name }}" style="width: 50px; height: 50px;"/>
+								{% endfor %}
+							{% else %}
+								<span class="label label-warning">No Image</span>
+							{% endif %}
+						</td>
+						<td>
+							<span class="label btn-info">
+								<i class="fa fa-clock-o" aria-hidden="true"></i>
+								{{ order.date_added }}</span>
+						</td>
+						<td class="text-left">{{ order.total }}</td>
+						<td class="text-left">
+							<a href="{{ order.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-info">
+								<i class="fa fa-eye"></i>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+				<button id="myBtn" class="btn tmdreadmore">
+					<i class="fa fa-angle-double-down"></i>
+				</button>
+
+			</tbody>
+		</table>
+	</div>
+</div>
+ <script>
+
+$(document).on('click','.pstatuss',function() {
+    rel=$(this).attr('rel');
+    rel1=$(this).attr('rel1');
+
+    html  ='<div class="input-group addpstatus'+rel+'">';
+    html +='<select type="text" name="order_status_id" id="pstatus'+rel+'" class="form-control">';
+    {% for orders in order_statuss %}
+    html += '    <option value="{{ orders.order_status_id }}">{{ orders.name|escape('js') }}</option>';
+    {% endfor %}
+    html += '</select>';
+
+    html +='<input type="hidden" name="order_id" id="order_id'+rel+'" value="'+rel+'"/>';
+    html +='<span class="input-group-btn"><button data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary productsstatus" rel='+rel+' type="button"><i class="fa fa-save"></i></button></span></div></div>';
+    $('#statusedit'+rel).html(html);
+    $("#pstatus"+rel).val(rel1);
+  });
+</script>
+
+ <script>
+	$(document).on('click','.productsstatus',function() {
+		rel=$(this).attr('rel');
+		$.ajax({
+		  url: 'index.php?route=vendor/latestorder/addorderstatus',
+		  type:'post',
+		  dataType:'json',
+		  data: $('.addpstatus'+rel+' select, .addpstatus'+rel+' input[type=\'hidden\']'),
+			beforeSend: function() {
+					$('.productsstatus').button('loading');
+				},
+				complete: function() {
+					$('.productsstatus').button('reset');
+				},
+			success: function(json) {
+			if (json['success']) {
+
+			}
+			setTimeout(function(e){ $('.close').trigger('click');location.reload();},500);
+			}
+		});
+	});
+	
+	var gethights = document.getElementById('gethight').offsetHeight;
+
+	if (gethights<305) {
+		 $(".tmdreadmore").css("display", "none");
+	}
+	var defaultHeight = 305;
+	var text = $(".mainboxlatestorder");
+	var textHeight = text[0].scrollHeight;
+	var button = $(".tmdreadmore");
+	text.css({"max-height": defaultHeight, "overflow": "hidden"});
+
+	button.on("click", function(){
+	button.find('i').toggleClass('fa-angle-double-down fa-angle-double-up');
+
+	  var newHeight = 0;
+	  if (text.hasClass("active")) {
+		newHeight = defaultHeight;
+		text.removeClass("active");
+	  } else {
+		newHeight = textHeight;
+		text.addClass("active");
+	  }
+	  text.animate({
+		"max-height": newHeight
+	  }, 500);
+	  console.log(newHeight);
+	});
+</script>
+

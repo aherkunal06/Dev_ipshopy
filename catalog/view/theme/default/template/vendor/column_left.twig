@@ -1,0 +1,185 @@
+<!-- Font Awesome 6 Free CDN -->
+	{#-- added code for seller vacation on 13-05-2025-------------------#}
+		{#<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">#}
+		{#-------------------------------------------------------------------------------------------------------------#}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-M7qH72Y3Dp7xI5SNHg" />
+<nav id="column-left">
+
+	<ul
+		id="menu">
+		<!-- <div class="navbar-header"> -->
+		<div id="button-menu">
+			<a type="button" class="pull-left">
+				<i class="fa fa-indent fa-lg"></i>
+
+			</a>
+		</div>
+		<!-- </div> -->
+		<li id="dashboard">
+			<a href="{{ dashboard }}">
+				<i data-toggle="tooltip" title="{{ text_dashboard }}" class="fa fa-dashboard fa-fw"></i>
+				<span>{{ text_dashboard }}</span>
+			</a>
+		</li>
+
+		<li id="accountsetting">
+			<a class="parent">
+				<i data-toggle="tooltip" title="{{ text_accountsetting }}" class="fa fa-cog fw"></i>
+				<span>{{ text_accountsetting }}</span>
+			</a>
+			<ul>
+				<li><a href="{{edit_seller}}">{{ text_manageseller }}</a></li>
+				<li><a href="{{change}}">{{ text_change }}</a></li>
+				<li><a href="{{store_info}}">{{ text_store }}</a></li>
+				<li><a href="{{warehouse}}">{{text_warehouse}}</a></li>
+			</ul>
+		</li>
+
+		<li id="orders">
+			<a href="{{ orders }}">
+				<i data-toggle="tooltip" title="{{ text_orders }}" class="fa fa-shopping-cart" aria-hidden="true"></i>
+				<span>{{ text_orders }}</span>
+			</a>
+		</li>
+		
+		<li id="orders_history">
+			<a href="{{ orders_history }}">
+				<i data-toggle="tooltip" title="{{ text_orders_history }}" class="fa fa-history" aria-hidden="true"></i>
+				<span>{{ text_orders_history }}</span>
+			</a>
+		</li>
+
+		<li id="catalog">
+			<a class="parent">
+				<i data-toggle="tooltip" title="{{ text_catalog }}" class="fa fa-tags fw"></i>
+				<span>{{ text_catalog }}</span>
+			</a>
+			<ul>
+				<li><a href="{{product}}">{{ text_product }}</a></li>
+				<li><a href="{{download}}">{{ text_download }}</a></li>
+				<li><a href="{{review}}">{{ text_review }}</a></li>
+				<li><a href="{{manufacturer}}">{{ text_manufacturer }}</a></li>
+				<li><a href="{{option}}">{{ text_option }}</a></li>
+				<li><a href="{{recurring}}">{{ text_recurring }}</a></li>
+				{#// Changes- 12/05/2025#}
+                <li><a href="{{ hsn_code_list}}">{{ text_hsn_code_approval }}</a></li>
+    	        {#// End changes- 12/05/2025#}
+			</ul>
+		</li>
+
+
+		<li id="mypayment">
+			<a class="parent">
+				<i data-toggle="tooltip" title="{{ text_mypayment }}" class="fa fa-credit-card"></i>
+				<span>{{ text_mypayment }}</span>
+			</a>
+			<ul>
+				<li><a href="{{seller_income}}">{{ text_income }}</a></li>
+				<li><a href="{{seller_commission}}">{{ text_commission }}</a></li>
+				<li><a href="{{shippingrate}}">{{ text_shippingrate }}</a></li>
+			</ul>
+		</li>
+
+		<li id="attribute">
+			<a class="parent">
+				<i data-toggle="tooltip" title="{{ text_attribute }}" class="fa fa-puzzle-piece fa-fw"></i>
+				<span>{{ text_attribute }}</span>
+			</a>
+			<ul>
+				<li><a href="{{attribute}}">{{ text_attribute }}</a></li>
+				<li><a href="{{attribute_group}}">{{ text_attribute_group }}</a></li>
+			</ul>
+		</li>
+
+		<li id="enquiry">
+			<a href="{{ enquiry }}">
+				<i data-toggle="tooltip" title="{{ text_enquiry }}" class="fa fa-envelope" aria-hidden="true"></i>
+				<span>{{ text_enquiry }}</span>
+			</a>
+		</li>
+
+		<li id="importexport">
+			<a class="parent">
+				<i data-toggle="tooltip" title="{{ text_importexport }}" class="fa fa-file-excel-o"></i>
+				<span>{{ text_importexport }}</span>
+			</a>
+			<ul>
+				<li><a href="{{import}}">{{ text_import }}</a></li>
+				<li><a href="{{export}}">{{ text_export }}</a></li>
+			</ul>
+		</li>
+		{# added changes regarding to the seller vacation on 06-05-2025 -----------------------------#}
+    		<li id="vacationmenu">
+    		    <a href="{{ vacation_list }}">
+               <i data-toggle="tooltip" title="{{ text_vacations }}" class="fa fa-umbrella"></i> 
+              <span>{{ text_vacations }}</span>
+             </a>
+    			
+    		</li>
+
+		{#---------------------------------------------------------------------------------------------#}
+    	  
+    	  
+    	{#<li  id="enquiry"><a href="{{ enquiry }}"><i data-toggle="tooltip" title="{{ text_enquiry }}" class="fa fa-envelope" aria-hidden="true"></i><span>{{ text_enquiry }}</span></a></li>		#}
+				
+		<li  id="ticket_list">
+		    <a href="{{ ticket_list }}">
+    	        <i data-toggle="tooltip" title="{{ text_ticket }}" class="fa fa-ticket" aria-hidden="true"></i>
+    	        <span>{{ text_ticket }}</span>
+	        </a>
+		</li>		
+
+		
+		<li id="tutorialvideos">
+			<a href="{{ tutorialvideos }}">
+				<i data-toggle="tooltip" title="{{ tutorial_videos }}" class="fa fa-play" aria-hidden="true"></i>
+				<span>{{ tutorial_videos }}</span>
+			</a>
+		</li>
+		<li id="faq">
+          <a href="index.php?route=vendor/faq">
+            <i class="fa fa-question-circle" aria-hidden="true"></i>
+            <span>FAQ</span>
+          </a>
+        </li>
+
+	</ul>
+
+
+	<div
+		class='column_left_support'>
+{#commented on 05/06/25 because no link provided #}
+		<!-- {# help #} -->
+		{#<div class="row need-help">#}
+		{#	<div class="col-3">#}
+		{#		<a href="#">#}
+		{#			<p>#}
+		{#				<span class="icon">#}
+		{#					<i class="fa fa-question-circle"></i>#}
+		{#				</span>#}
+		{#				<span class="text">Help</span>#}
+		{#			</p>#}
+		{#		</a>#}
+		{#	</div>#}
+		{#</div>#}
+		<!-- {# call #} -->
+
+		{#<div class="row call" id="call-toast-trigger">#}
+		{#	<div class="col-3">#}
+
+		{#		<p>#}
+		{#			<span class="icon">#}
+		{#				<i class="fa fa-phone"></i>#}
+		{#			</span>#}
+		{#			<span class="text">Call</span>#}
+		{#		</p>#}
+
+		{#	</div>#}
+		{#</div>#}
+
+	</div>
+</nav>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+	AOS.init();
+</script>

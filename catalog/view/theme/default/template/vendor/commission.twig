@@ -1,0 +1,321 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+			    <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-info">
+    			    <i class="fa fa-reply"></i>
+    		    </a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li>
+						<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger">
+				<i class="fa fa-exclamation-circle"></i>
+				{{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		{% if success %}
+			<div class="alert alert-success">
+				<i class="fa fa-check-circle"></i>
+				{{ success }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				{#<h3 class="panel-title">#}
+				{#	<i class="fa fa-list"></i>#}
+				{#	{{ text_list }}</h3>#}
+			</div>
+			<div class="panel-body ">
+			    
+				{# added on the 28-04-2025--------------------------------------------------------#}
+				<!-- added by shubham at 28-04-2025 -->
+			<div class="well">
+				<div class="row">
+				  <div class="col-sm-4">
+					<div class="form-group">
+					  <label class="control-label" for="input-order-id">{{ entry_order_id }}</label>
+					  <input type="text" name="filter_order_id" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id" class="form-control" />
+					</div>
+				  </div>
+			  
+				  <div class="col-sm-4">
+					<div class="form-group">
+						<label class="control-label" for="input-status">{{ entry_status }}</label>
+						<select name="filter_status" id="input-status" class="form-control">
+							<option value="">{{ text_all_statuses }}</option>
+							<option value="17" {% if filter_status == '17' %}selected{% endif %}>Breached</option>
+							<option value="7" {% if filter_status == '7' %}selected{% endif %}>Cancelled</option>
+							<option value="8" {% if filter_status == '8' %}selected{% endif %}>Label Generated</option>
+							<option value="9" {% if filter_status == '9' %}selected{% endif %}>Cancelled Reversal</option>
+							<option value="5" {% if filter_status == '5' %}selected{% endif %}>Complete</option>
+							<option value="18" {% if filter_status == '18' %}selected{% endif %}>Delivered</option>
+							<option value="20" {% if filter_status == '20' %}selected{% endif %}>Undelivered</option>
+							<option value="21" {% if filter_status == '21' %}selected{% endif %}>RTO</option>
+							<option value="13" {% if filter_status == '13' %}selected{% endif %}>Ready to Dispatch (RTD)</option>
+							<option value="19" {% if filter_status == '19' %}selected{% endif %}>In Transit</option>
+							<option value="22" {% if filter_status == '22' %}selected{% endif %}>RTO Delivered</option>
+							<option value="24" {% if filter_status == '24' %}selected{% endif %}>On Hold</option>
+							<option value="39" {% if filter_status == '39' %}selected{% endif %}>Loss Shipment</option>
+							<option value="25" {% if filter_status == '25' %}selected{% endif %}>Out For Delivery</option>
+							<option value="28" {% if filter_status == '28' %}selected{% endif %}>Out for Pickup</option>
+							<option value="37" {% if filter_status == '37' %}selected{% endif %}>Pickup Failed</option>
+							<option value="1" {% if filter_status == '1' %}selected{% endif %}>Pending</option>
+							<option value="26" {% if filter_status == '26' %}selected{% endif %}>Status Pending</option>
+							<option value="3" {% if filter_status == '3' %}selected{% endif %}>Shipped</option>
+							<option value="36" {% if filter_status == '36' %}selected{% endif %}>Pickup Cancelled</option>
+							<option value="35" {% if filter_status == '35' %}selected{% endif %}>Pickup Delayed</option>
+							<option value="32" {% if filter_status == '32' %}selected{% endif %}>Pickup Rescheduled</option>
+							<option value="27" {% if filter_status == '27' %}selected{% endif %}>Pickup Scheduled</option>
+							<option value="15" {% if filter_status == '15' %}selected{% endif %}>Processed</option>
+							<option value="16" {% if filter_status == '16' %}selected{% endif %}>Manifested</option>
+							<option value="2" {% if filter_status == '2' %}selected{% endif %}>Processing</option>
+							<option value="11" {% if filter_status == '11' %}selected{% endif %}>Refunded</option>
+							<option value="12" {% if filter_status == '12' %}selected{% endif %}>Reversed</option>
+							<option value="30" {% if filter_status == '30' %}selected{% endif %}>Return Delivered</option>
+							<option value="31" {% if filter_status == '31' %}selected{% endif %}>Return In Transit</option>
+							<option value="33" {% if filter_status == '33' %}selected{% endif %}>Return Request Cancelled</option>
+							<option value="34" {% if filter_status == '34' %}selected{% endif %}>Return Request Closed</option>
+							<option value="29" {% if filter_status == '29' %}selected{% endif %}>Shipment Picked Up</option>
+							<option value="23" {% if filter_status == '23' %}selected{% endif %}>Shipment Booked</option>
+							<option value="38" {% if filter_status == '38' %}selected{% endif %}>RTO In Transit</option>
+						</select>
+					</div>
+					
+				  </div>
+			  
+				  <div class="col-sm-4">
+					<div class="form-group">
+					  <label class="control-label" for="input-payment-status">{{ entry_payment_status }}</label>
+					  <select name="filter_payment_status" id="input-payment-status" class="form-control">
+						<option value="">{{text_all_statuses}}</option>
+						<option value="paid" {% if filter_payment_status == 'paid' %}selected{% endif %}>Paid</option>
+						<option value="unpaid" {% if filter_payment_status == 'unpaid' %}selected{% endif %}>Unpaid</option>
+						{#<!-- <option value="Refunded" {% if filter_payment_status == 'Refunded' %}selected{% endif %}>Refunded</option>#}
+						{#<option value="Partially Paid" {% if filter_payment_status == 'Partially Paid' %}selected{% endif %}>Partially Paid</option> -->#}
+					  </select>
+					</div>
+			  
+					<button type="button" id="button-filter" style="margin-top:12%;" class="btn btn-primary pull-right col-sm-12">
+					  <i class="fa fa-search"></i> {{ button_filter }}
+					</button>
+				  </div>
+				</div>
+			  </div>
+			  
+			  
+    			 <!-- =====----------===========-------= -->
+				{#---------------------------------------------------------------------------------#}
+                {#--- added the code for apply scrollebar on 07-06-2025 -----#}
+				<form action="" method="post" enctype="multipart/form-data" id="form-review" class='commision-table'>
+					<div class="table-responsive" style="width: max-content; max-height: 500px; overflow-y: auto;" >
+						<table class="table table-bordered table-hover" style="width: max-content; min-width: 100%;">
+							<thead style="position: sticky; top: 0; z-index: 1;">
+								<tr>
+								 <td class="text-left">
+								 {{ column_order_id }} 
+								 
+								 
+								 </td>
+									{# <td class="text-left">#}
+									{#	{% if sort == 'vendor' %}#}
+									{#		<a href="{{ sort_vendor }}" class="{{ order|lower }}">{{ column_vendor }}</a>#}
+									{#	{% else %}#}
+									{#		<a href="{{ sort_vendor }}">{{ column_vendor }}</a>#}
+									{#	{% endif %}#}
+									{#</td> #}
+
+									<td class="text-left" style='width:500px;'>  {#sort_name#}
+										{% if sort == 'name' %}
+											<a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+										{% else %}
+											<a href="{{ sort_name }}">{{ column_name }}</a>
+										{% endif %}
+									</td>
+									<td class="text-left">   {#sort_model#}
+										{% if sort == 'model' %}
+											<a href="{{ sort_model }}" class="{{ order|lower }}">{{ column_model }}</a>
+										{% else %}
+											<a href="{{ sort_model }}">{{ column_model }}</a>
+										{% endif %}
+									</td>
+									<td class="text-left">{{column_hsn_code}}</td>
+									<td class="text-left">   {#sort_quanity#}
+										{% if sort == 'quantity' %}
+											<a href="{{ sort_quantity }}" class="{{ order|lower }}">{{ column_quantity }}</a>
+										{% else %}
+											<a href="{{ sort_quantity }}">{{ column_quantity }}</a>
+										{% endif %}
+									</td>
+									<td class="text-left">   {#sort_price#}
+										{% if sort == 'price' %}
+											<a href="{{ sort_price }}" class="{{ order|lower }}">{{ column_price }}</a>
+										{% else %}
+											<a href="{{ sort_price }}">{{ column_price }}</a>
+										{% endif %}
+									</td>
+									{#-- added code on 15-05-2025-----#}
+									<td>{{column_product_courier_charges}}</td>
+									{#-----------------------------------------#}
+									<td>{{column_order_status}}</td>
+									<td class="text-left">   {#sort_commision#}
+										{% if sort == 'commission' %}
+											<a href="{{ sort_commission }}" class="{{ order|lower }}">{{ column_commission }}</a>
+										{% else %}
+											<a href="{{ sort_commission }}">{{ column_commission }}</a>
+										{% endif %}
+									</td>
+									<td class="text-left">  {#sort_commisionfix#}
+										{% if sort == 'commissionfixed' %}
+											<a href="{{ sort_commissionfixed }}" class="{{ order|lower }}">{{ column_platform_fees }}</a>
+										{% else %}
+											<a href="{{ sort_commissionfixed }}">{{ column_platform_fees }}</a>
+										{% endif %}
+									</td>
+									<td class="text-left">  {#sort_courier_charges#}
+										{% if sort == 'courier_charges' %}
+											<a href="{{ sort_courier_charges }}" class="{{ order|lower }}">{{ column_courier_charges }}</a>
+										{% else %}
+											<a href="{{ sort_courier_charges }}">{{ column_courier_charges }}</a>
+										{% endif %}
+									</td>
+									<td>{{column_reverse_courier_charges}}</td>
+									<td>{{column_rto_charges}}</td>
+									<td>{{column_total_deduction}}</td>
+									<td>{{column_net_settlement_amount}}</td>
+									<td>{{column_payment_status}}</td>
+									<td class="text-center">    {#sort_date#}
+										{#{% if sort == 'date' %}#}
+										{#	<a href="{{ sort_date }}" class="{{ order|lower }}">{{column_payment_date}}</a>#}
+										{#{% else %}#}
+										{#	<a href="{{ sort_date }}">{{column_payment_date}}</a>#}
+										{#{% endif %}#}
+										{{column_payment_date}}
+									</td>
+									<td class="text-left">{{column_settlement_reference}}</td>
+								</tr>
+							</thead>
+							<tbody>
+								{% if commissions %}
+									{% for commission in commissions %}
+										<tr>
+										 <td class="text-left">{{ commission.order_id }}</td>
+											<td class="text-left">{{ commission.name }}</td>
+											<td class="text-left">{{ commission.model }}</td>
+											{#-- added hsn code on the 31-05-2025#}
+											<td class="text-left">{{commission.hsn_code}}</td>
+											<td class="text-left">
+												{% if commission.quantity == 1  %}
+													<span class="label label-warning">{{ commission.quantity }}</span>
+												{% else %}
+													<span class="label label-success">{{ commission.quantity }}</span>
+												{% endif %}
+											</td>
+											<td class="text-left">{{ commission.price }}</td>
+											{#-- added code changes on date 15-05-2025-------#}
+											<td class="text-left">{{commission.product_courier_charges}}</td>
+											<td class="text-left">{{commission.order_status_id}}</td>
+											<td class="text-left">{{ commission.commissionper }}</td>
+											<td class="text-left">{{ commission.commissionfix }}</td>
+											<td class="text-left">{{ commission.courier_rates }}</td>
+											<td class="text-left">{{commission.reverse_courier_charges}}</td>
+											<td class="text-left">{{commission.rto_charges}}</td>
+											<td class="text-left">{{commission.total_deduction}}</td>
+											<td class="text-left">{{commission.net_settlement_amount}}</td>
+											<td class="text-left">{{commission.payment_status}}</td>
+											<td class="text-left">   {#sort_date#}
+												{#<span class="label btn-info">#}
+												{#	<i class="fa fa-clock-o" aria-hidden="true"></i>#}
+												{#	{{commission.payment_date}}</span>#}
+												{{commission.payment_date}}
+											</td>
+											<td class="text-left">{{commission.reference_number}}</td>
+										</tr>
+									{% endfor %}
+								{% else %}
+									<tr>
+										<td class="text-center" colspan="9">{{ text_no_results }}</td>
+									</tr>
+								{% endif %}
+							</tbody>
+						</table>
+					</div>
+				</form>
+				<div class="row">
+					<div class="col-sm-6 text-left">{{ pagination }}</div>
+					<div class="col-sm-6 text-right">{{ results }}</div>
+				</div>
+			</div>
+		</div>
+
+		
+	</div>
+
+</div>
+
+{#---- added changes for filter on the 28-04-2025------#}
+ <!-- added by shubham 28-04-2025 -->
+<script type="text/javascript">
+	// Filter button click logic
+	$('#button-filter').on('click', function () {
+	  var url = 'index.php?route=vendor/commission'; // <-- update your correct route here
+  
+	  var filter_order_id = $('input[name="filter_order_id"]').val();
+	  if (filter_order_id) {
+		url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
+	  }
+  
+	  var filter_status = $('select[name="filter_status"]').val();
+	  if (filter_status !== '') {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	  }
+
+	  var filter_payment_status = $('select[name="filter_payment_status"]').val();
+	  if (filter_payment_status !== '') {
+		url += '&filter_payment_status=' + encodeURIComponent(filter_payment_status);
+	  }
+  
+	  location = url;
+	});
+  
+	// Autocomplete for filter_order_id
+	$('input[name="filter_order_id"]').autocomplete({
+	  'source': function (request, response) {
+		$.ajax({
+		  url: 'index.php?route=vendor/commission/autocomplete&user_token={{ user_token }}&filter_order_id=' + encodeURIComponent(request),
+		  dataType: 'json',
+		  success: function (json) {
+			response($.map(json, function (item) {
+			  return {
+				label: item['order_id'],
+				value: item['order_id']
+			  };
+			}));
+		  }
+		});
+	  },
+	  'select': function (item) {
+		$('input[name="filter_order_id"]').val(item['label']);
+	  }
+	});
+  </script>
+  
+ <!-- -====================================------------------ -->
+ 
+<script>
+    $('input[name=\'filter_order_id\']').val('');
+</script>
+
+{{ footer }}

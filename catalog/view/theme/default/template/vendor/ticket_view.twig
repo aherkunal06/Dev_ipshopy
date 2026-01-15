@@ -1,0 +1,356 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="container-fluid">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <h1>Ticket Details</h1>
+      </div>
+      <div class="col-md-6 text-right">
+        <a href="{{ cancel }}" class="btn" style="background-color: white; border: 1px solid #6c757d; color: #6c757d;">
+          <i class="fa fa-reply"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="white-box">
+      <!-- Ticket Information Section -->
+      <div class="ticket-info-section mb-4">
+        <h4 class="info-title"><i class="fa fa-info-circle"></i> Ticket Information</h4>
+        <table class="table ticket-info-table">
+          <tbody>
+            <tr>
+              <td class="field-label">Ticket ID</td>
+              <td>{{ ticket.ticket_id }}</td>
+            </tr>
+            <tr>
+              <td class="field-label">Status</td>
+              <td>
+                {% if ticket.status == 'Open' %}
+                  <span class="status-badge status-open">{{ ticket.status }}</span>
+                {% elseif ticket.status == 'pending' %}
+                  <span class="status-badge status-pending">{{ ticket.status }}</span>
+                {% else %}
+                  <span class="status-badge status-closed">{{ ticket.status }}</span>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td class="field-label">Date Added</td>
+              <td>{{ ticket.date_added }}</td>
+            </tr>
+            <tr>
+              <td class="field-label">Subject</td>
+              <td>{{ ticket.subject }}</td>
+            </tr>
+            <tr>
+              <td class="field-label">Category</td>
+              <td>{{ ticket.category is defined ? ticket.category : '' }}</td>
+            </tr>
+            <tr>
+              <td class="field-label">Description</td>
+              <td>{{ ticket.message }}</td>
+            </tr>
+            <tr>
+              <td class="field-label">Attachment</td>
+              <td>
+                {% if ticket.image %}
+                  <a href="{{ ticket.image }}" data-fancybox="gallery">
+                    <img src="{{ ticket.image }}" alt="Attachment" class="img-thumbnail" style="max-width: 150px;">
+                  </a>
+                {% else %}
+                  No attachment
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Conversation History -->
+      <div class="conversation-section">
+        <h3 class="section-title">Conversation History</h3>
+        
+        <div class="conversation-container custom-scrollbar">
+          <!-- Admin Replies -->
+          {% if replies %}
+            {% for reply in replies %}
+              <div class="message-block admin-message">
+                <div class="message-header">
+                  <strong>Admin</strong>
+                  <span class="message-time">{{ reply.date_added }}</span>
+                </div>
+                <div class="message-content">
+                  <p>{{ reply.message }}</p>
+                  {% if reply.image %}
+                    <div class="message-attachment">
+                      <a href="{{ reply.image }}" data-fancybox="gallery">
+                        <img src="{{ reply.image }}" alt="Reply Image" class="img-thumbnail message-image">
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <!-- Seller Replies -->
+          {% if seller %}
+            {% for replys in seller %}
+              <div class="message-block seller-message">
+                <div class="message-header">
+                  <strong>You</strong>
+                  <span class="message-time">{{ replys.date_added }}</span>
+                </div>
+                <div class="message-content">
+                  <p>{{ replys.message }}</p>
+                  {% if replys.image %}
+                    <div class="message-attachment">
+                      <a href="{{ replys.image }}" data-fancybox="gallery">
+                        <img src="{{ replys.image }}" alt="Reply Image" class="img-thumbnail message-image">
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+
+        <!-- Reply Form -->
+        <div class="reply-section mt-4">
+          {% if ticket.status == 'Closed' %}
+            <div class="alert alert-danger text-center mt-4">
+              <strong>This ticket is closed.</strong>
+            </div>
+          {% else %}
+          <h4>Add Reply</h4>
+          <form action="{{ reply_action }}" method="post" enctype="multipart/form-data" class="mt-3">
+            <div class="form-group">
+              <textarea name="message" class="form-control" rows="4" placeholder="Type your reply here..." required></textarea>
+            </div>
+            <div class="form-group">
+              <label>Attachment (Optional)</label>
+              <input type="file" name="attachment" class="form-control" accept="image/*">
+            </div>
+            <div class="form-group text-center">
+              <button type="submit" class="btn btn-primary">
+                <i class="fa fa-paper-plane"></i> Send Reply
+              </button>
+            </div>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.white-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+.info-title {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.ticket-info-table {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.ticket-info-table td {
+  padding: 12px 15px;
+  border: 1px solid #eee;
+}
+
+.field-label {
+  width: 150px;
+  background-color: #f8f9fa;
+  font-weight: 500;
+  color: #333;
+}
+
+.conversation-section {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.conversation-container {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin: 20px 0;
+}
+
+/* Webkit Scrollbar Styling */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* Firefox Scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+.message-block {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.admin-message {
+  background: #f8f9fa;
+  margin-left: 30px;
+}
+
+.seller-message {
+  background: #fff;
+  margin-right: 30px;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+}
+
+.message-time {
+  font-size: 12px;
+  color: #888;
+}
+
+.message-content {
+  color: #333;
+  line-height: 1.5;
+}
+
+.message-content p {
+  margin: 0;
+  padding: 0;
+}
+
+.message-attachment {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.message-image {
+  max-width: 200px;
+  border-radius: 4px;
+  transition: transform 0.2s ease;
+}
+
+.message-image:hover {
+  transform: scale(1.02);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+}
+
+.status-open {
+  background-color: #5cb85c;
+}
+
+.status-pending {
+  background-color: #f0ad4e;
+}
+
+.status-closed {
+  background-color: #d9534f;
+}
+
+.section-title {
+  font-size: 18px;
+  margin: 30px 0 20px;
+  color: #333;
+}
+
+.form-control {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+h1 {
+  color: #666;
+  font-size: 24px;
+  margin: 0;
+}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  // Initialize FancyBox for image previews
+  $('[data-fancybox="gallery"]').fancybox({
+    buttons: ["zoom", "close"]
+  });
+});
+// Vaishnavi Madam Changes - 18/06/2025
+// File upload validation
+  document.getElementById('image-upload').addEventListener('change', function () {
+    const file = this.files[0];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const message = document.getElementById('upload-message');
+
+    message.textContent = '';
+
+    if (!file) return;
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+    if (!allowedTypes.includes(file.type)) {
+      alert("Only JPG, JPEG, and PNG images are allowed.");
+      this.value = '';
+    } else if (file.size > maxSize) {
+      alert("File size must be less than 5MB.");
+      this.value = '';
+    } else {
+      message.textContent = '✅ File has been successfully uploaded.';
+    }
+  });
+</script>
+
+{{ footer }}

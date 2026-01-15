@@ -1,0 +1,100 @@
+{% for main in main_categories %}
+    <h2 style="margin:10px 0; text-align:center; color:white;">{{ main.name }}</h2>
+
+    <div class="category-scroller-container">
+        <button class="scroll-btn left" onclick="scrollCategories('{{ loop.index }}', -300)">&#10094;</button>
+
+        <div class="category-scroller" id="categoryScroller{{ loop.index }}">
+            {% for sub in main.subcategories %}
+                <div class="category-card flag-border">
+                    <a href="{{ sub.href }}" style="text-decoration:none;">
+                        <img src="{{ sub.thumb }}" alt="{{ sub.name }}">
+                        <h4>{{ sub.name | slice(0, 15) }}{% if sub.name|length > 15 %}...{% endif %}</h4>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <button class="scroll-btn right" onclick="scrollCategories('{{ loop.index }}', 300)">&#10095;</button>
+    </div>
+{% endfor %}
+
+<style>
+.category-scroller-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.scroll-btn {
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: white;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 2;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+.scroll-btn:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+.category-scroller {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    scroll-behavior: smooth;
+    padding: 0 40px;
+}
+.category-scroller::-webkit-scrollbar {
+    display: none;
+}
+
+.category-card {
+    flex: 0 0 auto;
+    width: 140px;
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 12px;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease;
+}
+.category-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+.category-card h4 {
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 8px;
+    text-transform: uppercase;
+    color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.category-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Indian flag border effect */
+.flag-border {
+    border: 4px solid transparent;
+    border-image: linear-gradient(to bottom, orange, white, green) 1;
+}
+
+</style>
+
+<script>
+function scrollCategories(index, amount) {
+    document.getElementById('categoryScroller' + index).scrollBy({
+        left: amount,
+        behavior: 'smooth'
+    });
+}
+</script>

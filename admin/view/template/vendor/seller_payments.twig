@@ -1,0 +1,69 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+                    <i class="fa fa-reply"></i>
+                </a>
+            </div>
+            <!-- <h1>{{ heading_title }}</h1> -->
+             <h1>Seller Payments</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error_warning %}
+        <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        {% if success %}
+        <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        <div class="panel panel-default">
+                <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-income">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Payment Method</th>
+                                        <th>Amount</th>
+                                        <th>Date Added</th>
+                                        <th>Reference Id</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for seller in sellers %}
+                                    <tr>
+                                        <td>{{ seller.firstname }} {{ seller.lastname }}</td>
+                                        <td>{{ seller.payment_method }}</td>
+                                        <td>₹{{ seller.amount | round }}</td>
+                                        <td>{{ seller.date_added }}</td>
+                                        <td>{{seller.reference_number}}</td>
+                                        <td><a href="{{ seller.view }}" class="btn btn-info btn-sm">View</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-sm-6 text-left">{{ pagination }}</div>
+                    <div class="col-sm-6 text-right">{{ results }}</div>
+                </div>
+            </div>
+        </div>
+        {{ footer }}
+</div>
+
+

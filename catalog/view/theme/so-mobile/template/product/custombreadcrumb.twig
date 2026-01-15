@@ -1,0 +1,21 @@
+{% if breadcrumb_path %}
+<ul class="breadcrumb">
+    {# Home icon link #}
+    <li>
+        <a href="{{ breadcrumb_path[0].href }}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+
+   
+    {% for crumb in breadcrumb_path %}
+        {% if loop.index > 1 %} {# Home icon आधीच दाखवलं आहे, म्हणून skip #}
+            {% if not loop.last %}
+                <li><a href="{{ crumb.href }}">{{ crumb.name }}</a></li>
+            {% else %}
+                <li class="active">{{ crumb.name }}</li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}

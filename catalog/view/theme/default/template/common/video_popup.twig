@@ -1,0 +1,48 @@
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/vendor/videoStyle.css" />
+<!-- Trigger -->
+<span  onclick="video_openModal()" class='video_title_warpper'>
+    <span>{{video_title}}</span>
+    <img src="https://www.ipshopy.com/image/catalog/youtube-logo.png"
+         alt="Click to Play Video"
+         style="width: 30px; cursor: pointer;" />
+</span>
+
+<!-- Modal -->
+<div id="video_modal" class="video_modal">
+  <span class="video_close_btn" onclick="video_closeModal()">&times;</span>
+  <div class="video_modal_content">
+    <div class="video_wrapper">
+      <iframe id="video_youtube_frame"
+              src=""
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  function video_openModal() {
+    const modal = document.getElementById('video_modal');
+    const iframe = document.getElementById('video_youtube_frame');
+    iframe.src = "{{ video_url }}?autoplay=1";
+    modal.style.display = 'block';
+    document.body.classList.add('video_modal_open');
+  }
+
+  function video_closeModal() {
+    const modal = document.getElementById('video_modal');
+    const iframe = document.getElementById('video_youtube_frame');
+    iframe.src = "";
+    modal.style.display = 'none';
+    document.body.classList.remove('video_modal_open');
+  }
+
+  window.onclick = function (event) {
+    const modal = document.getElementById('video_modal');
+    if (event.target === modal) {
+      video_closeModal();
+    }
+  }
+</script>

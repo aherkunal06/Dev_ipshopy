@@ -1,0 +1,599 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+			<button type="submit" form="form-vendor" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+				<h1>{{ heading_title }}</h1>
+				<ul class="breadcrumb">
+				 {% for breadcrumb in breadcrumbs %}
+                 <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                 {% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+		<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-vendor" class="form-horizontal">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab-seller" data-toggle="tab">{{ tab_seller }}</a></li>
+						<li><a href="#tab-generalstore" data-toggle="tab">{{ tab_generalstore }}</a></li>
+						<li><a href="#tab-datastore" data-toggle="tab">{{ tab_datastore }}</a></li>
+						<li><a href="#tab-commission" data-toggle="tab">{{ tab_commission }}</a></li>
+						<li><a href="#tab-seo" data-toggle="tab">{{ tab_seo }}</a></li>
+						<!--06 03 2019-->
+						<li><a href="#tab-chat" data-toggle="tab">{{ tab_chat }}</a></li>
+						<!--06 03 2019-->
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab-seller">
+							
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-display_name">{{ entry_display_name }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="display_name" value="{{ display_name }}" placeholder="{{ entry_display_name }}" id="input-display_name" class="form-control" />
+									{% if error_display_name %}
+										<div class="text-danger">{{ error_display_name }}</div>
+									{% endif %}
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-firstname">{{ entry_firstname }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="firstname" value="{{ firstname }}" placeholder="{{ entry_firstname }}" id="input-firstname" class="form-control" />
+									{% if error_firstname %}
+										<div class="text-danger">{{ error_firstname }}</div>
+									{% endif %}
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-lastname">{{ entry_lastname }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="lastname" value="{{ lastname }}" placeholder="{{ entry_lastname }}" id="input-lastname" class="form-control" />
+								  {% if error_lastname %}
+								  <div class="text-danger">{{ error_lastname }}</div>
+								  {% endif %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-email">{{ entry_email }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
+								  {% if error_email %}
+								  <div class="text-danger">{{ error_email }}</div>
+								  {% endif %}
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-telephone">{{ entry_telephone }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control" />
+								  {% if error_telephone %}
+								  <div class="text-danger">{{ error_telephone }}</div>
+								  {% endif %}
+								</div>
+							</div>
+						<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-gstin">{{ entry_gstin }}</label>
+    <div class="col-sm-10">
+        <input type="text" name="gstin" placeholder="{{ entry_gstin }}" value="{{ gstin }}" id="input-gstin" class="form-control" />
+        {% if error_gstin %}
+								  <div class="text-danger">{{ error_gstin }}</div>
+								  {% endif %}
+    </div>
+</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-company">{{ entry_company }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="company" value="{{ company }}" placeholder="{{ entry_company }}" id="input-company" class="form-control" />
+								  {% if error_company %}
+								  <div class="text-danger">{{ error_company }}</div>
+								  {% endif %}
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-address_1">{{ entry_address_1 }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="address_1" value="{{ address_1 }}" placeholder="{{ entry_address_1 }}" id="input-address_1" class="form-control" />
+								  {% if error_address_1 %}
+								  <div class="text-danger">{{ error_address_1 }}</div>
+								  {% endif %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-address_2">{{ entry_address_2 }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="address_2" value="{{ address_2 }}" placeholder="{{ entry_address_2 }}" id="input-address_2" class="form-control" />
+								  {% if error_address_2 %}
+								  <div class="text-danger">{{ error_address_2 }}</div>
+								  {% endif %}
+								</div>
+							</div>
+							<div class="form-group ">
+								<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+								<div class="col-sm-10">
+									<select name="status" id="input-status" class="form-control">
+										{% if status %}
+										<option value="1" selected="selected">{{ text_enable }}</option>
+										<option value="0">{{ text_disable }}</option>
+										{% else %}
+										<option value="1">{{ text_enable }}</option>
+										<option value="0" selected="selected">{{ text_disable }}</option>
+										{% endif %}
+									</select>
+								</div>
+							</div>
+							<div class="form-group ">
+								<label class="col-sm-2 control-label" for="input-product_status">{{ entry_productstatus }}</label>
+								<div class="col-sm-10">
+									<select name="product_status" id="input-product_status" class="form-control">
+										{% if product_status %}
+										<option value="1" selected="selected">{{ text_autoapprove }}</option>
+										<option value="0">{{ text_pending }}</option>
+										{% else %}
+										<option value="1">{{ text_autoapprove }}</option>
+										<option value="0" selected="selected">{{ text_pending }}</option>
+										{% endif %}
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-about">{{ entry_about }}</label>
+								<div class="col-sm-10">
+								  <textarea type="text" name="about" rows="3" placeholder="{{ entry_about }}" id="input-about" class="form-control">{{ about }}</textarea>
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-city">{{ entry_city }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="city" value="{{ city }}" placeholder="{{ entry_city }}" id="input-city" class="form-control" />
+								  {% if error_city %}
+								  <div class="text-danger">{{ error_city }}</div>
+								  {% endif %}
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-postcode">{{ entry_postcode }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="postcode" value="{{ postcode }}" placeholder="{{ entry_postcode }}" id="input-postcode" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-country">{{ entry_country }}</label>
+								<div class="col-sm-10">
+									<select name="country_id" id="input-country" class="form-control">
+									  <option value="">{{ text_select }}</option>
+									  {% for country in countries %}
+									   {% if country.country_id == country_id %}
+										 <option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
+									   {% else %}
+										 <option value="{{ country.country_id }}">{{ country.name }}</option>
+									   {% endif %}
+									{% endfor %}
+									</select>
+									{% if error_country %}
+										<div class="text-danger">{{ error_country }}</div>
+									{% endif %}
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-zone">{{ entry_zone }}</label>
+								<div class="col-sm-10">
+									<select type="text" name="zone_id" value="{{ zone_id }}" placeholder="{{ entry_zone }}" id="input-zone" class="form-control" >
+
+									</select>
+									{% if error_zone %}
+									<div class="text-danger">{{ error_zone }}</div>
+								{% endif %}
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-password">{{ entry_password }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" />								  
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-confirmpassword">{{ entry_confirmpassword }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="confirmpassword" value="" placeholder="{{ entry_confirmpassword }}" id="input-confirmpassword" class="form-control" />
+								  
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_image }}</label>
+								<div class="col-sm-10"><a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="{{ thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+									<input type="hidden" name="image" value="{{ image }}" id="input-image" />
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="tab-generalstore">
+							<ul class="nav nav-tabs" id="language">
+								{% for language in languages %}
+                                <li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                                {% endfor %}
+							</ul>
+							<div class="tab-content">
+							 {% for language in languages %}
+                <div class="tab-pane" id="language{{ language.language_id }}">
+										<div class="form-group required">
+											<label class="col-sm-2 control-label" for="input-name{{ language.language_id }}">{{ entry_name }}</label>
+				<div class="col-sm-10">
+				<input type="text" name="store_description[{{ language.language_id }}][name]" value="{{ store_description[language.language_id] ? store_description[language.language_id].name }}" placeholder="{{ entry_name }}" id="input-name{{ language.language_id }}" class="form-control" />
+                {% if error_name[language.language_id] %}
+                      <div class="text-danger">{{ error_name[language.language_id] }}</div>
+                      {% endif %}
+												
+											</div>
+										</div>
+				<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-description{{ language.language_id }}">{{ entry_description }}</label>
+				<div class="col-sm-10">
+<textarea type="text" name="store_description[{{ language.language_id }}][description]" value="" placeholder="{{ entry_description }}" id="input-description{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].description }}
+                    </textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-shipping_policy{{ language.language_id }}">{{ entry_shipping_policy }}</label>
+											<div class="col-sm-10">
+				<textarea type="text" name="store_description[{{ language.language_id }}][shipping_policy]" value="" placeholder="{{ entry_shipping_policy }}" id="input-shipping_policy{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].shipping_policy }}</textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-return_policy{{ language.language_id }}">{{ entry_return_policy }}</label>
+											<div class="col-sm-10">
+				<textarea type="text" name="store_description[{{ language.language_id }}][return_policy]" value="" placeholder="{{ entry_return_policy }}" id="input-return_policy{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].return_policy }}</textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-meta_keyword{{ language.language_id }}">{{ entry_meta_keyword }}</label>
+											<div class="col-sm-10">
+				<textarea type="text" name="store_description[{{ language.language_id }}][meta_keyword]" value="" placeholder="{{ entry_meta_keyword }}" id="input-meta_keyword{{ language.language_id }}" class="form-control " >{{ store_description[language.language_id] ? store_description[language.language_id].meta_keyword }}</textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-meta_description{{ language.language_id }}">{{ entry_meta_description }}</label>
+											<div class="col-sm-10">
+				<textarea type="text" name="store_description[{{ language.language_id }}][meta_description]" value="" placeholder="{{ entry_meta_description }}" id="input-meta_description{{ language.language_id }}" class="form-control">{{ store_description[language.language_id] ? store_description[language.language_id].meta_description }}</textarea>
+											</div>
+										</div>
+								  </div>
+								  {% endfor %}
+							</div>
+							
+						</div>	
+						
+						<div class="tab-pane" id="tab-datastore">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-tax_number">{{ entry_tax_number }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="tax_number" value="{{ tax_number }}" placeholder="{{ entry_tax_number }}" id="input-tax_number" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-shipping_charge">{{ entry_shipping_charge }}</label>
+								<div class="col-sm-10">
+								  <input type="text" name="shipping_charge" value="{{ shipping_charge }}" placeholder="{{ entry_shipping_charge }}" id="input-shipping_charge" class="form-control" />
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-google_url">{{ entry_mapurl }}</label>
+								<div class="col-sm-10">
+									<textarea type="text" name="map_url" placeholder="{{ entry_mapurl }}" id="input-map" class="form-control summernote"  data-toggle="summernote" data-lang="{{ summernote }}">{{ map_url }}</textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-facebook_url">{{ entry_facebook_url }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="facebook_url" value="{{ facebook_url }}" placeholder="{{ entry_facebook_url }}" id="input-facebook_url" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-google_url">{{ entry_google_url }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="google_url" value="{{ google_url }}" placeholder="{{ entry_google_url }}" id="input-google_url" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_banner }}</label>
+								<div class="col-sm-10"><a href="" id="thumb-banner" data-toggle="image" class="img-thumbnail"><img src="{{ thumb_banner }}" alt="" title="" data-placeholder="{{ banner_placeholder }}" /></a>
+								  <input type="hidden" name="banner" value="{{ banner }}" id="input-banner" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_logo }}</label>
+								<div class="col-sm-10"><a href="" id="thumb-logo" data-toggle="image" class="img-thumbnail"><img src="{{ thumb_logo }}" alt="" title="" data-placeholder="{{ logo_placeholder }}" /></a>
+								  <input type="hidden" name="logo" value="{{ logo }}" id="input-logo" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-store_about">{{ entry_about }}</label>
+								<div class="col-sm-10">
+								  <textarea type="text" name="store_about" rows="3" placeholder="{{ entry_about }}" id="input-store_about" class="form-control">{{ store_about }}</textarea>
+								</div>
+							</div>
+							<!--05 02 2021 Start-->					
+							<div class="form-group">
+								<label class="col-sm-2  control-label" for="input-bank_detail">{{ entry_bank_detail }}</label>
+								<div class="col-sm-10">
+								<textarea name="bank_detail" rows="5" value="" placeholder="{{ entry_bank_detail }}" id="input-bank_detail" class="form-control" >{{ bank_detail }}</textarea>
+								</div>
+							</div>
+							<!--05 02 2021 END-->
+						</div>
+						<div class="tab-pane" id="tab-commission">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-commission">{{ entry_commission }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="commission" value="{{ commission }}" placeholder="{{ entry_commission }}" id="input-commission" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group">
+				                <label class="col-sm-2 control-label">{{ entry_method }}</label>
+				                <div class="col-sm-10">
+				                  <div class="radio">
+				                    <label>
+				                      {% if payment_method == 'paypal' %}
+				                      <input type="radio" name="payment_method" value="paypal" checked="checked" />
+				                      {% else %}
+				                      <input type="radio" name="payment_method" value="paypal" />
+				                      {% endif %}
+				                      {{ text_paypal }}</label>
+				                  </div>
+				                  <div class="radio">
+				                    <label>
+				                      {% if payment_method == 'banktransfer' %}
+				                      <input type="radio" name="payment_method" value="banktransfer" checked="checked" />
+				                      {% else %}
+				                      <input type="radio" name="payment_method" value="banktransfer" />
+				                      {% endif %}
+				                      {{ text_bank }}</label>
+				                  </div>
+				                </div>
+				            </div>
+							<div class="payment" id="payment-paypal">	
+								<div class="form-group" id="paypal">	
+									<label class="col-sm-2 control-label" for="input-paypal">{{ entry_Emailid }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="paypal" value="{{ paypal }}" placeholder="{{ entry_Emailid }}" id="input-paypal" class="form-control"/>
+					                    {% if error_paypal %}
+					                    <div class="text-danger">{{ error_paypal }}</div>
+					                    {% endif %}
+									</div>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="payment" id="payment-banktransfer">
+								<div class="form-group required">
+									<label class="col-sm-2 control-label" for="input-bankname">{{ entry_bankname }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="bank_name" value="{{ bank_name }}" placeholder="{{ entry_bankname }}" id="input-bankname" class="form-control" />
+									</div>
+								</div>
+								<div class="form-group required">
+									<label class="col-sm-2 control-label" for="input-branch_number">{{ entry_bnumber }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="bank_branch_number" value="{{ bank_branch_number }}" placeholder="{{ entry_bnumber }}" id="input-branch_number" class="form-control" />
+									</div>
+								</div>
+								<div class="form-group required">
+									<label class="col-sm-2 control-label" for="input-swift_code">{{ entry_swiftcode }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="bank_swift_code" value="{{ bank_swift_code }}" placeholder="{{ entry_swiftcode }}" id="input-swift_code" class="form-control" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-package-title">{{ entry_aname }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="bank_account_name" value="{{ bank_account_name }}" placeholder="{{ entry_aname }}" id="input-package-titl" class="form-control" />
+										{% if error_bank_account_name %}
+					                    <div class="text-danger">{{ error_bank_account_name }}</div>
+					                    {% endif %}
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="input-account_number">{{ entry_anumber }}</label>
+									<div class="col-sm-10">
+										<input type="text" name="bank_account_number" value="{{ bank_account_number }}" placeholder="{{ entry_anumber }}" id="input-account_number" class="form-control" />
+										 {% if error_bank_account_number %}
+					                    <div class="text-danger">{{ error_bank_account_number }}</div>
+					                    {% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="tab-seo">
+							<div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_keyword }}</div>
+							  <div class="table-responsive">
+								<table class="table table-bordered table-hover">
+								  <thead>
+									<tr>
+									  <td class="text-left">{{ entry_store }}</td>
+									  <td class="text-left">{{ entry_keyword }}</td>
+									</tr>
+								  </thead>
+								  <tbody>
+								   {% for store in stores %}
+								  <tr>
+									<td class="text-left">{{ store.name }}</td>
+									<td class="text-left">{% for language in languages %}
+									  <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> </span>
+										{# added id in the following input field 01-04-2025 ---#}
+										<input type="text" id="seoUrlInput" name="vendor_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{% if vendor_seo_url[store.store_id][language.language_id] %}{{ vendor_seo_url[store.store_id][language.language_id] }}{% endif %}" placeholder="{{ entry_keyword }}" class="form-control" />
+									  </div>
+									  {# added following line 01-04-2025 ------#}
+                                        <small id="seoUrlError" style="color: red; display: none;">Spaces are not allowed in the SEO URL!</small>
+                                                        
+									  {% if error_keyword[store.store_id][language.language_id] %}
+									  <div class="text-danger">{{ error_keyword[store.store_id][language.language_id] }}</div>
+									  {% endif %} 
+									  {% endfor %}</td>
+								  </tr>
+								  {% endfor %}
+								  </tbody>
+								</table>
+							  </div>
+							</div>
+
+							<!--06 03 2019-->
+				
+					<div class="tab-pane" id="tab-chat">
+						<div class="msgsend">
+							<div class="form-group ">	
+								<label class="col-sm-2 control-label" for="input-package-title">{{ entry_status }}</label>
+								<div class="col-sm-10">
+									<select name="chatstatus" id="statuss" class="form-control">
+										{% if chatstatus %}
+										<option value="1" selected="selected">{{ text_yes }}</option>
+										<option value="0">{{ text_no }}</option>
+										{% else %}
+										<option value="1">{{ text_yes }}</option>
+										<option value="0" selected="selected">{{ text_no }}</option>
+										{% endif %}
+									</select>
+								</div>
+							</div>
+							
+							<div class="form-group" >
+								<label class="col-sm-2 control-label" for="input-package-title"></label>
+								<div class="col-sm-10">
+									<div class="controls chatsystem">
+										<input type="text" name="message" value="{{ message }}" placeholder="Add Here Twak Id" id="responsetext" class="form-control" />
+										
+									</div>
+								</div>
+							</div>
+							
+							<input type="hidden" name="vendor_id" value="{{ vendor_id }}">
+						</div>
+					</div>
+				
+				<!--06 03 2019-->
+
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$flag = $('#statuss').val();
+		if($flag==1){
+			$(".chatsystem").show();
+		}else{
+			$(".chatsystem").hide();
+		}
+		$("select[name='chatstatus']").on('change', function() {
+	    $flagg = $(this).val();
+	    if($flagg==1){
+			$(".chatsystem").show();
+		}else{
+			$(".chatsystem").hide();
+		}
+	    $(".chatsystem").toggle(flag);
+  })
+
+	})
+</script>
+
+<script type="text/javascript"><!--
+$('input[name=\'payment_method\']').on('change', function() {
+	$('.payment').hide();
+
+	$('#payment-' + this.value).show();
+});
+
+$('input[name=\'payment_method\']:checked').trigger('change');
+//-->
+</script> 
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+  <link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script> 
+  <script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+<script type="text/javascript"><!--
+$('#language a:first').tab('show');
+//--></script>
+<script type="text/javascript"><!--
+$('select[name=\'country_id\']').on('change', function() {
+	$.ajax({
+		url: 'index.php?route=vendor/vendor/country&user_token={{ user_token }}&country_id=' + this.value,
+		dataType: 'json',
+		beforeSend: function() {
+			$('select[name=\'country_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+		},
+		complete: function() {
+			$('.fa-spin').remove();
+		},
+		success: function(json) {
+			if (json['postcode_required'] == '1') {
+				$('input[name=\'postcode\']').parent().parent().addClass('required');
+			} else {
+				$('input[name=\'postcode\']').parent().parent().removeClass('required');
+			}
+
+			html = '<option value="">{{ text_select }}</option>';
+
+			if (json['zone'] && json['zone'] != '') {
+				for (i = 0; i < json['zone'].length; i++) {
+					html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+
+					if (json['zone'][i]['zone_id'] == '{{ zone_id }}') {
+						html += ' selected="selected"';
+					}
+
+					html += '>' + json['zone'][i]['name'] + '</option>';
+				}
+			} else {
+				html += '<option value="0" selected="selected">{{ text_none }}</option>';
+			}
+
+			$('select[name=\'zone_id\']').html(html);
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+
+$('select[name=\'country_id\']').trigger('change');
+//--></script>
+
+{#added on 01-04-2025 ---------------------#}
+    <script>
+		document.getElementById("seoUrlInput").addEventListener("input", function() {
+		    let inputField = this;
+		    let errorText = document.getElementById("seoUrlError");
+		
+		    if (/\s/.test(inputField.value)) { 
+		        errorText.style.display = "block";
+		        inputField.value = inputField.value.replace(/\s/g, ''); 
+		    } else {
+		        errorText.style.display = "none";
+		    }
+		});
+		</script>
+{#---------------------------------------------------#}
+    
+
+
+
+
+
+
+{{ footer }}

@@ -1,0 +1,41 @@
+<link href="catalog/view/javascript/bootstrap-5.3.3/css/bootstrap.min.css" rel="stylesheet"/>
+
+
+<div class="container my-5">
+	<h2 class="mb-4">Join Our Team</h2>
+	<p class="mb-4">We’re always looking for great people. Fill out the form below to apply.</p>
+
+	{% if success %}
+		<div class="alert alert-success">{{ success }}</div>
+	{% endif %}
+
+	{% if error %}
+		<div class="alert alert-danger">{{ error }}</div>
+	{% endif %}
+
+	<form action="index.php?route=careers/careers/submit" method="post" enctype="multipart/form-data">
+		<div class="mb-3">
+			<label for="input-name" class="form-label">Full Name</label>
+			<input type="text" name="name" id="input-name" class="form-control" placeholder="Your full name" required>
+		</div>
+
+		<div class="mb-3">
+			<label for="input-email" class="form-label">Email Address</label>
+			<input type="email" name="email" id="input-email" class="form-control" placeholder="your@email.com" required>
+		</div>
+
+		<div class="mb-3">
+			<label for="input-message" class="form-label">Cover Letter / Message</label>
+			<textarea name="message" id="input-message" class="form-control" rows="5" placeholder="Tell us about yourself..." required></textarea>
+		</div>
+
+		<div class="mb-4">
+			<label for="input-file" class="form-label">Upload Resume (PDF/DOC)</label>
+			<input type="file" name="resume" id="input-file" class="form-control" accept=".pdf,.doc,.docx">
+		</div>
+
+		<button type="submit" class="btn btn-primary">Submit Application</button>
+	</form>
+</div>
+
+<script src='catalog\view\javascript\bootstrap-5.3.3\js\bootstrap.js.map'></script>

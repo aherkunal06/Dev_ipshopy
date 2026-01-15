@@ -1,0 +1,124 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+        <div class="pull-right">
+           <a href="javascript:history.back()" data-toggle="tooltip">
+    			<button class="btn btn-info" ><i class="fa fa-reply"></i> </button>
+    		</a>
+        </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-filter"></i> Filter</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label for="filter_date_added">Date Added</label>
+              <input type="date" id="filter_date_added" class="form-control" value="{{ filter_date_added }}">
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <label>&nbsp;</label>
+            <div>
+              <button id="button-filter" class="btn btn-primary"><i class="fa fa-filter"></i> Filter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table id="tracking-table" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                <th>User Name</th>
+                <th>Date Added</th>
+                <th>Total Products</th>
+                <th>Approved</th>
+                <th>Disapproved</th>
+                <th>Pending</th>
+                <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tracking-body">
+                {% for user in products %}
+                <tr>
+                <td>{{ user.added_by }}</td>
+                <td>{{ user.date_added }}</td>
+                <td>{{ user.total }}</td>
+                <td>{{ user.approved }}</td>
+                <td>{{ user.disapproved }}</td>
+                <td>{{ user.pending }}</td>
+                <td><a href="{{ user.view }}" class="btn btn-info btn-sm" >View</a></td>
+                </tr>
+                {% else %}
+                <tr>
+                <td colspan="7" class="text-center">No data found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}
+
+<script type="text/javascript">
+$('#button-filter').on('click', function () {
+  let date_added = $('#filter_date_added').val();
+  let added_by = '{{ added_by_name }}'; // get value from PHP
+
+  $('#tracking-body').html('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
+
+  $.ajax({
+    url: 'index.php?route=tracking/product_add_history/filter&user_token={{ user_token }}',
+    type: 'GET',
+    data: {
+      filter_date_added: date_added,
+      added_by: added_by
+    },
+    dataType: 'json',
+    success: function (json) {
+      let html = '';
+
+      if (json.length) {
+        $.each(json, function (index, user) {
+          html += '<tr>';
+          html += '<td>' + user.username + '</td>';
+          html += '<td>' + user.date_added + '</td>';
+          html += '<td>' + user.total_products + '</td>';
+          html += '<td>' + user.approved_products + '</td>';
+          html += '<td>' + user.disapproved_products + '</td>';
+          html += '<td>' + user.pending_products + '</td>';
+          html += '<td><a href="' + user.view_link + '" class="btn btn-info btn-sm" target="_blank">View</a></td>';
+          html += '</tr>';
+        });
+      } else {
+        html = '<tr><td colspan="7" class="text-center">No data found</td></tr>';
+      }
+
+      $('#tracking-body').html(html);
+    }
+  });
+});
+</script>

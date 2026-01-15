@@ -1,0 +1,111 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-tmd_vendor" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {{ getkeyform }}
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-tmd_vendor" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-6">
+              <select name="tmd_vendor_status" id="input-status" class="form-control">
+                {% if tmd_vendor_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-bgcolor">{{ entry_bgcolor }}</label>
+            <div class="col-sm-6">
+              <input type="text" name="tmd_vendor_bgcolor" value="{{ tmd_vendor_bgcolor }}" placeholder="{{ entry_bgcolor }}" id="input-bgcolor" class="form-control demo" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-textcolor">{{ entry_textcolor }}</label>
+            <div class="col-sm-6">
+              <input type="text" name="tmd_vendor_textcolor" value="{{ tmd_vendor_textcolor }}" placeholder="{{ entry_textcolor }}" id="input-textcolor" class="form-control demo" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-imgsize">{{ entry_imgsize }}</label>
+            <div class="col-sm-3">
+              <input type="text" name="tmd_vendor_imgwidth" value="{{ tmd_vendor_imgwidth }}" placeholder="{{ entry_imgwidth }}" id="input-imgsize" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+              <input type="text" name="tmd_vendor_imgheight" value="{{ tmd_vendor_imgheight }}" placeholder="{{ entry_imgheight }}" id="input-imgsize" class="form-control" />
+            </div>
+          </div>
+		  
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-imagetype">{{ entry_imgbotrder }}</label>
+            <div class="col-sm-6">
+              <select name="tmd_vendor_imagetype" id="input-imagetype" class="form-control">
+                {% if tmd_vendor_imagetype=='round' %}
+                <option value="round" selected="selected">{{ entry_round }}</option>
+                <option value="rect">{{ entry_squre }}</option>
+                {% else %}
+                <option value="round">{{ entry_round }}</option>
+                <option value="rect" selected="selected">{{ entry_squre }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+		  
+		  
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="view/javascript/colorbox/jquery.minicolors.js"></script>
+<link rel="stylesheet" href="view/javascript/colorbox/jquery.minicolors.css">
+<script type="text/javascript"><!--
+$(document).ready( function() {
+    $('.demo').each( function() {
+      $(this).minicolors({
+    control: $(this).attr('data-control') || 'hue',
+    defaultValue: $(this).attr('data-defaultValue') || '',
+    inline: $(this).attr('data-inline') === 'true',
+    letterCase: $(this).attr('data-letterCase') || 'lowercase',
+    opacity: $(this).attr('data-opacity'),
+    position: $(this).attr('data-position') || 'bottom left',
+    change: function(hex, opacity) {
+    if( !hex ) return;
+    if( opacity ) hex += ', ' + opacity;
+      try {
+        console.log(hex);
+      } catch(e) {}
+    },
+    theme: 'bootstrap'
+    });
+    });
+});
+//--></script>
+{{ footer }}
+

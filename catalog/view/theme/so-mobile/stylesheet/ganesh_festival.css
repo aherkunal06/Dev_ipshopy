@@ -1,0 +1,264 @@
+.ganeshfest-category-scroll-section {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.ganeshfest-section-title{
+    padding: 10px;
+    color:black;
+    font-size: 18px;
+    font-weight: bold;
+}
+.ganeshfest-category-scroll-section::-webkit-scrollbar {
+    display: none;
+}
+
+.ganeshfest-category-scroll-container {
+    display: inline-flex;
+    gap: 12px;
+}
+
+/* .ganeshfest-category-card {
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+.ganeshfest-category-img {
+   position: relative;
+    width: 86px;
+    height: 95px;
+    border-radius: 30px 30px 10px 10px;
+    overflow: hidden;
+}
+
+.ganeshfest-category-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ganeshfest-category-text {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    white-space: nowrap;
+} */
+
+.ganeshfest-category-card {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.ganeshfest-category-img {
+    position: relative;
+    width: 86px;
+    height: 95px;
+    border-radius: 30px 30px 5px 5px;
+    overflow: hidden;
+}
+
+.ganeshfest-category-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ganeshfest-category-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  padding: 6px 4px;
+}
+
+.ganeshfest-category-img::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35%;
+ /* background: linear-gradient(to top, rgb(205 209 68), transparent); */
+}
+.ganeshfest-subcategory-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 10px;
+    margin-left: 10px;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.ganeshfest-subcategory-list::-webkit-scrollbar {
+    display: none;
+}
+
+.ganeshfest-subcategory-card {
+    flex: 0 0 calc(40% - 5px);
+    scroll-snap-align: start;
+    border-radius: 12px;
+    background: #fff;
+    border: 1.5px solid #fbbf24;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.ganeshfest-subcategory-card img {
+    object-fit: cover;
+    border-radius: 8px;
+}
+.ganeshfest-subcategory-card p{
+    margin-top: 5px;
+    margin-bottom: 0px;
+    font-size: 12px;
+    color: #777;
+}
+
+.product-title {
+    font-size: 12px;
+    margin: 8px 0 4px;
+    font-weight: 500;
+    color: #222;
+}
+
+.product-price {
+    font-size: 14px;
+    margin: 5px 0;
+}
+.current-price {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f97316;
+}
+.old-price {
+    font-size: 13px;
+    color: #777;
+    text-decoration: line-through;
+    margin-left: 5px;
+}
+
+
+.festival-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;               
+   padding-top:20px;        
+}
+.festival-title{
+        padding: 10px;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.festival-card {       
+    text-align: center;
+    width: 100px;
+    background: #fff8e6;
+    border-radius: 120px 120px 12px 12px;
+    border: 2px solid orange;
+    transition: transform 0.2s ease;
+}
+
+.festival-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.festival-card-img {
+
+}
+
+.festival-card-img img {
+       /* width: 100%; */
+    /* height: 100%; */
+    /* object-fit: cover; */
+    margin-bottom: 0px;
+    margin-top: -28px;
+    object-position: top;
+    /* display: block;*/
+}
+
+.festival-card-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #222;
+    padding: 10px 0;
+}
+
+
+
+
+.extra-categories {
+    padding: 10px;
+}
+
+.extra-title {
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.extra-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px; 
+}
+
+.extra-cards::-webkit-scrollbar {
+    display: none;
+}
+
+.extra-card {
+    flex: 0 0 160px;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.extra-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+.extra-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    border-radius: 18px;
+}
+
+/* overlay text */
+.extra-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 5px 5px;
+    /* background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent); */
+    text-align: center;
+}
+.extra-card-overlay span {
+    color: #050505;
+    font-size: 12px;
+    font-weight: 600;
+}
+/* Mobile साठी फक्त पहिल्या 3 cards दाखवायचे */
+@media (max-width: 767px) {
+  .festival-cards .festival-card:nth-child(n+4) {
+    display: none !important;
+  }
+}
